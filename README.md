@@ -1,4 +1,5 @@
-Chương trình windows bằng C#
+Chương trình windows bằng C#  
+https://github.com/CSharpDesignPro
 
 Cấu trúc dự án như sau:  
 
