@@ -319,8 +319,347 @@ menuStrip1.Items.Add(new ToolStripMenuItem("&File", null, miSave));
 ## 2. StatusStrip
 
 Dùng để: trạng thái dưới cùng (text, progress, thông tin người dùng).
-
+```C#
 toolStripStatusLabel1.Text = "Sẵn sàng";
+```
+
+## 3. ToolStrip / BindingNavigator
+
+Dùng để thanh công cụ (icon + tooltip); `BindingNavigator` là `ToolStrip` chuyên cho thao tác dữ liệu `(First/Prev/Next/Last/Add/Delete)`.  
+
+```C#
+toolStrip1.Items.Add(new ToolStripButton("Làm mới", null, (s,e)=>Reload()));
+```
+
+## 4. ContextMenuStrip
+
+Dùng để menu chuột phải cho control.  
+```C#
+textBox1.ContextMenuStrip = contextMenuStrip1;
+```
+
+## 5. Hộp thoại chuẩn (Common Dialogs)
+
+`OpenFileDialog`, `SaveFileDialog`, `FolderBrowserDialog`, `ColorDialog`, `FontDialog`, `PrintDialog`, `PageSetupDialog`, `PrintPreviewDialog`.  
+Cách dùng chung: gọi `ShowDialog()`, kiểm tra `DialogResult.OK`.  
+```C#
+using var dlg = new OpenFileDialog { Filter = "Ảnh|*.png;*.jpg|Tất cả|*.*" };
+if (dlg.ShowDialog() == DialogResult.OK) pictureBox1.Image = Image.FromFile(dlg.FileName);
+```
+
+# 7. Thành phần không giao diện (Component)
+
+## 1. Timer
+
+Dùng để chạy tác vụ định kỳ trên UI thread (đồng bộ với control).  
+Thuộc tính: `Interval` (ms), `Enabled`.
+Sự kiện: `Tick`.  
+```C#
+timer1.Interval = 1000; // 1s
+timer1.Tick += (s, e) => lblClock.Text = DateTime.Now.ToString("HH:mm:ss");
+timer1.Start();
+```
+## 2. BackgroundWorker (truyền thống) và Tasks + async/await (khuyến nghị)
+
+Mục tiêu: chạy tác vụ nặng ở thread nền để không `“đơ”` UI.  
+
+  - BackgroundWorker: sự kiện `DoWork`, `ProgressChanged`, `RunWorkerCompleted`.  
+```C#
+backgroundWorker1.WorkerReportsProgress = true;
+backgroundWorker1.DoWork += (s,e)=> { for (int i=0;i<=100;i++){ Thread.Sleep(20); backgroundWorker1.ReportProgress(i);} };
+backgroundWorker1.ProgressChanged += (s,e)=> progressBar1.Value = e.ProgressPercentage;
+backgroundWorker1.RunWorkerCompleted += (s,e)=> MessageBox.Show("Xong!");
+backgroundWorker1.RunWorkerAsync();
+```
+- `Tasks` (khuyên dùng):  
+```C#
+private async void btnExport_Click(object sender, EventArgs e) {
+    progressBar1.Style = ProgressBarStyle.Marquee;
+    try {
+        await Task.Run(()=> ExportLargeReport()); // chạy nền
+        MessageBox.Show("Xuất xong!");
+    } finally {
+        progressBar1.Style = ProgressBarStyle.Blocks;
+    }
+}
+```
+
+## 3.ErrorProvider
+
+Dùng để hiển thị lỗi bên cạnh control khi `validate`.  
+```
+if (string.IsNullOrWhiteSpace(txtName.Text))
+    errorProvider1.SetError(txtName, "Tên không được để trống");
+else
+    errorProvider1.SetError(txtName, "");
+```
+
+## 4.ToolTip
+
+Dùng để gợi ý ngắn khi rê chuột.  
+```C#
+toolTip1.SetToolTip(btnSave, "Lưu dữ liệu (Ctrl+S)");
+```
+
+## 5. NotifyIcon
+
+Dùng để biểu tượng ở khay hệ thống `(system tray)`, hiển thị `balloon`, `menu`, `ẩn/hiện` form.  
+```C#
+notifyIcon1.Icon = this.Icon;
+notifyIcon1.Visible = true;
+notifyIcon1.BalloonTipTitle = "Ứng dụng chạy nền";
+notifyIcon1.ShowBalloonTip(3000);
+```
+
+## 6. ImageList
+
+Dùng để kho ảnh nhỏ dùng chung cho `ListView`, `TreeView`, `ToolStrip`.  
+```C#
+listView1.SmallImageList = imageList1; // imageList1.Images.Add("ok", icon16px);
+```
+
+## 7. FileSystemWatcher
+
+Dùng để theo dõi thay đổi thư mục/tệp `(tạo/sửa/xóa/đổi tên)`.  
+```C#
+fileSystemWatcher1.Path = @"D:\Shared";
+fileSystemWatcher1.Created += (s,e)=> AppendLog($"New file: {e.FullPath}");
+fileSystemWatcher1.EnableRaisingEvents = true;
+```
+
+## 8. SerialPort
+
+Dùng để giao tiếp COM (thiết bị cân, máy quét…).  
+```C#
+serialPort1.PortName = "COM3"; serialPort1.BaudRate = 9600; serialPort1.Open();
+serialPort1.DataReceived += (s, e) => { var data = serialPort1.ReadExisting(); BeginInvoke(()=> txtLog.AppendText(data)); };
+```
+
+## 9. Process
+
+Dùng để chạy tiến trình ngoài (cmd, ffmpeg…).  
+```C#
+Process.Start(new ProcessStartInfo { FileName = "notepad.exe", UseShellExecute = true });
+```
+# 8. Hình ảnh đồ họa
+
+## 1. PictureBox
+
+Dùng để hiển thị ảnh, `SizeMode` (`StretchImage`, `Zoom`…).  
+```C#
+pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+pictureBox1.Image = Image.FromFile("logo.png");
+```
+
+## 2. Vẽ tùy biến (GDI+)
+
+`Override` `OnPaint` hoặc `handle Paint` để vẽ (`line`, `text`, `anti-alias`).  
+```C#
+protected override void OnPaint(PaintEventArgs e) {
+    e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+    e.Graphics.DrawEllipse(Pens.Gray, 10, 10, 100, 100);
+    base.OnPaint(e);
+}
+```
+
+# 9. Ràng buộc dữ liệu (Binding)
+
+## 1. BindingSource
+
+Dùng để trung gian giữa `control` và `nguồn dữ liệu`, hỗ trợ `filter`, `sort`, `currency` (vị trí hiện tại).  
+```C#
+bindingSource1.DataSource = employees; // List<Employee>
+bindingSource1.Filter = "Department = 'IT'"; // với DataView/DataTable
+dataGridView1.DataSource = bindingSource1;
+```
+
+## 2. BindingNavigator
+
+Dùng để thanh điều hướng (đầu/trước/sau/cuối, thêm/xóa) cho `BindingSource`.  
+```C#
+bindingNavigator1.BindingSource = bindingSource1;
+```
+
+## 3. Binding thủ công cho control đơn lẻ
+
+```C#
+txtName.DataBindings.Add("Text", bindingSource1, "Name", true, DataSourceUpdateMode.OnPropertyChanged);
+```
+### Một số lưu ý 
+
+> Mẹo hiệu năng & UX  
+> Đừng thao tác UI từ thread nền → dùng Control.Invoke/BeginInvoke hoặc async/await.  
+> Với bảng lớn: bật VirtualMode cho DataGridView, phân trang hoặc tải lười.  
+> Tắt flicker: DoubleBuffered = true (qua kế thừa control hoặc reflection).  
+> Luôn validate input (sự kiện Validating + ErrorProvider).  
+> Chú ý phím tắt (ShortcutKeys trên menu, AcceptButton/CancelButton của Form).  
+> Anchors/Dock hợp lý để UI responsive khi resize.  
+
+Ví dụ mẫu sử dụng `TextBox` + `ErrorProvider` + `ComboBox` + `DataGridView` + `StatusStrip` + `MenuStrip` + `Dialog` + `Task`:  
+```C#
+public partial class EmployeeForm : Form
+{
+    private BindingSource _bs = new BindingSource();
+    private List<Employee> _data = new();
+
+    public EmployeeForm()
+    {
+        InitializeComponent();
+        InitUi();
+        LoadData();
+    }
+
+    void InitUi()
+    {
+        // TextBox + ErrorProvider
+        txtName.Validating += (s, e) => {
+            if (string.IsNullOrWhiteSpace(txtName.Text)) { e.Cancel = true; errorProvider1.SetError(txtName, "Tên không được trống"); }
+            else errorProvider1.SetError(txtName, "");
+        };
+
+        // Combo Department
+        comboDept.DropDownStyle = ComboBoxStyle.DropDownList;
+        comboDept.DataSource = new[] { "IT", "HR", "Finance" };
+
+        // DataGridView
+        dgv.AutoGenerateColumns = false;
+        dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+        dgv.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Mã", DataPropertyName = "Code", Width = 80 });
+        dgv.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Tên", DataPropertyName = "Name", AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill });
+        dgv.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Bộ phận", DataPropertyName = "Department", Width = 120 });
+        dgv.DataSource = _bs;
+
+        // MenuStrip: File -> Import
+        miImport.Click += async (s, e) => await ImportFromCsvAsync();
+        miExit.Click += (s, e) => Close();
+
+        // StatusStrip
+        toolStripStatusLabel1.Text = "Sẵn sàng";
+    }
+
+    void LoadData()
+    {
+        _data = new List<Employee> {
+            new("E01","Nguyễn A","IT"),
+            new("E02","Trần B","HR")
+        };
+        _bs.DataSource = _data;
+    }
+
+    private async Task ImportFromCsvAsync()
+    {
+        using var ofd = new OpenFileDialog { Filter = "CSV|*.csv" };
+        if (ofd.ShowDialog() != DialogResult.OK) return;
+
+        progressBar1.Style = ProgressBarStyle.Marquee;
+        toolStripStatusLabel1.Text = "Đang nhập dữ liệu…";
+        try
+        {
+            var newData = await Task.Run(() => CsvLoad(ofd.FileName)); // chạy nền
+            _data.AddRange(newData);
+            _bs.ResetBindings(false);
+            toolStripStatusLabel1.Text = $"Đã nhập {newData.Count} bản ghi";
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show("Lỗi import: " + ex.Message);
+            toolStripStatusLabel1.Text = "Lỗi import";
+        }
+        finally
+        {
+            progressBar1.Style = ProgressBarStyle.Blocks;
+        }
+    }
+
+    static List<Employee> CsvLoad(string path)
+    {
+        var list = new List<Employee>();
+        foreach (var line in File.ReadAllLines(path).Skip(1)) // bỏ header
+        {
+            var parts = line.Split(',');
+            if (parts.Length >= 3) list.Add(new Employee(parts[0], parts[1], parts[2]));
+        }
+        return list;
+    }
+}
+
+public record Employee(string Code, string Name, string Department);
+```
+# Tổng quan về thread
+`WinForms` chạy trên một `UI thread (STA)`. Mọi cập nhật control `phải thực hiện trên UI thread`; nếu code đang chạy ở thread khác, bạn bắt buộc phải `Invoke/BeginInvoke` hoặc dùng `IProgress<T>/SynchronizationContext`.  
+Không chặn UI: `Không dùng .Wait()/.Result` trên `Task` trong `event handler` — dễ deadlock. Dùng `async void cho event và await`.  
+
+Quy tắc vàng:
+- Công việc nặng → Task.Run (thread pool).  
+- Báo tiến độ → IProgress<T>.  
+- Cập nhật UI → quay về UI thread bằng await (tiếp tục trên UI thread) hoặc Invoke.  
+
+Ví dụ:  
+```C#
+// Ví dụ: xuất báo cáo lớn ở nền, có hủy (cancel) và báo tiến độ.
+// Example: long-running export with cancellation & progress.
+
+private CancellationTokenSource _cts;
+
+private async void btnExport_Click(object sender, EventArgs e)
+{
+    _cts?.Cancel(); // Hủy phiên cũ nếu còn
+    _cts = new CancellationTokenSource();
+
+    // IProgress: tự marshal về UI thread an toàn
+    var progress = new Progress<int>(percent => {
+        progressBar1.Value = percent;               // UI-safe
+        lblStatus.Text = $"Đang xuất... {percent}%";
+    });
+
+    ToggleBusy(true);
+    try
+    {
+        await Task.Run(() => DoExport(progress, _cts.Token)); // nền
+        lblStatus.Text = "Hoàn tất!";
+    }
+    catch (OperationCanceledException)
+    {
+        lblStatus.Text = "Đã hủy.";
+    }
+    catch (Exception ex)
+    {
+        MessageBox.Show("Lỗi: " + ex.Message);
+    }
+    finally
+    {
+        ToggleBusy(false);
+        _cts.Dispose(); _cts = null;
+    }
+}
+
+private void DoExport(IProgress<int> progress, CancellationToken ct)
+{
+    for (int i = 0; i <= 100; i++)
+    {
+        ct.ThrowIfCancellationRequested();
+        // ... Ghi file / xử lý ...
+        Thread.Sleep(30);
+        progress.Report(i); // báo tiến độ (UI thread phía trên nhận)
+    }
+}
+
+private void btnCancel_Click(object sender, EventArgs e)
+{
+    _cts?.Cancel();
+}
+
+private void ToggleBusy(bool busy)
+{
+    progressBar1.Style = busy ? ProgressBarStyle.Continuous : ProgressBarStyle.Blocks;
+    btnExport.Enabled = !busy;
+    btnCancel.Enabled = busy;
+}
+```
+Ghi nhớ: 
+- `Event handler async void` là hợp lệ cho `WinForms`. Đừng `.Wait()` trên Task; luôn `await`.  
+- Tách logic nặng sang hàm đồng bộ trong Task.Run (nếu không cần async I/O), hoặc gọi hàm async I/O và vẫn await (không cần Task.Run).  
+
 # Quản lý vòng đời  
 
 Trong .NET, một số đối tượng giữ tài nguyên bên ngoài GC (ngoài bộ nhớ managed), ví dụ: `handle file`, `socket`, `GDI+ (ảnh, icon, bút vẽ)`, `kết nối DB` …. Những đối tượng này thường triển khai giao diện `IDisposable` và có hàm `Dispose()` để giải phóng tài nguyên sớm, chủ động (deterministic).  
