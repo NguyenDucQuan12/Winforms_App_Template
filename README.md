@@ -65,13 +65,28 @@ dotnet publish -c Release -r win-x64 --self-contained true /p:PublishSingleFile=
 Hoặc có thể copy cả thư mục `Debug` tại đường dẫn: `bin/Debug/phiên bản dotnet/`. Thư mục này chứa toàn bộ tệp exe và các thư viện đi kèm được copy vào đây khi chạy ở chế độ `Debug`.  
 
 
-# Các compoment
+# I. Các control nhập/xuất chữ (Text)
 
 ## 1. Label
 
 Dùng để hiển thị văn bản tĩnh, mô tả cho input.  
 
+Có thể kéo thả `label` từ `Toolbox` vào form.  
+
 ![image](Image/Github/get_label_from_toolbox.png)  
+
+Hoặc sử dụng code sau:  
+```C#
+var lbl = new Label {
+    Text = "&Họ và tên:",
+    AutoSize = true,
+    Location = new Point(16, 20)
+};
+this.Controls.Add(lbl);
+```
+- Thuộc tính: `Text`, `AutoSize`, `ForeColor`, `BackColor`, `Font`, `TextAlign`.  
+
+Lưu ý: `AutoSize=true` giúp tự giãn theo nội dung; đặt `UseMnemonic=true` & `&` để tạo phím tắt cho control kế tiếp (Alt + ký tự).  
 
 Các thuộc tính chính trong `label`.  
 
@@ -92,8 +107,220 @@ Ta có thể đặt nhãn cố định theo 2 phía cùng lúc, 3, 4 phía sẽ 
 
 Mặc định sẽ là `private`, khi chuyển sang `public`, `Internal` thì cho phép chỉnh sửa các thuộc tính của nhãn từ `form` khác.  
 
-## 2. Button
+## 2. LinkLabel
 
+Dùng để hiển thị liên kết (mở URL, file, form trợ giúp).  
+
+Sử dụng sự kiện: `LinkClicked`.  
+
+```C#
+var link = new LinkLabel { Text = "Mở website", AutoSize = true };
+link.LinkClicked += (s, e) => System.Diagnostics.Process.Start("https://example.com");
+```
+
+## 2. TextBox
+
+Dùng để nhập văn bản một dòng hoặc nhiều dòng.  
+
+- Thuộc tính: `Text`, `Multiline`, `ReadOnly`, `MaxLength`, `PasswordChar`, `CharacterCasing`, `ScrollBars`.  
+
+Sự kiện: `TextChanged`, `KeyDown`, `Validating` (kiểm tra hợp lệ).  
+
+Mẹo: đặt `Anchor/Dock` để tự co giãn theo form; `UseSystemPasswordChar=true` cho mật khẩu.  
+
+```C#
+var txt = new TextBox { Width = 240, MaxLength = 100 };
+txt.Validating += (s, e) => {
+    if (string.IsNullOrWhiteSpace(txt.Text)) { e.Cancel = true; errorProvider1.SetError(txt, "Không được để trống"); }
+    else errorProvider1.SetError(txt, "");
+};
+```
+
+## 3. MaskedTextBox
+
+Dùng để nhập theo mặt nạ (điện thoại, CMND, ngày).  
+- Thuộc tính: `Mask` (VD "0000-0000"), `PromptChar`, `TextMaskFormat`.  
+
+```C#
+var msk = new MaskedTextBox { Mask = "00/00/0000" }; // dd/MM/yyyy
+```
+
+## 4. RichTextBox
+
+Dùng để nhập văn bản định dạng (đậm/ nghiêng/ màu/ danh sách…).  
+
+- Tính năng: load/save RTF, tìm/đổi màu chữ được chọn.  
+
+```C#
+richTextBox1.SelectedText = "Xin chào";
+richTextBox1.SelectionFont = new Font("Segoe UI", 10, FontStyle.Bold);
+```
+
+# II. Các control lựa chọn/nhấp
+
+## 1. Button
+
+Dùng để kích hoạt hành động.  
+
+- Thuộc tính: `Text`, `Image`, `TextImageRelation`, `DialogResult`.  
+Sự kiện: `Click`.  
+
+Mẹo: gán `AcceptButton`/`CancelButton` cho Form để `Enter/Esc` hoạt động.  
+
+```C#
+var btn = new Button { Text = "Lưu (Ctrl+S)" };
+btn.Click += (s, e) => SaveData();
+```
+## 2. CheckBox
+
+Dùng để `bật/tắt (true/false)`; có thể 3 trạng thái (`ThreeState=true`).  
+Sự kiện: `CheckedChanged`.  
+
+## 3. RadioButton
+
+Dùng để chọn một trong nhiều tùy chọn (cần cùng `GroupBox/Panel`)  
+Sự kiện: `CheckedChanged`  
+```C#
+if (radMale.Checked) gender = "M"; else if (radFemale.Checked) gender = "F";
+```
+
+# III. Nhóm control số/giá trị
+
+## 1. NumericUpDown
+
+Dùng để nhập số có tăng/giảm bằng mũi tên.  
+Thuộc tính: `Minimum`, `Maximum`, `DecimalPlaces`, `Increment`, `Value`.  
+```C#
+numQty.Minimum = 1; numQty.Maximum = 1000; numQty.Value = 10; numQty.Increment = 5;
+```
+## 2. TrackBar
+
+Dùng để điều chỉnh giá trị bằng thanh trượt (Âm lượng/Độ sáng, ....)  
+Sự kiện: `Scroll`, `ValueChanged`  
+
+## 3. ProgressBar
+
+Dùng để hiển thị tiến trình (xác định/không xác định)  
+Thuộc tính: `Style(Blocks/Marquee)`, `Value`, `Maximum`  
+```C#
+progressBar1.Style = ProgressBarStyle.Marquee; // khi không biết % chính xác
+```
+## 4. DateTimePicker và MonthCalender
+
+Dùng để chọn ngày/giờ.  
+Thuộc tính: `Format (Short, Long, Custom)`, `CustomFormat`.  
+```C#
+dtp.CustomFormat = "dd/MM/yyyy HH:mm"; dtp.Format = DateTimePickerFormat.Custom;
+```
+# IV. Nhóm control danh sách và phân cấp
+
+## 1. ListBox/CheckedListBox
+
+Dùng để hiển thị danh sách đơn giản; `CheckedListBox` có `tick`.  
+Thuộc tính: `DataSource`, `DisplayMember`, `ValueMember`, `SelectionMode`.  
+Sự kiện: `SelectedIndexChanged`.
+```C#
+listBox1.DataSource = products;  // IEnumerable
+listBox1.DisplayMember = "Name";
+listBox1.ValueMember = "Id";
+```
+## 2.Combobox
+
+Dùng để chọn 1 mục từ danh sách, có thể gõ (`DropDown`) hoặc không (`DropDownList`).  
+Sự kiện: `SelectedIndexChanged`, `DropDown`, `TextUpdate`.  
+```C#
+combo.DropDownStyle = ComboBoxStyle.DropDownList;
+combo.DataSource = departments;
+combo.DisplayMember = "Name"; combo.ValueMember = "Code";
+```
+## 3. ListView
+
+Dùng để danh sách nhiều cột (`Details`), biểu tượng (`LargeIcon/SmallIcon`), nhóm.  
+Thuộc tính: `View=Details`, `FullRowSelect=true`, `GridLines=true`, `Columns`.  
+Tính năng: `VirtualMode` cho dữ liệu lớn.  
+```C#
+listView1.View = View.Details;
+listView1.Columns.Add("Mã", 80);
+listView1.Columns.Add("Tên", 200);
+listView1.Items.Add(new ListViewItem(new[] {"P01","Phòng Kế toán"}));
+```
+## 4 TreeView
+
+Dùng để dữ liệu phân cấp (thư mục, menu, danh mục).  
+Sự kiện: `AfterSelect`, `NodeMouseClick`.  
+```C#
+var root = treeView1.Nodes.Add("Phòng ban");
+root.Nodes.Add("Kế toán"); root.Nodes.Add("Kỹ thuật");
+```
+
+## 5. DataGridView
+
+Dùng để bảng dữ liệu mạnh mẽ: `binding`, `chỉnh sửa`, `sắp xếp`, `template cột`.  
+Thuộc tính: `DataSource`, `AutoGenerateColumns`, `AllowUserToAddRows`, `EditMode`, `SelectionMode`, `AutoSizeColumnsMode`.  
+Cột: `DataGridViewTextBoxColumn`, `ComboBoxColumn`, `CheckBoxColumn`, `ButtonColumn`, `ImageColumn`.  
+Sự kiện: `CellFormatting`, `CellValidating`, `CellEndEdit`, `RowValidating`, `DataError`.  
+
+> Mẹo: dùng BindingSource để filter/sort; bật VirtualMode cho dữ liệu lớn.  
+
+```C#
+bindingSource1.DataSource = GetEmployees(); // List<Employee>
+dataGridView1.AutoGenerateColumns = false;
+dataGridView1.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Mã", DataPropertyName = "Code" });
+dataGridView1.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Tên", DataPropertyName = "Name", AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill });
+dataGridView1.DataSource = bindingSource1;
+```
+
+# V. Nhóm bố cục/điều hướng
+## 1. GroupBox
+
+Dùng để nhóm các control có liên quan; có nhãn.  
+```C#
+var grp = new GroupBox { Text = "Thông tin cơ bản", Dock = DockStyle.Top, Height = 140 };
+```
+## 2. Panle
+Dùng để: vùng chứa đơn giản; kết hợp `AutoScroll` để cuộn.  
+```C#
+panel1.AutoScroll = true;
+```
+
+## 3. TabControl
+Dùng để phân trang nội dung (Tab).  
+```C#
+tabControl1.TabPages.Add("Cấu hình", "Cấu hình");
+```
+## 4. SplitContainer
+
+Dùng để chia vùng `trái/phải` hoặc `trên/dưới` có thanh kéo thay đổi kích cỡ.  
+```C#
+splitContainer1.Panel1.Controls.Add(treeView1);
+splitContainer1.Panel2.Controls.Add(dataGridView1);
+```
+
+## 5. TableLayoutPanel & FlowLayoutPanel
+
+Dùng để bố cục lưới (Table) hoặc dòng chảy (Flow) — cực hữu ích cho UI responsive theo resize.
+```C#
+tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 120));
+tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
+```
+
+# 6.Thanh menu, trạng thái, công cụ và menu chuột phải
+
+## 1 MenuStrip
+
+Dùng để menu trên cùng `(File, Edit…)`.  
+Mẹo: gắn `ShortcutKeys` cho `ToolStripMenuItem`.  
+```C#
+var miSave = new ToolStripMenuItem("&Save"){ ShortcutKeys = Keys.Control | Keys.S };
+miSave.Click += (s,e) => SaveData();
+menuStrip1.Items.Add(new ToolStripMenuItem("&File", null, miSave));
+```
+
+## 2. StatusStrip
+
+Dùng để: trạng thái dưới cùng (text, progress, thông tin người dùng).
+
+toolStripStatusLabel1.Text = "Sẵn sàng";
 # Quản lý vòng đời  
 
 Trong .NET, một số đối tượng giữ tài nguyên bên ngoài GC (ngoài bộ nhớ managed), ví dụ: `handle file`, `socket`, `GDI+ (ảnh, icon, bút vẽ)`, `kết nối DB` …. Những đối tượng này thường triển khai giao diện `IDisposable` và có hàm `Dispose()` để giải phóng tài nguyên sớm, chủ động (deterministic).  
