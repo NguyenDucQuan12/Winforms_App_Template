@@ -1,0 +1,15 @@
+<Project>
+  <ItemGroup>
+    <!-- Serilog core: 4.0.0 (phù hợp với File sink 6.x) -->
+    <PackageVersion Include="Serilog" Version="4.0.0" />
+    <!-- File sink ghi log ra file -->
+    <PackageVersion Include="Serilog.Sinks.File" Version="6.0.0" />
+    <!-- Async wrapper: tránh block UI -->
+    <PackageVersion Include="Serilog.Sinks.Async" Version="1.5.0" />
+    <!-- Enricher ThreadId -->
+    <PackageVersion Include="Serilog.Enrichers.Thread" Version="3.1.0" />
+    <!-- Exception enricher -->
+    <PackageVersion Include="Serilog.Exceptions" Version="8.4.0" />
+    <!-- Tương tự thêm các gói mới vào dưới đây  -->
+  </ItemGroup>
+</Project>

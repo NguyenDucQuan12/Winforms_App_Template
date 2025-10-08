@@ -1,0 +1,12 @@
+<Project>
+  <PropertyGroup>
+    <!-- Bật Central Package Management (CPM): lấy version gói từ Directory.Packages.props -->
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+
+    <!-- Bật lock file: tạo packages.lock.json khi 'dotnet restore' để build tái lập -->
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+
+    <!-- (CI có thể bật thêm chế độ khoá nghiêm ngặt) -->
+    <!-- <RestoreLockedMode>true</RestoreLockedMode> -->
+  </PropertyGroup>
+</Project>

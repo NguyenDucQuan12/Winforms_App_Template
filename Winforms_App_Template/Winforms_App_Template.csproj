@@ -8,4 +8,34 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+	<ItemGroup>
+		<!-- Version được lấy từ Directory.Packages.props -->
+		<PackageReference Include="Serilog" />
+		<PackageReference Include="Serilog.Sinks.File" />
+		<PackageReference Include="Serilog.Sinks.Async" />
+		<PackageReference Include="Serilog.Enrichers.Thread" />
+		<PackageReference Include="Serilog.Exceptions" />
+
+		<!--Thêm 1 package vào đây, chỉ cần tên packages, version đã có ở directory.Packages.props-->
+	</ItemGroup>
+
+	<ItemGroup>
+		<!-- Khai báo Resources.resx để sinh code truy cập mạnh kiểu -->
+		<EmbeddedResource Update="Properties\Resources.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<!-- tool sinh code -->
+			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
+			<!-- tên file code sinh -->
+		</EmbeddedResource>
+
+		<Compile Update="Properties\Resources.Designer.cs">
+			<AutoGen>True</AutoGen>
+			<!-- file này do tool sinh -->
+			<DesignTime>True</DesignTime>
+			<!-- VS/IDE dùng lúc thiết kế -->
+			<DependentUpon>Resources.resx</DependentUpon>
+			<!-- hiển thị lồng dưới resx -->
+		</Compile>
+	</ItemGroup>
+
 </Project>
