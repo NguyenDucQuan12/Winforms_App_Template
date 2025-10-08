@@ -1,5 +1,4 @@
 Chương trình windows bằng C#  
-https://github.com/CSharpDesignPro
 
 Cấu trúc dự án như sau:  
 
@@ -70,7 +69,7 @@ Hoặc có thể copy cả thư mục `Debug` tại đường dẫn: `bin/Debug/
 
 ## 1. Label
 
-Dùng để hiển thị nội dung văn bản  
+Dùng để hiển thị văn bản tĩnh, mô tả cho input.  
 
 ![image](Image/Github/get_label_from_toolbox.png)  
 
