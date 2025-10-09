@@ -47,6 +47,8 @@ Winform_Template/      # Thư mục chứa toàn bộ dự án
 ├── .dockerignore            # Cấu hình bỏ qua các thư mục, tệp trong docker
 ├── .env            # Tệp tin chứa cấu hình các thông số
 ├── .gitignore            # Cấu hình bỏ qua các thư mục, tệp tin trong git
+├── .gitattributes            # Đảm bảo Git lưu file với định dạng UTF-8
+├── .editorconfig            # Đặt mặc định nội dung UTF-8 cho toàn dự án
 ├── Dockerfile            # Xây dựng các image cho docker
 ├── docker-compose.yml    # Cấu hình các thông số khi chạy trên docker
 └── README.md
@@ -189,7 +191,7 @@ if (radMale.Checked) gender = "M"; else if (radFemale.Checked) gender = "F";
 ## 1. NumericUpDown
 
 Dùng để nhập số có tăng/giảm bằng mũi tên.  
-Thuộc tính: `Minimum`, `Maximum`, `DecimalPlaces`, `Increment`, `Value`.  
+Thuộc tính: `Minimum`, `Maximum`, `DecimalPlaces`, `Increment`, `Value`, `interceptArrowKeys`.  
 ```C#
 numQty.Minimum = 1; numQty.Maximum = 1000; numQty.Value = 10; numQty.Increment = 5;
 ```
@@ -212,6 +214,31 @@ Thuộc tính: `Format (Short, Long, Custom)`, `CustomFormat`.
 ```C#
 dtp.CustomFormat = "dd/MM/yyyy HH:mm"; dtp.Format = DateTimePickerFormat.Custom;
 ```
+
+## 5. ProgressBar
+
+Hiển thị thanh tiến trình  
+Để kich hoạt từng `step` của thanh tiến trình thì ta gọi lệnh: `PerformStep` hoặc `PerformLayout`.  
+
+Đối với `progressBar` có thuộc tính `Style`: `Block` hoặc `Continuous` thì sử dụng `PerformStep` tăng giá trị cho `ProgressBar` theo từng giá trị `step`.  
+Đối với `ProgressBar` có thuộc tính `Style`: `Marquee` thì sử dụng `PerfornLayout`.  
+
+Ví dụ ta tăng giá trị của `progressBar1` bằng hàm Timer định kỳ để nhận thấy thay đổi.  
+```C#
+private void Timer1_Tick(object? sender, EventArgs e)
+{
+    progressBar1.PerformStep();
+    label1.Text = progressBar1.Value.ToString();
+}
+
+private void button1_Click(object sender, EventArgs e)
+{
+    timer1.Enabled = !timer1.Enabled;
+}
+```
+![image](Image/Github/progressbar_run_timer.png)  
+
+
 # IV. Nhóm control danh sách và phân cấp
 
 ## 1. ListBox/CheckedListBox
@@ -309,19 +336,36 @@ tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
 ## 1 MenuStrip
 
 Dùng để menu trên cùng `(File, Edit…)`.  
+Có thể thêm hình ảnh vào trước các lựa chọn bằng thuộc tính `Image`.  
+
+![image](Image/Github/menustrip.png)  
+
 Mẹo: gắn `ShortcutKeys` cho `ToolStripMenuItem`.  
 ```C#
 var miSave = new ToolStripMenuItem("&Save"){ ShortcutKeys = Keys.Control | Keys.S };
 miSave.Click += (s,e) => SaveData();
 menuStrip1.Items.Add(new ToolStripMenuItem("&File", null, miSave));
+
+void SaveData()
+{
+    MessageBox.Show("Sử dụng phím tắt");
+}
 ```
+
+![image](Image/Github/add_shortcut_key_for_menustrip.png)  
+
+Ta gắn phím tắt `Ctr+S` cho menu `Look` ở `MenuStrip`. Khi ấn phím tắt thì nó sẽ hiển thị thông báo.  
 
 ## 2. StatusStrip
 
 Dùng để: trạng thái dưới cùng (text, progress, thông tin người dùng).
 ```C#
-toolStripStatusLabel1.Text = "Sẵn sàng";
+// Kéo thả từ giao diện hoặc sử dụng code
+var status_bar_item = new ToolStripLabel(Text = "Xin chào, đây là tôi");
+statusStrip1.Items.Add(status_bar_item);
 ```
+
+![image](Image/Github/create_status_strip.png)  
 
 ## 3. ToolStrip / BindingNavigator
 
@@ -333,10 +377,70 @@ toolStrip1.Items.Add(new ToolStripButton("Làm mới", null, (s,e)=>Reload()));
 
 ## 4. ContextMenuStrip
 
-Dùng để menu chuột phải cho control.  
+Dùng để menu khi chuột phải cho `control`.  
+
+![image](Image/Github/create_context_menu_strip.png)  
+
+Ta có thể kéo thả và tạo các menu cho `ContextMenuStrip` từ giao diện.  
+Sau đó gán `ContextMenuStrip` này cho một control bất kỳ thông qua thuộc tính `ContextMenuStrip`.  
+
 ```C#
-textBox1.ContextMenuStrip = contextMenuStrip1;
+button1.ContextMenuStrip = contextMenuStrip1;
 ```
+
+![image](Image/Github/add_context_menu_strip_for_button.png)  
+
+Hoặc tạo 1 `ContextMenuStrip` từ code như sau:  
+```C#
+// Tạo 1 contextmenustrip
+ContextMenuStrip contextMenuStrip1111;
+contextMenuStrip1111 = new ContextMenuStrip();
+
+// Thêm các button vào contextmenustrip
+var button_context_menu1 = new ToolStripButton(Text = "Click me");
+// Thêm sự kiện cho việc click button
+button_context_menu1.Click += Button_context_menu1_Click;
+
+// Gắn vào contextmenustrip
+contextMenuStrip1111.Items.Add(button_context_menu1);
+```
+
+```C#
+// Tạo sự kiện cho button
+private void Button_context_menu1_Click(object? sender, EventArgs e)
+{
+    MessageBox.Show((sender as ToolStripItem).Text);
+}
+```
+
+Khi đó ta `click chuột phải` vào control thì nó sẽ hiển thị nội dung cho ta.  
+Một cách khác để hiển thị `ContextMenuStrip` bằng hàm `Show()` như sau:  
+Ta bắt sự kiện `click`, `keypress`, ... rồi gọi hàm `show` của `ContextMenuStrip`.  
+Hàm `Show` của `ContextMenuStrip` có 6 phương thức `overload`, ta thường sử dụng phương thức `1 và 2`. Ví dụ với phương thức thứ 2 sẽ hiển thị `ContextMenuStrip` tại 1 vị trí tương đối so với một `control`.  
+
+![image](Image/Github/add_event_click_to_button.png)  
+
+Tham số đầu tiên là control mà ta chỉ định: `this`: Chính là form (class) chứa nội dung, còn `button2`: là vị trí tương đối so với `button2` này, `MousePosition` là vị trí ngay tại con trỏ chuột  
+Tham số thứ hai là`position`: tọa độ tương đối tính từ `control` đã chỉ định.  
+Ta có thể kết hợp vừa `this` và vừa `MousePositin`:  
+```C#
+contextMenuStrip1.Show(this, this.PointToClient(MousePosition);
+```
+Câu lệnh này sẽ lấy vị trí của chuột trong `Form (this)`  
+
+```C#
+// Gán sự kiện click vào button 2
+button2.Click += (s, e) =>
+{
+    contextMenuStrip1.Show(button2, new Point(50,50));
+
+    // Hoặc lấy contextMenu đã được gán cho button1 ở phía trên hiển thị ra
+    // button1.ContextMenuStrip.Show(button2, new Point(50,50));
+};
+```
+
+![image](Image/Github/show_context_menu_with_show_function.png)  
+
 
 ## 5. Hộp thoại chuẩn (Common Dialogs)
 
@@ -396,19 +500,32 @@ else
 
 ## 4.ToolTip
 
-Dùng để gợi ý ngắn khi rê chuột.  
+Dùng để hiển thị gợi ý ngắn khi rê chuột vào 1 đối tượng.  
 ```C#
-toolTip1.SetToolTip(btnSave, "Lưu dữ liệu (Ctrl+S)");
+// Tạo tooltip bằng code hoặc kéo thả từ giao diện
+// ToolTip toolTip1 = new ToolTip()
+
+// Hiển thị tooltips khi rê chuột vào button1 
+toolTip1.SetToolTip(button1, "Lưu dữ liệu (Ctrl+S)");
 ```
+
+![image](Image/Github/ToolTips_For_Button.png)  
 
 ## 5. NotifyIcon
 
 Dùng để biểu tượng ở khay hệ thống `(system tray)`, hiển thị `balloon`, `menu`, `ẩn/hiện` form.  
 ```C#
+// Phải cài đặt Icon thì mới hiển thị được
 notifyIcon1.Icon = this.Icon;
 notifyIcon1.Visible = true;
+
+// Popup hiển thị thông báo 
 notifyIcon1.BalloonTipTitle = "Ứng dụng chạy nền";
+// Hiển thị thông báo trong 3s
 notifyIcon1.ShowBalloonTip(3000);
+
+// Hoặc tạo thông báo cụ thể hơn với thời gian hiển thị 5s, title và nội dung lấy từ Textbox1, icon là warning
+NotifyIcon1.ShowBallonTip(5000, "Thông báo từ App", TexBox1.Text, ToolTipIcon.Warning)
 ```
 
 ## 6. ImageList
@@ -439,7 +556,14 @@ serialPort1.DataReceived += (s, e) => { var data = serialPort1.ReadExisting(); B
 
 Dùng để chạy tiến trình ngoài (cmd, ffmpeg…).  
 ```C#
+// Khởi động chương trình notepad
 Process.Start(new ProcessStartInfo { FileName = "notepad.exe", UseShellExecute = true });
+
+// Khởi động 1 chương trình khác qua đường dẫn
+Process.Start(Application.StartupPath + "\\update.exe")
+
+// Mở 1 trang web
+Process.Start(@"http:\\google.com")
 ```
 # 8. Hình ảnh đồ họa
 
@@ -593,6 +717,28 @@ Quy tắc vàng:
 - Công việc nặng → Task.Run (thread pool).  
 - Báo tiến độ → IProgress<T>.  
 - Cập nhật UI → quay về UI thread bằng await (tiếp tục trên UI thread) hoặc Invoke.  
+
+Chạy công việc trong 1 thread khác, các tác vụ ở thread này ko động chạm đến giao diện (không được cập nhật, chinh sửa, thêm, xóa gì các control ở giao diện chính)  
+```C#
+private void button1_Click(object sender, EventArgs e){
+
+    // Tạo 1 thread và truyền hàm cần chạy trong luồng
+    ThreadStart ts = new ThreadStart(Demo);
+    Thread thrd = new Thread (ts); // sử dụng thư viện System.Thread
+    thrd.IsBackground = True; //Khi chương trình chính kết thúc thì nó kết thúc theo
+    // Chạy thread
+    thrd.Start();
+}
+
+// Tạo hàm Demo
+void Demo(){
+    for (int i= 0; i<= 100; i++){
+        console.writeline(i)
+    }
+}
+```
+
+Khi đó khi click vào button1 thì hàm `Demo` sẽ được chạy trong 1 luồng riêng
 
 Ví dụ:  
 ```C#
@@ -838,11 +984,46 @@ Không `cache Graphics` lâu dài; chỉ dùng trong scope ngắn (inside `OnPai
 
 ### 5.3 Timers
 
-`System.Windows.Forms.Timer`: chạy trên `UI thread`, thuộc components nếu kéo thả → `form Dispose` sẽ dọn. Nếu tạo tay thì cần thao tác dừng và `Dipose` nó: `timer.Stop(); timer.Dispose();`  
+`Timer` trong `Winforms` là 1 tác vụ chạy trên `UI thread`, thuộc components nếu kéo thả (→ `form Dispose` sẽ dọn). Nếu tạo tay thì cần thao tác dừng và `Dipose` nó: `timer.Stop(); timer.Dispose();`  
+`Timer` sẽ thực hiện 1 tác vụ định kỳ trong khoảng thời gian đã cài đặt, nó chỉ có 1 tác vụ cố định thực hiện đi thực hiện lại gọi là `Sự kiện Tick`.  
+Nó có thể cập nhật giao diện bởi vì `Timer` là 1 thread riêng ko ảnh hưởng tới giao diện chính.  
+
+Ví dụ khi click vào 1 button để đếm thời gian tăng lên theo từng giây như sau:  
+```C#
+
+// Tạo hàm định kỳ cho timer1
+// Tăng giá trị lên 1 và hiển thị lên label
+
+int i = 0
+private void timer1_Tick(object sender, EventArgs e){
+    i++;
+    label1.Text = i.ToString();
+}
+
+// Bắt sự kiện click button 1
+private void button1_CLick(object sender, EventArgs e){
+    if (timer1.Enable){   // Kiểm tra xem timer1 đang chạy hay ko
+        button1.Text = "Ấn để dừng timer";
+        timer1.Start();  // Khởi chạy timer1 hoặc sử dụng timer1.Enable = True;
+    } else {
+        button1.Text = "Ấn để khởi động timer"
+        timer1.Stop();  // Chủ động dispose timer1
+    }
+
+}
+
+// Hoặc sử dụng cú pháp rút gọn như sau
+private void button1_CLick(object sender, EventArgs e){
+    timer1.Enabled = !timer1.Enabled;
+    button1.Text = button1.Text == "Ấn để dừng timer" ? "Ấn để dừng timer" : "Ấn để khởi động timer";
+}
+```
+
 
 `System.Timers.Timer/System.Threading.Timer`: không nằm trong `components` → phải `Dispose()` thủ công, đặc biệt `trước khi form đóng`, kẻo callback bắn vào form đã Dispose.  
 
 Khi dùng `timer/Task` cập nhật UI, nhớ check `IsDisposed`+ dùng `BeginInvoke/Invoke` hợp lệ.  
+
 
 ### 5.4 Sự kiện (event) – rò rỉ do đăng ký mà không bỏ đăng ký
 
