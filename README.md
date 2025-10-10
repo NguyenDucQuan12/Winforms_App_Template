@@ -212,7 +212,12 @@ progressBar1.Style = ProgressBarStyle.Marquee; // khi không biết % chính xá
 Dùng để chọn ngày/giờ.  
 Thuộc tính: `Format (Short, Long, Custom)`, `CustomFormat`.  
 ```C#
-dtp.CustomFormat = "dd/MM/yyyy HH:mm"; dtp.Format = DateTimePickerFormat.Custom;
+dtp.CustomFormat = "dd/MM/yyyy HH:mm tt"; dtp.Format = DateTimePickerFormat.Custom;
+```
+
+Để thay cho popup hiển thị lên chọn ngày tháng năm bằng các mũi tên thì ta sử dụng thuộc tính `ShowUpDown`.  
+```C#
+dtp.ShowUpDown = True;
 ```
 
 ## 5. ProgressBar
@@ -287,15 +292,126 @@ Thuộc tính: `DataSource`, `AutoGenerateColumns`, `AllowUserToAddRows`, `EditM
 Cột: `DataGridViewTextBoxColumn`, `ComboBoxColumn`, `CheckBoxColumn`, `ButtonColumn`, `ImageColumn`.  
 Sự kiện: `CellFormatting`, `CellValidating`, `CellEndEdit`, `RowValidating`, `DataError`.  
 
-> Mẹo: dùng BindingSource để filter/sort; bật VirtualMode cho dữ liệu lớn.  
+> Mẹo: dùng BindingSource để filter/sort;  
+> Bật `VirtualMode` cho dữ liệu lớn: tự cung cấp dữ liệu theo chỉ số hàng khi dữ liệu rất lớn.    
+> Tắt `AutoSize` khi nạp dữ liệu, sau đó bật `AutoSize`: Tránh tính toán lại nhiều lần  
+> Phân trang (paging): tải theo trang thay vì tất cả.  
+> `AutoGenerateColumns=false`: bạn chủ động định nghĩa cột.  
+> Bọc `DataError` để không văng `exception` ra UI.  
 
+
+Ví dụ cấu hình cho một `DataGridView` có 2 cột `Họ tên` và `Lương`:  
 ```C#
-bindingSource1.DataSource = GetEmployees(); // List<Employee>
-dataGridView1.AutoGenerateColumns = false;
-dataGridView1.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Mã", DataPropertyName = "Code" });
-dataGridView1.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Tên", DataPropertyName = "Name", AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill });
-dataGridView1.DataSource = bindingSource1;
+private void SetupGrid()
+{
+    dataGridView1.AutoGenerateColumns = false;
+    dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+    dataGridView1.AllowUserToAddRows = false;
+
+    dataGridView1.Columns.Add(new DataGridViewTextBoxColumn {
+        DataPropertyName = "Name",
+        HeaderText = "Họ tên",
+        AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+    });
+
+    dataGridView1.Columns.Add(new DataGridViewTextBoxColumn {
+        DataPropertyName = "Salary",
+        HeaderText = "Lương",
+        DefaultCellStyle = { Format = "N0" } // format hiển thị ngay trong lưới
+    });
+
+    // Xử lý lỗi ràng buộc dữ liệu (nếu có) để không crash UI
+    dataGridView1.DataError += (s, e) =>
+    {
+        // e.Exception chứa chi tiết — nên log lại
+        e.ThrowException = false; // nuốt lỗi để người dùng tiếp tục thao tác
+    };
+}
 ```
+
+`Validation` trong lưới:  
+```#
+private void dataGridView1_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+{
+    // Ví dụ: cột "Name" không được rỗng
+    if (dataGridView1.Columns[e.ColumnIndex].DataPropertyName == "Name")
+    {
+        string newVal = Convert.ToString(e.FormattedValue);
+        if (string.IsNullOrWhiteSpace(newVal))
+        {
+            e.Cancel = true; // hủy commit
+            dataGridView1.Rows[e.RowIndex].ErrorText = "Tên không được trống";
+        }
+        else
+        {
+            dataGridView1.Rows[e.RowIndex].ErrorText = null;
+        }
+    }
+}
+```
+
+Cột đặc biệt (Button, ComboBox) và bắt sự kiện click  
+```C#
+// Thêm cột Button “Xem”
+var colBtn = new DataGridViewButtonColumn
+{
+    Text = "Xem",
+    UseColumnTextForButtonValue = true,
+    HeaderText = ""
+};
+dataGridView1.Columns.Add(colBtn);
+
+// Bắt click nút trong ô
+dataGridView1.CellContentClick += (s, e) =>
+{
+    if (e.RowIndex >= 0 && dataGridView1.Columns[e.ColumnIndex] is DataGridViewButtonColumn)
+    {
+        var emp = (Employee)((BindingSource)dataGridView1.DataSource)[e.RowIndex];
+        MessageBox.Show($"Chi tiết: {emp.Name} - {emp.Salary:N0}");
+    }
+};
+```
+Tối ưu hóa hiển thị:  
+```C#
+// Bật double-buffer (qua kế thừa là tốt nhất; dưới đây dùng reflection nhanh)
+typeof(DataGridView).InvokeMember("DoubleBuffered",
+    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.SetProperty,
+    null, dataGridView1, new object[] { true });
+
+// Khi nạp dữ liệu lớn:
+dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None; // tắt tạm
+// ... bind dữ liệu ...
+dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells; // bật sau
+```
+
+`VirtualMode` cho dữu liệu rất lớn:  
+```C#
+// Giả lập cache dữ liệu lớn
+private string[][] _cache;
+
+private void InitVirtualGrid()
+{
+    // Chuẩn bị cache 100k x 3 (demo; thực tế nên lazy-load)
+    _cache = new string[100_000][];
+    for (int r = 0; r < _cache.Length; r++)
+        _cache[r] = new[] { $"Mã-{r:D6}", $"Tên {r}", (r * 10_000m).ToString("N0") };
+
+    dataGridView1.VirtualMode = true;           // Bật virtual
+    dataGridView1.RowCount = _cache.Length;     // Cho grid biết tổng số hàng
+
+    dataGridView1.Columns.Clear();
+    dataGridView1.Columns.Add("Code", "Mã");
+    dataGridView1.Columns.Add("Name", "Tên");
+    dataGridView1.Columns.Add("Salary", "Lương");
+
+    // Cấp dữ liệu cho ô theo yêu cầu
+    dataGridView1.CellValueNeeded += (s, e) =>
+    {
+        e.Value = _cache[e.RowIndex][e.ColumnIndex]; // Trả về dữ liệu từ cache
+    };
+}
+```
+
 
 # V. Nhóm bố cục/điều hướng
 ## 1. GroupBox
@@ -588,16 +704,150 @@ protected override void OnPaint(PaintEventArgs e) {
 
 # 9. Ràng buộc dữ liệu (Binding)
 
+- Đừng bind trực tiếp `List` vào nhiều control. Hãy dùng BindingSource ở giữa:  
+        - Cho phép điều hướng (vị trí hiện tại), thông báo thay đổi, (hạn chế) filter/sort.  
+- Model nên hỗ trợ INotifyPropertyChanged để UI tự cập nhật khi giá trị thay đổi.  
+- `Validate` qua `IDataErrorInfo/INotifyDataErrorInfo` + `ErrorProvider`. 
+- 
 ## 1. BindingSource
 
-Dùng để trung gian giữa `control` và `nguồn dữ liệu`, hỗ trợ `filter`, `sort`, `currency` (vị trí hiện tại).  
+Quy tắc luôn `bind control` qua `BindingSource`:  
 ```C#
-bindingSource1.DataSource = employees; // List<Employee>
-bindingSource1.Filter = "Department = 'IT'"; // với DataView/DataTable
-dataGridView1.DataSource = bindingSource1;
+BindingSource bs = new BindingSource();
+bs.DataSource = new BindingList<Employee>(LoadEmployees());
+dataGridView1.DataSource = bs;
+
+// Control đơn lẻ. DataSourceUpdateMode.OnPropertyChanged → cập nhật ngay khi Text thay đổi.
+txtName.DataBindings.Add("Text", bs, "Name", true, DataSourceUpdateMode.OnPropertyChanged);
 ```
 
-## 2. BindingNavigator
+Ví dụ khi `BindingSource` vào `Model` có thông báo lỗi:  
+
+```C#
+using System;
+using System.ComponentModel;
+using System.Windows.Forms;
+
+public class Employee : INotifyPropertyChanged, IDataErrorInfo
+{
+    private string _name;
+    private decimal _salary;
+    private int _deptId;
+
+    public string Name
+    {
+        get => _name;  // Trả về giá trị hiện tại
+        // So sánh giá trị _name với giá trị mới, nếu khác thì mới gán vào _name và gọi OnPropertyChanged(nameof(Property)).
+        // → Binding engine (đang “nghe” event PropertyChanged) sẽ cập nhật lại control hiển thị property đó khi binding two-way.
+        set { if (_name != value) { _name = value; OnPropertyChanged(nameof(Name)); } }
+    }
+    public decimal Salary
+    {
+        get => _salary;
+        set { if (_salary != value) { _salary = value; OnPropertyChanged(nameof(Salary)); } }
+    }
+    public int DeptId
+    {
+        get => _deptId;
+        set { if (_deptId != value) { _deptId = value; OnPropertyChanged(nameof(DeptId)); } }
+    }
+
+    // IDataErrorInfo: trả lỗi theo cột để ErrorProvider hiển thị
+    public string this[string columnName] => columnName switch
+    {
+        nameof(Name)   => string.IsNullOrWhiteSpace(Name) ? "Tên không được trống" : null,
+        nameof(Salary) => Salary < 0 ? "Lương không âm" : null,
+        _ => null
+    };
+    public string Error => null;
+
+    public event PropertyChangedEventHandler PropertyChanged;
+    protected void OnPropertyChanged(string n) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(n));
+}
+
+public partial class FrmBindingDemo : Form
+{
+    private BindingSource _bs = new BindingSource();
+
+    public FrmBindingDemo()
+    {
+        InitializeComponent();
+        InitBinding();
+    }
+
+    private void InitBinding()
+    {
+        // 1) Nguồn dữ liệu: BindingList hỗ trợ thêm/xóa và notify thay đổi phần tử
+        var list = new BindingList<Employee>
+        {
+            new Employee { Name = "Nguyễn A", Salary = 12000000, DeptId = 1 },
+            new Employee { Name = "Trần B",   Salary = 15000000, DeptId = 2 }
+        };
+
+        // 2) Gắn vào BindingSource
+        _bs.DataSource = list;
+
+        // 3) DataGridView bind qua BindingSource
+        dataGridView1.AutoGenerateColumns = false; // Tự tạo cột tránh lộn xộn
+        dataGridView1.DataSource = _bs;
+
+        // 3.1) Thêm cột Text cho Name
+        dataGridView1.Columns.Add(new DataGridViewTextBoxColumn {
+            DataPropertyName = "Name",
+            HeaderText = "Họ tên",
+            AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+        });
+
+        // 3.2) Cột Salary (format N0 phía UI)
+        dataGridView1.Columns.Add(new DataGridViewTextBoxColumn {
+            DataPropertyName = "Salary",
+            HeaderText = "Lương (VNĐ)"
+        });
+
+        // 4) Control đơn lẻ bind qua BindingSource
+        txtName.DataBindings.Add("Text", _bs, "Name", true, DataSourceUpdateMode.OnPropertyChanged);
+        // Format/Parse: hiển thị Salary theo "N0" và parse về decimal
+        var b = txtSalary.DataBindings.Add("Text", _bs, "Salary", true, DataSourceUpdateMode.OnValidation, null, "N0");
+        b.FormattingEnabled = true; // bật cơ chế Format/Parse
+
+        // 5) ErrorProvider nhận lỗi từ IDataErrorInfo
+        errorProvider1.DataSource = _bs;
+        errorProvider1.BlinkStyle = ErrorBlinkStyle.NeverBlink;
+
+        // 6) ComboBox lookup Dept (giả lập)
+        comboDept.DisplayMember = "Text";
+        comboDept.ValueMember   = "Value";
+        comboDept.DataSource = new[]
+        {
+            new { Text = "IT",      Value = 1 },
+            new { Text = "Kế toán", Value = 2 },
+            new { Text = "Nhân sự", Value = 3 },
+        };
+        // Bind SelectedValue <-> DeptId (two-way)
+        comboDept.DataBindings.Add("SelectedValue", _bs, "DeptId", true, DataSourceUpdateMode.OnPropertyChanged);
+    }
+
+    private void btnSave_Click(object sender, EventArgs e)
+    {
+        // Kết thúc edit đang dở (tránh mất dữ liệu chưa commit từ control)
+        _bs.EndEdit();
+
+        // Lúc này _bs.DataSource (BindingList<Employee>) đã cập nhật
+        MessageBox.Show("Đã lưu (demo).");
+    }
+}
+```
+
+Trong đó:  
+- `DataSourceUpdateMode.OnPropertyChanged`: cập nhật model ngay khi gõ (hợp với validate realtime).  
+- `IDataErrorInfo`: cung cấp thông điệp lỗi theo property → ErrorProvider tự hiển thị.  
+- `Format/Parse` cho phép định dạng hiển thị (VD tiền tệ) nhưng giữ kiểu dữ liệu trong model.  
+
+> Lưu ý về Filter/Sort:  
+> BindingSource.Filter/Sort chỉ hoạt động nếu nguồn là IBindingListView như DataView/DataTable.  
+> Với List<T>/BindingList<T>: bạn tự filter/sort (LINQ) và gán lại vào BindingSource, hoặc dùng SortableBindingList (custom).  
+
+## 2. BindingNavigator 
 
 Dùng để thanh điều hướng (đầu/trước/sau/cuối, thêm/xóa) cho `BindingSource`.  
 ```C#
@@ -710,21 +960,23 @@ public partial class EmployeeForm : Form
 public record Employee(string Code, string Name, string Department);
 ```
 # Tổng quan về thread
-`WinForms` chạy trên một `UI thread (STA)`. Mọi cập nhật control `phải thực hiện trên UI thread`; nếu code đang chạy ở thread khác, bạn bắt buộc phải `Invoke/BeginInvoke` hoặc dùng `IProgress<T>/SynchronizationContext`.  
+`WinForms` chạy trên một `UI thread (STA)`. Mọi cập nhật control `phải thực hiện trên UI thread`; nếu code đang chạy ở thread khác, bắt buộc phải `Invoke/BeginInvoke` hoặc dùng `IProgress<T>/SynchronizationContext`.  
 Không chặn UI: `Không dùng .Wait()/.Result` trên `Task` trong `event handler` — dễ deadlock. Dùng `async void cho event và await`.  
 
 Quy tắc vàng:
-- Công việc nặng → Task.Run (thread pool).  
-- Báo tiến độ → IProgress<T>.  
-- Cập nhật UI → quay về UI thread bằng await (tiếp tục trên UI thread) hoặc Invoke.  
+- Công việc nặng → `Task.Run` (thread pool).  
+- Báo tiến độ → `IProgress<T>`.  
+- Cập nhật UI → quay về UI thread bằng `await` (tiếp tục trên UI thread) hoặc `Invoke`.  
 
 Chạy công việc trong 1 thread khác, các tác vụ ở thread này ko động chạm đến giao diện (không được cập nhật, chinh sửa, thêm, xóa gì các control ở giao diện chính)  
+
+> Với `Thread` thì ta không thể nhận về kêt quả, không thể truyền tham số cho thread  
+
 ```C#
 private void button1_Click(object sender, EventArgs e){
 
     // Tạo 1 thread và truyền hàm cần chạy trong luồng
-    ThreadStart ts = new ThreadStart(Demo);
-    Thread thrd = new Thread (ts); // sử dụng thư viện System.Thread
+    Thread thrd = new Thread (Demo); // sử dụng thư viện System.Thread
     thrd.IsBackground = True; //Khi chương trình chính kết thúc thì nó kết thúc theo
     // Chạy thread
     thrd.Start();
@@ -737,32 +989,144 @@ void Demo(){
     }
 }
 ```
-
-Khi đó khi click vào button1 thì hàm `Demo` sẽ được chạy trong 1 luồng riêng
-
-Ví dụ:  
+Khi đó khi click vào button1 thì hàm `Demo` sẽ được chạy trong 1 luồng riêng  
+Hoặc sử dụng `Thread` kiểm soát cụ thể:  
 ```C#
-// Ví dụ: xuất báo cáo lớn ở nền, có hủy (cancel) và báo tiến độ.
-// Example: long-running export with cancellation & progress.
+using System;
+using System.Threading;
 
+class ThreadDemo
+{
+    private static int _counter = 0;          // Biến chia sẻ giữa các thread
+    private static readonly object _lock = new(); // Khóa để đảm bảo an toàn truy cập
+
+    static void Main()
+    {
+        // Tạo một thread làm việc 1
+        Thread t1 = new Thread(() =>
+        {
+            // Vòng lặp tăng counter 100_000 lần
+            for (int i = 0; i < 100_000; i++)
+            {
+                // lock: đảm bảo chỉ 1 thread vào vùng này tại 1 thời điểm
+                lock (_lock)
+                {
+                    _counter++;
+                }
+            }
+        })
+        {
+            Name = "Worker-1",       // Đặt tên thread (debug dễ)
+            IsBackground = true      // Background: không giữ process sống nếu main kết thúc
+        };
+
+        // Tạo thread làm việc 2 — logic tương tự
+        Thread t2 = new Thread(() =>
+        {
+            for (int i = 0; i < 100_000; i++)
+            {
+                lock (_lock)
+                {
+                    _counter++;
+                }
+            }
+        })
+        {
+            Name = "Worker-2",
+            IsBackground = true
+        };
+
+        t1.Start();  // Bắt đầu chạy thread 1
+        t2.Start();  // Bắt đầu chạy thread 2
+
+        // Join: chờ cả hai thread xong việc trước khi in kết quả
+        t1.Join();
+        t2.Join();
+
+        Console.WriteLine($"Counter = {_counter}"); // Kỳ vọng 200_000
+        // Nếu bỏ lock, bạn có thể thấy kết quả sai do race condition.
+    }
+}
+```
+
+> `Task` là phiên bản nâng cấp của `Thread`, truyền được tham số, nhận được kết quả trả về.  
+> Có thể dừng `Task` bất cứ lúc nào với tham số `CancellationTokenSource`  
+> Bản chất `Task` cũng sẽ gọi đến `Thread` nhưng thông qua `ThreadPool`(luồng có thể tái sử dụng)  
+
+Ta có ví dụ về Task:  
+```C#
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+
+class TaskDemo
+{
+    static async Task Main()
+    {
+        // Tạo nguồn hủy — cho phép dừng tác vụ khi cần
+        using var cts = new CancellationTokenSource();
+
+        // Tạo IProgress: callback này chạy trên SynchronizationContext hiện tại (nếu có)
+        IProgress<int> progress = new Progress<int>(p =>
+        {
+            // Ở console demo, ta chỉ in ra; trong WinForms: cập nhật UI an toàn tại đây
+            Console.WriteLine($"Tiến độ: {p}%");
+        });
+
+        // Tạo 1 Task chạy nền: mô phỏng công việc nặng (CPU-bound hoặc I/O-bound)
+        Task worker = Task.Run(async () =>
+        {
+            for (int i = 0; i <= 100; i++)
+            {
+                cts.Token.ThrowIfCancellationRequested(); // Ném exception nếu đã hủy
+                progress.Report(i);                       // Báo tiến độ
+                await Task.Delay(20, cts.Token);          // Giả lập thời gian xử lý (I/O async)
+            }
+        }, cts.Token);
+
+        // Mô phỏng: sau 1 giây thì hủy (bạn có thể comment để chạy hết)
+        _ = Task.Run(async () =>
+        {
+            await Task.Delay(1000);
+            cts.Cancel();
+        });
+
+        try
+        {
+            await worker; // await: không chặn thread, không deadlock (console)
+            Console.WriteLine("Hoàn tất!");
+        }
+        catch (OperationCanceledException)
+        {
+            Console.WriteLine("Đã hủy công việc.");
+        }
+    }
+}
+```
+Ví dụ khi gọi Task trong giao diện chương trình:  
+```C#
+// Ví dụ trong Form WinForms
 private CancellationTokenSource _cts;
 
-private async void btnExport_Click(object sender, EventArgs e)
+private async void btnStart_Click(object sender, EventArgs e) // async event handler
 {
-    _cts?.Cancel(); // Hủy phiên cũ nếu còn
-    _cts = new CancellationTokenSource();
+    _cts?.Cancel();                       // Hủy phiên cũ nếu còn
+    _cts = new CancellationTokenSource(); // Khởi tạo token mới
 
-    // IProgress: tự marshal về UI thread an toàn
-    var progress = new Progress<int>(percent => {
-        progressBar1.Value = percent;               // UI-safe
-        lblStatus.Text = $"Đang xuất... {percent}%";
+    // Progress<int>: callback này chạy trên UI thread → cập nhật control an toàn
+    var progress = new Progress<int>(p =>
+    {
+        progressBar1.Value = p;                       // cập nhật ProgressBar
+        lblStatus.Text = $"Đang xử lý: {p}%";         // cập nhật Label
     });
 
-    ToggleBusy(true);
+    btnStart.Enabled = false;
+    btnCancel.Enabled = true;
+
     try
     {
-        await Task.Run(() => DoExport(progress, _cts.Token)); // nền
-        lblStatus.Text = "Hoàn tất!";
+        await Task.Run(() => DoWork(progress, _cts.Token)); // Chạy nền
+        lblStatus.Text = "Xong!";
     }
     catch (OperationCanceledException)
     {
@@ -774,37 +1138,40 @@ private async void btnExport_Click(object sender, EventArgs e)
     }
     finally
     {
-        ToggleBusy(false);
-        _cts.Dispose(); _cts = null;
-    }
-}
-
-private void DoExport(IProgress<int> progress, CancellationToken ct)
-{
-    for (int i = 0; i <= 100; i++)
-    {
-        ct.ThrowIfCancellationRequested();
-        // ... Ghi file / xử lý ...
-        Thread.Sleep(30);
-        progress.Report(i); // báo tiến độ (UI thread phía trên nhận)
+        btnStart.Enabled = true;
+        btnCancel.Enabled = false;
+        _cts.Dispose();
+        _cts = null;
     }
 }
 
 private void btnCancel_Click(object sender, EventArgs e)
 {
-    _cts?.Cancel();
+    _cts?.Cancel(); // Yêu cầu hủy
 }
 
-private void ToggleBusy(bool busy)
+// Hàm xử lý nặng: có thể là CPU hoặc I/O
+private void DoWork(IProgress<int> progress, CancellationToken ct)
 {
-    progressBar1.Style = busy ? ProgressBarStyle.Continuous : ProgressBarStyle.Blocks;
-    btnExport.Enabled = !busy;
-    btnCancel.Enabled = busy;
+    for (int i = 0; i <= 100; i++)
+    {
+        ct.ThrowIfCancellationRequested(); // Kiểm tra hủy
+        // ... xử lý ...
+        Thread.Sleep(20);                  // Mô phỏng tốn thời gian
+        progress.Report(i);                // Báo tiến độ (UI nhận)
+    }
 }
 ```
+
 Ghi nhớ: 
+- `Task.Run` giao việc cho `ThreadPool`.  
+- `CancellationToken` cho phép hủy mềm (`cooperative cancellation`).  
+- `IProgress<T>` giúp `marshal` về `UI thread` (trong WinForms/WPF), nên cập nhật UI an toàn.  
+- `await` giúp code không block UI, không gây `deadlock` kiểu `.Result`/`.Wait()`.  
 - `Event handler async void` là hợp lệ cho `WinForms`. Đừng `.Wait()` trên Task; luôn `await`.  
 - Tách logic nặng sang hàm đồng bộ trong Task.Run (nếu không cần async I/O), hoặc gọi hàm async I/O và vẫn await (không cần Task.Run).  
+
+
 
 # Quản lý vòng đời  
 
@@ -988,10 +1355,20 @@ Không `cache Graphics` lâu dài; chỉ dùng trong scope ngắn (inside `OnPai
 `Timer` sẽ thực hiện 1 tác vụ định kỳ trong khoảng thời gian đã cài đặt, nó chỉ có 1 tác vụ cố định thực hiện đi thực hiện lại gọi là `Sự kiện Tick`.  
 Nó có thể cập nhật giao diện bởi vì `Timer` là 1 thread riêng ko ảnh hưởng tới giao diện chính.  
 
-Ví dụ khi click vào 1 button để đếm thời gian tăng lên theo từng giây như sau:  
+Có các loại Timer như sau:  
+
+|         Loại Timer          | Chạy ở Thread |                Mục đích                |                       Lưu Ý                                |
+| :-------------------------: | :-----------: | :------------------------------------: |:----------------------------------------------------------:|
+| System.Windows.Forms.Timer  |   UI Thread   | Cập nhật UI định kỳ (Đồng bộ với Form) |        Bị ảnh hưởng khi UI bận --> Tick chậm/nhảy          |
+|     System.Timers.Timer     |   ThreadPool  |           Công việc nền nhẹ            |  Sự kiện `Elapsed` chạy nền, muốn cập nhật UI phải `Invoke`|
+|    System.Threading.Timer   |   ThreadPool  |           Tải nền định kỳ              |          API đơn giản, nhưng lưu ý `Dispose` hợp lý        |
+
+
+Ví dụ khi click vào 1 button để đếm thời gian tăng lên theo từng giây như sau (Sử dụng `Form.Timer`):  
 ```C#
 
-// Tạo hàm định kỳ cho timer1
+// Cài đặt thời gian khởi chạy định kỳ cho timer1
+timer1.Interval = 1000;
 // Tăng giá trị lên 1 và hiển thị lên label
 
 int i = 0
@@ -1022,8 +1399,27 @@ private void button1_CLick(object sender, EventArgs e){
 
 `System.Timers.Timer/System.Threading.Timer`: không nằm trong `components` → phải `Dispose()` thủ công, đặc biệt `trước khi form đóng`, kẻo callback bắn vào form đã Dispose.  
 
-Khi dùng `timer/Task` cập nhật UI, nhớ check `IsDisposed`+ dùng `BeginInvoke/Invoke` hợp lệ.  
+Nếu sử dụng `Timers.Timer` thì khi cập nhật UI, ta phải chuyển về UI chính:  
+```C#
+// dùng Invoke/BeginInvoke trực tiếp.
+private void SafeUi(Action act)
+{
+    if (InvokeRequired) BeginInvoke(act);
+    else act();
+}
 
+// Ví dụ từ một thread khác:
+SafeUi(() => {
+    lblStatus.Text = "Xong!";
+    dataGridView1.Refresh();
+});
+
+// Hoặc gọi từ trong Timer
+using var t = new System.Timers.Timer(500);
+t.Elapsed += (s,e) => SafeUi(() => lblStatus.Text = DateTime.Now.ToString("T"));
+t.AutoReset = true;
+t.Start();
+```
 
 ### 5.4 Sự kiện (event) – rò rỉ do đăng ký mà không bỏ đăng ký
 
@@ -1049,8 +1445,23 @@ Là `non-visual component` (nằm ở `component tray`). Phải:
 
 ### 5.6 Data binding & DataTable
 
-- `BindingSource`, `DataTable`, `SqlConnection/Command/Reader` đều `IDisposable` → `Dispose` khi xong.  
+- `BindingSource`: “đệm” giữa UI và nguồn dữ liệu (List<T>, DataTable, EF…)  
+- `CurrencyManager`: quản lý “bản ghi hiện tại” (current). Liên kết nhiều control tới cùng BindingSource → tự sync.  
+- `BindingSource`, `DataTable`, `SqlConnection/Command/Reader` đều là `IDisposable` → `Dispose` khi xong.  
 - Khi thay `DataSource`, cân nhắc `Dispose` dữ liệu cũ nếu bạn sở hữu.  
+
+> Quy tắc: Luôn bind control qua `BindingSource` (không bind thẳng List) để có `filter/sort/navigate`.  
+
+Ví dụ:  
+```C#
+BindingSource bs = new BindingSource();
+bs.DataSource = new BindingList<Employee>(LoadEmployees());
+dataGridView1.DataSource = bs;
+
+// Control đơn lẻ, DataSourceUpdateMode.OnPropertyChanged → cập nhật ngay khi Text thay đổi.
+txtName.DataBindings.Add("Text", bs, "Name", true, DataSourceUpdateMode.OnPropertyChanged);
+```
+
 
 ### 5.7 Task/đa luồng
 
