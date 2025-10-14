@@ -35,11 +35,16 @@ Winform_App_Template/            // Thư mục chứa toàn bộ dự án
 
 # Mục lục
 
-[I. Đóng gói ứng dụng](#i-đóng-gói-ứng-dụng)
-[II. Các phần tử trong giao diện winform](#ii-các-phần-tử-trong-giao-diện-winforms)
-    - [1. Các control nhập/xuất chữ (Text)](#1-các-control-nhập--/--xuất-chữ-(-Text-)-)
-        - [1. Label](#1-Label)
-    - [2. Chạy file cập nhật](#2-chạy-file-cập-nhật)
+[I. Đóng gói ứng dụng](#i-đóng-gói-ứng-dụng)  
+[II. Các phần tử trong giao diện winform](#ii-các-phần-tử-trong-giao-diện-winforms)  
+    - [1. Các control nhập/xuất chữ (Text)](#1-các-control-nhậpxuất-chữ-text)  
+        - [1. Label](#1-Label)  
+        - [2. LinkLabel](#2-LinkLabel)  
+        - [3. TextBox](#3-TextBox)  
+        - [4. MaskedTextBox](#4-MaskedTextBox)  
+        - [5. RichTextBox](#5-RichTextBox)  
+    - [2. Các control lựa chọn/nhấp](#2-các-control-lựa-chọnnhấp)  
+        - [1.Button](#1-button)
 
 
 # I. Đóng gói ứng dụng  
@@ -98,7 +103,7 @@ Ta có thể đặt nhãn cố định theo 2 phía cùng lúc, 3, 4 phía sẽ 
 
 Mặc định sẽ là `private`, khi chuyển sang `public`, `Internal` thì cho phép chỉnh sửa các thuộc tính của nhãn từ `form` khác.  
 
-## 2. LinkLabel
+### 2. LinkLabel
 
 Dùng để hiển thị liên kết (mở URL, file, form trợ giúp).  
 
@@ -109,7 +114,7 @@ var link = new LinkLabel { Text = "Mở website", AutoSize = true };
 link.LinkClicked += (s, e) => System.Diagnostics.Process.Start("https://example.com");
 ```
 
-## 2. TextBox
+### 3. TextBox
 
 Dùng để nhập văn bản một dòng hoặc nhiều dòng.  
 
@@ -127,7 +132,7 @@ txt.Validating += (s, e) => {
 };
 ```
 
-## 3. MaskedTextBox
+### 4. MaskedTextBox
 
 Dùng để nhập theo mặt nạ (điện thoại, CMND, ngày).  
 - Thuộc tính: `Mask` (VD "0000-0000"), `PromptChar`, `TextMaskFormat`.  
@@ -136,7 +141,7 @@ Dùng để nhập theo mặt nạ (điện thoại, CMND, ngày).
 var msk = new MaskedTextBox { Mask = "00/00/0000" }; // dd/MM/yyyy
 ```
 
-## 4. RichTextBox
+### 5. RichTextBox
 
 Dùng để nhập văn bản định dạng (đậm/ nghiêng/ màu/ danh sách…).  
 
@@ -147,9 +152,9 @@ richTextBox1.SelectedText = "Xin chào";
 richTextBox1.SelectionFont = new Font("Segoe UI", 10, FontStyle.Bold);
 ```
 
-# II. Các control lựa chọn/nhấp
+## 2. Các control lựa chọn/nhấp
 
-## 1. Button
+### 1. Button
 
 Dùng để kích hoạt hành động.  
 
