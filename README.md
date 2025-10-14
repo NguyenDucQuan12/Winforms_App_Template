@@ -38,15 +38,15 @@ Winform_App_Template/            // Thư mục chứa toàn bộ dự án
 [I. Đóng gói ứng dụng](#i-đóng-gói-ứng-dụng)  
 
 [II. Các phần tử trong giao diện winform](#ii-các-phần-tử-trong-giao-diện-winforms)  
-
-    - [1. Các control nhập/xuất chữ (Text)](#1-các-control-nhậpxuất-chữ-text)  
-        - [1. Label](#1-Label)  
-        - [2. LinkLabel](#2-LinkLabel)  
-        - [3. TextBox](#3-TextBox)  
-        - [4. MaskedTextBox](#4-MaskedTextBox)  
-        - [5. RichTextBox](#5-RichTextBox)  
-    - [2. Các control lựa chọn/nhấp](#2-các-control-lựa-chọnnhấp)  
-        - [1.Button](#1-button)
+- [1. Các control nhập/xuất chữ (Text)](#1-các-control-nhậpxuất-chữ-text)  
+    - [1. Label](#1-Label)  
+    - [2. LinkLabel](#2-LinkLabel)  
+    - [3. TextBox](#3-TextBox)  
+    - [4. MaskedTextBox](#4-MaskedTextBox)  
+    - [5. RichTextBox](#5-RichTextBox)
+        
+- [2. Các control lựa chọn/nhấp](#2-các-control-lựa-chọnnhấp)  
+    - [1.Button](#1-button)
 
 
 # I. Đóng gói ứng dụng  
