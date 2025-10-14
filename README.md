@@ -36,7 +36,9 @@ Winform_App_Template/            // Thư mục chứa toàn bộ dự án
 # Mục lục
 
 [I. Đóng gói ứng dụng](#i-đóng-gói-ứng-dụng)  
+
 [II. Các phần tử trong giao diện winform](#ii-các-phần-tử-trong-giao-diện-winforms)  
+
     - [1. Các control nhập/xuất chữ (Text)](#1-các-control-nhậpxuất-chữ-text)  
         - [1. Label](#1-Label)  
         - [2. LinkLabel](#2-LinkLabel)  
