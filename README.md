@@ -620,9 +620,15 @@ timer1.Start();
 ```
 ### 2. BackgroundWorker (truyền thống) và Tasks + async/await (khuyến nghị)
 
-Mục tiêu: chạy tác vụ nặng ở thread nền để không `“đơ”` UI.  
+`BackgroundWorker`là một lớp cung cấp trong .NET Framework, được thiết kế để thực hiện các tác vụ tốn thời gian trên một luồng nền riêng biệt, thay vì luồng chính (UI thread) của ứng dụng.  
+Điều này giúp ngăn chặn ứng dụng bị "đơ" (freeze) và giữ cho giao diện người dùng luôn phản hồi, đặc biệt là trong các ứng dụng Windows Forms hoặc WPF.  
+`BackgroundWorker` hoạt động dựa trên mô hình xử lý sự kiện, với các sự kiện được xây dựng sẵn như `DoWork`, `ProgressChanged`, và `RunWorkerCompleted` để đơn giản hóa việc quản lý luồng.  
 
-  - BackgroundWorker: sự kiện `DoWork`, `ProgressChanged`, `RunWorkerCompleted`.  
+  - BackgroundWorker:  
+    - `DoWork`: Đây là nơi đặt mã để thực hiện công việc ở chế độ nền. Sự kiện này được kích hoạt khi `RunWorkerAsync()` được gọi.  
+    - `ProgressChanged`: Kích hoạt khi gọi `ReportProgress()` trong sự kiện `DoWork` để báo cáo tiến độ của công việc đang chạy. Điều này `cho phép cập nhật giao diện người dùng`, như hiển thị thanh tiến trình.  
+    - `RunWorkerCompleted`: Sự kiện này được kích hoạt khi công việc ở chế độ nền đã hoàn thành. Nó được sử dụng để thực hiện các hành động cuối cùng, chẳng hạn như hiển thị kết quả.   
+
 ```C#
 backgroundWorker1.WorkerReportsProgress = true;
 backgroundWorker1.DoWork += (s,e)=> { for (int i=0;i<=100;i++){ Thread.Sleep(20); backgroundWorker1.ReportProgress(i);} };
@@ -630,16 +636,87 @@ backgroundWorker1.ProgressChanged += (s,e)=> progressBar1.Value = e.ProgressPerc
 backgroundWorker1.RunWorkerCompleted += (s,e)=> MessageBox.Show("Xong!");
 backgroundWorker1.RunWorkerAsync();
 ```
+
 - `Tasks` (khuyên dùng):  
+
+`Task` là đại diện cho một công việc bất đồng bộ (`Asynchronous operation`).  
+
+- Dùng `Task.Run` để chạy công việc `CPU-bound (tính toán nặng)` trên `thread-pool`, `tránh chặn UI`.  
+- Nếu công việc là `I/O-bound` và `thư viện có API bất đồng bộ` (ví dụ đọc/ghi file async, network async), ưu tiên dùng API async/await sẵn có (không dùng Task.Run), vì hiệu quả tài nguyên tốt hơn.  
+- Tránh gọi `.Result` hoặc `.Wait()` trên Task trong UI code — sẽ `deadlock` hoặc làm `treo UI`.  
+
+Ta khai báo 1 sự kiện sử dụng bất đồng bộ bằng từ khóa `async`. `async void` chỉ hợp lý cho `event handler (sự kiện của UI)`. Với các hàm bình thường nên dùng `async Task`. Vì là `event handler`, UI framework `không cần/không nhận Task trả về`.  
+
+Luôn bọc `await` trong `try/catch` để xử lý các ngoại lệ xảy ra trong quá trình thực thi. Và có thể dùng `CancellationToken` để hủy các tác vụ bất đồng bộ bất cứ lúc nào.  
+Nếu bạn không cần tiếp tục trên `UI thread` sau `await`, có thể dùng `.ConfigureAwait(false)` trong library để giảm `overhead` (không cần trong event handler vì bạn muốn quay lại UI).  
+
 ```C#
-private async void btnExport_Click(object sender, EventArgs e) {
+// Event handler: async void là hợp lệ cho sự kiện WinForms
+private async void btnExport_Click(object sender, EventArgs e)
+{
+    // Disable nút để tránh bấm nhiều lần
+    btnExport.Enabled = false;
+
+    // Hủy tác vụ trước (nếu có) và tạo token mới
+    _exportCts?.Cancel();
+    _exportCts = new CancellationTokenSource();
+    var token = _exportCts.Token;
+
+    // Chế độ marquee khi chưa có % chính xác
     progressBar1.Style = ProgressBarStyle.Marquee;
-    try {
-        await Task.Run(()=> ExportLargeReport()); // chạy nền
+    progressBar1.Value = 0;
+
+    try
+    {
+        // Progress<int> sẽ chạy callback trên UI thread
+        var progress = new Progress<int>(percent =>
+        {
+            progressBar1.Style = ProgressBarStyle.Blocks;
+            progressBar1.Value = Math.Min(100, Math.Max(0, percent));
+        });
+
+        // Chạy công việc CPU-bound trên thread-pool, truyền token và progress
+        await Task.Run(() => ExportLargeReport(token, progress), token);
+
         MessageBox.Show("Xuất xong!");
-    } finally {
-        progressBar1.Style = ProgressBarStyle.Blocks;
     }
+    catch (OperationCanceledException)
+    {
+        MessageBox.Show("Đã hủy xuất.");
+    }
+    catch (Exception ex)
+    {
+        MessageBox.Show($"Lỗi khi xuất: {ex.Message}");
+    }
+    finally
+    {
+        progressBar1.Style = ProgressBarStyle.Blocks;
+        btnExport.Enabled = true;
+    }
+}
+
+// Ví dụ minh họa ExportLargeReport có chức nắng hủy và báo tiến độ
+void ExportLargeReport(CancellationToken token, IProgress<int> progress)
+{
+    // Giả lập công việc chia thành 100 bước
+    for (int i = 1; i <= 100; i++)
+    {
+        token.ThrowIfCancellationRequested();
+
+        // Làm việc nặng ở đây (thay bằng logic thật)
+        Thread.Sleep(30); // ví dụ giả lập: tránh dùng trong I/O-bound
+
+        // Báo tiến độ (sẽ được marshal về UI thread nhờ Progress<T>)
+        progress.Report(i);
+    }
+
+    // Khi xong, có thể ghi file/hoàn thiện xuất...
+}
+
+// Nếu muốn thêm nút Hủy:
+private void btnCancelExport_Click(object sender, EventArgs e)
+{
+    _exportCts?.Cancel();
 }
 ```
 
@@ -748,7 +825,6 @@ Là kỹ thuật kết nối dữ liệu, giúp đồng bộ hóa dữ liệu gi
 
 - Đừng bind trực tiếp `List` vào nhiều control. Hãy dùng `BindingSource` ở giữa:  
     - Cho phép điều hướng (vị trí hiện tại), thông báo thay đổi, (hạn chế) filter/sort.  
-    - 
 - Model nên kế thừa `INotifyPropertyChanged` để UI tự cập nhật khi giá trị thay đổi.  
 - `Validate` qua `IDataErrorInfo/INotifyDataErrorInfo` + `ErrorProvider`  
 

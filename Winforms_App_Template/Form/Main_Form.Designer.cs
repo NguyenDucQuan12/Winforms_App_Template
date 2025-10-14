@@ -33,11 +33,13 @@ namespace Winforms_App_Template
             timer1 = new System.Windows.Forms.Timer(components);
             progressBar1 = new ProgressBar();
             label1 = new Label();
+            dataGridView1 = new DataGridView();
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
             // button1
             // 
-            button1.Location = new Point(376, 165);
+            button1.Location = new Point(340, 67);
             button1.Name = "button1";
             button1.Size = new Size(75, 23);
             button1.TabIndex = 2;
@@ -51,7 +53,7 @@ namespace Winforms_App_Template
             // 
             // progressBar1
             // 
-            progressBar1.Location = new Point(266, 120);
+            progressBar1.Location = new Point(234, 38);
             progressBar1.Name = "progressBar1";
             progressBar1.Size = new Size(289, 23);
             progressBar1.Style = ProgressBarStyle.Continuous;
@@ -60,22 +62,32 @@ namespace Winforms_App_Template
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(396, 87);
+            label1.Location = new Point(360, 20);
             label1.Name = "label1";
             label1.Size = new Size(38, 15);
             label1.TabIndex = 4;
             label1.Text = "label1";
+            // 
+            // dataGridView1
+            // 
+            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView1.Location = new Point(120, 107);
+            dataGridView1.Name = "dataGridView1";
+            dataGridView1.Size = new Size(511, 244);
+            dataGridView1.TabIndex = 5;
             // 
             // Main_Form
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(dataGridView1);
             Controls.Add(label1);
             Controls.Add(progressBar1);
             Controls.Add(button1);
             Name = "Main_Form";
             Text = "Form1";
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -85,5 +97,6 @@ namespace Winforms_App_Template
         private System.Windows.Forms.Timer timer1;
         private ProgressBar progressBar1;
         private Label label1;
+        private DataGridView dataGridView1;
     }
 }
