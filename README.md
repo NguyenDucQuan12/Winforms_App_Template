@@ -44,7 +44,7 @@ Winform_App_Template/            // Thư mục chứa toàn bộ dự án
     - [3. TextBox](#3-TextBox)  
     - [4. MaskedTextBox](#4-MaskedTextBox)  
     - [5. RichTextBox](#5-RichTextBox)
-        
+    
 - [2. Các control lựa chọn/nhấp](#2-các-control-lựa-chọnnhấp)  
     - [1. Button](#1-button)  
     - [2. Checkbox](#2-checkbox)  
@@ -55,12 +55,45 @@ Winform_App_Template/            // Thư mục chứa toàn bộ dự án
     - [2. TrackBar](#2-trackbar)  
     - [3. DateTimePicker và MonthCalender](#3-datetimepicker-và-monthcalender)  
     - [4. ProgressBar](#4-ProgressBar)  
+    
 - [4. Nhóm control danh sách và phân cấp](#4-nhóm-control-danh-sách-và-phân-cấp)  
     - [1. ListBox/CheckedListBox](#1-listboxcheckedlistbox)  
     - [2. Combobox](#2-Combobox)  
     - [3. ListView](#3-ListView)  
     - [4. TreeView](#4-TreeView)  
     - [5. DataGridView](#5-DataGridView)  
+    
+- [5. Nhóm bố cục/điều hướng](#5-Nhóm-bố-cụcđiều-hướng)  
+    - [1. GroupBox](#1-GroupBox)  
+    - [2. Panel](#2-Panel)  
+    - [3. TabControl](#3-TabControl)  
+    - [4. SplitContainer](#4-SplitContainer)  
+    - [5. TableLayoutPanel & FlowLayoutPanel](#5-TableLayoutPanel-&-FlowLayoutPanel)  
+    
+- [6. Thanh menu, trạng thái, công cụ và menu chuột phải ](#6thanh-menu-trạng-thái-công-cụ-và-menu-chuột-phải)  
+    - [1. MenuStrip](#1-MenuStrip)  
+    - [2. StatusStrip](#2-StatusStrip)  
+    - [3. ToolStrip / BindingNavigator](#3-ToolStripBindingNavigator)  
+    - [4. ContextMenuStrip](#4-ContextMenuStrip)  
+    - [5. Hộp thoại chuẩn (Common Dialogs)](#5-Hộp-thoại-chuẩn-Common-Dialogs)  
+
+- [7. Thành phần không giao diện (Component)](#7-Thành-phần-không-giao-diện-Component)  
+    - [1. Timer](#1-Timer)  
+    - [2. BackgroundWorker (truyền thống) và Tasks + async/await (khuyến nghị)](#2-BackgroundWorker-truyền-thống-và-Tasks-asyncawait-khuyến-nghị)  
+    - [3. ErrorProvider](#3-ErrorProvider)  
+    - [4. ToolTip](#4-ToolTip)  
+    - [5. NotifyIcon](#5-NotifyIcon)  
+    - [6. ImageList](#6-ImageList)  
+    - [7. FileSystemWatcher](#7-FileSystemWatcher)  
+    - [8. SerialPort](#8-SerialPort)  
+    - [9. Process](#9-Process)  
+- [8. Hình ảnh đồ họa](#8-hình-ảnh-đồ-họa)  
+    - [1. PictureBox](#1-PictureBox)  
+    - [2. Vẽ tùy biến (GDI+)](#2-Vẽ-tùy-biến-GDI+)  
+    
+- [9. Ràng buộc dữ liệu (Binding)](#9-Ràng-buộc-dữ-liệu-Binding)  
+    - [1. BindingSource](#1-BindingSource)  
+    - [2. BindingNavigator](#2-BindingNavigator)
 
 # I. Đóng gói ứng dụng  
 
@@ -288,10 +321,12 @@ root.Nodes.Add("Kế toán"); root.Nodes.Add("Kỹ thuật");
 
 ### 5. DataGridView
 
-Dùng để bảng dữ liệu mạnh mẽ: `binding`, `chỉnh sửa`, `sắp xếp`, `template cột`.  
+Dùng để tạo bảng dữ liệu mạnh mẽ: `binding`, `chỉnh sửa`, `sắp xếp`, `template cột`.  
 Thuộc tính: `DataSource`, `AutoGenerateColumns`, `AllowUserToAddRows`, `EditMode`, `SelectionMode`, `AutoSizeColumnsMode`.  
 Cột: `DataGridViewTextBoxColumn`, `ComboBoxColumn`, `CheckBoxColumn`, `ButtonColumn`, `ImageColumn`.  
 Sự kiện: `CellFormatting`, `CellValidating`, `CellEndEdit`, `RowValidating`, `DataError`.  
+
+![image](Image/Github/datagridview.png)  
 
 > Mẹo: dùng BindingSource để filter/sort;  
 > Bật `VirtualMode` cho dữ liệu lớn: tự cung cấp dữ liệu theo chỉ số hàng khi dữ liệu rất lớn.    
@@ -327,6 +362,9 @@ private void SetupGrid()
         // e.Exception chứa chi tiết — nên log lại
         e.ThrowException = false; // nuốt lỗi để người dùng tiếp tục thao tác
     };
+
+    // Cấu hình header nằm giữa
+    dataGridView1.ColumnHeaderDefaultCellStyle.Alignment = DataGridViewContentAlibnment.MiddleCenter;
 }
 ```
 
@@ -372,7 +410,7 @@ dataGridView1.CellContentClick += (s, e) =>
     }
 };
 ```
-Tối ưu hóa hiển thị:  
+Tối ưu hóa hiển thị và tắt autosize mỗi khi nạp dữ liệu:  
 ```C#
 // Bật double-buffer (qua kế thừa là tốt nhất; dưới đây dùng reflection nhanh)
 typeof(DataGridView).InvokeMember("DoubleBuffered",
@@ -385,7 +423,7 @@ dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None; // t�
 dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells; // bật sau
 ```
 
-`VirtualMode` cho dữu liệu rất lớn:  
+`VirtualMode` cho dữ liệu rất lớn:  
 ```C#
 // Giả lập cache dữ liệu lớn
 private string[][] _cache;
@@ -421,7 +459,7 @@ Dùng để nhóm các control có liên quan; có nhãn.
 ```C#
 var grp = new GroupBox { Text = "Thông tin cơ bản", Dock = DockStyle.Top, Height = 140 };
 ```
-### 2. Panle
+### 2. Panel
 Dùng để: vùng chứa đơn giản; kết hợp `AutoScroll` để cuộn.  
 ```C#
 panel1.AutoScroll = true;
@@ -448,9 +486,9 @@ tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 120));
 tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
 ```
 
-# 6.Thanh menu, trạng thái, công cụ và menu chuột phải
+## 6. Thanh menu, trạng thái, công cụ và menu chuột phải
 
-## 1 MenuStrip
+### 1. MenuStrip
 
 Dùng để menu trên cùng `(File, Edit…)`.  
 Có thể thêm hình ảnh vào trước các lựa chọn bằng thuộc tính `Image`.  
@@ -473,7 +511,7 @@ void SaveData()
 
 Ta gắn phím tắt `Ctr+S` cho menu `Look` ở `MenuStrip`. Khi ấn phím tắt thì nó sẽ hiển thị thông báo.  
 
-## 2. StatusStrip
+### 2. StatusStrip
 
 Dùng để: trạng thái dưới cùng (text, progress, thông tin người dùng).
 ```C#
@@ -484,7 +522,7 @@ statusStrip1.Items.Add(status_bar_item);
 
 ![image](Image/Github/create_status_strip.png)  
 
-## 3. ToolStrip / BindingNavigator
+### 3. ToolStrip / BindingNavigator
 
 Dùng để thanh công cụ (icon + tooltip); `BindingNavigator` là `ToolStrip` chuyên cho thao tác dữ liệu `(First/Prev/Next/Last/Add/Delete)`.  
 
@@ -492,7 +530,7 @@ Dùng để thanh công cụ (icon + tooltip); `BindingNavigator` là `ToolStrip
 toolStrip1.Items.Add(new ToolStripButton("Làm mới", null, (s,e)=>Reload()));
 ```
 
-## 4. ContextMenuStrip
+### 4. ContextMenuStrip
 
 Dùng để menu khi chuột phải cho `control`.  
 
@@ -559,7 +597,7 @@ button2.Click += (s, e) =>
 ![image](Image/Github/show_context_menu_with_show_function.png)  
 
 
-## 5. Hộp thoại chuẩn (Common Dialogs)
+### 5. Hộp thoại chuẩn (Common Dialogs)
 
 `OpenFileDialog`, `SaveFileDialog`, `FolderBrowserDialog`, `ColorDialog`, `FontDialog`, `PrintDialog`, `PageSetupDialog`, `PrintPreviewDialog`.  
 Cách dùng chung: gọi `ShowDialog()`, kiểm tra `DialogResult.OK`.  
@@ -568,9 +606,9 @@ using var dlg = new OpenFileDialog { Filter = "Ảnh|*.png;*.jpg|Tất cả|*.*"
 if (dlg.ShowDialog() == DialogResult.OK) pictureBox1.Image = Image.FromFile(dlg.FileName);
 ```
 
-# 7. Thành phần không giao diện (Component)
+## 7. Thành phần không giao diện (Component)
 
-## 1. Timer
+### 1. Timer
 
 Dùng để chạy tác vụ định kỳ trên UI thread (đồng bộ với control).  
 Thuộc tính: `Interval` (ms), `Enabled`.
@@ -580,7 +618,7 @@ timer1.Interval = 1000; // 1s
 timer1.Tick += (s, e) => lblClock.Text = DateTime.Now.ToString("HH:mm:ss");
 timer1.Start();
 ```
-## 2. BackgroundWorker (truyền thống) và Tasks + async/await (khuyến nghị)
+### 2. BackgroundWorker (truyền thống) và Tasks + async/await (khuyến nghị)
 
 Mục tiêu: chạy tác vụ nặng ở thread nền để không `“đơ”` UI.  
 
@@ -605,7 +643,7 @@ private async void btnExport_Click(object sender, EventArgs e) {
 }
 ```
 
-## 3.ErrorProvider
+### 3.ErrorProvider
 
 Dùng để hiển thị lỗi bên cạnh control khi `validate`.  
 ```
@@ -615,7 +653,7 @@ else
     errorProvider1.SetError(txtName, "");
 ```
 
-## 4.ToolTip
+### 4.ToolTip
 
 Dùng để hiển thị gợi ý ngắn khi rê chuột vào 1 đối tượng.  
 ```C#
@@ -628,7 +666,7 @@ toolTip1.SetToolTip(button1, "Lưu dữ liệu (Ctrl+S)");
 
 ![image](Image/Github/ToolTips_For_Button.png)  
 
-## 5. NotifyIcon
+### 5. NotifyIcon
 
 Dùng để biểu tượng ở khay hệ thống `(system tray)`, hiển thị `balloon`, `menu`, `ẩn/hiện` form.  
 ```C#
@@ -645,14 +683,14 @@ notifyIcon1.ShowBalloonTip(3000);
 NotifyIcon1.ShowBallonTip(5000, "Thông báo từ App", TexBox1.Text, ToolTipIcon.Warning)
 ```
 
-## 6. ImageList
+### 6. ImageList
 
 Dùng để kho ảnh nhỏ dùng chung cho `ListView`, `TreeView`, `ToolStrip`.  
 ```C#
 listView1.SmallImageList = imageList1; // imageList1.Images.Add("ok", icon16px);
 ```
 
-## 7. FileSystemWatcher
+### 7. FileSystemWatcher
 
 Dùng để theo dõi thay đổi thư mục/tệp `(tạo/sửa/xóa/đổi tên)`.  
 ```C#
@@ -661,7 +699,7 @@ fileSystemWatcher1.Created += (s,e)=> AppendLog($"New file: {e.FullPath}");
 fileSystemWatcher1.EnableRaisingEvents = true;
 ```
 
-## 8. SerialPort
+### 8. SerialPort
 
 Dùng để giao tiếp COM (thiết bị cân, máy quét…).  
 ```C#
@@ -669,7 +707,7 @@ serialPort1.PortName = "COM3"; serialPort1.BaudRate = 9600; serialPort1.Open();
 serialPort1.DataReceived += (s, e) => { var data = serialPort1.ReadExisting(); BeginInvoke(()=> txtLog.AppendText(data)); };
 ```
 
-## 9. Process
+### 9. Process
 
 Dùng để chạy tiến trình ngoài (cmd, ffmpeg…).  
 ```C#
@@ -682,9 +720,9 @@ Process.Start(Application.StartupPath + "\\update.exe")
 // Mở 1 trang web
 Process.Start(@"http:\\google.com")
 ```
-# 8. Hình ảnh đồ họa
+## 8. Hình ảnh đồ họa
 
-## 1. PictureBox
+### 1. PictureBox
 
 Dùng để hiển thị ảnh, `SizeMode` (`StretchImage`, `Zoom`…).  
 ```C#
@@ -692,7 +730,7 @@ pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
 pictureBox1.Image = Image.FromFile("logo.png");
 ```
 
-## 2. Vẽ tùy biến (GDI+)
+### 2. Vẽ tùy biến (GDI+)
 
 `Override` `OnPaint` hoặc `handle Paint` để vẽ (`line`, `text`, `anti-alias`).  
 ```C#
@@ -703,14 +741,18 @@ protected override void OnPaint(PaintEventArgs e) {
 }
 ```
 
-# 9. Ràng buộc dữ liệu (Binding)
+## 9. Ràng buộc dữ liệu (Binding)
 
-- Đừng bind trực tiếp `List` vào nhiều control. Hãy dùng BindingSource ở giữa:  
-        - Cho phép điều hướng (vị trí hiện tại), thông báo thay đổi, (hạn chế) filter/sort.  
-- Model nên hỗ trợ INotifyPropertyChanged để UI tự cập nhật khi giá trị thay đổi.  
-- `Validate` qua `IDataErrorInfo/INotifyDataErrorInfo` + `ErrorProvider`. 
-- 
-## 1. BindingSource
+Là kỹ thuật kết nối dữ liệu, giúp đồng bộ hóa dữ liệu giữa nguồn dữ liệu (data source) và giao diện người dùng (UI) một cách tự động.  
+Điều này có nghĩa là khi dữ liệu thay đổi, UI sẽ tự động cập nhật, và ngược lại, các thay đổi trên UI cũng có thể được cập nhật vào dữ liệu nguồn.  
+
+- Đừng bind trực tiếp `List` vào nhiều control. Hãy dùng `BindingSource` ở giữa:  
+    - Cho phép điều hướng (vị trí hiện tại), thông báo thay đổi, (hạn chế) filter/sort.  
+    - 
+- Model nên kế thừa `INotifyPropertyChanged` để UI tự cập nhật khi giá trị thay đổi.  
+- `Validate` qua `IDataErrorInfo/INotifyDataErrorInfo` + `ErrorProvider`  
+
+### 1. BindingSource
 
 Quy tắc luôn `bind control` qua `BindingSource`:  
 ```C#
@@ -848,14 +890,14 @@ Trong đó:
 > BindingSource.Filter/Sort chỉ hoạt động nếu nguồn là IBindingListView như DataView/DataTable.  
 > Với List<T>/BindingList<T>: bạn tự filter/sort (LINQ) và gán lại vào BindingSource, hoặc dùng SortableBindingList (custom).  
 
-## 2. BindingNavigator 
+### 2. BindingNavigator 
 
 Dùng để thanh điều hướng (đầu/trước/sau/cuối, thêm/xóa) cho `BindingSource`.  
 ```C#
 bindingNavigator1.BindingSource = bindingSource1;
 ```
 
-## 3. Binding thủ công cho control đơn lẻ
+### 3. Binding thủ công cho control đơn lẻ
 
 ```C#
 txtName.DataBindings.Add("Text", bindingSource1, "Name", true, DataSourceUpdateMode.OnPropertyChanged);
