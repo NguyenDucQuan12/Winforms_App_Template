@@ -46,7 +46,15 @@ Winform_App_Template/            // Thư mục chứa toàn bộ dự án
     - [5. RichTextBox](#5-RichTextBox)
         
 - [2. Các control lựa chọn/nhấp](#2-các-control-lựa-chọnnhấp)  
-    - [1.Button](#1-button)
+    - [1. Button](#1-button)  
+    - [2. Checkbox](#2-checkbox)  
+    - [3. RadioButton](#1-radiobutton)  
+
+- [3. Nhóm control số/giá trị](#3-nhóm-control-sốgiá-trị)  
+    - [1. NumericUpDown](#1-numericupdown)  
+    - [2. TrackBar](#2-trackbar)  
+    - [3. DateTimePicker và MonthCalender](#3-datetimepicker-và-monthcalender)  
+    - [4. ProgressBar](#4-ProgressBar)  
 
 
 # I. Đóng gói ứng dụng  
@@ -169,12 +177,12 @@ Mẹo: gán `AcceptButton`/`CancelButton` cho Form để `Enter/Esc` hoạt đ�
 var btn = new Button { Text = "Lưu (Ctrl+S)" };
 btn.Click += (s, e) => SaveData();
 ```
-## 2. CheckBox
+### 2. CheckBox
 
 Dùng để `bật/tắt (true/false)`; có thể 3 trạng thái (`ThreeState=true`).  
 Sự kiện: `CheckedChanged`.  
 
-## 3. RadioButton
+### 3. RadioButton
 
 Dùng để chọn một trong nhiều tùy chọn (cần cùng `GroupBox/Panel`)  
 Sự kiện: `CheckedChanged`  
@@ -182,28 +190,21 @@ Sự kiện: `CheckedChanged`
 if (radMale.Checked) gender = "M"; else if (radFemale.Checked) gender = "F";
 ```
 
-# III. Nhóm control số/giá trị
+## 3. Nhóm control số/giá trị
 
-## 1. NumericUpDown
+### 1. NumericUpDown
 
 Dùng để nhập số có tăng/giảm bằng mũi tên.  
 Thuộc tính: `Minimum`, `Maximum`, `DecimalPlaces`, `Increment`, `Value`, `interceptArrowKeys`.  
 ```C#
 numQty.Minimum = 1; numQty.Maximum = 1000; numQty.Value = 10; numQty.Increment = 5;
 ```
-## 2. TrackBar
+### 2. TrackBar
 
 Dùng để điều chỉnh giá trị bằng thanh trượt (Âm lượng/Độ sáng, ....)  
 Sự kiện: `Scroll`, `ValueChanged`  
 
-## 3. ProgressBar
-
-Dùng để hiển thị tiến trình (xác định/không xác định)  
-Thuộc tính: `Style(Blocks/Marquee)`, `Value`, `Maximum`  
-```C#
-progressBar1.Style = ProgressBarStyle.Marquee; // khi không biết % chính xác
-```
-## 4. DateTimePicker và MonthCalender
+### 3. DateTimePicker và MonthCalender
 
 Dùng để chọn ngày/giờ.  
 Thuộc tính: `Format (Short, Long, Custom)`, `CustomFormat`.  
@@ -216,7 +217,7 @@ dtp.CustomFormat = "dd/MM/yyyy HH:mm tt"; dtp.Format = DateTimePickerFormat.Cust
 dtp.ShowUpDown = True;
 ```
 
-## 5. ProgressBar
+### 4. ProgressBar
 
 Hiển thị thanh tiến trình  
 Để kich hoạt từng `step` của thanh tiến trình thì ta gọi lệnh: `PerformStep` hoặc `PerformLayout`.  
@@ -239,10 +240,9 @@ private void button1_Click(object sender, EventArgs e)
 ```
 ![image](Image/Github/progressbar_run_timer.png)  
 
+## 4. Nhóm control danh sách và phân cấp
 
-# IV. Nhóm control danh sách và phân cấp
-
-## 1. ListBox/CheckedListBox
+### 1. ListBox/CheckedListBox
 
 Dùng để hiển thị danh sách đơn giản; `CheckedListBox` có `tick`.  
 Thuộc tính: `DataSource`, `DisplayMember`, `ValueMember`, `SelectionMode`.  
@@ -252,7 +252,7 @@ listBox1.DataSource = products;  // IEnumerable
 listBox1.DisplayMember = "Name";
 listBox1.ValueMember = "Id";
 ```
-## 2.Combobox
+### 2.Combobox
 
 Dùng để chọn 1 mục từ danh sách, có thể gõ (`DropDown`) hoặc không (`DropDownList`).  
 Sự kiện: `SelectedIndexChanged`, `DropDown`, `TextUpdate`.  
@@ -261,7 +261,7 @@ combo.DropDownStyle = ComboBoxStyle.DropDownList;
 combo.DataSource = departments;
 combo.DisplayMember = "Name"; combo.ValueMember = "Code";
 ```
-## 3. ListView
+### 3. ListView
 
 Dùng để danh sách nhiều cột (`Details`), biểu tượng (`LargeIcon/SmallIcon`), nhóm.  
 Thuộc tính: `View=Details`, `FullRowSelect=true`, `GridLines=true`, `Columns`.  
@@ -272,7 +272,7 @@ listView1.Columns.Add("Mã", 80);
 listView1.Columns.Add("Tên", 200);
 listView1.Items.Add(new ListViewItem(new[] {"P01","Phòng Kế toán"}));
 ```
-## 4 TreeView
+### 4 TreeView
 
 Dùng để dữ liệu phân cấp (thư mục, menu, danh mục).  
 Sự kiện: `AfterSelect`, `NodeMouseClick`.  
@@ -281,7 +281,7 @@ var root = treeView1.Nodes.Add("Phòng ban");
 root.Nodes.Add("Kế toán"); root.Nodes.Add("Kỹ thuật");
 ```
 
-## 5. DataGridView
+### 5. DataGridView
 
 Dùng để bảng dữ liệu mạnh mẽ: `binding`, `chỉnh sửa`, `sắp xếp`, `template cột`.  
 Thuộc tính: `DataSource`, `AutoGenerateColumns`, `AllowUserToAddRows`, `EditMode`, `SelectionMode`, `AutoSizeColumnsMode`.  
@@ -409,25 +409,25 @@ private void InitVirtualGrid()
 ```
 
 
-# V. Nhóm bố cục/điều hướng
-## 1. GroupBox
+## 5. Nhóm bố cục/điều hướng
+### 1. GroupBox
 
 Dùng để nhóm các control có liên quan; có nhãn.  
 ```C#
 var grp = new GroupBox { Text = "Thông tin cơ bản", Dock = DockStyle.Top, Height = 140 };
 ```
-## 2. Panle
+### 2. Panle
 Dùng để: vùng chứa đơn giản; kết hợp `AutoScroll` để cuộn.  
 ```C#
 panel1.AutoScroll = true;
 ```
 
-## 3. TabControl
+### 3. TabControl
 Dùng để phân trang nội dung (Tab).  
 ```C#
 tabControl1.TabPages.Add("Cấu hình", "Cấu hình");
 ```
-## 4. SplitContainer
+### 4. SplitContainer
 
 Dùng để chia vùng `trái/phải` hoặc `trên/dưới` có thanh kéo thay đổi kích cỡ.  
 ```C#
@@ -435,7 +435,7 @@ splitContainer1.Panel1.Controls.Add(treeView1);
 splitContainer1.Panel2.Controls.Add(dataGridView1);
 ```
 
-## 5. TableLayoutPanel & FlowLayoutPanel
+### 5. TableLayoutPanel & FlowLayoutPanel
 
 Dùng để bố cục lưới (Table) hoặc dòng chảy (Flow) — cực hữu ích cho UI responsive theo resize.
 ```C#
