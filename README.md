@@ -3,58 +3,46 @@ Chương trình windows bằng C#
 Cấu trúc dự án như sau:  
 
 ```
-Winform_Template/      # Thư mục chứa toàn bộ dự án
+Winform_App_Template/            // Thư mục chứa toàn bộ dự án
 │
-├── My_App/        # Thư mục chứa code chính của dự án
-├── .vscode/            # Cấu hình debug trong visual studio code
-├── src/
-│   ├── main.py           # Tệp chính chạy chương trình
-│   ├── api/              # Các router (endpoint)
+├── .vscode/                     // Cấu hình debug trong visual studio code
+├── Winform_App_Template/
+│   ├── program.cs               // Tệp chính chạy chương trình
+│   ├── Database/                // Các giao thức/ lệnh truy vấn tới DB
 │   │   ├── __init__.py
 │   │   └── health_check.py
-│   ├── auth/              # Xác thực người dùng
-│   │   ├── __init__.py
-│   │   └── authentication.py
-│   ├── controller/              # Xử lý các api
-│   │   ├── __init__.py
-│   │   └── user_controller.py
-│   ├── db/               # Kết nối database
-│   |   ├── __init__.py
-│   |   └── database.py
-│   ├── log/               # Cấu hình ghi log
-│   |   ├── __init__.py
-│   |   └── api_log.py
-│   ├── middleware/              # middleware
-│   │   ├── __init__.py
-│   │   └── logger.py
-│   ├── schemas/                # Các schema để validation dữ liệu
-│   │   ├── __init__.py      # Schema cho User
-│   │   └── user.py   
-│   ├── services/         # Các dịch vụ khác
-│   │   ├── __init__.py
-|   |   └── mail_service.py
-│   ├── test/               # Các tệp test api
-│   │   ├── __init__.py
-|   |   └── file_api_test.py
-|   └──utils/
-|       ├── Contants.cs         # Tệp chứa các hằng số của dự án
-|       ├── LogEx.cs         # Log có chứa thêm tham số xảy ra log ở tệp nào, dòng nào
-|       ├── Logging.cs         # Cấu hình chính cho logger
-|       ├── Contants.cs         # Tệp chứa các hằng số của dự án
-|       └── Shell.py
+│   ├── Form/                    // Chứa các giao diện của chương trình
+│   │   ├── Main_Form.cs         // Giao diện chính của chương trình
+│   │   └── Main_Form.py
+│   └── Utils/                   // Các hàm tiện tích sử dụng chung
+│       ├── Constants.cs         // Các hằng số thiết lập tại đây
+│       ├── LogEx.cs             // Custom log từ logging để hiển thị thêm log tại dòng nào và tệp nào
+│       ├── Shell.cs             // Truy cập vào hệ thống
+│       ├── Logging.cs           // Cấu hình logger sử dụng thư viện Serial Log
+│       └── user_controller.py
 │
-├── My_App.sln            # Tệp solution để dự án tìm được đến với nhau
-├── .dockerignore            # Cấu hình bỏ qua các thư mục, tệp trong docker
-├── .env            # Tệp tin chứa cấu hình các thông số
-├── .gitignore            # Cấu hình bỏ qua các thư mục, tệp tin trong git
-├── .gitattributes            # Đảm bảo Git lưu file với định dạng UTF-8
-├── .editorconfig            # Đặt mặc định nội dung UTF-8 cho toàn dự án
-├── Dockerfile            # Xây dựng các image cho docker
-├── docker-compose.yml    # Cấu hình các thông số khi chạy trên docker
+├── My_App.sln                   // Tệp solution để dự án tìm được đến với nhau
+├── .dockerignore                // Cấu hình bỏ qua các thư mục, tệp trong docker
+├── .env                         // Tệp tin chứa cấu hình các thông số
+├── .gitignore                   // Cấu hình bỏ qua các thư mục, tệp tin trong git
+├── .gitattributes               // Đảm bảo Git lưu file với định dạng UTF-8
+├── .editorconfig                // Đặt mặc định nội dung UTF-8 cho toàn dự án
+├── Dockerfile                   // Xây dựng các image cho docker
+├── docker-compose.yml           // Cấu hình các thông số khi chạy trên docker
 └── README.md
 ```
 
-Cách đóng gói tệp tin:  
+
+# Mục lục
+
+[I. Đóng gói ứng dụng](#i-đóng-gói-ứng-dụng)
+[II. Các phần tử trong giao diện winform](#ii-các-phần-tử-trong-giao-diện-winforms)
+    - [1. Các control nhập/xuất chữ (Text)](#1-các-control-nhập--/--xuất-chữ-(-Text-)-)
+        - [1. Label](#1-Label)
+    - [2. Chạy file cập nhật](#2-chạy-file-cập-nhật)
+
+
+# I. Đóng gói ứng dụng  
 
 > Đóng gói tất cả thành 1 tệp exe duy nhất  
 > Thay đổi tham số `--self-contained` thành `--no-self-contained` để đóng gói nhỏ nhẹ, nhưng thiết bị chạy cần có dotnet  
@@ -66,10 +54,11 @@ dotnet publish -c Release -r win-x64 --self-contained true /p:PublishSingleFile=
 
 Hoặc có thể copy cả thư mục `Debug` tại đường dẫn: `bin/Debug/phiên bản dotnet/`. Thư mục này chứa toàn bộ tệp exe và các thư viện đi kèm được copy vào đây khi chạy ở chế độ `Debug`.  
 
+# II. Các phần tử trong giao diện winforms
 
-# I. Các control nhập/xuất chữ (Text)
+## 1. Các control nhập/xuất chữ (Text)
 
-## 1. Label
+### 1. Label
 
 Dùng để hiển thị văn bản tĩnh, mô tả cho input.  
 
