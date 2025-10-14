@@ -645,78 +645,113 @@ backgroundWorker1.RunWorkerAsync();
 - Nếu công việc là `I/O-bound` và `thư viện có API bất đồng bộ` (ví dụ đọc/ghi file async, network async), ưu tiên dùng API async/await sẵn có (không dùng Task.Run), vì hiệu quả tài nguyên tốt hơn.  
 - Tránh gọi `.Result` hoặc `.Wait()` trên Task trong UI code — sẽ `deadlock` hoặc làm `treo UI`.  
 
-Ta khai báo 1 sự kiện sử dụng bất đồng bộ bằng từ khóa `async`. `async void` chỉ hợp lý cho `event handler (sự kiện của UI)`. Với các hàm bình thường nên dùng `async Task`. Vì là `event handler`, UI framework `không cần/không nhận Task trả về`.  
+Ta khai báo 1 sự kiện sử dụng bất đồng bộ bằng từ khóa `async void` hoặc `async task`.  
+- Dùng `async void` chỉ trong 2 trường hợp:  
+    - `Event handler` của WinForms (ví dụ: `button.Click`, `Form.Shown`, `Timer.Tick`…), vì chữ ký event do WinForms định nghĩa là void.  
+    - Fire-and-forget có chủ ý (rất hạn chế), khi bạn không cần gọi chờ/ghép (await/WhenAll) ở chỗ gọi. Lúc này phải tự bao try/catch để không làm sập app nếu có exception.  
+- `async Task` (hoặc `async Task<T>`) dùng trong các phương thức bất đồng bộ thông thường, giúp `await` được và `bắt lỗi` dễ dàng:  
+    - Cho phép await ở chỗ gọi → dễ ghép chuỗi, viết logic tuần tự.  
+    - Exception được “gói” trong Task → bắt bằng try/catch ở chỗ gọi (an toàn hơn async void).  
+    - Hỗ trợ huỷ (CancellationToken) và test (unit test async).  
+    - Dễ composition (móc nối Task.WhenAll/WhenAny, retry, timeout…).  
+
 
 Luôn bọc `await` trong `try/catch` để xử lý các ngoại lệ xảy ra trong quá trình thực thi. Và có thể dùng `CancellationToken` để hủy các tác vụ bất đồng bộ bất cứ lúc nào.  
 Nếu bạn không cần tiếp tục trên `UI thread` sau `await`, có thể dùng `.ConfigureAwait(false)` trong library để giảm `overhead` (không cần trong event handler vì bạn muốn quay lại UI).  
 
 ```C#
-// Event handler: async void là hợp lệ cho sự kiện WinForms
-private async void btnExport_Click(object sender, EventArgs e)
+// Giả sử trên Form có: a) Button btnLoad, b) ListBox lstData, c) Label lblStatus
+// Suppose the Form has: a) Button btnLoad, b) ListBox lstData, c) Label lblStatus
+
+using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+public partial class MainForm : Form
 {
-    // Disable nút để tránh bấm nhiều lần
-    btnExport.Enabled = false;
+    private readonly HttpClient _http = new HttpClient();  // Tái sử dụng HttpClient / Reuse HttpClient
+    private CancellationTokenSource _loadCts;               // Giữ CTS để huỷ / Keep CTS to cancel
 
-    // Hủy tác vụ trước (nếu có) và tạo token mới
-    _exportCts?.Cancel();
-    _exportCts = new CancellationTokenSource();
-    var token = _exportCts.Token;
-
-    // Chế độ marquee khi chưa có % chính xác
-    progressBar1.Style = ProgressBarStyle.Marquee;
-    progressBar1.Value = 0;
-
-    try
+    public MainForm()
     {
-        // Progress<int> sẽ chạy callback trên UI thread
-        var progress = new Progress<int>(percent =>
+        InitializeComponent();                              // Khởi tạo UI / Initialize UI
+        btnLoad.Click += BtnLoad_Click;                    // Gắn event handler / Attach event handler
+    }
+
+    // ① Event handler: buộc là void theo WinForms -> dùng async void
+    private async void BtnLoad_Click(object sender, EventArgs e)
+    {
+        // Nếu đang chạy lần trước thì huỷ / Cancel previous run if any
+        _loadCts?.Cancel();                                 // Báo huỷ / request cancellation
+        _loadCts = new CancellationTokenSource();           // CTS mới / new CTS
+        var token = _loadCts.Token;                         // Lấy token / get token
+
+        btnLoad.Enabled = false;                            // Khoá nút / disable button
+        lblStatus.Text = "Đang tải… (Loading…)";            // Báo trạng thái / show status
+        lstData.Items.Clear();                              // Xoá dữ liệu cũ / clear old data
+
+        // IProgress<int> tự marshal về UI thread trong WinForms / marshals back to UI thread
+        var progress = new Progress<int>(p => lblStatus.Text = $"Đang tải… {p}%");
+
+        try
         {
-            progressBar1.Style = ProgressBarStyle.Blocks;
-            progressBar1.Value = Math.Min(100, Math.Max(0, percent));
-        });
+            // Gọi sang hàm async Task “thực thụ” / call the real async Task worker
+            var lines = await DownloadLinesAsync(
+                "https://example.com/data.txt",             // URL giả định / demo URL
+                progress,                                   // Báo tiến trình / progress
+                token                                       // Huỷ / cancellation
+            ); // Không dùng ConfigureAwait(false) để tiếp tục trên UI / keep UI context
 
-        // Chạy công việc CPU-bound trên thread-pool, truyền token và progress
-        await Task.Run(() => ExportLargeReport(token, progress), token);
+            foreach (var line in lines)                     // Cập nhật UI sau await / update UI after await
+                lstData.Items.Add(line);
 
-        MessageBox.Show("Xuất xong!");
+            lblStatus.Text = $"Xong: {lines.Count} dòng (Done)"; // Hoàn tất / done
+        }
+        catch (OperationCanceledException)
+        {
+            lblStatus.Text = "Đã huỷ (Canceled)";           // Bị huỷ hợp lệ / expected cancel
+        }
+        catch (Exception ex)
+        {
+            // Quan trọng với async void: bắt lỗi TẠI ĐÂY, kẻo văng ra đè sập app
+            // Important for async void: catch here to avoid app crash
+            MessageBox.Show(this, ex.Message, "Lỗi / Error",
+                MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+        finally
+        {
+            if (!IsDisposed)                                // Form chưa bị dispose / ensure form alive
+                btnLoad.Enabled = true;                     // Mở lại nút / re-enable button
+        }
     }
-    catch (OperationCanceledException)
+
+    // ② Worker “đúng nghĩa” trả về Task<List<string>>
+    // ② Real worker that returns Task<List<string>>
+    private async Task<List<string>> DownloadLinesAsync(
+        string url,
+        IProgress<int> progress,
+        CancellationToken ct)
     {
-        MessageBox.Show("Đã hủy xuất.");
+        // I/O-bound: await HttpClient (KHÔNG cần Task.Run) / I/O-bound: no Task.Run
+        using var resp = await _http.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, ct);
+        resp.EnsureSuccessStatusCode();                     // Ném lỗi HTTP != 2xx / throw if not success
+
+        var content = await resp.Content.ReadAsStringAsync(ct); // Đọc chuỗi / read string
+        var lines = new List<string>(content.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries));
+
+        // Demo báo tiến độ: 0 -> 100 / report some fake progress
+        for (int p = 0; p <= 100; p += 20)
+        {
+            ct.ThrowIfCancellationRequested();              // Tôn trọng huỷ / honor cancellation
+            await Task.Delay(50, ct);                       // Mô phỏng / simulate work
+            progress?.Report(p);                            // Báo lên UI / report to UI
+        }
+
+        return lines;                                       // Trả về kết quả / return result
     }
-    catch (Exception ex)
-    {
-        MessageBox.Show($"Lỗi khi xuất: {ex.Message}");
-    }
-    finally
-    {
-        progressBar1.Style = ProgressBarStyle.Blocks;
-        btnExport.Enabled = true;
-    }
-}
-
-// Ví dụ minh họa ExportLargeReport có chức nắng hủy và báo tiến độ
-void ExportLargeReport(CancellationToken token, IProgress<int> progress)
-{
-    // Giả lập công việc chia thành 100 bước
-    for (int i = 1; i <= 100; i++)
-    {
-        token.ThrowIfCancellationRequested();
-
-        // Làm việc nặng ở đây (thay bằng logic thật)
-        Thread.Sleep(30); // ví dụ giả lập: tránh dùng trong I/O-bound
-
-        // Báo tiến độ (sẽ được marshal về UI thread nhờ Progress<T>)
-        progress.Report(i);
-    }
-
-    // Khi xong, có thể ghi file/hoàn thiện xuất...
-}
-
-// Nếu muốn thêm nút Hủy:
-private void btnCancelExport_Click(object sender, EventArgs e)
-{
-    _exportCts?.Cancel();
 }
 ```
 
