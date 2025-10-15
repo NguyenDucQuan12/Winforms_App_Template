@@ -7,7 +7,6 @@ Winform_App_Template/                   // Thư mục chứa toàn bộ dự án
 │
 ├── .vscode/                            // Cấu hình debug trong visual studio code
 ├── Winform_App_Template/
-│   ├── program.cs                      // Tệp chính chạy chương trình
 │   ├── Database/
 │   │    ├─ Model                       // Chứa các schema dữ liệu trả về
 │   │    │  ├── Wallet_Model.cs         // Schema của bảng dữ liệu Wallet trong SQL Server
@@ -28,12 +27,18 @@ Winform_App_Template/                   // Thư mục chứa toàn bộ dự án
 │   ├── Form/                           // Chứa các giao diện của chương trình
 │   │   ├── Main_Form.cs                // Giao diện chính của chương trình
 │   │   └── Main_Form.py
-│   └── Utils/                          // Các hàm tiện tích sử dụng chung
-│       ├── Constants.cs                // Các hằng số thiết lập tại đây
-│       ├── LogEx.cs                    // Custom log từ logging để hiển thị thêm log tại dòng nào và tệp nào
-│       ├── Shell.cs                    // Truy cập vào hệ thống
-│       ├── Logging.cs                  // Cấu hình logger sử dụng thư viện Serial Log
-│       └── user_controller.py
+│   │
+│   ├── Utils/                          // Các hàm tiện tích sử dụng chung
+│   │   ├── Constants.cs                // Các hằng số thiết lập tại đây
+│   │   ├── LogEx.cs                    // Custom log từ logging để hiển thị thêm log tại dòng nào và tệp nào
+│   │   ├── Shell.cs                    // Truy cập vào hệ thống
+│   │   └──Logging.cs                   // Cấu hình logger sử dụng thư viện Serial Log
+│   │
+│   ├──Directory.Build.props            // Cấu hình thư viện được sử dụng trong dự án
+│   ├──Directory.Packages.props         // Quản lý các gói thư viện cài đặt vào
+│   ├──packages.lock.json               // Khóa các thư viện để tránh tải nhầm
+│   │
+│   └── program.cs                      // Tệp chính chạy chương trình
 │
 ├── My_App.sln                          // Tệp solution để dự án tìm được đến với nhau
 ├── .dockerignore                       // Cấu hình bỏ qua các thư mục, tệp trong docker
@@ -45,7 +50,6 @@ Winform_App_Template/                   // Thư mục chứa toàn bộ dự án
 ├── docker-compose.yml                  // Cấu hình các thông số khi chạy trên docker
 └── README.md
 ```
-
 
 # Mục lục
 
@@ -126,7 +130,10 @@ Winform_App_Template/                   // Thư mục chứa toàn bộ dự án
 [IV. Quản lý vòng đời](#iv-quản-lý-vòng-đời)  
 - [1. Sử dụng using (cách được khuyến nghị)](#1-Sử-dụng-using-cách-được-khuyến-nghị)  
 
-[V. Database](#v-Database)
+[V. Database](#v-Database)  
+- [1. SqlClient](#1-Sqlclient)  
+- [2. Entity Framework](#2-Entity-framework)  
+
 # I. Đóng gói ứng dụng  
 
 > Đóng gói tất cả thành 1 tệp exe duy nhất  
@@ -2441,6 +2448,7 @@ UiDisposalGuard.ClearImageSafe(pictureBox1);           // trả ảnh về null 
 
 # V. Database
 
+## 1. SqlCilent
 - Sử dụng `Microsoft.Data.SqlClient`  
 - `Open late, close early`: mở connection `ngay trước` khi query, đóng `ngay sau` kết thúc query (pooling sẽ tái dùng)  
 - `Async/Await`: dùng các `API OpenAsync`, `ExecuteReaderAsync`, `ExecuteAsync (Dapper)` + `CancellationToken` → không block UI.  
@@ -2449,7 +2457,7 @@ UiDisposalGuard.ClearImageSafe(pictureBox1);           // trả ảnh về null 
 - Tham số hoá: luôn dùng `parameter (hoặc Dapper)` để tránh `SQL injection` & lỗi `encode`.  
 - `Transaction`: gói các lệnh phụ thuộc trong `SqlTransaction` (hoặc `TransactionScope` nếu cần) + `retry` toàn khối khi lỗi `transient`.  
 
-## 1. Cài đặt các gói phụ thuộc
+### 1. Cài đặt các gói phụ thuộc
 Các gói phụ được đặt thêm vào tệp `Directory.Packages.props`  
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -2541,7 +2549,7 @@ Tệp hoàn chỉnh như sau:
 	</ItemGroup>
 </Project>
 ```
-## 2. Tạo cấu trúc dự án
+### 2. Tạo cấu trúc dự án
 
 Ta tạo cấu trúc dự án với thư mục Database như sau:  
 
@@ -2564,7 +2572,7 @@ Database/
  └─ TransientErrorDetector.cs   // Cấu hình các lỗi cho phép retry hoặc mở break
 ```
 
-### 2.1 Chuỗi kết nối
+#### 2.1 Chuỗi kết nối
 
 Ta tạo hàm lấy chuỗi kết nối trong tệp `DbConfig.cs` từ biến môi trường (`.env`) nếu tồn tại các giá trị, còn nếu không thì ta lấy mặc định chuỗi được cung cấp. Câu lệnh được viết tại tệp `DbConfig.cs`  
 
@@ -2613,7 +2621,7 @@ namespace Test.Database
 
 Nhớ thay thế các thông tin tương ứng trong `chuỗi kết nối`.  
 
-### 2.2 Nhận diện lỗi
+#### 2.2 Nhận diện lỗi
 
 Ta tạo tẹp `TransientErrorDetector.cs` chứa danh sách các lỗi mà ta sẽ xử lý như bên dưới.  
 Khi truy vấn dữ liệu từ CSDL, nếu SQL Server trả về lỗi mà trùng với các lỗi nên `retry` thì chúng ta sẽ thử lại lần nữa.  
@@ -2657,7 +2665,7 @@ namespace Test.Database
     }
 }
 ```
-### 2.3 Chính sách truy vấn lại hoặc mở break
+#### 2.3 Chính sách truy vấn lại hoặc mở break
 
 Khi SQL Server tự động truy vấn lại, ta cũng nên kiểm soát việc truy vấn lại, ko để mở kết nối bừa bãi, truy vấn liên tục gây treo hệ thống, ảnh hưởng xấu đến dữ liệu hiện có. Vì vậy ta cấu hình các chính sách tương ứng vào tệp `SqlPolicies.cs`:  
 
@@ -2820,19 +2828,19 @@ namespace Test.Database
 Song song với đó ta có `Circuit Breaker` sẽ chịu trách nhiệm kiểm soát lỗi xảy ra, nếu lượng lỗi ta quy định trong `TransientErrorDetector` xảy ra quá nhiều trong 1 thời gian ngắn thì ta phải `tạm dừng` các `request` tới CSDL của chúng ta để `giảm tải áp lực` cho CSDL.  
 
 Có 3 trạng thái chính của `Circuit Breaker (Polly v8)` như sau:  
-#### 1. Closed (đóng)
+##### 1. Closed (đóng)
 
 Đây là trạng thái bình thường, `Circuit break` không hoạt động, vì vậy các yêu cầu đến DB hoạt động bình thường, tuy nhiên các lỗi thuộc `ShouldHandle` sẽ được đếm và tính lưu lượng trong `mỗi cửa sổ đo`.  
 `Mỗi cửa sổ đo` 30 phút là hệ thống tính toán trong 30 phút có bao nhiêu yêu cầu (yêu cầu thuộc `ShouldHandler`) được ghi lại, nếu vượt quá số lượng này thì tiến hành chuyển sang trạng thái khác.  
 
-#### 2. Open (mở)
+##### 2. Open (mở)
 
 Khi tỉ lệ lỗi `vượt ngưỡng` cho phép trong `mỗi cửa sổ` và `đủ số lượng tối thiểu` (`MinimumThroughput`) thì `Breaker` sẽ chuyển sang trạng thái `OPEN` trong `BreakDuration` (trong khoảng thời gian ví dụ 20s).  
 
 Trong khoảng thời gian ở trạng thái này thì mọi yêu cầu gửi tới DB đều sẽ thất bại và trả về với ngoại lệ `BrokenCircuitException`, việc này giúp cho giảm áp lực lên DB đang gặp tình trạng quá nhiều yêu cầu trong thời gian ngắn.  
 
 `Circuit Breaker` sẽ ngăn chặn các kết nối trước khi nó được kết nối tới CSDL nên CSDL sẽ được `nghỉ` trong suốt thời gian trạng thái `OPEN`.  
-#### 3. Half-Open (nửa mở)
+##### 3. Half-Open (nửa mở)
 
 Là khoảng thời gian sau khi hết `BreakDuration`, `Breaker` chuyển sang giai đoạn `Half-Open`, `Polly` cho phép một số ít yêu cầu gửi đến DB, nếu tất cả đều thành công, không có lỗi nào nằm trong `ShouldHandler` thì `breaker` đóng lại, chuyển về trạng thái `CLOSED`. Còn nếu lại lỗi thì `Breaker` mở lại trạng thái `OPEN` thêm khoảng thời gian `BrakDuration` lần nữa.  
 
@@ -2919,7 +2927,7 @@ catch (BrokenCircuitException) // Circuit đang mở → fail nhanh
 
 Nếu DB đang quá tải/mạng chập chờn, việc cứ tiếp tục gửi `hàng nghìn request` sẽ làm tình hình tệ hơn. `Breaker` “mở” giúp bảo vệ DB bằng cách từ chối sớm trong một khoảng thời gian, cho hạ tầng có thời gian hồi.  
 
-## 3. Tạo kết nối đến DB
+### 3. Tạo kết nối đến DB
 
 Ta đã tạo các chính sách cho mỗi kết nối, bây giờ ta cần tạo kết nối tới CSDL ở tệp `SqlConnectionFactory.cs` như sau:  
 
@@ -3014,7 +3022,7 @@ await SomethingAsync().ConfigureAwait(false);
 BeginInvoke((Action)(() => statusLabel.Text = "xong")); // chuyển về UI thread thủ công
 ```
 
-## 4. Thực hiện lệnh truy vấn, chỉnh sửa DB
+### 4. Thực hiện lệnh truy vấn, chỉnh sửa DB
 
 Sau khi kết nối tới DB, các lệnh áp dụng tới `SQL Server như SELECT/INSERT/UPDATE ...` đều được thực hiện qua thư viện `Dapper`, để đảm bảo các truy vấn được áp dụng chính sách đã quy định.  
 
@@ -3267,7 +3275,7 @@ isolation: IsolationLevel.ReadCommitted,
 ct: _cts.Token);
 ```
 
-## 5. Truy vấn trong 1 bảng dữ liệu
+### 5. Truy vấn trong 1 bảng dữ liệu
 
 Ta tạo 1 bảng `Wallet` trong `SQL Server` để lưu trữ các giao dịch về tiền:  
 ```SQL
@@ -3617,3 +3625,7 @@ namespace Test
     }
 }
 ```
+
+## 2. Entity Framework
+
+
