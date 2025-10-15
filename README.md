@@ -94,6 +94,18 @@ Winform_App_Template/            // Thư mục chứa toàn bộ dự án
 - [9. Ràng buộc dữ liệu (Binding)](#9-Ràng-buộc-dữ-liệu-Binding)  
     - [1. BindingSource](#1-BindingSource)  
     - [2. BindingNavigator](#2-BindingNavigator)
+ 
+[III. Thread, Timer, BackgroundWorker, Task](#iii-Thread-Timer-BackgroundWorker-Task)  
+- [1. Thread](#1-Thread)  
+- [2. Task](#2-Task)  
+    - [1. Await](#1-await)  
+    - [2. Task.Run](#2-Taskrun)
+- [3. Timer](#3-Timer)  
+    - [1. Timer trong Forms](#1-Timer-trong-forms)  
+    - [2. Timer trong Timer](#2-Timer-trong-timer)  
+    - [3. Timer trong Threading](#3-Timer-trong-threading)  
+    - [4. PeriodicTimer](#4-PeriodicTimer)  
+    - [5. BackgroundWork](#5-BackgroundWork)  
 
 # I. Đóng gói ứng dụng  
 
@@ -1113,18 +1125,25 @@ public partial class EmployeeForm : Form
 
 public record Employee(string Code, string Name, string Department);
 ```
-# Tổng quan về thread
-`WinForms` chạy trên một `UI thread (STA)`. Mọi cập nhật control `phải thực hiện trên UI thread`; nếu code đang chạy ở thread khác, bắt buộc phải `Invoke/BeginInvoke` hoặc dùng `IProgress<T>/SynchronizationContext`.  
-Không chặn UI: `Không dùng .Wait()/.Result` trên `Task` trong `event handler` — dễ deadlock. Dùng `async void cho event và await`.  
+# III. Thread, Timer, BackgroundWorker, Task
+
+`WinForms` chạy trên một `UI thread (STA)`. Mọi cập nhật liên quan đến giao diện `phải thực hiện trên UI thread`; nếu code đang chạy ở thread khác, bắt buộc phải `Invoke/BeginInvoke` hoặc dùng `IProgress<T>/SynchronizationContext`.  
+Không chặn UI: `Không dùng .Wait()/.Result` trên `Task` trong `event handler` — dễ deadlock. Hãy sử dụng `await` xuyên suốt khi thao tác với các thread.  
 
 Quy tắc vàng:
-- Công việc nặng → `Task.Run` (thread pool).  
+- Công việc nặng (sử dụng nhiều CPU: xử lý ảnh, mã hóa, dữ liệu lớn, ...) → `Task.Run` (thread pool: Không chỉnh sửa giao diện trong này).  
 - Báo tiến độ → `IProgress<T>`.  
 - Cập nhật UI → quay về UI thread bằng `await` (tiếp tục trên UI thread) hoặc `Invoke`.  
 
-Chạy công việc trong 1 thread khác, các tác vụ ở thread này ko động chạm đến giao diện (không được cập nhật, chinh sửa, thêm, xóa gì các control ở giao diện chính)  
+## 1. Thread  
 
-> Với `Thread` thì ta không thể nhận về kêt quả, không thể truyền tham số cho thread  
+Khi nào dùng Thread(`System.Threading.Thread`):  
+
+> Cần toàn quyền với vòng đời luồng (đặt ưu tiên, STA/MTA, thread chuyên dụng dài hạn).  
+> Tình huống đặc biệt: tương tác `COM` yêu cầu STA hoặc phần mềm/driver cũ đòi `thread chuyên dụng`.  
+> Không nên dùng thread thô cho `I/O async` thông thường. Với `CPU-bound`, thường dùng `Task.Run` thay vì tự tạo `new Thread.`  
+
+Với `Thread` ta có toàn quyền kiểm soát (`Isbackground`, `Priority`, `ApartmentState`. Tuy nhiên ta không thể nhận về kêt quả, có thể truyền 1 tham số cho thread và dễ lỗi UI (`Queen Invoke`), khó quản lý, tốn kém, khó test  
 
 ```C#
 private void button1_Click(object sender, EventArgs e){
@@ -1203,61 +1222,91 @@ class ThreadDemo
 }
 ```
 
-> `Task` là phiên bản nâng cấp của `Thread`, truyền được tham số, nhận được kết quả trả về.  
-> Có thể dừng `Task` bất cứ lúc nào với tham số `CancellationTokenSource`  
-> Bản chất `Task` cũng sẽ gọi đến `Thread` nhưng thông qua `ThreadPool`(luồng có thể tái sử dụng)  
-
-Ta có ví dụ về Task:  
+Tương tự nếu ta muốn cập nhật UI trong thread thì bắt buộc ta phải đưa về `UI Thread` rồi mới cập nhật bằng hàm `BeginInvoke`:  
 ```C#
 using System;
 using System.Threading;
-using System.Threading.Tasks;
+using System.Windows.Forms;
 
-class TaskDemo
+public partial class MainForm : Form
 {
-    static async Task Main()
+    public MainForm()
     {
-        // Tạo nguồn hủy — cho phép dừng tác vụ khi cần
-        using var cts = new CancellationTokenSource();
+        InitializeComponent();
+        btnStartThread.Click += BtnStartThread_Click; // Gắn event click cho nút btnStartThread
+    }
 
-        // Tạo IProgress: callback này chạy trên SynchronizationContext hiện tại (nếu có)
-        IProgress<int> progress = new Progress<int>(p =>
-        {
-            // Ở console demo, ta chỉ in ra; trong WinForms: cập nhật UI an toàn tại đây
-            Console.WriteLine($"Tiến độ: {p}%");
-        });
+    private void BtnStartThread_Click(object sender, EventArgs e)
+    {
+        btnStartThread.Enabled = false;                      // Khóa button để tránh bấm lặp
+        lblStatus.Text = "Thread: đang chạy… (running…)";
 
-        // Tạo 1 Task chạy nền: mô phỏng công việc nặng (CPU-bound hoặc I/O-bound)
-        Task worker = Task.Run(async () =>
+        // Tạo luồng nền
+        var th = new Thread(() =>
         {
-            for (int i = 0; i <= 100; i++)
+            try
             {
-                cts.Token.ThrowIfCancellationRequested(); // Ném exception nếu đã hủy
-                progress.Report(i);                       // Báo tiến độ
-                await Task.Delay(20, cts.Token);          // Giả lập thời gian xử lý (I/O async)
-            }
-        }, cts.Token);
+                // Giả lập CPU nặng 
+                long sum = 0;
+                for (int i = 0; i < 50_000_000; i++) sum += i;
 
-        // Mô phỏng: sau 1 giây thì hủy (bạn có thể comment để chạy hết)
-        _ = Task.Run(async () =>
-        {
-            await Task.Delay(1000);
-            cts.Cancel();
+                // Cập nhật UI phải marshal về UI thread
+                this.BeginInvoke((Action)(() =>
+                {
+                    lblStatus.Text = $"Thread: xong, sum={sum}";
+                    btnStartThread.Enabled = true;
+                }));
+            }
+            catch (Exception ex)
+            {
+                // Báo lỗi về UI thread
+                this.BeginInvoke((Action)(() =>
+                {
+                    MessageBox.Show(this, ex.Message, "Error");
+                    btnStartThread.Enabled = true;
+                }));
+            }
         });
 
-        try
-        {
-            await worker; // await: không chặn thread, không deadlock (console)
-            Console.WriteLine("Hoàn tất!");
-        }
-        catch (OperationCanceledException)
-        {
-            Console.WriteLine("Đã hủy công việc.");
-        }
+        th.IsBackground = true;           // Tắt app -> thread dừng / let process exit
+        th.Priority = ThreadPriority.BelowNormal; // Ví dụ đặt ưu tiên
+        // th.SetApartmentState(ApartmentState.STA); // Nếu cần STA cho COM
+        th.Start();
     }
 }
 ```
-Ví dụ khi gọi Task trong giao diện chương trình:  
+
+## 2. Task  
+
+> `Task` là phiên bản nâng cấp của `Thread`, truyền được tham số, nhận được kết quả trả về.  
+> Có thể hủy `Task` với ngoại lệ được đưa ra bất cứ lúc nào với tham số `CancellationTokenSource`  
+> Bản chất `Task` cũng sẽ gọi đến `Thread` nhưng thông qua `ThreadPool`(luồng có thể tái sử dụng)  
+
+Khi làm việc với `Task` ta thường khai báo các hàm là `async void` hoặc `async Task` tùy vào trường hợp:  
+Dùng `async void` chỉ trong 2 trường hợp:
+- `Event handler` của WinForms (ví dụ: button.Click, Form.Shown, Timer.Tick…), vì chữ ký event do WinForms định nghĩa là void  
+- `Fire-and-forget` có chủ ý (rất hạn chế), khi bạn không cần gọi chờ/ghép (await/WhenAll) ở chỗ gọi. Lúc này phải tự bao try/catch để không làm sập app nếu có exception.  
+
+Còn lại, hãy trả về `async Task` (hoặc `async Task<T>`) cho mọi hàm bất đồng bộ khác, vì:  
+- Cho phép await ở chỗ gọi → dễ ghép chuỗi, viết logic tuần tự.  
+- Exception được “gói” trong Task → bắt bằng try/catch ở chỗ gọi (an toàn hơn async void).  
+- Hỗ trợ huỷ (CancellationToken) và test (unit test async).  
+- Dễ composition (móc nối Task.WhenAll/WhenAny, retry, timeout…).  
+
+Trong `Task` có 2 tình huống như sau: sử dụng từ khóa `await` và `Task.Run(...)`  
+### 1. Await
+
+`Await` là từ khóa ngôn ngữ (`language feature`) nó có tác dụng là chờ một `Task` hoặc `ValueTask` hoàn thành mà không chặn thread hiện tại.  
+Cơ chế `await` như sau:  
+- Tại thời điểm gọi `await` -> trả quyền điều khiển cho caller (`luồng đang gọi await`)  
+- Khi `Task` nằm sau `await` hoàn thành, quay trở về `UI Thread` để tiếp tục thực hiện các lệnh khác ở dưới `await`  
+- Khi `await task`, exception bên trong task sẽ được “mở gói” (unwrap) và ném lại đúng ngữ cảnh, dễ try/catch.  
+- Dùng `CancellationToken` + `IProgress<T>` để hủy & báo tiến độ.  
+
+> Có thể `await` bất kỳ Task nào, bất kể Task đó đến từ đâu (`I/O`, `CPU`, `thư viện bên ngoài`, hay chính `Task.Run`  
+
+Ta có ví dụ sử dụng `await` đi kèm cùng `Task.Run` (`System.Threading.Task`):  
+
 ```C#
 // Ví dụ trong Form WinForms
 private CancellationTokenSource _cts;
@@ -1317,15 +1366,386 @@ private void DoWork(IProgress<int> progress, CancellationToken ct)
 }
 ```
 
+### 2. Task.Run
+
+Là 1 `API ThreadPool`.  
+Nó có tác dụng đưa một khối công việc (`Delegate`) chạy trên `ThreadPool`, tức là mở một thread xong chạy `Song song/ khác thread` với `UI Thread`  
+`Task.Run` được sử dụng chủ yếu khi khối lượng công việc nặng CPU (tính toán, mã hóa, zip/unzip, ...) mà không muốn đóng băng UI. Task.Run không tự động làm công việc “asynchronous I/O”. Nó chỉ chạy đồng bộ (synchronous) cái delegate trên ThreadPool rồi trả về Task để bạn await nếu muốn.  
+                                                                                                                                           
+Ví dụ khi tính toán là 1 số nguyên tố, nó tiêu tốn CPU để tính toán thì ta có thể đưa nó sang `Task.Run`:  
+Ta có ví dụ khi nào sử dụng `Task.Run()`:  
+```C#
+// Tính toán CPU nặng, ví dụ: kiểm tra số nguyên tố lớn
+// Heavy CPU computation (prime checking)
+
+private async void btnCompute_Click(object sender, EventArgs e)
+{
+    btnCompute.Enabled = false;                        // Tránh bấm lặp / prevent re-entry
+    lblStatus.Text = "Đang tính toán… (Computing…)";  // Báo trạng thái / status
+
+    try
+    {
+        int n = int.Parse(txtN.Text);                 // Đầu vào / input
+
+        // Đẩy CPU-bound sang ThreadPool để UI không bị đơ
+        // Offload CPU-bound to ThreadPool so UI stays responsive
+        bool isPrime = await Task.Run(() => IsPrime(n));
+
+        // Sau await quay về UI thread → cập nhật UI an toàn
+        // Back on UI thread after await → safe to update UI
+        lblStatus.Text = isPrime ? "Là số nguyên tố" : "Không phải số nguyên tố";
+    }
+    catch (Exception ex)
+    {
+        MessageBox.Show(this, ex.Message, "Lỗi / Error");
+    }
+    finally
+    {
+        btnCompute.Enabled = true;
+    }
+}
+
+// Hàm CPU-bound thuần (không động tới UI)
+// Pure CPU-bound method (no UI access)
+private static bool IsPrime(int n)
+{
+    if (n < 2) return false;
+    if (n % 2 == 0) return n == 2;
+    int limit = (int)Math.Sqrt(n);
+    for (int i = 3; i <= limit; i += 2)
+        if (n % i == 0) return false;
+    return true;
+}
+```
+
+Ta cũng có thể cập nhật tiến độ công việc bằng `IProgress` trong `Task`:  
+```C#
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+
+class TaskDemo
+{
+    static async Task Main()
+    {
+        // Tạo nguồn hủy — cho phép dừng tác vụ khi cần
+        using var cts = new CancellationTokenSource();
+
+        // Tạo IProgress: callback này chạy trên SynchronizationContext hiện tại (nếu có)
+        IProgress<int> progress = new Progress<int>(p =>
+        {
+            // Ở console demo, ta chỉ in ra; trong WinForms: cập nhật UI an toàn tại đây
+            Console.WriteLine($"Tiến độ: {p}%");
+        });
+
+        // Tạo 1 Task chạy nền: mô phỏng công việc nặng (CPU-bound hoặc I/O-bound)
+        Task worker = Task.Run(async () =>
+        {
+            for (int i = 0; i <= 100; i++)
+            {
+                cts.Token.ThrowIfCancellationRequested(); // Ném exception nếu đã hủy
+                progress.Report(i);                       // Báo tiến độ
+                await Task.Delay(20, cts.Token);          // Giả lập thời gian xử lý (I/O async)
+            }
+        }, cts.Token);
+
+        // Mô phỏng: sau 1 giây thì hủy (bạn có thể comment để chạy hết)
+        _ = Task.Run(async () =>
+        {
+            await Task.Delay(1000);
+            cts.Cancel();
+        });
+
+        try
+        {
+            await worker; // await: không chặn thread, không deadlock (console)
+            Console.WriteLine("Hoàn tất!");
+        }
+        catch (OperationCanceledException)
+        {
+            Console.WriteLine("Đã hủy công việc.");
+        }
+    }
+}
+```
+
 Ghi nhớ: 
 - `Task.Run` giao việc cho `ThreadPool`.  
+- Không sử dụng `Task.Run` cho các hàm `async` sẵn có, vì bản thân hàm đã tự mở 1 `ThreadPool` ta ko cần mở thêm làm gì nữa.  
 - `CancellationToken` cho phép hủy mềm (`cooperative cancellation`).  
 - `IProgress<T>` giúp `marshal` về `UI thread` (trong WinForms/WPF), nên cập nhật UI an toàn.  
 - `await` giúp code không block UI, không gây `deadlock` kiểu `.Result`/`.Wait()`.  
 - `Event handler async void` là hợp lệ cho `WinForms`. Đừng `.Wait()` trên Task; luôn `await`.  
-- Tách logic nặng sang hàm đồng bộ trong Task.Run (nếu không cần async I/O), hoặc gọi hàm async I/O và vẫn await (không cần Task.Run).  
+- Tách logic nặng sang hàm đồng bộ trong `Task.Run` (nếu không cần async I/O), hoặc gọi hàm async I/O và vẫn await (không cần Task.Run).  
+
+## 3. Timer
+
+`Timer` trong `WWinforms` có 4 thư viện chính (tương ứng với 4 loại Timer), tránh nhầm lẫn khi khai báo với nhau:  
+
+|         Loại Timer          | Chạy ở Thread |                   Mục đích                      |                                     Lưu Ý                                         |
+| :-------------------------: | :-----------: | :---------------------------------------------: |:---------------------------------------------------------------------------------:|
+| System.Windows.Forms.Timer  |   UI Thread   |     Cập nhật UI định kỳ (Đồng bộ với Form)      |          Không chạy việc nặng (sẽ lag UI). Đơn giản, an toàn với control          |
+|     System.Timers.Timer     |   ThreadPool  |      Công việc nền nhẹ, `không động đến UI`     |             Sự kiện `Elapsed` chạy nền, muốn cập nhật UI phải `Invoke`            |
+|    System.Threading.Timer   |   ThreadPool  |          Tải nền định kỳ ở mức thấp             |      API đơn giản, nhưng lưu ý `Dispose` hợp lý. Tránh đụng control trực tiếp     |
+|       PeriodicTimer         |  Trong async  |  Vòng lặp `await timer.WaitForNextTickAsync()`  |           Kiểu lập trình async “sạch”, dễ hủy bằng CancellationToken.             |
+
+### 1. Timer trong Forms
+
+`Timer` của `Forms` chủ yếu thực hiện các `tick nhẹ, cập nhật UI đơn giản`  
+```C#
+// Kéo thả 1 Timer (timerUi) lên Form, Interval=250, Enabled=false
+private void MainForm_Load(object sender, EventArgs e)
+{
+    timerUi.Interval = 250;                // 250ms
+    timerUi.Tick += (s, ev) =>
+    {
+        // Chạy trên UI thread → có thể cập nhật control an toàn
+        lblClock.Text = DateTime.Now.ToString("HH:mm:ss.fff");
+        // Không làm việc nặng ở đây!
+    };
+    timerUi.Start();
+}
+```
+
+### 2. Timer trong Timer
+
+`Timer` của `Timer` chạy nền nhẹ, có thể `marshal` về UI để cập nhật giao diện.  
+```C#
+using System.Timers;
+
+private System.Timers.Timer _tm;
+
+private void StartTimersTimer()
+{
+    _tm = new System.Timers.Timer(500);   // 500ms
+    _tm.AutoReset = true;                 // Tick lặp lại
+    _tm.Elapsed += _tm_Elapsed;
+    _tm.SynchronizingObject = this;       // Marshal về UI thread (WinForms ISynchronizeInvoke)
+    _tm.Start();
+}
+
+private void _tm_Elapsed(object sender, ElapsedEventArgs e)
+{
+    // Nhờ SynchronizingObject=this, code này chạy trên UI thread
+    // → cập nhật control an toàn
+    lblStatus.Text = $"Timers.Timer tick @ {e.SignalTime:HH:mm:ss.fff}";
+}
+```
+
+> Nếu không đặt `SynchronizingObject`, `Elapsed` chạy trên `ThreadPool` ⇒ muốn cập nhật UI, bạn phải `BeginInvoke`.  
+
+### 3. Timer trong Threading
+
+`Timer` trong `Threading` sử dụng cho việc chạy nền đơn giản, không thao tác với `UI`.  
+```C#
+using System.Threading;
+
+private Timer _thTimer;
+
+private void StartThreadingTimer()
+{
+    // dueTime: 0 = start ngay; period: 1000ms
+    _thTimer = new Timer(_ =>
+    {
+        // Chạy trên ThreadPool. Không đụng control ở đây!
+        // Muốn cập nhật UI: this.BeginInvoke(...)
+        this.BeginInvoke((Action)(() =>
+        {
+            lblStatus.Text = $"Threading.Timer tick @ {DateTime.Now:HH:mm:ss}";
+        }));
+    }, state: null, dueTime: 0, period: 1000);
+}
+```
+
+### 4. PeriodicTimer
+
+Từ `NET 6+` có thêm `PeriodicTimer` sử dụng với `async` sạch, dễ hủy  
+```C#
+using System.Threading;
+using System.Threading.Tasks;
+
+private CancellationTokenSource _timerCts;
+
+private async Task RunPeriodicAsync(TimeSpan period, CancellationToken ct)
+{
+    using var timer = new PeriodicTimer(period);
+    while (await timer.WaitForNextTickAsync(ct))
+    {
+        // Vòng lặp async; bạn quyết định marshal về UI hay không
+        await this.InvokeAsync(() =>    // helper ở dưới
+        {
+            lblStatus.Text = $"PeriodicTimer @ {DateTime.Now:HH:mm:ss}";
+        });
+    }
+}
+
+// Helper: Task-based Invoke cho WinForms
+public static class ControlInvokeExtensions
+{
+    public static Task InvokeAsync(this Control c, Action action)
+    {
+        if (c.InvokeRequired)
+        {
+            var tcs = new TaskCompletionSource();
+            c.BeginInvoke(new MethodInvoker(() =>
+            {
+                try { action(); tcs.SetResult(); }
+                catch (Exception ex) { tcs.SetException(ex); }
+            }));
+            return tcs.Task;
+        }
+        else { action(); return Task.CompletedTask; }
+    }
+}
+
+private async void btnStartPeriodic_Click(object sender, EventArgs e)
+{
+    _timerCts?.Cancel();
+    _timerCts = new CancellationTokenSource();
+    try { await RunPeriodicAsync(TimeSpan.FromSeconds(1), _timerCts.Token); }
+    catch (OperationCanceledException) { /* ignore */ }
+}
+
+private void btnStopPeriodic_Click(object sender, EventArgs e)
+{
+    _timerCts?.Cancel();
+}
+```
+
+> Cập nhật UI định kỳ, việc nhẹ → `WinForms.Timer`.  
+>Công việc nền nhẹ, không UI → Timers.Timer hoặc `Threading.Timer`.  
+> Mô hình async hiện đại, dễ hủy → `PeriodicTimer`.  
+
+## 4. BackgroundWorker
+
+Là một tác vụ được thực thi độc lập, không chặn luồng chính của ứng dụng. Điều này cho phép ứng dụng vẫn phản hồi và hoạt động mượt mà trong khi các tác vụ tốn thời gian hoặc lặp đi lặp lại được xử lý ở chế độ nền.  
+Tuy nhiên đây là một cách cũ, nó vẫn hiệu quả để chạy các tác vụ nền và cập nhật UI một cách an toàn.  
+
+Các hàm chính:  
+- `DoWork`: Đây là nơi đặt mã để thực hiện công việc ở chế độ nền. Sự kiện này được kích hoạt khi `RunWorkerAsync()` được gọi.  
+- `ProgressChanged`: Kích hoạt khi gọi `ReportProgress()` trong sự kiện `DoWork` để báo cáo tiến độ của công việc đang chạy. Điều này `cho phép cập nhật giao diện người dùng`, như hiển thị thanh tiến trình.  
+- `RunWorkerCompleted`: Sự kiện này được kích hoạt khi công việc ở chế độ nền đã hoàn thành. Nó được sử dụng để thực hiện các hành động cuối cùng, chẳng hạn như hiển thị kết quả.   
 
 
+Ví dụ mẫu như sau:  
+```C#
+using System.ComponentModel;
+
+private BackgroundWorker _bw;
+
+private void SetupBackgroundWorker()
+{
+    _bw = new BackgroundWorker
+    {
+        WorkerReportsProgress = true,
+        WorkerSupportsCancellation = true
+    };
+    _bw.DoWork += (s, e) =>
+    {
+        // Chạy trên thread nền
+        for (int i = 0; i <= 100; i++)
+        {
+            if (_bw.CancellationPending) { e.Cancel = true; return; }
+            Thread.Sleep(20);          // Giả lập công việc
+            _bw.ReportProgress(i);     // Sẽ marshal về UI
+        }
+    };
+    _bw.ProgressChanged += (s, e) => progressBar.Value = e.ProgressPercentage; // UI thread
+    _bw.RunWorkerCompleted += (s, e) =>
+    {
+        if (e.Cancelled) lblStatus.Text = "BW: đã hủy";
+        else if (e.Error != null) lblStatus.Text = "BW lỗi: " + e.Error.Message;
+        else lblStatus.Text = "BW: xong";
+    };
+}
+
+private void btnStartBw_Click(object sender, EventArgs e) => _bw?.RunWorkerAsync();
+private void btnCancelBw_Click(object sender, EventArgs e) => _bw?.CancelAsync();
+```
+Hoặc ta có thể sử dụng nó một cách `hiện đại` hơn với `Queue`:  
+```C#
+using System;
+using System.Collections.Concurrent;
+using System.Threading;
+using System.Threading.Tasks;
+
+public sealed class BackgroundQueue : IDisposable
+{
+    private readonly BlockingCollection<Func<CancellationToken, Task>> _queue =
+        new(new ConcurrentQueue<Func<CancellationToken, Task>>());
+    private readonly CancellationTokenSource _cts = new();
+    private Task _consumer;
+
+    public void Start()
+    {
+        // Consumer chạy nền: lấy job và thực thi tuần tự
+        _consumer = Task.Run(async () =>
+        {
+            try
+            {
+                foreach (var job in _queue.GetConsumingEnumerable(_cts.Token))
+                {
+                    try { await job(_cts.Token); }
+                    catch (OperationCanceledException) { /* ignore */ }
+                    catch (Exception ex)
+                    {
+                        // TODO: ghi log
+                        System.Diagnostics.Trace.WriteLine($"Job error: {ex}");
+                    }
+                }
+            }
+            catch (OperationCanceledException) { /* shutdown */ }
+        }, _cts.Token);
+    }
+
+    public void Enqueue(Func<CancellationToken, Task> job)
+    {
+        if (!_queue.IsAddingCompleted) _queue.Add(job);
+    }
+
+    public async Task StopAsync()
+    {
+        _queue.CompleteAdding();
+        _cts.Cancel();
+        if (_consumer != null) { try { await _consumer; } catch { } }
+    }
+
+    public void Dispose()
+    {
+        _ = StopAsync();
+        _cts.Dispose();
+        _queue.Dispose();
+    }
+}
+```
+
+Cách thực hiện trong Form (ví dụ log nền/ prefetch):  
+```C#
+private BackgroundQueue _bg;
+
+private void MainForm_Load(object sender, EventArgs e)
+{
+    _bg = new BackgroundQueue();
+    _bg.Start();
+}
+
+private void btnQueueJob_Click(object sender, EventArgs e)
+{
+    _bg.Enqueue(async ct =>
+    {
+        // Ví dụ công việc nền: ghi file, prefetch, compress…
+        await Task.Delay(500, ct); // mô phỏng
+        // Cập nhật UI: marshal về UI thread
+        await this.InvokeAsync(() => lstLog.Items.Add("Job done @ " + DateTime.Now));
+    });
+}
+
+protected override async void OnFormClosing(FormClosingEventArgs e)
+{
+    base.OnFormClosing(e);
+    if (_bg != null) await _bg.StopAsync(); // tắt nền gọn gàng
+}
+```
 
 # Quản lý vòng đời  
 
