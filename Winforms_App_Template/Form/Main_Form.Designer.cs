@@ -29,7 +29,7 @@ namespace Winforms_App_Template
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            button1 = new Button();
+            Button1 = new Button();
             timer1 = new System.Windows.Forms.Timer(components);
             progressBar1 = new ProgressBar();
             label1 = new Label();
@@ -37,15 +37,15 @@ namespace Winforms_App_Template
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
-            // button1
+            // Button1
             // 
-            button1.Location = new Point(340, 67);
-            button1.Name = "button1";
-            button1.Size = new Size(75, 23);
-            button1.TabIndex = 2;
-            button1.Text = "button1";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
+            Button1.Location = new Point(340, 67);
+            Button1.Name = "Button1";
+            Button1.Size = new Size(75, 23);
+            Button1.TabIndex = 2;
+            Button1.Text = "button1";
+            Button1.UseVisualStyleBackColor = true;
+            Button1.Click += Button1_Click;
             // 
             // timer1
             // 
@@ -84,7 +84,7 @@ namespace Winforms_App_Template
             Controls.Add(dataGridView1);
             Controls.Add(label1);
             Controls.Add(progressBar1);
-            Controls.Add(button1);
+            Controls.Add(Button1);
             Name = "Main_Form";
             Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
@@ -93,7 +93,7 @@ namespace Winforms_App_Template
         }
 
         #endregion
-        private Button button1;
+        private Button Button1;
         private System.Windows.Forms.Timer timer1;
         private ProgressBar progressBar1;
         private Label label1;

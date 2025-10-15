@@ -14,7 +14,7 @@ namespace Winforms_App_Template
             label1.Text = progressBar1.Value.ToString();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void Button1_Click(object sender, EventArgs e)
         {
             timer1.Enabled = !timer1.Enabled;
         }
