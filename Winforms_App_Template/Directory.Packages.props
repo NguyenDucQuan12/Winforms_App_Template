@@ -12,14 +12,6 @@
     <PackageVersion Include="Serilog.Exceptions" Version="8.4.0" />
     <!-- DevExpress để thêm các control cho giao diện-->
     <PackageVersion Include="DevExpress.Win.Design" Version="25.1.5" />
-    <!-- EF Core stack (chọn phiên bản đúng với .NET của dự án) -->
-    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="8.0.7" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.7" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.7" />
-	<!-- Host/DI + cấu hình + logging dùng trong WinForms -->
-	<PackageVersion Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
-	<PackageVersion Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
-	<PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="8.0.0" />
     <!-- Tương tự thêm các gói mới vào dưới đây  -->
   </ItemGroup>
 </Project>
