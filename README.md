@@ -3,32 +3,46 @@ Chương trình windows bằng C#
 Cấu trúc dự án như sau:  
 
 ```
-Winform_App_Template/            // Thư mục chứa toàn bộ dự án
+Winform_App_Template/                   // Thư mục chứa toàn bộ dự án
 │
-├── .vscode/                     // Cấu hình debug trong visual studio code
+├── .vscode/                            // Cấu hình debug trong visual studio code
 ├── Winform_App_Template/
-│   ├── program.cs               // Tệp chính chạy chương trình
-│   ├── Database/                // Các giao thức/ lệnh truy vấn tới DB
-│   │   ├── __init__.py
-│   │   └── health_check.py
-│   ├── Form/                    // Chứa các giao diện của chương trình
-│   │   ├── Main_Form.cs         // Giao diện chính của chương trình
+│   ├── program.cs                      // Tệp chính chạy chương trình
+│   ├── Database/
+│   │    ├─ Model                       // Chứa các schema dữ liệu trả về
+│   │    │  ├── Wallet_Model.cs         // Schema của bảng dữ liệu Wallet trong SQL Server
+│   │    │  ...                         // Các Schema của các bảng khác được viết ở đây
+│   │    │  └── Users_Login_Model.cs    // Schema của bảng dữ liệu Wallet trong SQL Server  
+│   │    │
+│   │    ├─ Table                       // Chứa các lệnh truy vấn tương ứng với từng bảng trong SQL Server 
+│   │    │  ├── Users_Login_Table.cs    // Các lệnh truy vấn của bảng Users_Login được viết ở đây
+│   │    │  ...                         // Các lệnh truy vấn của các bảng còn lại được viết ở đây
+│   │    │  └── Wallet_Table.cs         // Các lệnh truy vấn của bảng Wallet_Table được viết ở đây
+│   │    │
+│   │    ├─ DbConfig.cs                 // Lấy connection string (ENV trước, fallback config)
+│   │    ├─ SqlPolicies.cs              // Chính sách Polly: retry + circuit breaker
+│   │    ├─ SqlConnectionFactory.cs     // Tạo SqlConnection mở sẵn (async)
+│   │    ├─ DbExecutor.cs               // Hàm thực thi (Dapper) có retry, timeout, cancel
+│   │    └─ TransientErrorDetector.cs   // Cấu hình các lỗi cho phép retry hoặc mở break
+│   │   
+│   ├── Form/                           // Chứa các giao diện của chương trình
+│   │   ├── Main_Form.cs                // Giao diện chính của chương trình
 │   │   └── Main_Form.py
-│   └── Utils/                   // Các hàm tiện tích sử dụng chung
-│       ├── Constants.cs         // Các hằng số thiết lập tại đây
-│       ├── LogEx.cs             // Custom log từ logging để hiển thị thêm log tại dòng nào và tệp nào
-│       ├── Shell.cs             // Truy cập vào hệ thống
-│       ├── Logging.cs           // Cấu hình logger sử dụng thư viện Serial Log
+│   └── Utils/                          // Các hàm tiện tích sử dụng chung
+│       ├── Constants.cs                // Các hằng số thiết lập tại đây
+│       ├── LogEx.cs                    // Custom log từ logging để hiển thị thêm log tại dòng nào và tệp nào
+│       ├── Shell.cs                    // Truy cập vào hệ thống
+│       ├── Logging.cs                  // Cấu hình logger sử dụng thư viện Serial Log
 │       └── user_controller.py
 │
-├── My_App.sln                   // Tệp solution để dự án tìm được đến với nhau
-├── .dockerignore                // Cấu hình bỏ qua các thư mục, tệp trong docker
-├── .env                         // Tệp tin chứa cấu hình các thông số
-├── .gitignore                   // Cấu hình bỏ qua các thư mục, tệp tin trong git
-├── .gitattributes               // Đảm bảo Git lưu file với định dạng UTF-8
-├── .editorconfig                // Đặt mặc định nội dung UTF-8 cho toàn dự án
-├── Dockerfile                   // Xây dựng các image cho docker
-├── docker-compose.yml           // Cấu hình các thông số khi chạy trên docker
+├── My_App.sln                          // Tệp solution để dự án tìm được đến với nhau
+├── .dockerignore                       // Cấu hình bỏ qua các thư mục, tệp trong docker
+├── .env                                // Tệp tin chứa cấu hình các thông số
+├── .gitignore                          // Cấu hình bỏ qua các thư mục, tệp tin trong git
+├── .gitattributes                      // Đảm bảo Git lưu file với định dạng UTF-8
+├── .editorconfig                       // Đặt mặc định nội dung UTF-8 cho toàn dự án
+├── Dockerfile                          // Xây dựng các image cho docker
+├── docker-compose.yml                  // Cấu hình các thông số khi chạy trên docker
 └── README.md
 ```
 
@@ -93,20 +107,26 @@ Winform_App_Template/            // Thư mục chứa toàn bộ dự án
     
 - [9. Ràng buộc dữ liệu (Binding)](#9-Ràng-buộc-dữ-liệu-Binding)  
     - [1. BindingSource](#1-BindingSource)  
-    - [2. BindingNavigator](#2-BindingNavigator)
+    - [2. BindingNavigator](#2-BindingNavigator)  
  
 [III. Thread, Timer, BackgroundWorker, Task](#iii-Thread-Timer-BackgroundWorker-Task)  
 - [1. Thread](#1-Thread)  
+
 - [2. Task](#2-Task)  
     - [1. Await](#1-await)  
-    - [2. Task.Run](#2-Taskrun)
+    - [2. Task.Run](#2-Taskrun)  
+
 - [3. Timer](#3-Timer)  
     - [1. Timer trong Forms](#1-Timer-trong-forms)  
     - [2. Timer trong Timer](#2-Timer-trong-timer)  
     - [3. Timer trong Threading](#3-Timer-trong-threading)  
     - [4. PeriodicTimer](#4-PeriodicTimer)  
-    - [5. BackgroundWork](#5-BackgroundWork)  
+    - [5. BackgroundWorker](#5-backgroundworker)  
 
+[IV. Quản lý vòng đời](#iv-quản-lý-vòng-đời)  
+- [1. Sử dụng using (cách được khuyến nghị)](#1-Sử-dụng-using-cách-được-khuyến-nghị)  
+
+[V. Database](#v-Database)
 # I. Đóng gói ứng dụng  
 
 > Đóng gói tất cả thành 1 tệp exe duy nhất  
@@ -1747,7 +1767,7 @@ protected override async void OnFormClosing(FormClosingEventArgs e)
 }
 ```
 
-# Quản lý vòng đời  
+# IV. Quản lý vòng đời  
 
 Trong .NET, một số đối tượng giữ tài nguyên bên ngoài GC (ngoài bộ nhớ managed), ví dụ: `handle file`, `socket`, `GDI+ (ảnh, icon, bút vẽ)`, `kết nối DB` …. Những đối tượng này thường triển khai giao diện `IDisposable` và có hàm `Dispose()` để giải phóng tài nguyên sớm, chủ động (deterministic).  
 
@@ -2419,7 +2439,7 @@ UiDisposalGuard.ClearImageSafe(pictureBox1);           // trả ảnh về null 
 > chỉ Dispose “cái cũ” nếu đó là bản bạn sở hữu (clone/tạo ra). Tránh dispose nhầm các instance framework giữ hộ (ví dụ một số Font mặc định).  
 
 
-# Kết nối tới CSDL
+# V. Database
 
 - Sử dụng `Microsoft.Data.SqlClient`  
 - `Open late, close early`: mở connection `ngay trước` khi query, đóng `ngay sau` kết thúc query (pooling sẽ tái dùng)  
@@ -2523,7 +2543,7 @@ Tệp hoàn chỉnh như sau:
 ```
 ## 2. Tạo cấu trúc dự án
 
-Ta tạo cấu trúc dự án với Databse như sau:  
+Ta tạo cấu trúc dự án với thư mục Database như sau:  
 
 ```
 Database/
@@ -2546,7 +2566,7 @@ Database/
 
 ### 2.1 Chuỗi kết nối
 
-Ta tạo hàm lấy chuỗi kết nối từ biến môi trường (`.env`) nếu tồn tại các giá trị, còn nếu không thì ta lấy mặc định chuỗi được cung cấp. Câu lệnh được viết tại tệp `DbConfig.cs`  
+Ta tạo hàm lấy chuỗi kết nối trong tệp `DbConfig.cs` từ biến môi trường (`.env`) nếu tồn tại các giá trị, còn nếu không thì ta lấy mặc định chuỗi được cung cấp. Câu lệnh được viết tại tệp `DbConfig.cs`  
 
 ```C#
 using System;
@@ -2595,6 +2615,7 @@ Nhớ thay thế các thông tin tương ứng trong `chuỗi kết nối`.
 
 ### 2.2 Nhận diện lỗi
 
+Ta tạo tẹp `TransientErrorDetector.cs` chứa danh sách các lỗi mà ta sẽ xử lý như bên dưới.  
 Khi truy vấn dữ liệu từ CSDL, nếu SQL Server trả về lỗi mà trùng với các lỗi nên `retry` thì chúng ta sẽ thử lại lần nữa.  
 
 ```C#
@@ -2638,7 +2659,7 @@ namespace Test.Database
 ```
 ### 2.3 Chính sách truy vấn lại hoặc mở break
 
-Khi SQL Server tự động truy vấn lại, ta cũng nên kiểm soát việc truy vấn lại, ko để mwor kết nối bừa bãi, truy vấn liên tục gây treo hệ thống, ảnh hưởng xấu đến dữ liệu hiện có. Vì vậy ta cấu hình các chính sách tương ứng vào tệp `SqlPolicies.cs`:  
+Khi SQL Server tự động truy vấn lại, ta cũng nên kiểm soát việc truy vấn lại, ko để mở kết nối bừa bãi, truy vấn liên tục gây treo hệ thống, ảnh hưởng xấu đến dữ liệu hiện có. Vì vậy ta cấu hình các chính sách tương ứng vào tệp `SqlPolicies.cs`:  
 
 Việc `retry` hay `đóng/mở break` được thực hiện trong `Pipeline`. `Pipeline` này chịu trách nhiệm mở kết nối và thực hiện toàn bộ quá trình truy vấn.  
 Đối với `retry` thì ta cấu hình vào biến `retry` trong `pipeline`:  
@@ -2679,7 +2700,7 @@ Trong đó:
 - `ShouldHandler`: Chỉ `retry` các lỗi nằm trong tệp `TransientErrorDetector.cs` mà ta đã quy ước, tránh `retry` các lỗi như `sai cú pháp`, `dữ liệu không hợp lệ`, ...  
 - `OnRetry`: Trong mỗi lần truy vấn lại, ta đều phải `ghi log` rõ ràng truy vấn lại lần bao nhiêu, vì sao lại truy vấn lại để dễ dàng phân tích và xử lý  
 
-Ta có code hoàn chỉnh cho cấu hình chính sách khi truy vấn như bên dưới:  
+Ta có code hoàn chỉnh cho cấu hình chính sách khi truy vấn trong tệp `SqlPolicies.cs` như bên dưới:  
 ```C#
 using System;
 using System.Linq;                             // dùng Select(...) để gom mã lỗi SQL
