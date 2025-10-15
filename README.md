@@ -2579,7 +2579,7 @@ Ta tạo hàm lấy chuỗi kết nối trong tệp `DbConfig.cs` từ biến m�
 ```C#
 using System;
 
-namespace Test.Database
+namespace Winforms_App_Template.Database
 {
     /// <summary>
     /// Lấy chuỗi kết nối từ ENV trước, sau đó mới đến fallback truyền vào.
@@ -2623,13 +2623,13 @@ Nhớ thay thế các thông tin tương ứng trong `chuỗi kết nối`.
 
 #### 2.2 Nhận diện lỗi
 
-Ta tạo tẹp `TransientErrorDetector.cs` chứa danh sách các lỗi mà ta sẽ xử lý như bên dưới.  
+Ta tạo class `TransientErrorDetector.cs` chứa danh sách các lỗi mà ta sẽ xử lý như bên dưới.  
 Khi truy vấn dữ liệu từ CSDL, nếu SQL Server trả về lỗi mà trùng với các lỗi nên `retry` thì chúng ta sẽ thử lại lần nữa.  
 
 ```C#
 using Microsoft.Data.SqlClient;
 
-namespace Test.Database
+namespace Winforms_App_Template.Database
 {
     /// <summary>
     /// Xác định lỗi SQL "transient" (có thể tự khỏi) để Retry.
@@ -2716,9 +2716,9 @@ using Microsoft.Data.SqlClient;                // SqlException
 using Polly;                                   // ResiliencePipeline, PredicateBuilder, builder
 using Polly.Retry;                             // RetryStrategyOptions, DelayBackoffType
 using Polly.CircuitBreaker;                    // CircuitBreakerStrategyOptions
-using Test.Utils;                              // LogEx (Serilog wrapper)
+using Winforms_App_Template.Utils;                              // LogEx (Serilog wrapper)
 
-namespace Test.Database
+namespace Winforms_App_Template.Database
 {
     /// <summary>
     /// Tạo Resilience Pipeline: Retry + Circuit Breaker
@@ -2934,7 +2934,7 @@ Ta đã tạo các chính sách cho mỗi kết nối, bây giờ ta cần tạo
 ```C#
 using Microsoft.Data.SqlClient;           // Dùng provider hiện đại cho SQL Server (thay cho System.Data.SqlClient)
 
-namespace Test.Database
+namespace Winforms_App_Template.Database
 {
     /// <summary>
     /// Factory tạo kết nối SQL theo nguyên tắc:
@@ -3033,7 +3033,7 @@ using System.Data;
 using Dapper;                           // Dapper micro-ORM
 using Polly;                            // ResiliencePipeline
 
-namespace Test.Database
+namespace Winforms_App_Template.Database
 {
     /// <summary>
     /// Thực thi truy vấn SQL (Dapper) qua Polly v8 ResiliencePipeline:
@@ -3225,7 +3225,7 @@ Trong đó:
 Ví dụ mẫu truy vấn CSDL: 
 ```C#
 // Lấy kết nối từ DbExecutor
-private readonly Test.Database.DbExecutor _db;
+private readonly Winforms_App_Template.Database.DbExecutor _db;
 
 // 1) Lấy danh sách tài khoản → ánh xạ vào DTO
 IEnumerable<LoginDto> rows = await _db.QueryAsync<LoginDto>(
@@ -3291,7 +3291,7 @@ END
 ```
 Sau đó ta tạo model để trả về kiểu dữ liệu cho các giao dịch của bảng này tại thư mục: `Database/Model/Transfer_Model.cs`:  
 ```C#
-namespace Test.Database.Model
+namespace Winforms_App_Template.Database.Model
 {
     public sealed class TransferResult
     {
@@ -3304,6 +3304,52 @@ namespace Test.Database.Model
 
 }
 ```
+Trong đó:  
+- `public`: Mức truy cập. Kiểu/thuộc tính/method được dùng từ bất kỳ assembly hoặc namespace nào.  
+- `sealed`: Không cho lớp khác kế thừa lớp này. “Đóng” API, giữ bất biến (invariants) an toàn  
+- `get`: Accessor đọc của auto-property  
+- `init`: Accessor “ghi chỉ-lúc-khởi-tạo” (C# 9+). Bạn có thể gán giá trị trong object initializer: new MyType { Prop = 123 } bên trong constructor của chính lớp (hoặc lớp dẫn xuất). Sau khi đã tạo xong đối tượng, không thể gán lại (tạo cảm giác “bất biến nhẹ”)  
+
+Ta có các cấu trúc cho các biến như sau:  
+Với `{gte; init;}` chỉ gán khi khởi tạo object (object initializer) hoặc từ constructor của lớp này (hoặc lớp con), sau khi khởi tạo xong ko được phép thay đổi:  
+ví dụ khi khởi tạo ban đầu:  
+```C#
+var result = new TransferResult
+{
+    FromUserId = 101,          // OK vì đang trong object initializer
+    ToUserId   = 202,          // OK
+    Amount     = 150_000m,     // Hậu tố m => decimal
+    FromBalanceAfter = 850_000m,
+    ToBalanceAfter   = 1_250_000m
+};
+```
+
+Sau khi đã khởi tạo, ta gán lại giá trị sẽ gặp lỗi:  
+```C#
+result.Amount = 200_000m; // ❌ Lỗi biên dịch: init-only property chỉ được gán khi khởi tạo
+```
+
+> Lỗi thường gặp (CS8852): “Init-only property can only be assigned in an object initializer, or on 'this' or 'base' in an instance constructor or an 'init' accessor.”  
+
+Haowcj cũng có thể khởi tạo giá trị trong `contructor` của class:  
+```C#
+public sealed class TransferResult2
+{
+    public int FromUserId { get; init; }
+    public int ToUserId   { get; init; }
+    public decimal Amount { get; init; }
+
+    public TransferResult2(int fromId, int toId, decimal amount)
+    {
+        FromUserId = fromId; // OK vì đang trong constructor của chính lớp
+        ToUserId   = toId;   // OK
+        Amount     = amount; // OK
+    }
+}
+```
+
+Ta có các mẫu sau:  
+
 
 Sau đó tạo `transaction` cho việc trừ tiền trong tài khoản người `A` và cộng tiền cho người `B` tại thư mục: `Database/Table/TransferTable.cs`:  
 ```C#
@@ -3313,9 +3359,9 @@ using System;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
-using Test.Database.Model;
+using Winforms_App_Template.Database.Model;
 
-namespace Test.Database.Table
+namespace Winforms_App_Template.Database.Table
 {
     public class WalletService
     {
@@ -3476,11 +3522,11 @@ using System.Linq;                    // FirstOrDefault()
 using System.Threading;               // CancellationTokenSource
 using System.Threading.Tasks;         // Task
 using System.Windows.Forms;           // WinForms Control
-using Test.Database;                  // DbExecutor, SqlPolicies, LoginTable
-using Test.Database.Table;
-using Test.Utils;                  
+using Winforms_App_Template.Database;                  // DbExecutor, SqlPolicies, LoginTable
+using Winforms_App_Template.Database.Table;
+using Winforms_App_Template.Utils;                  
 
-namespace Test
+namespace Winforms_App_Template
 {
     public partial class Form1 : Form
     {

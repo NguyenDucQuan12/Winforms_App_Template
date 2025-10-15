@@ -12,6 +12,10 @@
     <PackageVersion Include="Serilog.Exceptions" Version="8.4.0" />
     <!-- DevExpress để thêm các control cho giao diện-->
     <PackageVersion Include="DevExpress.Win.Design" Version="25.1.5" />
+	  <!--Kết nối tới SQL Server-->
+	<PackageVersion Include="Microsoft.Data.SqlClient" Version="5.2.2" />
+	<PackageVersion Include="Dapper" Version="2.1.35" />
+	<PackageVersion Include="Polly" Version="8.4.2" />
     <!-- Tương tự thêm các gói mới vào dưới đây  -->
   </ItemGroup>
 </Project>
