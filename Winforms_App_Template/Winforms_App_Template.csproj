@@ -15,7 +15,7 @@
 		<PackageReference Include="Serilog.Sinks.Async" />
 		<PackageReference Include="Serilog.Enrichers.Thread" />
 		<PackageReference Include="Serilog.Exceptions" />
-
+		<PackageReference Include="DevExpress.Win.Design" />
 		<!--Thêm 1 package vào đây, chỉ cần tên packages, version đã có ở directory.Packages.props-->
 	</ItemGroup>
 
@@ -39,7 +39,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Database\" />
+	  <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
 	</ItemGroup>
 
 </Project>
