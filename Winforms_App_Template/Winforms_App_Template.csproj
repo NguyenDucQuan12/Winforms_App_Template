@@ -46,7 +46,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Database\Model\" />
 	  <Folder Include="Database\Table\" />
 	</ItemGroup>
 
