@@ -1,4 +1,4 @@
-namespace Winforms_App_Template
+namespace Winforms_App_Template.Forms
 {
     public partial class Main_Form : Form
     {

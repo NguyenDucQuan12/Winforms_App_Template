@@ -1,5 +1,6 @@
 using Microsoft.VisualBasic.Logging;
 using Winforms_App_Template.Utils;
+using Winforms_App_Template.Forms;
 
 namespace Winforms_App_Template
 {
@@ -31,7 +32,7 @@ namespace Winforms_App_Template
 
             // Log.Information("Ứng dụng khởi động. LogDir={LogDir}", Logging.TodayLogDirectory);
             LogEx.Info("User bấm nút Xin chào.");
-            Application.Run(new Main_Form());
+            Application.Run(new Form1());
             LogEx.Information("Ứng dụng thoát.");
             Logging.Shutdown();
         }
