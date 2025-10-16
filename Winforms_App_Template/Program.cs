@@ -32,7 +32,7 @@ namespace Winforms_App_Template
 
             // Log.Information("Ứng dụng khởi động. LogDir={LogDir}", Logging.TodayLogDirectory);
             LogEx.Info("User bấm nút Xin chào.");
-            Application.Run(new Form1());
+            Application.Run(new DevExpress_Form());
             LogEx.Information("Ứng dụng thoát.");
             Logging.Shutdown();
         }
