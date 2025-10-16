@@ -24,7 +24,7 @@ Winform_App_Template/                   // Thư mục chứa toàn bộ dự án
 │   │    ├─ DbExecutor.cs               // Hàm thực thi (Dapper) có retry, timeout, cancel
 │   │    └─ TransientErrorDetector.cs   // Cấu hình các lỗi cho phép retry hoặc mở break
 │   │   
-│   ├── Form/                           // Chứa các giao diện của chương trình
+│   ├── Forms/                           // Chứa các giao diện của chương trình
 │   │   ├── Main_Form.cs                // Giao diện chính của chương trình
 │   │   └── Main_Form.py
 │   │
@@ -132,6 +132,14 @@ Winform_App_Template/                   // Thư mục chứa toàn bộ dự án
 
 [V. Database](#v-Database)  
 - [1. SqlClient](#1-Sqlclient)  
+    - [1. Cài đặt các gói phụ thuộc](#1-Cài-đặt-các-gói-phụ-thuộc)  
+    - [2. Cấu trúc thư mục Database](#2-Cấu-trúc-thư-mục-Database)  
+    - [3. Chuỗi kết nối](#3-Chuỗi-kết-nối)  
+    - [4. Nhận diện lỗi có thể thử lại](#4-Nhận-diện-lỗi-có-thể-thử-lại)  
+    - [5. Chính sách truy vấn lại hoặc mở break](#5-Chính-sách-truy-vấn-lại-hoặc-mở-break)  
+    - [6. Tạo kết nối đến DB](#6-Tạo-kết-nối-đến-DB)  
+    - [7. Thực hiện lệnh truy vấn, chỉnh sửa DB](#7-Thực-hiện-lệnh-truy-vấn-chỉnh-sửa-DB)  
+    - [8. Truy vấn dữ liệu trong 1 bảng](#8-Truy-vấn-dữ-liệu-trong-1-bảng)  
 - [2. Entity Framework](#2-Entity-framework)  
 
 # I. Đóng gói ứng dụng  
@@ -2448,7 +2456,7 @@ UiDisposalGuard.ClearImageSafe(pictureBox1);           // trả ảnh về null 
 
 # V. Database
 
-## 1. SqlCilent
+## 1. SqlClient
 - Sử dụng `Microsoft.Data.SqlClient`  
 - `Open late, close early`: mở connection `ngay trước` khi query, đóng `ngay sau` kết thúc query (pooling sẽ tái dùng)  
 - `Async/Await`: dùng các `API OpenAsync`, `ExecuteReaderAsync`, `ExecuteAsync (Dapper)` + `CancellationToken` → không block UI.  
@@ -2498,7 +2506,7 @@ Ví dụ 1 tệp hoàn chỉnh:
 </Project>
 ```
 
-Trong tệp chính có đuôi `.csproj` ta điền thêm:  
+Trong tệp chính có đuôi `.csproj` hoặc nhấn vào tệp `WWinforms_App_Template.csproj` ta điền thêm:  
 ```xml
 <ItemGroup>
   <PackageReference Include="Microsoft.Data.SqlClient" />
@@ -2549,16 +2557,16 @@ Tệp hoàn chỉnh như sau:
 	</ItemGroup>
 </Project>
 ```
-### 2. Tạo cấu trúc dự án
+### 2. Cấu trúc thư mục Database
 
-Ta tạo cấu trúc dự án với thư mục Database như sau:  
+Ta tạo cấu trúc thư mục Database như sau:  
 
 ```
 Database/
  ├─ Model                       // Chứa các schema dữ liệu trả về
  │  ├── Wallet_Model.cs         // Schema của bảng dữ liệu Wallet trong SQL Server
  │  ...                         // Các Schema của các bảng khác được viết ở đây
- │  └── Users_Login_Model.cs    // Schema của bảng dữ liệu Wallet trong SQL Server  
+ │  └── Users_Login_Model.cs    // Schema của bảng dữ liệu Users_Login trong SQL Server  
  │
  ├─ Table                       // Chứa các lệnh truy vấn tương ứng với từng bảng trong SQL Server 
  │  ├── Users_Login_Table.cs    // Các lệnh truy vấn của bảng Users_Login được viết ở đây
@@ -2571,8 +2579,8 @@ Database/
  ├─ DbExecutor.cs               // Hàm thực thi (Dapper) có retry, timeout, cancel
  └─ TransientErrorDetector.cs   // Cấu hình các lỗi cho phép retry hoặc mở break
 ```
-
-#### 2.1 Chuỗi kết nối
+Hầu hết đối với mỗi DB thì sự khác nhau chủ yếu nằm ở 2 thư mục `Model` và `Table`, và chuỗi kết nối tới CSDL. Còn lại là không có sự thay đổi.  
+### 3. Chuỗi kết nối
 
 Ta tạo hàm lấy chuỗi kết nối trong tệp `DbConfig.cs` từ biến môi trường (`.env`) nếu tồn tại các giá trị, còn nếu không thì ta lấy mặc định chuỗi được cung cấp. Câu lệnh được viết tại tệp `DbConfig.cs`  
 
@@ -2619,12 +2627,12 @@ namespace Winforms_App_Template.Database
 }
 ```
 
-Nhớ thay thế các thông tin tương ứng trong `chuỗi kết nối`.  
+Nhớ thay thế các thông tin tương ứng với mỗi DB trong `return` hoặc tệp `.env`.  
 
-#### 2.2 Nhận diện lỗi
+### 4. Nhận diện lỗi có thể thử lại
 
 Ta tạo class `TransientErrorDetector.cs` chứa danh sách các lỗi mà ta sẽ xử lý như bên dưới.  
-Khi truy vấn dữ liệu từ CSDL, nếu SQL Server trả về lỗi mà trùng với các lỗi nên `retry` thì chúng ta sẽ thử lại lần nữa.  
+Khi truy vấn dữ liệu từ CSDL, nếu SQL Server trả về lỗi mà trùng với các lỗi nên `retry` (Ta đánh giá nó là được phép thử lại) thì chúng ta sẽ thử lại lần nữa.  
 
 ```C#
 using Microsoft.Data.SqlClient;
@@ -2665,7 +2673,7 @@ namespace Winforms_App_Template.Database
     }
 }
 ```
-#### 2.3 Chính sách truy vấn lại hoặc mở break
+### 5. Chính sách truy vấn lại hoặc mở break
 
 Khi SQL Server tự động truy vấn lại, ta cũng nên kiểm soát việc truy vấn lại, ko để mở kết nối bừa bãi, truy vấn liên tục gây treo hệ thống, ảnh hưởng xấu đến dữ liệu hiện có. Vì vậy ta cấu hình các chính sách tương ứng vào tệp `SqlPolicies.cs`:  
 
@@ -2828,19 +2836,19 @@ namespace Winforms_App_Template.Database
 Song song với đó ta có `Circuit Breaker` sẽ chịu trách nhiệm kiểm soát lỗi xảy ra, nếu lượng lỗi ta quy định trong `TransientErrorDetector` xảy ra quá nhiều trong 1 thời gian ngắn thì ta phải `tạm dừng` các `request` tới CSDL của chúng ta để `giảm tải áp lực` cho CSDL.  
 
 Có 3 trạng thái chính của `Circuit Breaker (Polly v8)` như sau:  
-##### 1. Closed (đóng)
+#### 1. Closed (đóng)
 
 Đây là trạng thái bình thường, `Circuit break` không hoạt động, vì vậy các yêu cầu đến DB hoạt động bình thường, tuy nhiên các lỗi thuộc `ShouldHandle` sẽ được đếm và tính lưu lượng trong `mỗi cửa sổ đo`.  
 `Mỗi cửa sổ đo` 30 phút là hệ thống tính toán trong 30 phút có bao nhiêu yêu cầu (yêu cầu thuộc `ShouldHandler`) được ghi lại, nếu vượt quá số lượng này thì tiến hành chuyển sang trạng thái khác.  
 
-##### 2. Open (mở)
+#### 2. Open (mở)
 
 Khi tỉ lệ lỗi `vượt ngưỡng` cho phép trong `mỗi cửa sổ` và `đủ số lượng tối thiểu` (`MinimumThroughput`) thì `Breaker` sẽ chuyển sang trạng thái `OPEN` trong `BreakDuration` (trong khoảng thời gian ví dụ 20s).  
 
 Trong khoảng thời gian ở trạng thái này thì mọi yêu cầu gửi tới DB đều sẽ thất bại và trả về với ngoại lệ `BrokenCircuitException`, việc này giúp cho giảm áp lực lên DB đang gặp tình trạng quá nhiều yêu cầu trong thời gian ngắn.  
 
 `Circuit Breaker` sẽ ngăn chặn các kết nối trước khi nó được kết nối tới CSDL nên CSDL sẽ được `nghỉ` trong suốt thời gian trạng thái `OPEN`.  
-##### 3. Half-Open (nửa mở)
+#### 3. Half-Open (nửa mở)
 
 Là khoảng thời gian sau khi hết `BreakDuration`, `Breaker` chuyển sang giai đoạn `Half-Open`, `Polly` cho phép một số ít yêu cầu gửi đến DB, nếu tất cả đều thành công, không có lỗi nào nằm trong `ShouldHandler` thì `breaker` đóng lại, chuyển về trạng thái `CLOSED`. Còn nếu lại lỗi thì `Breaker` mở lại trạng thái `OPEN` thêm khoảng thời gian `BrakDuration` lần nữa.  
 
@@ -2927,7 +2935,7 @@ catch (BrokenCircuitException) // Circuit đang mở → fail nhanh
 
 Nếu DB đang quá tải/mạng chập chờn, việc cứ tiếp tục gửi `hàng nghìn request` sẽ làm tình hình tệ hơn. `Breaker` “mở” giúp bảo vệ DB bằng cách từ chối sớm trong một khoảng thời gian, cho hạ tầng có thời gian hồi.  
 
-### 3. Tạo kết nối đến DB
+### 6. Tạo kết nối đến DB
 
 Ta đã tạo các chính sách cho mỗi kết nối, bây giờ ta cần tạo kết nối tới CSDL ở tệp `SqlConnectionFactory.cs` như sau:  
 
@@ -3022,7 +3030,7 @@ await SomethingAsync().ConfigureAwait(false);
 BeginInvoke((Action)(() => statusLabel.Text = "xong")); // chuyển về UI thread thủ công
 ```
 
-### 4. Thực hiện lệnh truy vấn, chỉnh sửa DB
+### 7. Thực hiện lệnh truy vấn, chỉnh sửa DB
 
 Sau khi kết nối tới DB, các lệnh áp dụng tới `SQL Server như SELECT/INSERT/UPDATE ...` đều được thực hiện qua thư viện `Dapper`, để đảm bảo các truy vấn được áp dụng chính sách đã quy định.  
 
@@ -3209,10 +3217,10 @@ public sealed class LoginDto
     public string ID { get; init; } = "";           
     public string User_Name { get; init; } = "";
     public string Email { get; init; } = "";
-    public string Password { get; init; } = "";  // Thực tế: DIỄN GIẢN – không nên expose
-    public string Avatar { get; init; } = "";    // đường dẫn/URL?
+    public string Password { get; init; } = ""; 
+    public string Avatar { get; init; } = "";    
     public string Privilege { get; init; } = "";
-    public DateTime? Activate { get; init; }          // nếu BIT NOT NULL
+    public DateTime? Activate { get; init; }          
 }
 ```
 Trong đó:  
@@ -3275,7 +3283,7 @@ isolation: IsolationLevel.ReadCommitted,
 ct: _cts.Token);
 ```
 
-### 5. Truy vấn trong 1 bảng dữ liệu
+### 8. Truy vấn dữ liệu trong 1 bảng
 
 Ta tạo 1 bảng `Wallet` trong `SQL Server` để lưu trữ các giao dịch về tiền:  
 ```SQL
@@ -3301,17 +3309,16 @@ namespace Winforms_App_Template.Database.Model
         public decimal FromBalanceAfter { get; init; }
         public decimal ToBalanceAfter { get; init; }
     }
-
 }
 ```
 Trong đó:  
 - `public`: Mức truy cập. Kiểu/thuộc tính/method được dùng từ bất kỳ assembly hoặc namespace nào.  
 - `sealed`: Không cho lớp khác kế thừa lớp này. “Đóng” API, giữ bất biến (invariants) an toàn  
 - `get`: Accessor đọc của auto-property  
-- `init`: Accessor “ghi chỉ-lúc-khởi-tạo” (C# 9+). Bạn có thể gán giá trị trong object initializer: new MyType { Prop = 123 } bên trong constructor của chính lớp (hoặc lớp dẫn xuất). Sau khi đã tạo xong đối tượng, không thể gán lại (tạo cảm giác “bất biến nhẹ”)  
+- `init`: Accessor “ghi chỉ-lúc-khởi-tạo” (C# 9+).  
 
 Ta có các cấu trúc cho các biến như sau:  
-Với `{gte; init;}` chỉ gán khi khởi tạo object (object initializer) hoặc từ constructor của lớp này (hoặc lớp con), sau khi khởi tạo xong ko được phép thay đổi:  
+Với `{get; init;}` chỉ gán khi khởi tạo object (object initializer) hoặc từ constructor của lớp này (hoặc lớp con), sau khi khởi tạo xong ko được phép thay đổi:  
 ví dụ khi khởi tạo ban đầu:  
 ```C#
 var result = new TransferResult
@@ -3331,7 +3338,7 @@ result.Amount = 200_000m; // ❌ Lỗi biên dịch: init-only property chỉ đ
 
 > Lỗi thường gặp (CS8852): “Init-only property can only be assigned in an object initializer, or on 'this' or 'base' in an instance constructor or an 'init' accessor.”  
 
-Haowcj cũng có thể khởi tạo giá trị trong `contructor` của class:  
+Hoặc cũng có thể khởi tạo giá trị trong `contructor` của class:  
 ```C#
 public sealed class TransferResult2
 {
@@ -3350,8 +3357,117 @@ public sealed class TransferResult2
 
 Ta có các mẫu sau:  
 
+|         Mẫu         |                Khi nào dùng                 |                   Dặc điểm                      |
+| :-----------------: | :-----------------------------------------: | :---------------------------------------------: |
+|      get; set;      |      Thuộc tính có thể thay đổi sau tạo     |     Linh hoạt nhưng dễ bị thay đổi ngoài ý      |
+|  get; private set;  |      Cho phép thay đổi chỉ từ trong lớp     |         Bảo vệ trạng thái từ bên ngoài          |
+|  get; private init; |   “Bất biến sau khởi tạo” (immutable-like)  |        Đặt giá trị sớm, an toàn sau đó          |
 
-Sau đó tạo `transaction` cho việc trừ tiền trong tài khoản người `A` và cộng tiền cho người `B` tại thư mục: `Database/Table/TransferTable.cs`:  
+Ví dụ cho mẫu `private set`:  
+```C#
+public class User
+{
+    public string Name { get; init; }         // Gán lúc tạo, sau đó “đóng băng”
+    public int Age { get; private set; }      // Chỉ nội bộ class được thay đổi
+
+    public User(string name, int age)
+    {
+        Name = name;      // OK (constructor)
+        Age = age;        // OK
+    }
+
+    public void Birthday() => Age++; // OK: private set cho phép thay đổi nội bộ
+}
+```
+Hoặc ta có thể thêm thuộc tính `required`. Đây ko phải là `accessor` mà là `modifier` bắt buộc thuộc tính phải gán khi khởi tạo.  
+```C#
+public sealed class TransferResultStrict
+{
+    public required int FromUserId { get; init; } // BẮT BUỘC gán khi tạo
+    public required int ToUserId   { get; init; }
+    public required decimal Amount  { get; init; }
+}
+
+var ok = new TransferResultStrict
+{
+    FromUserId = 1,
+    ToUserId = 2,
+    Amount = 10m
+};
+
+var fail = new TransferResultStrict
+{
+    FromUserId = 1,
+    ToUserId = 2
+};
+// ❌ Lỗi biên dịch vì thiếu Amount
+```
+
+> Bình thường nếu trả về đơn giản ta có thể `public int Age { get; init; }`.  
+> Một khi `validate` giá trị thì ta phải dùng `Full property` cho các trường giá trị  
+
+Ví dụ:  
+```C#
+private int _age;                          // backing field
+public int Age
+{
+    get => _age;                           // getter: chỉ đọc
+    init                                    // hoặc set
+    {
+        if (value < 0)                     // validate giá trị gán
+            throw new ArgumentOutOfRangeException();
+        _age = value;                      // gán vào backing field
+    }
+}
+```
+
+Trong đó:  
+- `Value`: là chỉ giá trị được gán vào cho biến `Age`.  
+- 
+Ở `Init` ta `validate` giá trị khi người dùng khởi tạo, yêu cầu giá trị ko được nhỏ hơn 0. Vì vậy ở đây ta không thể sử dụng cú pháp `auto-property` (`{ get; init; }`).  
+Vì vậy ta cần phải sử dụng cấu trúc `full property` cho biến `Age`.  
+
+Một ví dụ khi tạo class trong C# như sau:  
+```C#
+public sealed class Employee
+{
+    private int _age;                             // lưu dữ liệu thực sự
+    public int Age
+    {
+        get => _age;                              // getter: trả về _age (viết gọn)
+        init                                       // chỉ gán được khi khởi tạo
+        {
+            if (value < 0)                         // validate
+                throw new ArgumentOutOfRangeException(nameof(Age), "Age must be >= 0");
+            _age = value;                          // hợp lệ thì gán
+        }
+    }
+
+    //    Gán mặc định "" để không bị cảnh báo NRT nếu caller không gán.
+    public string CodeEmp { get; init; } = "";    // Mã nhân viên (mặc định rỗng, không null)
+    // Thuộc tính tuỳ chọn, chỉ cho gán từ cùng assembly bằng object initializer
+    public int? CreatedBy { get; internal init; } // Người tạo (có thể null)
+
+    // Constructor: có thể gán init ở đây (luôn hợp lệ vì *bên trong class*)
+    public Employee(int age, string codeEmp)
+    {
+        Age = age;                                 // OK với init vì gán trong class
+        CodeEmp = codeEmp;                         // OK, đảm bảo không null khi tạo xong
+    }
+}
+
+// ===== CÁCH DÙNG =====
+var e1 = new Employee(age: 30, codeEmp: "E001");   // Truyền qua contructor
+
+var e2 = new Employee(age: 25, codeEmp: "E002")    // Dùng object initializer để gán CreatedBy
+{
+    CreatedBy = 7                                  // CreateBy ko nằm trong contructor nên phải truyền thế này
+};
+
+// var e3 = new Employee(age: -1, codeEmp: "E003"); // ❌ Lỗi runtime: Age < 0 => ném exception
+```
+
+Sau đó tạo các lệnh `truy vấn`, `cập nhật`, `transaction` cho việc trừ tiền trong tài khoản người `A` và cộng tiền cho người `B` tại thư mục: `Database/Table/TransferTable.cs`:  
 ```C#
 // WalletService.cs
 using Dapper;
