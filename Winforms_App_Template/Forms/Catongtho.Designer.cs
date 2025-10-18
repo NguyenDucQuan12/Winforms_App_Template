@@ -28,43 +28,34 @@ namespace Winforms_App_Template.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            DevExpress.XtraLayout.ColumnDefinition columnDefinition1 = new DevExpress.XtraLayout.ColumnDefinition();
-            DevExpress.XtraLayout.ColumnDefinition columnDefinition2 = new DevExpress.XtraLayout.ColumnDefinition();
-            DevExpress.XtraLayout.ColumnDefinition columnDefinition3 = new DevExpress.XtraLayout.ColumnDefinition();
-            DevExpress.XtraLayout.RowDefinition rowDefinition1 = new DevExpress.XtraLayout.RowDefinition();
-            DevExpress.XtraLayout.RowDefinition rowDefinition2 = new DevExpress.XtraLayout.RowDefinition();
-            DevExpress.XtraLayout.RowDefinition rowDefinition3 = new DevExpress.XtraLayout.RowDefinition();
+            DevExpress.XtraLayout.ColumnDefinition columnDefinition4 = new DevExpress.XtraLayout.ColumnDefinition();
+            DevExpress.XtraLayout.ColumnDefinition columnDefinition5 = new DevExpress.XtraLayout.ColumnDefinition();
+            DevExpress.XtraLayout.ColumnDefinition columnDefinition6 = new DevExpress.XtraLayout.ColumnDefinition();
+            DevExpress.XtraLayout.RowDefinition rowDefinition4 = new DevExpress.XtraLayout.RowDefinition();
+            DevExpress.XtraLayout.RowDefinition rowDefinition5 = new DevExpress.XtraLayout.RowDefinition();
+            DevExpress.XtraLayout.RowDefinition rowDefinition6 = new DevExpress.XtraLayout.RowDefinition();
             gridControl1 = new DevExpress.XtraGrid.GridControl();
             advBandedGridView1 = new DevExpress.XtraGrid.Views.BandedGrid.AdvBandedGridView();
-            STT_gridband = new DevExpress.XtraGrid.Views.BandedGrid.GridBand();
-            bandedGridColumn2 = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
-            gridBand6 = new DevExpress.XtraGrid.Views.BandedGrid.GridBand();
-            bandedGridColumn9 = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
-            bandedGridColumn10 = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
-            gridBand8 = new DevExpress.XtraGrid.Views.BandedGrid.GridBand();
-            bandedGridColumn16 = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
-            bandedGridColumn17 = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
-            a11 = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
-            bandedGridColumn19 = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
-            gridBand3 = new DevExpress.XtraGrid.Views.BandedGrid.GridBand();
-            gridBand4 = new DevExpress.XtraGrid.Views.BandedGrid.GridBand();
-            bandedGridColumn20 = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
-            bandedGridColumn21 = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
-            bandedGridColumn22 = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
-            bandedGridColumn23 = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
-            bandedGridColumn24 = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
-            bandedGridColumn3 = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
-            gridBand1 = new DevExpress.XtraGrid.Views.BandedGrid.GridBand();
-            bandedGridColumn4 = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
-            bandedGridColumn5 = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
-            bandedGridColumn7 = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
-            bandedGridColumn6 = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
-            bandedGridColumn8 = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
-            bandedGridColumn1 = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
-            bandedGridColumn11 = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
-            gridBand2 = new DevExpress.XtraGrid.Views.BandedGrid.GridBand();
-            gridBand7 = new DevExpress.XtraGrid.Views.BandedGrid.GridBand();
-            gridBand9 = new DevExpress.XtraGrid.Views.BandedGrid.GridBand();
+            bdglydokiemtra = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
+            bdgngaythaotac = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
+            bdgnguoithaotac = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
+            bdgsomaythaotac = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
+            bdgsoluongongdaisudung = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
+            bdgmaquanlythickness = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
+            bdgduongkinhngoaiongdai = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
+            bdgmapingauge = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
+            bdgduongkinhtrong = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
+            bdgtrangthaicat = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
+            bdgthuocsudung = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
+            bdgchieudaicat = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
+            bdgsoluongsudung = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
+            bdgcatvat = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
+            bdgbep = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
+            bdgroi = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
+            bdgbavia = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
+            bdgchieudaingoaitieuchuan = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
+            bdgkhac = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
+            bdgxacnhantonluu = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
             repositoryItemDateTimeOffsetEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemDateTimeOffsetEdit();
             gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
             MaNV = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -100,6 +91,15 @@ namespace Winforms_App_Template.Forms
             layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
+            STT_gridband = new DevExpress.XtraGrid.Views.BandedGrid.GridBand();
+            gridBand6 = new DevExpress.XtraGrid.Views.BandedGrid.GridBand();
+            gridBand8 = new DevExpress.XtraGrid.Views.BandedGrid.GridBand();
+            gridBand3 = new DevExpress.XtraGrid.Views.BandedGrid.GridBand();
+            gridBand4 = new DevExpress.XtraGrid.Views.BandedGrid.GridBand();
+            gridBand1 = new DevExpress.XtraGrid.Views.BandedGrid.GridBand();
+            gridBand2 = new DevExpress.XtraGrid.Views.BandedGrid.GridBand();
+            gridBand7 = new DevExpress.XtraGrid.Views.BandedGrid.GridBand();
+            gridBand9 = new DevExpress.XtraGrid.Views.BandedGrid.GridBand();
             ((System.ComponentModel.ISupportInitialize)gridControl1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)advBandedGridView1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)repositoryItemDateTimeOffsetEdit1).BeginInit();
@@ -120,402 +120,273 @@ namespace Winforms_App_Template.Forms
             // 
             // gridControl1
             // 
-            gridControl1.EmbeddedNavigator.Margin = new Padding(5, 6, 5, 6);
-            gridControl1.Location = new Point(20, 309);
+            gridControl1.Location = new Point(12, 155);
             gridControl1.MainView = advBandedGridView1;
-            gridControl1.Margin = new Padding(5, 6, 5, 6);
             gridControl1.Name = "gridControl1";
             gridControl1.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] { repositoryItemDateTimeOffsetEdit1 });
-            gridControl1.Size = new Size(942, 571);
+            gridControl1.Size = new Size(548, 283);
             gridControl1.TabIndex = 2;
             gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { advBandedGridView1, gridView1 });
             // 
             // advBandedGridView1
             // 
+            advBandedGridView1.BandPanelRowHeight = 0;
             advBandedGridView1.Bands.AddRange(new DevExpress.XtraGrid.Views.BandedGrid.GridBand[] { STT_gridband, gridBand6, gridBand8, gridBand3, gridBand2, gridBand7, gridBand9 });
-            advBandedGridView1.Columns.AddRange(new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn[] { bandedGridColumn2, bandedGridColumn9, bandedGridColumn10, bandedGridColumn16, bandedGridColumn17, a11, bandedGridColumn19, bandedGridColumn20, bandedGridColumn21, bandedGridColumn22, bandedGridColumn23, bandedGridColumn24, bandedGridColumn3, bandedGridColumn4, bandedGridColumn5, bandedGridColumn6, bandedGridColumn7, bandedGridColumn8, bandedGridColumn1, bandedGridColumn11 });
-            advBandedGridView1.DetailHeight = 700;
+            advBandedGridView1.ColumnPanelRowHeight = 0;
+            advBandedGridView1.Columns.AddRange(new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn[] { bdglydokiemtra, bdgngaythaotac, bdgnguoithaotac, bdgsomaythaotac, bdgsoluongongdaisudung, bdgmaquanlythickness, bdgduongkinhngoaiongdai, bdgmapingauge, bdgduongkinhtrong, bdgtrangthaicat, bdgchieudaicat, bdgthuocsudung, bdgsoluongsudung, bdgcatvat, bdgbep, bdgbavia, bdgroi, bdgchieudaingoaitieuchuan, bdgkhac, bdgxacnhantonluu });
+            advBandedGridView1.FooterPanelHeight = 0;
             advBandedGridView1.GridControl = gridControl1;
+            advBandedGridView1.GroupRowHeight = 0;
             advBandedGridView1.Name = "advBandedGridView1";
-            advBandedGridView1.OptionsEditForm.PopupEditFormWidth = 1371;
             advBandedGridView1.OptionsView.NewItemRowPosition = DevExpress.XtraGrid.Views.Grid.NewItemRowPosition.Bottom;
+            advBandedGridView1.RowHeight = 0;
+            advBandedGridView1.ViewCaptionHeight = 0;
             // 
-            // STT_gridband
+            // bdglydokiemtra
             // 
-            STT_gridband.AppearanceHeader.Options.UseTextOptions = true;
-            STT_gridband.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            STT_gridband.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            STT_gridband.Caption = "Lý do kiểm tra";
-            STT_gridband.Columns.Add(bandedGridColumn2);
-            STT_gridband.MinWidth = 17;
-            STT_gridband.Name = "STT_gridband";
-            STT_gridband.OptionsBand.ShowInCustomizationForm = false;
-            STT_gridband.RowCount = 2;
-            STT_gridband.VisibleIndex = 0;
-            STT_gridband.Width = 185;
+            bdglydokiemtra.AppearanceHeader.Options.UseTextOptions = true;
+            bdglydokiemtra.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            bdglydokiemtra.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            bdglydokiemtra.AutoFillDown = true;
+            bdglydokiemtra.Caption = "Lý do kiểm tra";
+            bdglydokiemtra.Name = "bdglydokiemtra";
+            bdglydokiemtra.RowCount = 2;
+            bdglydokiemtra.Visible = true;
+            bdglydokiemtra.Width = 113;
             // 
-            // bandedGridColumn2
+            // bdgngaythaotac
             // 
-            bandedGridColumn2.AppearanceHeader.Options.UseTextOptions = true;
-            bandedGridColumn2.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            bandedGridColumn2.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            bandedGridColumn2.AutoFillDown = true;
-            bandedGridColumn2.Caption = "Lý do kiểm tra";
-            bandedGridColumn2.MinWidth = 34;
-            bandedGridColumn2.Name = "bandedGridColumn2";
-            bandedGridColumn2.RowCount = 2;
-            bandedGridColumn2.Visible = true;
-            bandedGridColumn2.Width = 185;
+            bdgngaythaotac.AppearanceCell.Options.UseTextOptions = true;
+            bdgngaythaotac.AppearanceCell.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            bdgngaythaotac.AppearanceHeader.Options.UseTextOptions = true;
+            bdgngaythaotac.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            bdgngaythaotac.Caption = "Ngày thao tác";
+            bdgngaythaotac.Name = "bdgngaythaotac";
+            bdgngaythaotac.RowCount = 4;
+            bdgngaythaotac.Visible = true;
+            bdgngaythaotac.Width = 227;
             // 
-            // gridBand6
+            // bdgnguoithaotac
             // 
-            gridBand6.AppearanceHeader.Options.UseTextOptions = true;
-            gridBand6.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            gridBand6.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            gridBand6.Caption = "Giờ/ngày tháng thao tác, Người thao tác";
-            gridBand6.Columns.Add(bandedGridColumn9);
-            gridBand6.Columns.Add(bandedGridColumn10);
-            gridBand6.MinWidth = 17;
-            gridBand6.Name = "gridBand6";
-            gridBand6.VisibleIndex = 1;
-            gridBand6.Width = 363;
+            bdgnguoithaotac.AppearanceCell.Options.UseTextOptions = true;
+            bdgnguoithaotac.AppearanceCell.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            bdgnguoithaotac.AppearanceHeader.Options.UseTextOptions = true;
+            bdgnguoithaotac.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            bdgnguoithaotac.Caption = "Người thao tác";
+            bdgnguoithaotac.Name = "bdgnguoithaotac";
+            bdgnguoithaotac.RowCount = 4;
+            bdgnguoithaotac.RowIndex = 1;
+            bdgnguoithaotac.Visible = true;
+            bdgnguoithaotac.Width = 227;
             // 
-            // bandedGridColumn9
+            // bdgsomaythaotac
             // 
-            bandedGridColumn9.AppearanceCell.Options.UseTextOptions = true;
-            bandedGridColumn9.AppearanceCell.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            bandedGridColumn9.AppearanceHeader.Options.UseTextOptions = true;
-            bandedGridColumn9.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            bandedGridColumn9.Caption = "Tiếng nhật ở đây \\nNgày thao tác";
-            bandedGridColumn9.MinWidth = 34;
-            bandedGridColumn9.Name = "bandedGridColumn9";
-            bandedGridColumn9.RowCount = 4;
-            bandedGridColumn9.Visible = true;
-            bandedGridColumn9.Width = 363;
+            bdgsomaythaotac.AppearanceHeader.Options.UseTextOptions = true;
+            bdgsomaythaotac.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            bdgsomaythaotac.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            bdgsomaythaotac.Caption = "Số máy sản xuất";
+            bdgsomaythaotac.FieldName = "CodeEmp";
+            bdgsomaythaotac.Name = "bdgsomaythaotac";
+            bdgsomaythaotac.RowCount = 2;
+            bdgsomaythaotac.Visible = true;
+            bdgsomaythaotac.Width = 365;
             // 
-            // bandedGridColumn10
+            // bdgsoluongongdaisudung
             // 
-            bandedGridColumn10.AppearanceCell.Options.UseTextOptions = true;
-            bandedGridColumn10.AppearanceCell.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            bandedGridColumn10.AppearanceHeader.Options.UseTextOptions = true;
-            bandedGridColumn10.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            bandedGridColumn10.Caption = "Người thao tác";
-            bandedGridColumn10.MinWidth = 34;
-            bandedGridColumn10.Name = "bandedGridColumn10";
-            bandedGridColumn10.RowCount = 4;
-            bandedGridColumn10.RowIndex = 1;
-            bandedGridColumn10.Visible = true;
-            bandedGridColumn10.Width = 363;
+            bdgsoluongongdaisudung.AppearanceHeader.Options.UseTextOptions = true;
+            bdgsoluongongdaisudung.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            bdgsoluongongdaisudung.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            bdgsoluongongdaisudung.Caption = "Số lượng ống dài sử dụng/Số ống cắt được";
+            bdgsoluongongdaisudung.FieldName = "ProfileName";
+            bdgsoluongongdaisudung.Name = "bdgsoluongongdaisudung";
+            bdgsoluongongdaisudung.RowCount = 2;
+            bdgsoluongongdaisudung.RowIndex = 1;
+            bdgsoluongongdaisudung.Visible = true;
+            bdgsoluongongdaisudung.Width = 365;
             // 
-            // gridBand8
+            // bdgmaquanlythickness
             // 
-            gridBand8.AppearanceHeader.Options.UseTextOptions = true;
-            gridBand8.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            gridBand8.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            gridBand8.Caption = "Thiết bị";
-            gridBand8.Columns.Add(bandedGridColumn16);
-            gridBand8.Columns.Add(bandedGridColumn17);
-            gridBand8.Columns.Add(a11);
-            gridBand8.Columns.Add(bandedGridColumn19);
-            gridBand8.MinWidth = 17;
-            gridBand8.Name = "gridBand8";
-            gridBand8.VisibleIndex = 2;
-            gridBand8.Width = 581;
+            bdgmaquanlythickness.AppearanceHeader.Options.UseTextOptions = true;
+            bdgmaquanlythickness.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            bdgmaquanlythickness.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            bdgmaquanlythickness.Caption = "Mã quản lý thickness gauge";
+            bdgmaquanlythickness.FieldName = "BoPhan";
+            bdgmaquanlythickness.Name = "bdgmaquanlythickness";
+            bdgmaquanlythickness.RowCount = 2;
+            bdgmaquanlythickness.RowIndex = 2;
+            bdgmaquanlythickness.Visible = true;
+            bdgmaquanlythickness.Width = 365;
             // 
-            // bandedGridColumn16
+            // bdgduongkinhngoaiongdai
             // 
-            bandedGridColumn16.AppearanceHeader.Options.UseTextOptions = true;
-            bandedGridColumn16.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            bandedGridColumn16.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            bandedGridColumn16.Caption = "Số máy sản xuất";
-            bandedGridColumn16.FieldName = "CodeEmp";
-            bandedGridColumn16.MinWidth = 34;
-            bandedGridColumn16.Name = "bandedGridColumn16";
-            bandedGridColumn16.RowCount = 2;
-            bandedGridColumn16.Visible = true;
-            bandedGridColumn16.Width = 581;
+            bdgduongkinhngoaiongdai.AppearanceHeader.Options.UseTextOptions = true;
+            bdgduongkinhngoaiongdai.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            bdgduongkinhngoaiongdai.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            bdgduongkinhngoaiongdai.Caption = "Đường kính ngoài ống dài (mm)";
+            bdgduongkinhngoaiongdai.FieldName = "WorkDateRoot";
+            bdgduongkinhngoaiongdai.Name = "bdgduongkinhngoaiongdai";
+            bdgduongkinhngoaiongdai.RowCount = 2;
+            bdgduongkinhngoaiongdai.RowIndex = 3;
+            bdgduongkinhngoaiongdai.Visible = true;
+            bdgduongkinhngoaiongdai.Width = 365;
             // 
-            // bandedGridColumn17
+            // bdgmapingauge
             // 
-            bandedGridColumn17.AppearanceHeader.Options.UseTextOptions = true;
-            bandedGridColumn17.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            bandedGridColumn17.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            bandedGridColumn17.Caption = "Số lượng ống dài sử dụng/Số ống cắt được";
-            bandedGridColumn17.FieldName = "ProfileName";
-            bandedGridColumn17.MinWidth = 34;
-            bandedGridColumn17.Name = "bandedGridColumn17";
-            bandedGridColumn17.RowCount = 2;
-            bandedGridColumn17.RowIndex = 1;
-            bandedGridColumn17.Visible = true;
-            bandedGridColumn17.Width = 581;
+            bdgmapingauge.AppearanceHeader.Options.UseTextOptions = true;
+            bdgmapingauge.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            bdgmapingauge.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            bdgmapingauge.Caption = "Mã pingauge 0.98mm";
+            bdgmapingauge.FieldName = "InTime";
+            bdgmapingauge.Name = "bdgmapingauge";
+            bdgmapingauge.RowCount = 2;
+            bdgmapingauge.Visible = true;
+            bdgmapingauge.Width = 446;
             // 
-            // a11
+            // bdgduongkinhtrong
             // 
-            a11.AppearanceHeader.Options.UseTextOptions = true;
-            a11.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            a11.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            a11.Caption = "Mã quản lý thickness gauge";
-            a11.FieldName = "BoPhan";
-            a11.MinWidth = 34;
-            a11.Name = "a11";
-            a11.RowCount = 2;
-            a11.RowIndex = 2;
-            a11.Visible = true;
-            a11.Width = 581;
+            bdgduongkinhtrong.AppearanceHeader.Options.UseTextOptions = true;
+            bdgduongkinhtrong.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            bdgduongkinhtrong.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            bdgduongkinhtrong.Caption = "Đường kính trong (loại 4Fr&4Kfr)";
+            bdgduongkinhtrong.FieldName = "OutTime";
+            bdgduongkinhtrong.Name = "bdgduongkinhtrong";
+            bdgduongkinhtrong.RowCount = 2;
+            bdgduongkinhtrong.RowIndex = 1;
+            bdgduongkinhtrong.Visible = true;
+            bdgduongkinhtrong.Width = 222;
             // 
-            // bandedGridColumn19
+            // bdgtrangthaicat
             // 
-            bandedGridColumn19.AppearanceHeader.Options.UseTextOptions = true;
-            bandedGridColumn19.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            bandedGridColumn19.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            bandedGridColumn19.Caption = "Đường kính ngoài ống dài (mm)";
-            bandedGridColumn19.FieldName = "WorkDateRoot";
-            bandedGridColumn19.MinWidth = 34;
-            bandedGridColumn19.Name = "bandedGridColumn19";
-            bandedGridColumn19.RowCount = 2;
-            bandedGridColumn19.RowIndex = 3;
-            bandedGridColumn19.Visible = true;
-            bandedGridColumn19.Width = 581;
+            bdgtrangthaicat.AppearanceHeader.Options.UseTextOptions = true;
+            bdgtrangthaicat.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            bdgtrangthaicat.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            bdgtrangthaicat.Caption = "Trạng thái cắt (10 ống)";
+            bdgtrangthaicat.FieldName = "RegisterHours";
+            bdgtrangthaicat.Name = "bdgtrangthaicat";
+            bdgtrangthaicat.RowCount = 2;
+            bdgtrangthaicat.RowIndex = 1;
+            bdgtrangthaicat.Visible = true;
+            bdgtrangthaicat.Width = 224;
             // 
-            // gridBand3
+            // bdgthuocsudung
             // 
-            gridBand3.AppearanceHeader.Options.UseTextOptions = true;
-            gridBand3.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            gridBand3.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            gridBand3.Caption = "Kiểm tra";
-            gridBand3.Children.AddRange(new DevExpress.XtraGrid.Views.BandedGrid.GridBand[] { gridBand4, gridBand1 });
-            gridBand3.MinWidth = 17;
-            gridBand3.Name = "gridBand3";
-            gridBand3.VisibleIndex = 3;
-            gridBand3.Width = 1642;
+            bdgthuocsudung.AppearanceHeader.Options.UseTextOptions = true;
+            bdgthuocsudung.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            bdgthuocsudung.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            bdgthuocsudung.Caption = "Thước sử dụng";
+            bdgthuocsudung.FieldName = "Status";
+            bdgthuocsudung.Name = "bdgthuocsudung";
+            bdgthuocsudung.RowCount = 2;
+            bdgthuocsudung.RowIndex = 2;
+            bdgthuocsudung.Visible = true;
+            bdgthuocsudung.Width = 222;
             // 
-            // gridBand4
+            // bdgchieudaicat
             // 
-            gridBand4.AppearanceHeader.Options.UseTextOptions = true;
-            gridBand4.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            gridBand4.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            gridBand4.Caption = "Kiểm tra";
-            gridBand4.Columns.Add(bandedGridColumn20);
-            gridBand4.Columns.Add(bandedGridColumn21);
-            gridBand4.Columns.Add(bandedGridColumn22);
-            gridBand4.Columns.Add(bandedGridColumn23);
-            gridBand4.Columns.Add(bandedGridColumn24);
-            gridBand4.Columns.Add(bandedGridColumn3);
-            gridBand4.Name = "gridBand4";
-            gridBand4.VisibleIndex = 0;
-            gridBand4.Width = 862;
+            bdgchieudaicat.AppearanceHeader.Options.UseTextOptions = true;
+            bdgchieudaicat.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            bdgchieudaicat.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            bdgchieudaicat.Caption = "Chiều dài cắt (3 ống) (mm)";
+            bdgchieudaicat.FieldName = "OvertimeTypeName";
+            bdgchieudaicat.Name = "bdgchieudaicat";
+            bdgchieudaicat.RowCount = 2;
+            bdgchieudaicat.RowIndex = 2;
+            bdgchieudaicat.Visible = true;
+            bdgchieudaicat.Width = 224;
             // 
-            // bandedGridColumn20
+            // bdgsoluongsudung
             // 
-            bandedGridColumn20.AppearanceHeader.Options.UseTextOptions = true;
-            bandedGridColumn20.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            bandedGridColumn20.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            bandedGridColumn20.Caption = "Mã pingauge 0.98mm";
-            bandedGridColumn20.FieldName = "InTime";
-            bandedGridColumn20.MinWidth = 34;
-            bandedGridColumn20.Name = "bandedGridColumn20";
-            bandedGridColumn20.RowCount = 2;
-            bandedGridColumn20.Visible = true;
-            bandedGridColumn20.Width = 406;
+            bdgsoluongsudung.AppearanceHeader.Options.UseTextOptions = true;
+            bdgsoluongsudung.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            bdgsoluongsudung.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            bdgsoluongsudung.Caption = "Số lượng sử dụng";
+            bdgsoluongsudung.Name = "bdgsoluongsudung";
+            bdgsoluongsudung.RowCount = 2;
+            bdgsoluongsudung.RowIndex = 3;
+            bdgsoluongsudung.Visible = true;
+            bdgsoluongsudung.Width = 446;
             // 
-            // bandedGridColumn21
+            // bdgcatvat
             // 
-            bandedGridColumn21.AppearanceHeader.Options.UseTextOptions = true;
-            bandedGridColumn21.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            bandedGridColumn21.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            bandedGridColumn21.Caption = "Đường kính trong (loại 4Fr&4Kfr)";
-            bandedGridColumn21.FieldName = "OutTime";
-            bandedGridColumn21.MinWidth = 34;
-            bandedGridColumn21.Name = "bandedGridColumn21";
-            bandedGridColumn21.RowCount = 2;
-            bandedGridColumn21.Visible = true;
-            bandedGridColumn21.Width = 456;
+            bdgcatvat.AppearanceHeader.Options.UseTextOptions = true;
+            bdgcatvat.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            bdgcatvat.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            bdgcatvat.Caption = "Cắt vát";
+            bdgcatvat.Name = "bdgcatvat";
+            bdgcatvat.RowCount = 2;
+            bdgcatvat.Visible = true;
+            bdgcatvat.Width = 213;
             // 
-            // bandedGridColumn22
+            // bdgbep
             // 
-            bandedGridColumn22.AppearanceHeader.Options.UseTextOptions = true;
-            bandedGridColumn22.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            bandedGridColumn22.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            bandedGridColumn22.Caption = "Trạng thái cắt (10 ống)";
-            bandedGridColumn22.FieldName = "RegisterHours";
-            bandedGridColumn22.MinWidth = 34;
-            bandedGridColumn22.Name = "bandedGridColumn22";
-            bandedGridColumn22.RowCount = 2;
-            bandedGridColumn22.RowIndex = 1;
-            bandedGridColumn22.Visible = true;
-            bandedGridColumn22.Width = 862;
+            bdgbep.AppearanceHeader.Options.UseTextOptions = true;
+            bdgbep.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            bdgbep.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            bdgbep.Caption = "Bẹp";
+            bdgbep.Name = "bdgbep";
+            bdgbep.RowCount = 2;
+            bdgbep.Visible = true;
+            bdgbep.Width = 253;
             // 
-            // bandedGridColumn23
+            // bdgroi
             // 
-            bandedGridColumn23.AppearanceHeader.Options.UseTextOptions = true;
-            bandedGridColumn23.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            bandedGridColumn23.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            bandedGridColumn23.Caption = "Chiều dài cắt (3 ống) (mm)";
-            bandedGridColumn23.FieldName = "OvertimeTypeName";
-            bandedGridColumn23.MinWidth = 34;
-            bandedGridColumn23.Name = "bandedGridColumn23";
-            bandedGridColumn23.RowCount = 2;
-            bandedGridColumn23.RowIndex = 2;
-            bandedGridColumn23.Visible = true;
-            bandedGridColumn23.Width = 403;
+            bdgroi.AppearanceHeader.Options.UseTextOptions = true;
+            bdgroi.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            bdgroi.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            bdgroi.Caption = "Rơi";
+            bdgroi.Name = "bdgroi";
+            bdgroi.RowCount = 2;
+            bdgroi.RowIndex = 1;
+            bdgroi.Visible = true;
+            bdgroi.Width = 213;
             // 
-            // bandedGridColumn24
+            // bdgbavia
             // 
-            bandedGridColumn24.AppearanceHeader.Options.UseTextOptions = true;
-            bandedGridColumn24.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            bandedGridColumn24.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            bandedGridColumn24.Caption = "Thước sử dụng";
-            bandedGridColumn24.FieldName = "Status";
-            bandedGridColumn24.MinWidth = 34;
-            bandedGridColumn24.Name = "bandedGridColumn24";
-            bandedGridColumn24.RowCount = 2;
-            bandedGridColumn24.RowIndex = 2;
-            bandedGridColumn24.Visible = true;
-            bandedGridColumn24.Width = 459;
+            bdgbavia.AppearanceHeader.Options.UseTextOptions = true;
+            bdgbavia.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            bdgbavia.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            bdgbavia.Caption = "Bavia";
+            bdgbavia.Name = "bdgbavia";
+            bdgbavia.RowCount = 2;
+            bdgbavia.RowIndex = 1;
+            bdgbavia.Visible = true;
+            bdgbavia.Width = 253;
             // 
-            // bandedGridColumn3
+            // bdgchieudaingoaitieuchuan
             // 
-            bandedGridColumn3.AppearanceHeader.Options.UseTextOptions = true;
-            bandedGridColumn3.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            bandedGridColumn3.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            bandedGridColumn3.Caption = "Số lượng sử dụng";
-            bandedGridColumn3.MinWidth = 34;
-            bandedGridColumn3.Name = "bandedGridColumn3";
-            bandedGridColumn3.RowCount = 2;
-            bandedGridColumn3.RowIndex = 3;
-            bandedGridColumn3.Visible = true;
-            bandedGridColumn3.Width = 862;
+            bdgchieudaingoaitieuchuan.AppearanceHeader.Options.UseTextOptions = true;
+            bdgchieudaingoaitieuchuan.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            bdgchieudaingoaitieuchuan.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            bdgchieudaingoaitieuchuan.Caption = "Chiều dài ngoài tiêu chuẩn";
+            bdgchieudaingoaitieuchuan.Name = "bdgchieudaingoaitieuchuan";
+            bdgchieudaingoaitieuchuan.RowCount = 2;
+            bdgchieudaingoaitieuchuan.RowIndex = 2;
+            bdgchieudaingoaitieuchuan.Visible = true;
+            bdgchieudaingoaitieuchuan.Width = 213;
             // 
-            // gridBand1
+            // bdgkhac
             // 
-            gridBand1.AppearanceHeader.Options.UseTextOptions = true;
-            gridBand1.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            gridBand1.Caption = "Số lượng hàng không phù hợp";
-            gridBand1.Columns.Add(bandedGridColumn4);
-            gridBand1.Columns.Add(bandedGridColumn5);
-            gridBand1.Columns.Add(bandedGridColumn7);
-            gridBand1.Columns.Add(bandedGridColumn6);
-            gridBand1.Columns.Add(bandedGridColumn8);
-            gridBand1.Columns.Add(bandedGridColumn1);
-            gridBand1.Columns.Add(bandedGridColumn11);
-            gridBand1.Name = "gridBand1";
-            gridBand1.VisibleIndex = 1;
-            gridBand1.Width = 780;
+            bdgkhac.AppearanceHeader.Options.UseTextOptions = true;
+            bdgkhac.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            bdgkhac.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            bdgkhac.Caption = "Khác";
+            bdgkhac.Name = "bdgkhac";
+            bdgkhac.RowCount = 2;
+            bdgkhac.RowIndex = 2;
+            bdgkhac.Visible = true;
+            bdgkhac.Width = 253;
             // 
-            // bandedGridColumn4
+            // bdgxacnhantonluu
             // 
-            bandedGridColumn4.AppearanceHeader.Options.UseTextOptions = true;
-            bandedGridColumn4.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            bandedGridColumn4.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            bandedGridColumn4.Caption = "Cắt vát";
-            bandedGridColumn4.MinWidth = 34;
-            bandedGridColumn4.Name = "bandedGridColumn4";
-            bandedGridColumn4.RowCount = 2;
-            bandedGridColumn4.Visible = true;
-            bandedGridColumn4.Width = 362;
-            // 
-            // bandedGridColumn5
-            // 
-            bandedGridColumn5.AppearanceHeader.Options.UseTextOptions = true;
-            bandedGridColumn5.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            bandedGridColumn5.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            bandedGridColumn5.Caption = "Bẹp";
-            bandedGridColumn5.MinWidth = 34;
-            bandedGridColumn5.Name = "bandedGridColumn5";
-            bandedGridColumn5.RowCount = 2;
-            bandedGridColumn5.Visible = true;
-            bandedGridColumn5.Width = 418;
-            // 
-            // bandedGridColumn7
-            // 
-            bandedGridColumn7.AppearanceHeader.Options.UseTextOptions = true;
-            bandedGridColumn7.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            bandedGridColumn7.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            bandedGridColumn7.Caption = "Rơi";
-            bandedGridColumn7.MinWidth = 34;
-            bandedGridColumn7.Name = "bandedGridColumn7";
-            bandedGridColumn7.RowCount = 2;
-            bandedGridColumn7.RowIndex = 1;
-            bandedGridColumn7.Visible = true;
-            bandedGridColumn7.Width = 362;
-            // 
-            // bandedGridColumn6
-            // 
-            bandedGridColumn6.AppearanceHeader.Options.UseTextOptions = true;
-            bandedGridColumn6.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            bandedGridColumn6.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            bandedGridColumn6.Caption = "Bavia";
-            bandedGridColumn6.MinWidth = 34;
-            bandedGridColumn6.Name = "bandedGridColumn6";
-            bandedGridColumn6.RowCount = 2;
-            bandedGridColumn6.RowIndex = 1;
-            bandedGridColumn6.Visible = true;
-            bandedGridColumn6.Width = 418;
-            // 
-            // bandedGridColumn8
-            // 
-            bandedGridColumn8.AppearanceHeader.Options.UseTextOptions = true;
-            bandedGridColumn8.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            bandedGridColumn8.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            bandedGridColumn8.Caption = "Chiều dài ngoài tiêu chuẩn";
-            bandedGridColumn8.MinWidth = 34;
-            bandedGridColumn8.Name = "bandedGridColumn8";
-            bandedGridColumn8.RowCount = 2;
-            bandedGridColumn8.RowIndex = 2;
-            bandedGridColumn8.Visible = true;
-            bandedGridColumn8.Width = 362;
-            // 
-            // bandedGridColumn1
-            // 
-            bandedGridColumn1.AppearanceHeader.Options.UseTextOptions = true;
-            bandedGridColumn1.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            bandedGridColumn1.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            bandedGridColumn1.Caption = "Khác";
-            bandedGridColumn1.MinWidth = 34;
-            bandedGridColumn1.Name = "bandedGridColumn1";
-            bandedGridColumn1.RowCount = 2;
-            bandedGridColumn1.RowIndex = 2;
-            bandedGridColumn1.Visible = true;
-            bandedGridColumn1.Width = 418;
-            // 
-            // bandedGridColumn11
-            // 
-            bandedGridColumn11.AppearanceHeader.Options.UseTextOptions = true;
-            bandedGridColumn11.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            bandedGridColumn11.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            bandedGridColumn11.Caption = "Kết quả xác nhận tồn lưu";
-            bandedGridColumn11.MinWidth = 34;
-            bandedGridColumn11.Name = "bandedGridColumn11";
-            bandedGridColumn11.RowCount = 2;
-            bandedGridColumn11.RowIndex = 3;
-            bandedGridColumn11.Visible = true;
-            bandedGridColumn11.Width = 780;
-            // 
-            // gridBand2
-            // 
-            gridBand2.Caption = "gridBand2";
-            gridBand2.MinWidth = 17;
-            gridBand2.Name = "gridBand2";
-            gridBand2.Visible = false;
-            gridBand2.Width = 187;
-            // 
-            // gridBand7
-            // 
-            gridBand7.Caption = "gridBand7";
-            gridBand7.MinWidth = 17;
-            gridBand7.Name = "gridBand7";
-            gridBand7.OptionsBand.ShowCaption = false;
-            gridBand7.RowCount = 2;
-            gridBand7.Visible = false;
-            gridBand7.Width = 125;
-            // 
-            // gridBand9
-            // 
-            gridBand9.Caption = "gridBand9";
-            gridBand9.MinWidth = 17;
-            gridBand9.Name = "gridBand9";
-            gridBand9.Visible = false;
-            gridBand9.Width = 213;
+            bdgxacnhantonluu.AppearanceHeader.Options.UseTextOptions = true;
+            bdgxacnhantonluu.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            bdgxacnhantonluu.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            bdgxacnhantonluu.Caption = "Kết quả xác nhận tồn lưu";
+            bdgxacnhantonluu.Name = "bdgxacnhantonluu";
+            bdgxacnhantonluu.RowCount = 2;
+            bdgxacnhantonluu.RowIndex = 3;
+            bdgxacnhantonluu.Visible = true;
+            bdgxacnhantonluu.Width = 466;
             // 
             // repositoryItemDateTimeOffsetEdit1
             // 
@@ -525,42 +396,39 @@ namespace Winforms_App_Template.Forms
             // 
             // gridView1
             // 
+            gridView1.ColumnPanelRowHeight = 0;
             gridView1.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] { MaNV, Hoten, gridColumn1, gridColumn2, gridColumn3, gridColumn4, gridColumn5, gridColumn6, gridColumn7 });
-            gridView1.DetailHeight = 700;
+            gridView1.FooterPanelHeight = 0;
             gridView1.GridControl = gridControl1;
+            gridView1.GroupRowHeight = 0;
             gridView1.Name = "gridView1";
-            gridView1.OptionsEditForm.PopupEditFormWidth = 1371;
             gridView1.OptionsView.NewItemRowPosition = DevExpress.XtraGrid.Views.Grid.NewItemRowPosition.Bottom;
+            gridView1.RowHeight = 0;
+            gridView1.ViewCaptionHeight = 0;
             // 
             // MaNV
             // 
             MaNV.Caption = "Mã nhân viên";
             MaNV.FieldName = "CodeEmp";
-            MaNV.MinWidth = 34;
             MaNV.Name = "MaNV";
             MaNV.Visible = true;
             MaNV.VisibleIndex = 0;
-            MaNV.Width = 129;
             // 
             // Hoten
             // 
             Hoten.Caption = "Họ và tên";
             Hoten.FieldName = "ProfileName";
-            Hoten.MinWidth = 34;
             Hoten.Name = "Hoten";
             Hoten.Visible = true;
             Hoten.VisibleIndex = 1;
-            Hoten.Width = 129;
             // 
             // gridColumn1
             // 
             gridColumn1.Caption = "Bộ phận";
             gridColumn1.FieldName = "BoPhan";
-            gridColumn1.MinWidth = 34;
             gridColumn1.Name = "gridColumn1";
             gridColumn1.Visible = true;
             gridColumn1.VisibleIndex = 2;
-            gridColumn1.Width = 129;
             // 
             // gridColumn2
             // 
@@ -569,61 +437,49 @@ namespace Winforms_App_Template.Forms
             gridColumn2.DisplayFormat.FormatString = "yyyy-MM-dd";
             gridColumn2.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
             gridColumn2.FieldName = "WorkDateRoot";
-            gridColumn2.MinWidth = 34;
             gridColumn2.Name = "gridColumn2";
             gridColumn2.Visible = true;
             gridColumn2.VisibleIndex = 3;
-            gridColumn2.Width = 129;
             // 
             // gridColumn3
             // 
             gridColumn3.Caption = "Thời gian vào";
             gridColumn3.FieldName = "InTime";
-            gridColumn3.MinWidth = 34;
             gridColumn3.Name = "gridColumn3";
             gridColumn3.Visible = true;
             gridColumn3.VisibleIndex = 4;
-            gridColumn3.Width = 129;
             // 
             // gridColumn4
             // 
             gridColumn4.Caption = "Thời gian ra";
             gridColumn4.FieldName = "OutTime";
-            gridColumn4.MinWidth = 34;
             gridColumn4.Name = "gridColumn4";
             gridColumn4.Visible = true;
             gridColumn4.VisibleIndex = 5;
-            gridColumn4.Width = 129;
             // 
             // gridColumn5
             // 
             gridColumn5.Caption = "Số giờ OT";
             gridColumn5.FieldName = "RegisterHours";
-            gridColumn5.MinWidth = 34;
             gridColumn5.Name = "gridColumn5";
             gridColumn5.Visible = true;
             gridColumn5.VisibleIndex = 6;
-            gridColumn5.Width = 129;
             // 
             // gridColumn6
             // 
             gridColumn6.Caption = "Loại OT";
             gridColumn6.FieldName = "OvertimeTypeName";
-            gridColumn6.MinWidth = 34;
             gridColumn6.Name = "gridColumn6";
             gridColumn6.Visible = true;
             gridColumn6.VisibleIndex = 7;
-            gridColumn6.Width = 129;
             // 
             // gridColumn7
             // 
             gridColumn7.Caption = "Trạng thái";
             gridColumn7.FieldName = "Status";
-            gridColumn7.MinWidth = 34;
             gridColumn7.Name = "gridColumn7";
             gridColumn7.Visible = true;
             gridColumn7.VisibleIndex = 8;
-            gridColumn7.Width = 129;
             // 
             // layoutControl1
             // 
@@ -633,29 +489,37 @@ namespace Winforms_App_Template.Forms
             layoutControl1.Controls.Add(gridControl1);
             layoutControl1.Dock = DockStyle.Fill;
             layoutControl1.Location = new Point(0, 0);
-            layoutControl1.Margin = new Padding(5, 6, 5, 6);
             layoutControl1.Name = "layoutControl1";
             layoutControl1.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new Rectangle(1270, 211, 650, 400);
             layoutControl1.Root = Root;
-            layoutControl1.Size = new Size(1457, 900);
+            layoutControl1.Size = new Size(850, 450);
             layoutControl1.TabIndex = 4;
             layoutControl1.Text = "layoutControl1";
             // 
             // gridControl3
             // 
-            gridControl3.Location = new Point(20, 20);
+            gridControl3.EmbeddedNavigator.Margin = new Padding(2);
+            gridControl3.Location = new Point(12, 12);
             gridControl3.MainView = gridView3;
+            gridControl3.Margin = new Padding(2);
             gridControl3.Name = "gridControl3";
-            gridControl3.Size = new Size(942, 283);
+            gridControl3.Size = new Size(548, 139);
             gridControl3.TabIndex = 0;
             gridControl3.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gridView3 });
             // 
             // gridView3
             // 
+            gridView3.ColumnPanelRowHeight = 0;
             gridView3.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] { gridColumn14, gridColumn15, gridColumn16, gridColumn17, gridColumn18, gridColumn19, gridColumn20 });
+            gridView3.DetailHeight = 175;
+            gridView3.FooterPanelHeight = 0;
             gridView3.GridControl = gridControl3;
+            gridView3.GroupRowHeight = 0;
             gridView3.Name = "gridView3";
+            gridView3.OptionsEditForm.PopupEditFormWidth = 467;
             gridView3.OptionsView.ShowGroupPanel = false;
+            gridView3.RowHeight = 0;
+            gridView3.ViewCaptionHeight = 0;
             // 
             // gridColumn14
             // 
@@ -663,11 +527,10 @@ namespace Winforms_App_Template.Forms
             gridColumn14.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             gridColumn14.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             gridColumn14.Caption = "Tên công đoạn";
-            gridColumn14.MinWidth = 35;
             gridColumn14.Name = "gridColumn14";
             gridColumn14.Visible = true;
             gridColumn14.VisibleIndex = 0;
-            gridColumn14.Width = 131;
+            gridColumn14.Width = 76;
             // 
             // gridColumn15
             // 
@@ -675,11 +538,10 @@ namespace Winforms_App_Template.Forms
             gridColumn15.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             gridColumn15.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             gridColumn15.Caption = "Mã công đoạn";
-            gridColumn15.MinWidth = 35;
             gridColumn15.Name = "gridColumn15";
             gridColumn15.Visible = true;
             gridColumn15.VisibleIndex = 1;
-            gridColumn15.Width = 131;
+            gridColumn15.Width = 76;
             // 
             // gridColumn16
             // 
@@ -687,11 +549,10 @@ namespace Winforms_App_Template.Forms
             gridColumn16.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             gridColumn16.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             gridColumn16.Caption = "Mã code chủng loại";
-            gridColumn16.MinWidth = 35;
             gridColumn16.Name = "gridColumn16";
             gridColumn16.Visible = true;
             gridColumn16.VisibleIndex = 2;
-            gridColumn16.Width = 131;
+            gridColumn16.Width = 76;
             // 
             // gridColumn17
             // 
@@ -699,11 +560,10 @@ namespace Winforms_App_Template.Forms
             gridColumn17.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             gridColumn17.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             gridColumn17.Caption = "Số lô chế tạo";
-            gridColumn17.MinWidth = 35;
             gridColumn17.Name = "gridColumn17";
             gridColumn17.Visible = true;
             gridColumn17.VisibleIndex = 3;
-            gridColumn17.Width = 131;
+            gridColumn17.Width = 76;
             // 
             // gridColumn18
             // 
@@ -711,11 +571,10 @@ namespace Winforms_App_Template.Forms
             gridColumn18.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             gridColumn18.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             gridColumn18.Caption = "Mẻ số";
-            gridColumn18.MinWidth = 35;
             gridColumn18.Name = "gridColumn18";
             gridColumn18.Visible = true;
             gridColumn18.VisibleIndex = 4;
-            gridColumn18.Width = 131;
+            gridColumn18.Width = 76;
             // 
             // gridColumn19
             // 
@@ -723,11 +582,10 @@ namespace Winforms_App_Template.Forms
             gridColumn19.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             gridColumn19.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             gridColumn19.Caption = "Tổng hàng không phù hợp";
-            gridColumn19.MinWidth = 35;
             gridColumn19.Name = "gridColumn19";
             gridColumn19.Visible = true;
             gridColumn19.VisibleIndex = 5;
-            gridColumn19.Width = 131;
+            gridColumn19.Width = 76;
             // 
             // gridColumn20
             // 
@@ -735,41 +593,40 @@ namespace Winforms_App_Template.Forms
             gridColumn20.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             gridColumn20.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             gridColumn20.Caption = "Tổng hàng chuyển công đoạn sau (hàng phù hợp)";
-            gridColumn20.MinWidth = 35;
             gridColumn20.Name = "gridColumn20";
             gridColumn20.Visible = true;
             gridColumn20.VisibleIndex = 6;
-            gridColumn20.Width = 131;
+            gridColumn20.Width = 76;
             // 
             // textEdit1
             // 
-            textEdit1.Location = new Point(1054, 800);
-            textEdit1.Margin = new Padding(5, 6, 5, 6);
-            textEdit1.MinimumSize = new Size(0, 80);
+            textEdit1.Location = new Point(611, 398);
+            textEdit1.MinimumSize = new Size(0, 40);
             textEdit1.Name = "textEdit1";
-            textEdit1.Size = new Size(383, 80);
+            textEdit1.Size = new Size(227, 40);
             textEdit1.StyleController = layoutControl1;
             textEdit1.TabIndex = 4;
             // 
             // gridControl2
             // 
-            gridControl2.EmbeddedNavigator.Margin = new Padding(5, 6, 5, 6);
-            gridControl2.Location = new Point(968, 20);
+            gridControl2.Location = new Point(564, 12);
             gridControl2.MainView = gridView2;
-            gridControl2.Margin = new Padding(5, 6, 5, 6);
             gridControl2.Name = "gridControl2";
-            gridControl2.Size = new Size(469, 774);
+            gridControl2.Size = new Size(274, 382);
             gridControl2.TabIndex = 3;
             gridControl2.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gridView2 });
             // 
             // gridView2
             // 
+            gridView2.ColumnPanelRowHeight = 0;
             gridView2.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] { gridColumn8, gridColumn9, gridColumn10, gridColumn11, gridColumn12, gridColumn13 });
-            gridView2.DetailHeight = 700;
+            gridView2.FooterPanelHeight = 0;
             gridView2.GridControl = gridControl2;
+            gridView2.GroupRowHeight = 0;
             gridView2.Name = "gridView2";
-            gridView2.OptionsEditForm.PopupEditFormWidth = 1371;
             gridView2.OptionsView.ShowGroupPanel = false;
+            gridView2.RowHeight = 0;
+            gridView2.ViewCaptionHeight = 0;
             // 
             // gridColumn8
             // 
@@ -777,12 +634,10 @@ namespace Winforms_App_Template.Forms
             gridColumn8.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             gridColumn8.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             gridColumn8.Caption = "Hạng mục kiểm tra";
-            gridColumn8.MinWidth = 34;
             gridColumn8.Name = "gridColumn8";
             gridColumn8.OptionsEditForm.RowSpan = 2;
             gridColumn8.Visible = true;
             gridColumn8.VisibleIndex = 0;
-            gridColumn8.Width = 129;
             // 
             // gridColumn9
             // 
@@ -790,12 +645,10 @@ namespace Winforms_App_Template.Forms
             gridColumn9.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             gridColumn9.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             gridColumn9.Caption = "Chủng loại (cm)";
-            gridColumn9.MinWidth = 34;
             gridColumn9.Name = "gridColumn9";
             gridColumn9.OptionsEditForm.RowSpan = 2;
             gridColumn9.Visible = true;
             gridColumn9.VisibleIndex = 1;
-            gridColumn9.Width = 129;
             // 
             // gridColumn10
             // 
@@ -803,12 +656,10 @@ namespace Winforms_App_Template.Forms
             gridColumn10.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             gridColumn10.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             gridColumn10.Caption = "Kích cỡ Fr";
-            gridColumn10.MinWidth = 34;
             gridColumn10.Name = "gridColumn10";
             gridColumn10.OptionsEditForm.RowSpan = 2;
             gridColumn10.Visible = true;
             gridColumn10.VisibleIndex = 2;
-            gridColumn10.Width = 129;
             // 
             // gridColumn11
             // 
@@ -816,12 +667,10 @@ namespace Winforms_App_Template.Forms
             gridColumn11.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             gridColumn11.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             gridColumn11.Caption = "Pingauge xuyên (mm)";
-            gridColumn11.MinWidth = 34;
             gridColumn11.Name = "gridColumn11";
             gridColumn11.OptionsEditForm.RowSpan = 2;
             gridColumn11.Visible = true;
             gridColumn11.VisibleIndex = 3;
-            gridColumn11.Width = 129;
             // 
             // gridColumn12
             // 
@@ -829,12 +678,10 @@ namespace Winforms_App_Template.Forms
             gridColumn12.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             gridColumn12.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             gridColumn12.Caption = "Pingauge không xuyên (mm)";
-            gridColumn12.MinWidth = 34;
             gridColumn12.Name = "gridColumn12";
             gridColumn12.OptionsEditForm.RowSpan = 2;
             gridColumn12.Visible = true;
             gridColumn12.VisibleIndex = 4;
-            gridColumn12.Width = 129;
             // 
             // gridColumn13
             // 
@@ -842,12 +689,10 @@ namespace Winforms_App_Template.Forms
             gridColumn13.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             gridColumn13.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             gridColumn13.Caption = "Tiêu chuẩn";
-            gridColumn13.MinWidth = 34;
             gridColumn13.Name = "gridColumn13";
             gridColumn13.OptionsEditForm.RowSpan = 2;
             gridColumn13.Visible = true;
             gridColumn13.VisibleIndex = 5;
-            gridColumn13.Width = 129;
             // 
             // Root
             // 
@@ -856,35 +701,35 @@ namespace Winforms_App_Template.Forms
             Root.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] { layoutControlItem3, layoutControlItem4, layoutControlItem1, layoutControlItem2 });
             Root.LayoutMode = DevExpress.XtraLayout.Utils.LayoutMode.Table;
             Root.Name = "Root";
-            columnDefinition1.SizeType = SizeType.Percent;
-            columnDefinition1.Width = 100D;
-            columnDefinition2.SizeType = SizeType.Percent;
-            columnDefinition2.Width = 100D;
-            columnDefinition3.SizeType = SizeType.AutoSize;
-            columnDefinition3.Width = 475D;
-            Root.OptionsTableLayoutGroup.ColumnDefinitions.AddRange(new DevExpress.XtraLayout.ColumnDefinition[] { columnDefinition1, columnDefinition2, columnDefinition3 });
-            rowDefinition1.Height = 289D;
-            rowDefinition1.SizeType = SizeType.AutoSize;
-            rowDefinition2.Height = 100D;
-            rowDefinition2.SizeType = SizeType.Percent;
-            rowDefinition3.Height = 86D;
-            rowDefinition3.SizeType = SizeType.AutoSize;
-            Root.OptionsTableLayoutGroup.RowDefinitions.AddRange(new DevExpress.XtraLayout.RowDefinition[] { rowDefinition1, rowDefinition2, rowDefinition3 });
+            columnDefinition4.SizeType = SizeType.Percent;
+            columnDefinition4.Width = 100D;
+            columnDefinition5.SizeType = SizeType.Percent;
+            columnDefinition5.Width = 100D;
+            columnDefinition6.SizeType = SizeType.AutoSize;
+            columnDefinition6.Width = 278D;
+            Root.OptionsTableLayoutGroup.ColumnDefinitions.AddRange(new DevExpress.XtraLayout.ColumnDefinition[] { columnDefinition4, columnDefinition5, columnDefinition6 });
+            rowDefinition4.Height = 143D;
+            rowDefinition4.SizeType = SizeType.AutoSize;
+            rowDefinition5.Height = 100D;
+            rowDefinition5.SizeType = SizeType.Percent;
+            rowDefinition6.Height = 44D;
+            rowDefinition6.SizeType = SizeType.AutoSize;
+            Root.OptionsTableLayoutGroup.RowDefinitions.AddRange(new DevExpress.XtraLayout.RowDefinition[] { rowDefinition4, rowDefinition5, rowDefinition6 });
             Root.OptionsTableLayoutItem.RowIndex = 1;
             Root.OptionsTableLayoutItem.RowSpan = 2;
-            Root.Size = new Size(1457, 900);
+            Root.Size = new Size(850, 450);
             Root.TextVisible = false;
             // 
             // layoutControlItem3
             // 
             layoutControlItem3.Control = textEdit1;
-            layoutControlItem3.Location = new Point(948, 780);
+            layoutControlItem3.Location = new Point(552, 386);
             layoutControlItem3.Name = "layoutControlItem3";
             layoutControlItem3.OptionsTableLayoutItem.ColumnIndex = 2;
             layoutControlItem3.OptionsTableLayoutItem.RowIndex = 2;
-            layoutControlItem3.Size = new Size(475, 86);
+            layoutControlItem3.Size = new Size(278, 44);
             layoutControlItem3.Text = "Ghi chú";
-            layoutControlItem3.TextSize = new Size(65, 23);
+            layoutControlItem3.TextSize = new Size(35, 13);
             // 
             // layoutControlItem4
             // 
@@ -892,37 +737,141 @@ namespace Winforms_App_Template.Forms
             layoutControlItem4.Location = new Point(0, 0);
             layoutControlItem4.Name = "layoutControlItem4";
             layoutControlItem4.OptionsTableLayoutItem.ColumnSpan = 2;
-            layoutControlItem4.Size = new Size(948, 289);
+            layoutControlItem4.Size = new Size(552, 143);
             layoutControlItem4.TextVisible = false;
             // 
             // layoutControlItem1
             // 
             layoutControlItem1.Control = gridControl1;
-            layoutControlItem1.Location = new Point(0, 289);
+            layoutControlItem1.Location = new Point(0, 143);
             layoutControlItem1.Name = "layoutControlItem1";
             layoutControlItem1.OptionsTableLayoutItem.ColumnSpan = 2;
             layoutControlItem1.OptionsTableLayoutItem.RowIndex = 1;
             layoutControlItem1.OptionsTableLayoutItem.RowSpan = 2;
-            layoutControlItem1.Size = new Size(948, 577);
+            layoutControlItem1.Size = new Size(552, 287);
             layoutControlItem1.TextVisible = false;
             // 
             // layoutControlItem2
             // 
             layoutControlItem2.Control = gridControl2;
-            layoutControlItem2.Location = new Point(948, 0);
+            layoutControlItem2.Location = new Point(552, 0);
             layoutControlItem2.Name = "layoutControlItem2";
             layoutControlItem2.OptionsTableLayoutItem.ColumnIndex = 2;
             layoutControlItem2.OptionsTableLayoutItem.RowSpan = 2;
-            layoutControlItem2.Size = new Size(475, 780);
+            layoutControlItem2.Size = new Size(278, 386);
             layoutControlItem2.TextVisible = false;
+            // 
+            // STT_gridband
+            // 
+            STT_gridband.AppearanceHeader.Options.UseTextOptions = true;
+            STT_gridband.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            STT_gridband.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            STT_gridband.Caption = "Lý do kiểm tra";
+            STT_gridband.Columns.Add(bdglydokiemtra);
+            STT_gridband.Name = "STT_gridband";
+            STT_gridband.OptionsBand.ShowInCustomizationForm = false;
+            STT_gridband.RowCount = 2;
+            STT_gridband.VisibleIndex = 0;
+            STT_gridband.Width = 113;
+            // 
+            // gridBand6
+            // 
+            gridBand6.AppearanceHeader.Options.UseTextOptions = true;
+            gridBand6.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            gridBand6.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            gridBand6.Caption = "Giờ/ngày tháng thao tác, Người thao tác";
+            gridBand6.Columns.Add(bdgngaythaotac);
+            gridBand6.Columns.Add(bdgnguoithaotac);
+            gridBand6.Name = "gridBand6";
+            gridBand6.VisibleIndex = 1;
+            gridBand6.Width = 227;
+            // 
+            // gridBand8
+            // 
+            gridBand8.AppearanceHeader.Options.UseTextOptions = true;
+            gridBand8.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            gridBand8.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            gridBand8.Caption = "Thiết bị";
+            gridBand8.Columns.Add(bdgsomaythaotac);
+            gridBand8.Columns.Add(bdgsoluongongdaisudung);
+            gridBand8.Columns.Add(bdgmaquanlythickness);
+            gridBand8.Columns.Add(bdgduongkinhngoaiongdai);
+            gridBand8.Name = "gridBand8";
+            gridBand8.VisibleIndex = 2;
+            gridBand8.Width = 365;
+            // 
+            // gridBand3
+            // 
+            gridBand3.AppearanceHeader.Options.UseTextOptions = true;
+            gridBand3.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            gridBand3.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            gridBand3.Caption = "Kiểm tra";
+            gridBand3.Children.AddRange(new DevExpress.XtraGrid.Views.BandedGrid.GridBand[] { gridBand4, gridBand1 });
+            gridBand3.Name = "gridBand3";
+            gridBand3.VisibleIndex = 3;
+            gridBand3.Width = 912;
+            // 
+            // gridBand4
+            // 
+            gridBand4.AppearanceHeader.Options.UseTextOptions = true;
+            gridBand4.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            gridBand4.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            gridBand4.Caption = "Kiểm tra";
+            gridBand4.Columns.Add(bdgmapingauge);
+            gridBand4.Columns.Add(bdgduongkinhtrong);
+            gridBand4.Columns.Add(bdgtrangthaicat);
+            gridBand4.Columns.Add(bdgthuocsudung);
+            gridBand4.Columns.Add(bdgchieudaicat);
+            gridBand4.Columns.Add(bdgsoluongsudung);
+            gridBand4.Name = "gridBand4";
+            gridBand4.VisibleIndex = 0;
+            gridBand4.Width = 446;
+            // 
+            // gridBand1
+            // 
+            gridBand1.AppearanceHeader.Options.UseTextOptions = true;
+            gridBand1.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            gridBand1.Caption = "Số lượng hàng không phù hợp";
+            gridBand1.Columns.Add(bdgcatvat);
+            gridBand1.Columns.Add(bdgbep);
+            gridBand1.Columns.Add(bdgroi);
+            gridBand1.Columns.Add(bdgbavia);
+            gridBand1.Columns.Add(bdgchieudaingoaitieuchuan);
+            gridBand1.Columns.Add(bdgkhac);
+            gridBand1.Columns.Add(bdgxacnhantonluu);
+            gridBand1.Name = "gridBand1";
+            gridBand1.VisibleIndex = 1;
+            gridBand1.Width = 466;
+            // 
+            // gridBand2
+            // 
+            gridBand2.Caption = "gridBand2";
+            gridBand2.Name = "gridBand2";
+            gridBand2.Visible = false;
+            gridBand2.Width = 109;
+            // 
+            // gridBand7
+            // 
+            gridBand7.Caption = "gridBand7";
+            gridBand7.Name = "gridBand7";
+            gridBand7.OptionsBand.ShowCaption = false;
+            gridBand7.RowCount = 2;
+            gridBand7.Visible = false;
+            gridBand7.Width = 73;
+            // 
+            // gridBand9
+            // 
+            gridBand9.Caption = "gridBand9";
+            gridBand9.Name = "gridBand9";
+            gridBand9.Visible = false;
+            gridBand9.Width = 124;
             // 
             // Catongtho
             // 
-            AutoScaleDimensions = new SizeF(12F, 30F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1457, 900);
+            ClientSize = new Size(850, 450);
             Controls.Add(layoutControl1);
-            Margin = new Padding(5, 6, 5, 6);
             Name = "Catongtho";
             Text = "Catongtho";
             ((System.ComponentModel.ISupportInitialize)gridControl1).EndInit();
@@ -948,26 +897,26 @@ namespace Winforms_App_Template.Forms
 
         private DevExpress.XtraGrid.GridControl gridControl1;
         private DevExpress.XtraGrid.Views.BandedGrid.AdvBandedGridView advBandedGridView1;
-        private DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn bandedGridColumn2;
-        private DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn bandedGridColumn9;
-        private DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn bandedGridColumn10;
-        private DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn bandedGridColumn16;
-        private DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn bandedGridColumn17;
-        private DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn a11;
-        private DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn bandedGridColumn19;
-        private DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn bandedGridColumn20;
-        private DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn bandedGridColumn21;
-        private DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn bandedGridColumn22;
-        private DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn bandedGridColumn23;
-        private DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn bandedGridColumn24;
-        private DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn bandedGridColumn3;
-        private DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn bandedGridColumn4;
-        private DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn bandedGridColumn5;
-        private DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn bandedGridColumn7;
-        private DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn bandedGridColumn6;
-        private DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn bandedGridColumn8;
-        private DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn bandedGridColumn1;
-        private DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn bandedGridColumn11;
+        private DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn bdglydokiemtra;
+        private DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn bdgngaythaotac;
+        private DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn bdgnguoithaotac;
+        private DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn bdgsomaythaotac;
+        private DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn bdgsoluongongdaisudung;
+        private DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn bdgmaquanlythickness;
+        private DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn bdgduongkinhngoaiongdai;
+        private DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn bdgmapingauge;
+        private DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn bdgduongkinhtrong;
+        private DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn bdgtrangthaicat;
+        private DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn bdgchieudaicat;
+        private DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn bdgthuocsudung;
+        private DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn bdgsoluongsudung;
+        private DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn bdgcatvat;
+        private DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn bdgbep;
+        private DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn bdgroi;
+        private DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn bdgbavia;
+        private DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn bdgchieudaingoaitieuchuan;
+        private DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn bdgkhac;
+        private DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn bdgxacnhantonluu;
         private DevExpress.XtraEditors.Repository.RepositoryItemDateTimeOffsetEdit repositoryItemDateTimeOffsetEdit1;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView1;
         private DevExpress.XtraGrid.Columns.GridColumn MaNV;

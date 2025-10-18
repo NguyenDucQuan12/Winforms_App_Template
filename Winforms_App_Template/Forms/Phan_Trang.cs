@@ -18,7 +18,7 @@ namespace Winforms_App_Template.Forms
     /// - Nút: First, Prev, dải số trang (1 2 3 … k … N), Next, Last
     /// - Nhấn nút → gọi Repo QueryPageAsync → bind lưới
     /// </summary>
-    public partial class Form1 : Form
+    public partial class Phan_Trang : Form
     {
         // == UI: bộ filter ==
         private readonly TextBox _txtCodeEmp = new() { Anchor = AnchorStyles.Left | AnchorStyles.Top | AnchorStyles.Right };
@@ -81,7 +81,7 @@ namespace Winforms_App_Template.Forms
         private long _totalItems = 0;                  // Tổng số dòng (để tính total pages)
         private int _totalPages = 0;                   // Tổng số trang (ceil(total/pageSize))
 
-        public Form1(DbExecutor? db = null)
+        public Phan_Trang(DbExecutor? db = null)
         {
             Text = "Danh sách OT nhân viên";
             Width = 1100;

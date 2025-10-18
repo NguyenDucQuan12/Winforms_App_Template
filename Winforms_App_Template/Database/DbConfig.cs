@@ -29,7 +29,7 @@ namespace Winforms_App_Template.Database
             // - Connect Timeout=15: kết nối không quá 15s
             // - Application Name: giúp DBA truy vết kết nối
             return "Server=localhost,1433;" +
-                    "Database=TestDB;" +
+                    "Database=MESPlus;" +
                     "User Id=sa;" +
                     "Password=123456789;" +
                     "TrustServerCertificate=True;" +

@@ -16,5 +16,10 @@ namespace Winforms_App_Template.Forms
         {
             InitializeComponent();
         }
+
+        private void textEdit1_EditValueChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

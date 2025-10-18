@@ -1,6 +1,6 @@
 namespace Winforms_App_Template.Forms
 {
-    partial class Form1
+    partial class Phan_Trang
     {
         /// <summary>
         /// Required designer variable.
