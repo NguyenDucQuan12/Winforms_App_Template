@@ -364,58 +364,71 @@ namespace Winforms_App_Template.Forms
             //}
         }
 
-        private void PrintWholeLayoutAsImage(Control layoutRoot)
+        private void PrintWholeLayoutAsImage(LayoutControl layoutRoot)
         {
+            // Check whether the LayoutControl can be previewed.
+            if (!layoutRoot.IsPrintingAvailable)
+            {
+                MessageBox.Show("The 'DevExpress.XtraPrinting' library is not found", "Error");
+                return;
+            }
+            // keep layout
+            layoutRoot.OptionsPrint.OldPrinting = true;
+            // set A3
+            //layoutRoot
+            // Open the Preview window.
+            layoutRoot.ShowPrintPreview();
+
             // 1) Đảm bảo control đã có handle & layout xong
-            if (!layoutRoot.IsHandleCreated)
-                layoutRoot.CreateControl();
-            layoutRoot.PerformLayout();
-            layoutRoot.Refresh();
+            //if (!layoutRoot.IsHandleCreated)
+            //    layoutRoot.CreateControl();
+            //layoutRoot.PerformLayout();
+            //layoutRoot.Refresh();
 
-            // 2) Lấy kích thước vẽ
-            var rect = layoutRoot.DisplayRectangle;
-            int w = Math.Max(1, rect.Width);
-            int h = Math.Max(1, rect.Height);
-            if (w <= 1 || h <= 1)
-                throw new InvalidOperationException("Layout chưa sẵn sàng để chụp (kích thước quá nhỏ).");
+            //// 2) Lấy kích thước vẽ
+            //var rect = layoutRoot.DisplayRectangle;
+            //int w = Math.Max(1, rect.Width);
+            //int h = Math.Max(1, rect.Height);
+            //if (w <= 1 || h <= 1)
+            //    throw new InvalidOperationException("Layout chưa sẵn sàng để chụp (kích thước quá nhỏ).");
 
-            // 3) Chụp bitmap
-            using var bmpRaw = new Bitmap(w, h, PixelFormat.Format32bppArgb);
-            layoutRoot.DrawToBitmap(bmpRaw, new Rectangle(Point.Empty, new Size(w, h)));
+            //// 3) Chụp bitmap
+            //using var bmpRaw = new Bitmap(w, h, PixelFormat.Format32bppArgb);
+            //layoutRoot.DrawToBitmap(bmpRaw, new Rectangle(Point.Empty, new Size(w, h)));
 
-            // 4) Clone ra ảnh độc lập và giữ sống nó cho tới sau preview
-            var bmp = (Bitmap)bmpRaw.Clone();
-            try
-            {
-                // 5) Đưa vào XtraReport và scale theo khổ giấy
-                var rpt = new XtraReport
-                {
-                    PaperKind = DXPaperKind.A3,
-                    Landscape = true,
-                    Margins = new System.Drawing.Printing.Margins(10, 10, 10, 10)
-                };
-                float pageW = rpt.PageWidth - rpt.Margins.Left - rpt.Margins.Right;
-                float scale = pageW / w;
+            //// 4) Clone ra ảnh độc lập và giữ sống nó cho tới sau preview
+            //var bmp = (Bitmap)bmpRaw.Clone();
+            //try
+            //{
+            //    // 5) Đưa vào XtraReport và scale theo khổ giấy
+            //    var rpt = new XtraReport
+            //    {
+            //        PaperKind = DXPaperKind.A3,
+            //        Landscape = true,
+            //        Margins = new System.Drawing.Printing.Margins(10, 10, 10, 10)
+            //    };
+            //    float pageW = rpt.PageWidth - rpt.Margins.Left - rpt.Margins.Right;
+            //    float scale = pageW / w;
 
-                var detail = new DetailBand { HeightF = h * scale };
-                rpt.Bands.Add(detail);
+            //    var detail = new DetailBand { HeightF = h * scale };
+            //    rpt.Bands.Add(detail);
 
-                var pic = new XRPictureBox
-                {
-                    Image = bmp, // <-- dùng System.Drawing.Image thay vì ImageSource.FromImage(...)
-                    Sizing = ImageSizeMode.StretchImage,
-                    LocationF = new DevExpress.Utils.PointFloat(0, 0),
-                    SizeF = new System.Drawing.SizeF(w * scale, h * scale)
-                };
-                detail.Controls.Add(pic);
+            //    var pic = new XRPictureBox
+            //    {
+            //        Image = bmp, // <-- dùng System.Drawing.Image thay vì ImageSource.FromImage(...)
+            //        Sizing = ImageSizeMode.StretchImage,
+            //        LocationF = new DevExpress.Utils.PointFloat(0, 0),
+            //        SizeF = new System.Drawing.SizeF(w * scale, h * scale)
+            //    };
+            //    detail.Controls.Add(pic);
 
-                rpt.CreateDocument();
-                rpt.ShowRibbonPreview();
-            }
-            finally
-            {
-                bmp.Dispose();
-            }
+            //    rpt.CreateDocument();
+            //    rpt.ShowRibbonPreview();
+            //}
+            //finally
+            //{
+            //    bmp.Dispose();
+            //}
         }
 
 
