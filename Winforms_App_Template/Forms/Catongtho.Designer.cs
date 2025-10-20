@@ -28,27 +28,33 @@ namespace Winforms_App_Template.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            DevExpress.XtraLayout.ColumnDefinition columnDefinition4 = new DevExpress.XtraLayout.ColumnDefinition();
-            DevExpress.XtraLayout.ColumnDefinition columnDefinition5 = new DevExpress.XtraLayout.ColumnDefinition();
-            DevExpress.XtraLayout.ColumnDefinition columnDefinition6 = new DevExpress.XtraLayout.ColumnDefinition();
-            DevExpress.XtraLayout.RowDefinition rowDefinition4 = new DevExpress.XtraLayout.RowDefinition();
-            DevExpress.XtraLayout.RowDefinition rowDefinition5 = new DevExpress.XtraLayout.RowDefinition();
-            DevExpress.XtraLayout.RowDefinition rowDefinition6 = new DevExpress.XtraLayout.RowDefinition();
+            DevExpress.XtraLayout.ColumnDefinition columnDefinition1 = new DevExpress.XtraLayout.ColumnDefinition();
+            DevExpress.XtraLayout.ColumnDefinition columnDefinition2 = new DevExpress.XtraLayout.ColumnDefinition();
+            DevExpress.XtraLayout.ColumnDefinition columnDefinition3 = new DevExpress.XtraLayout.ColumnDefinition();
+            DevExpress.XtraLayout.RowDefinition rowDefinition1 = new DevExpress.XtraLayout.RowDefinition();
+            DevExpress.XtraLayout.RowDefinition rowDefinition2 = new DevExpress.XtraLayout.RowDefinition();
+            DevExpress.XtraLayout.RowDefinition rowDefinition3 = new DevExpress.XtraLayout.RowDefinition();
             gridControl1 = new DevExpress.XtraGrid.GridControl();
             advBandedGridView1 = new DevExpress.XtraGrid.Views.BandedGrid.AdvBandedGridView();
+            STT_gridband = new DevExpress.XtraGrid.Views.BandedGrid.GridBand();
             bdglydokiemtra = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
+            gridBand6 = new DevExpress.XtraGrid.Views.BandedGrid.GridBand();
             bdgngaythaotac = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
             bdgnguoithaotac = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
+            gridBand8 = new DevExpress.XtraGrid.Views.BandedGrid.GridBand();
             bdgsomaythaotac = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
             bdgsoluongongdaisudung = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
             bdgmaquanlythickness = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
             bdgduongkinhngoaiongdai = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
+            gridBand3 = new DevExpress.XtraGrid.Views.BandedGrid.GridBand();
+            gridBand4 = new DevExpress.XtraGrid.Views.BandedGrid.GridBand();
             bdgmapingauge = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
             bdgduongkinhtrong = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
             bdgtrangthaicat = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
             bdgthuocsudung = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
             bdgchieudaicat = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
             bdgsoluongsudung = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
+            gridBand1 = new DevExpress.XtraGrid.Views.BandedGrid.GridBand();
             bdgcatvat = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
             bdgbep = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
             bdgroi = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
@@ -56,6 +62,9 @@ namespace Winforms_App_Template.Forms
             bdgchieudaingoaitieuchuan = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
             bdgkhac = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
             bdgxacnhantonluu = new DevExpress.XtraGrid.Views.BandedGrid.BandedGridColumn();
+            gridBand2 = new DevExpress.XtraGrid.Views.BandedGrid.GridBand();
+            gridBand7 = new DevExpress.XtraGrid.Views.BandedGrid.GridBand();
+            gridBand9 = new DevExpress.XtraGrid.Views.BandedGrid.GridBand();
             repositoryItemDateTimeOffsetEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemDateTimeOffsetEdit();
             gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
             MaNV = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -91,15 +100,6 @@ namespace Winforms_App_Template.Forms
             layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
-            STT_gridband = new DevExpress.XtraGrid.Views.BandedGrid.GridBand();
-            gridBand6 = new DevExpress.XtraGrid.Views.BandedGrid.GridBand();
-            gridBand8 = new DevExpress.XtraGrid.Views.BandedGrid.GridBand();
-            gridBand3 = new DevExpress.XtraGrid.Views.BandedGrid.GridBand();
-            gridBand4 = new DevExpress.XtraGrid.Views.BandedGrid.GridBand();
-            gridBand1 = new DevExpress.XtraGrid.Views.BandedGrid.GridBand();
-            gridBand2 = new DevExpress.XtraGrid.Views.BandedGrid.GridBand();
-            gridBand7 = new DevExpress.XtraGrid.Views.BandedGrid.GridBand();
-            gridBand9 = new DevExpress.XtraGrid.Views.BandedGrid.GridBand();
             ((System.ComponentModel.ISupportInitialize)gridControl1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)advBandedGridView1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)repositoryItemDateTimeOffsetEdit1).BeginInit();
@@ -138,9 +138,21 @@ namespace Winforms_App_Template.Forms
             advBandedGridView1.GridControl = gridControl1;
             advBandedGridView1.GroupRowHeight = 0;
             advBandedGridView1.Name = "advBandedGridView1";
-            advBandedGridView1.OptionsView.NewItemRowPosition = DevExpress.XtraGrid.Views.Grid.NewItemRowPosition.Bottom;
             advBandedGridView1.RowHeight = 0;
             advBandedGridView1.ViewCaptionHeight = 0;
+            // 
+            // STT_gridband
+            // 
+            STT_gridband.AppearanceHeader.Options.UseTextOptions = true;
+            STT_gridband.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            STT_gridband.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            STT_gridband.Caption = "Lý do kiểm tra";
+            STT_gridband.Columns.Add(bdglydokiemtra);
+            STT_gridband.Name = "STT_gridband";
+            STT_gridband.OptionsBand.ShowInCustomizationForm = false;
+            STT_gridband.RowCount = 2;
+            STT_gridband.VisibleIndex = 0;
+            STT_gridband.Width = 114;
             // 
             // bdglydokiemtra
             // 
@@ -152,7 +164,19 @@ namespace Winforms_App_Template.Forms
             bdglydokiemtra.Name = "bdglydokiemtra";
             bdglydokiemtra.RowCount = 2;
             bdglydokiemtra.Visible = true;
-            bdglydokiemtra.Width = 113;
+            bdglydokiemtra.Width = 114;
+            // 
+            // gridBand6
+            // 
+            gridBand6.AppearanceHeader.Options.UseTextOptions = true;
+            gridBand6.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            gridBand6.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            gridBand6.Caption = "Giờ/ngày tháng thao tác, Người thao tác";
+            gridBand6.Columns.Add(bdgngaythaotac);
+            gridBand6.Columns.Add(bdgnguoithaotac);
+            gridBand6.Name = "gridBand6";
+            gridBand6.VisibleIndex = 1;
+            gridBand6.Width = 176;
             // 
             // bdgngaythaotac
             // 
@@ -164,7 +188,7 @@ namespace Winforms_App_Template.Forms
             bdgngaythaotac.Name = "bdgngaythaotac";
             bdgngaythaotac.RowCount = 4;
             bdgngaythaotac.Visible = true;
-            bdgngaythaotac.Width = 227;
+            bdgngaythaotac.Width = 176;
             // 
             // bdgnguoithaotac
             // 
@@ -177,7 +201,21 @@ namespace Winforms_App_Template.Forms
             bdgnguoithaotac.RowCount = 4;
             bdgnguoithaotac.RowIndex = 1;
             bdgnguoithaotac.Visible = true;
-            bdgnguoithaotac.Width = 227;
+            bdgnguoithaotac.Width = 176;
+            // 
+            // gridBand8
+            // 
+            gridBand8.AppearanceHeader.Options.UseTextOptions = true;
+            gridBand8.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            gridBand8.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            gridBand8.Caption = "Thiết bị";
+            gridBand8.Columns.Add(bdgsomaythaotac);
+            gridBand8.Columns.Add(bdgsoluongongdaisudung);
+            gridBand8.Columns.Add(bdgmaquanlythickness);
+            gridBand8.Columns.Add(bdgduongkinhngoaiongdai);
+            gridBand8.Name = "gridBand8";
+            gridBand8.VisibleIndex = 2;
+            gridBand8.Width = 306;
             // 
             // bdgsomaythaotac
             // 
@@ -189,7 +227,7 @@ namespace Winforms_App_Template.Forms
             bdgsomaythaotac.Name = "bdgsomaythaotac";
             bdgsomaythaotac.RowCount = 2;
             bdgsomaythaotac.Visible = true;
-            bdgsomaythaotac.Width = 365;
+            bdgsomaythaotac.Width = 306;
             // 
             // bdgsoluongongdaisudung
             // 
@@ -202,7 +240,7 @@ namespace Winforms_App_Template.Forms
             bdgsoluongongdaisudung.RowCount = 2;
             bdgsoluongongdaisudung.RowIndex = 1;
             bdgsoluongongdaisudung.Visible = true;
-            bdgsoluongongdaisudung.Width = 365;
+            bdgsoluongongdaisudung.Width = 306;
             // 
             // bdgmaquanlythickness
             // 
@@ -215,7 +253,7 @@ namespace Winforms_App_Template.Forms
             bdgmaquanlythickness.RowCount = 2;
             bdgmaquanlythickness.RowIndex = 2;
             bdgmaquanlythickness.Visible = true;
-            bdgmaquanlythickness.Width = 365;
+            bdgmaquanlythickness.Width = 306;
             // 
             // bdgduongkinhngoaiongdai
             // 
@@ -228,7 +266,34 @@ namespace Winforms_App_Template.Forms
             bdgduongkinhngoaiongdai.RowCount = 2;
             bdgduongkinhngoaiongdai.RowIndex = 3;
             bdgduongkinhngoaiongdai.Visible = true;
-            bdgduongkinhngoaiongdai.Width = 365;
+            bdgduongkinhngoaiongdai.Width = 306;
+            // 
+            // gridBand3
+            // 
+            gridBand3.AppearanceHeader.Options.UseTextOptions = true;
+            gridBand3.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            gridBand3.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            gridBand3.Caption = "Kiểm tra";
+            gridBand3.Children.AddRange(new DevExpress.XtraGrid.Views.BandedGrid.GridBand[] { gridBand4, gridBand1 });
+            gridBand3.Name = "gridBand3";
+            gridBand3.VisibleIndex = 3;
+            gridBand3.Width = 791;
+            // 
+            // gridBand4
+            // 
+            gridBand4.AppearanceHeader.Options.UseTextOptions = true;
+            gridBand4.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            gridBand4.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            gridBand4.Caption = "Kiểm tra";
+            gridBand4.Columns.Add(bdgmapingauge);
+            gridBand4.Columns.Add(bdgduongkinhtrong);
+            gridBand4.Columns.Add(bdgtrangthaicat);
+            gridBand4.Columns.Add(bdgthuocsudung);
+            gridBand4.Columns.Add(bdgchieudaicat);
+            gridBand4.Columns.Add(bdgsoluongsudung);
+            gridBand4.Name = "gridBand4";
+            gridBand4.VisibleIndex = 0;
+            gridBand4.Width = 385;
             // 
             // bdgmapingauge
             // 
@@ -240,7 +305,7 @@ namespace Winforms_App_Template.Forms
             bdgmapingauge.Name = "bdgmapingauge";
             bdgmapingauge.RowCount = 2;
             bdgmapingauge.Visible = true;
-            bdgmapingauge.Width = 446;
+            bdgmapingauge.Width = 385;
             // 
             // bdgduongkinhtrong
             // 
@@ -253,7 +318,7 @@ namespace Winforms_App_Template.Forms
             bdgduongkinhtrong.RowCount = 2;
             bdgduongkinhtrong.RowIndex = 1;
             bdgduongkinhtrong.Visible = true;
-            bdgduongkinhtrong.Width = 222;
+            bdgduongkinhtrong.Width = 190;
             // 
             // bdgtrangthaicat
             // 
@@ -266,7 +331,7 @@ namespace Winforms_App_Template.Forms
             bdgtrangthaicat.RowCount = 2;
             bdgtrangthaicat.RowIndex = 1;
             bdgtrangthaicat.Visible = true;
-            bdgtrangthaicat.Width = 224;
+            bdgtrangthaicat.Width = 195;
             // 
             // bdgthuocsudung
             // 
@@ -279,7 +344,7 @@ namespace Winforms_App_Template.Forms
             bdgthuocsudung.RowCount = 2;
             bdgthuocsudung.RowIndex = 2;
             bdgthuocsudung.Visible = true;
-            bdgthuocsudung.Width = 222;
+            bdgthuocsudung.Width = 190;
             // 
             // bdgchieudaicat
             // 
@@ -292,7 +357,7 @@ namespace Winforms_App_Template.Forms
             bdgchieudaicat.RowCount = 2;
             bdgchieudaicat.RowIndex = 2;
             bdgchieudaicat.Visible = true;
-            bdgchieudaicat.Width = 224;
+            bdgchieudaicat.Width = 195;
             // 
             // bdgsoluongsudung
             // 
@@ -304,7 +369,23 @@ namespace Winforms_App_Template.Forms
             bdgsoluongsudung.RowCount = 2;
             bdgsoluongsudung.RowIndex = 3;
             bdgsoluongsudung.Visible = true;
-            bdgsoluongsudung.Width = 446;
+            bdgsoluongsudung.Width = 385;
+            // 
+            // gridBand1
+            // 
+            gridBand1.AppearanceHeader.Options.UseTextOptions = true;
+            gridBand1.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            gridBand1.Caption = "Số lượng hàng không phù hợp";
+            gridBand1.Columns.Add(bdgcatvat);
+            gridBand1.Columns.Add(bdgbep);
+            gridBand1.Columns.Add(bdgroi);
+            gridBand1.Columns.Add(bdgbavia);
+            gridBand1.Columns.Add(bdgchieudaingoaitieuchuan);
+            gridBand1.Columns.Add(bdgkhac);
+            gridBand1.Columns.Add(bdgxacnhantonluu);
+            gridBand1.Name = "gridBand1";
+            gridBand1.VisibleIndex = 1;
+            gridBand1.Width = 406;
             // 
             // bdgcatvat
             // 
@@ -315,7 +396,7 @@ namespace Winforms_App_Template.Forms
             bdgcatvat.Name = "bdgcatvat";
             bdgcatvat.RowCount = 2;
             bdgcatvat.Visible = true;
-            bdgcatvat.Width = 213;
+            bdgcatvat.Width = 183;
             // 
             // bdgbep
             // 
@@ -326,7 +407,7 @@ namespace Winforms_App_Template.Forms
             bdgbep.Name = "bdgbep";
             bdgbep.RowCount = 2;
             bdgbep.Visible = true;
-            bdgbep.Width = 253;
+            bdgbep.Width = 223;
             // 
             // bdgroi
             // 
@@ -338,7 +419,7 @@ namespace Winforms_App_Template.Forms
             bdgroi.RowCount = 2;
             bdgroi.RowIndex = 1;
             bdgroi.Visible = true;
-            bdgroi.Width = 213;
+            bdgroi.Width = 183;
             // 
             // bdgbavia
             // 
@@ -350,7 +431,7 @@ namespace Winforms_App_Template.Forms
             bdgbavia.RowCount = 2;
             bdgbavia.RowIndex = 1;
             bdgbavia.Visible = true;
-            bdgbavia.Width = 253;
+            bdgbavia.Width = 223;
             // 
             // bdgchieudaingoaitieuchuan
             // 
@@ -362,7 +443,7 @@ namespace Winforms_App_Template.Forms
             bdgchieudaingoaitieuchuan.RowCount = 2;
             bdgchieudaingoaitieuchuan.RowIndex = 2;
             bdgchieudaingoaitieuchuan.Visible = true;
-            bdgchieudaingoaitieuchuan.Width = 213;
+            bdgchieudaingoaitieuchuan.Width = 183;
             // 
             // bdgkhac
             // 
@@ -374,7 +455,7 @@ namespace Winforms_App_Template.Forms
             bdgkhac.RowCount = 2;
             bdgkhac.RowIndex = 2;
             bdgkhac.Visible = true;
-            bdgkhac.Width = 253;
+            bdgkhac.Width = 223;
             // 
             // bdgxacnhantonluu
             // 
@@ -386,7 +467,30 @@ namespace Winforms_App_Template.Forms
             bdgxacnhantonluu.RowCount = 2;
             bdgxacnhantonluu.RowIndex = 3;
             bdgxacnhantonluu.Visible = true;
-            bdgxacnhantonluu.Width = 466;
+            bdgxacnhantonluu.Width = 406;
+            // 
+            // gridBand2
+            // 
+            gridBand2.Caption = "gridBand2";
+            gridBand2.Name = "gridBand2";
+            gridBand2.Visible = false;
+            gridBand2.Width = 109;
+            // 
+            // gridBand7
+            // 
+            gridBand7.Caption = "gridBand7";
+            gridBand7.Name = "gridBand7";
+            gridBand7.OptionsBand.ShowCaption = false;
+            gridBand7.RowCount = 2;
+            gridBand7.Visible = false;
+            gridBand7.Width = 73;
+            // 
+            // gridBand9
+            // 
+            gridBand9.Caption = "gridBand9";
+            gridBand9.Name = "gridBand9";
+            gridBand9.Visible = false;
+            gridBand9.Width = 124;
             // 
             // repositoryItemDateTimeOffsetEdit1
             // 
@@ -701,20 +805,20 @@ namespace Winforms_App_Template.Forms
             Root.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] { layoutControlItem3, layoutControlItem4, layoutControlItem1, layoutControlItem2 });
             Root.LayoutMode = DevExpress.XtraLayout.Utils.LayoutMode.Table;
             Root.Name = "Root";
-            columnDefinition4.SizeType = SizeType.Percent;
-            columnDefinition4.Width = 100D;
-            columnDefinition5.SizeType = SizeType.Percent;
-            columnDefinition5.Width = 100D;
-            columnDefinition6.SizeType = SizeType.AutoSize;
-            columnDefinition6.Width = 278D;
-            Root.OptionsTableLayoutGroup.ColumnDefinitions.AddRange(new DevExpress.XtraLayout.ColumnDefinition[] { columnDefinition4, columnDefinition5, columnDefinition6 });
-            rowDefinition4.Height = 143D;
-            rowDefinition4.SizeType = SizeType.AutoSize;
-            rowDefinition5.Height = 100D;
-            rowDefinition5.SizeType = SizeType.Percent;
-            rowDefinition6.Height = 44D;
-            rowDefinition6.SizeType = SizeType.AutoSize;
-            Root.OptionsTableLayoutGroup.RowDefinitions.AddRange(new DevExpress.XtraLayout.RowDefinition[] { rowDefinition4, rowDefinition5, rowDefinition6 });
+            columnDefinition1.SizeType = SizeType.Percent;
+            columnDefinition1.Width = 100D;
+            columnDefinition2.SizeType = SizeType.Percent;
+            columnDefinition2.Width = 100D;
+            columnDefinition3.SizeType = SizeType.AutoSize;
+            columnDefinition3.Width = 278D;
+            Root.OptionsTableLayoutGroup.ColumnDefinitions.AddRange(new DevExpress.XtraLayout.ColumnDefinition[] { columnDefinition1, columnDefinition2, columnDefinition3 });
+            rowDefinition1.Height = 143D;
+            rowDefinition1.SizeType = SizeType.AutoSize;
+            rowDefinition2.Height = 100D;
+            rowDefinition2.SizeType = SizeType.Percent;
+            rowDefinition3.Height = 44D;
+            rowDefinition3.SizeType = SizeType.AutoSize;
+            Root.OptionsTableLayoutGroup.RowDefinitions.AddRange(new DevExpress.XtraLayout.RowDefinition[] { rowDefinition1, rowDefinition2, rowDefinition3 });
             Root.OptionsTableLayoutItem.RowIndex = 1;
             Root.OptionsTableLayoutItem.RowSpan = 2;
             Root.Size = new Size(850, 450);
@@ -761,111 +865,6 @@ namespace Winforms_App_Template.Forms
             layoutControlItem2.Size = new Size(278, 386);
             layoutControlItem2.TextVisible = false;
             // 
-            // STT_gridband
-            // 
-            STT_gridband.AppearanceHeader.Options.UseTextOptions = true;
-            STT_gridband.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            STT_gridband.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            STT_gridband.Caption = "Lý do kiểm tra";
-            STT_gridband.Columns.Add(bdglydokiemtra);
-            STT_gridband.Name = "STT_gridband";
-            STT_gridband.OptionsBand.ShowInCustomizationForm = false;
-            STT_gridband.RowCount = 2;
-            STT_gridband.VisibleIndex = 0;
-            STT_gridband.Width = 113;
-            // 
-            // gridBand6
-            // 
-            gridBand6.AppearanceHeader.Options.UseTextOptions = true;
-            gridBand6.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            gridBand6.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            gridBand6.Caption = "Giờ/ngày tháng thao tác, Người thao tác";
-            gridBand6.Columns.Add(bdgngaythaotac);
-            gridBand6.Columns.Add(bdgnguoithaotac);
-            gridBand6.Name = "gridBand6";
-            gridBand6.VisibleIndex = 1;
-            gridBand6.Width = 227;
-            // 
-            // gridBand8
-            // 
-            gridBand8.AppearanceHeader.Options.UseTextOptions = true;
-            gridBand8.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            gridBand8.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            gridBand8.Caption = "Thiết bị";
-            gridBand8.Columns.Add(bdgsomaythaotac);
-            gridBand8.Columns.Add(bdgsoluongongdaisudung);
-            gridBand8.Columns.Add(bdgmaquanlythickness);
-            gridBand8.Columns.Add(bdgduongkinhngoaiongdai);
-            gridBand8.Name = "gridBand8";
-            gridBand8.VisibleIndex = 2;
-            gridBand8.Width = 365;
-            // 
-            // gridBand3
-            // 
-            gridBand3.AppearanceHeader.Options.UseTextOptions = true;
-            gridBand3.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            gridBand3.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            gridBand3.Caption = "Kiểm tra";
-            gridBand3.Children.AddRange(new DevExpress.XtraGrid.Views.BandedGrid.GridBand[] { gridBand4, gridBand1 });
-            gridBand3.Name = "gridBand3";
-            gridBand3.VisibleIndex = 3;
-            gridBand3.Width = 912;
-            // 
-            // gridBand4
-            // 
-            gridBand4.AppearanceHeader.Options.UseTextOptions = true;
-            gridBand4.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            gridBand4.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            gridBand4.Caption = "Kiểm tra";
-            gridBand4.Columns.Add(bdgmapingauge);
-            gridBand4.Columns.Add(bdgduongkinhtrong);
-            gridBand4.Columns.Add(bdgtrangthaicat);
-            gridBand4.Columns.Add(bdgthuocsudung);
-            gridBand4.Columns.Add(bdgchieudaicat);
-            gridBand4.Columns.Add(bdgsoluongsudung);
-            gridBand4.Name = "gridBand4";
-            gridBand4.VisibleIndex = 0;
-            gridBand4.Width = 446;
-            // 
-            // gridBand1
-            // 
-            gridBand1.AppearanceHeader.Options.UseTextOptions = true;
-            gridBand1.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            gridBand1.Caption = "Số lượng hàng không phù hợp";
-            gridBand1.Columns.Add(bdgcatvat);
-            gridBand1.Columns.Add(bdgbep);
-            gridBand1.Columns.Add(bdgroi);
-            gridBand1.Columns.Add(bdgbavia);
-            gridBand1.Columns.Add(bdgchieudaingoaitieuchuan);
-            gridBand1.Columns.Add(bdgkhac);
-            gridBand1.Columns.Add(bdgxacnhantonluu);
-            gridBand1.Name = "gridBand1";
-            gridBand1.VisibleIndex = 1;
-            gridBand1.Width = 466;
-            // 
-            // gridBand2
-            // 
-            gridBand2.Caption = "gridBand2";
-            gridBand2.Name = "gridBand2";
-            gridBand2.Visible = false;
-            gridBand2.Width = 109;
-            // 
-            // gridBand7
-            // 
-            gridBand7.Caption = "gridBand7";
-            gridBand7.Name = "gridBand7";
-            gridBand7.OptionsBand.ShowCaption = false;
-            gridBand7.RowCount = 2;
-            gridBand7.Visible = false;
-            gridBand7.Width = 73;
-            // 
-            // gridBand9
-            // 
-            gridBand9.Caption = "gridBand9";
-            gridBand9.Name = "gridBand9";
-            gridBand9.Visible = false;
-            gridBand9.Width = 124;
-            // 
             // Catongtho
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -873,7 +872,7 @@ namespace Winforms_App_Template.Forms
             ClientSize = new Size(850, 450);
             Controls.Add(layoutControl1);
             Name = "Catongtho";
-            Text = "Catongtho";
+            Text = "app";
             ((System.ComponentModel.ISupportInitialize)gridControl1).EndInit();
             ((System.ComponentModel.ISupportInitialize)advBandedGridView1).EndInit();
             ((System.ComponentModel.ISupportInitialize)repositoryItemDateTimeOffsetEdit1).EndInit();

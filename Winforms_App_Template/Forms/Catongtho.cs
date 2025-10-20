@@ -1,16 +1,20 @@
 using DevExpress.Drawing.Printing;
+using DevExpress.Utils;
 using DevExpress.XtraEditors;                   // TextEdit, SimpleButton
+using DevExpress.XtraGrid;
+using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraGrid.Views.BandedGrid;    // BandedGridView, BandedGridColumn
+using DevExpress.XtraGrid.Views.Base;
 using DevExpress.XtraLayout;                   // LayoutControl, LayoutControlGroup
 using DevExpress.XtraLayout.Utils;             // LayoutMode.Table
 using DevExpress.XtraPrinting;
+using DevExpress.XtraPrinting.Drawing; // ImageSource
 using DevExpress.XtraPrintingLinks;
 using DevExpress.XtraReports.UI;
-using System.Drawing.Imaging;
-using DevExpress.XtraPrinting.Drawing; // ImageSource
 using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Drawing.Printing;                 // PaperKind, Margins
 using System.Linq;
 using System.Threading;
@@ -65,8 +69,19 @@ namespace Winforms_App_Template.Forms
             // 5) Gắn sự kiện
             _btnLoad.Click += async (_, __) => await LoadDataAsync();
             _btnCancel.Click += (_, __) => _cts?.Cancel();
-            _btnExportPdf.Click += (_, __) => ExportPdf();
+            _btnExportPdf.Click += (s, e) => btnShowReport_Click(s, e);
             _btnPrintPdf.Click += (_, __) => PrintWholeLayoutAsImage(layoutControl1);
+
+            // Ẩn panel "Drag a column header here to group by that column"
+            advBandedGridView1.OptionsView.ShowGroupPanel = false;
+
+            // Không cho kéo thả để group (ẩn luôn thao tác)
+            advBandedGridView1.OptionsCustomization.AllowGroup = false;
+
+            // (tuỳ) Ẩn menu group trong context menu
+            advBandedGridView1.OptionsMenu.EnableGroupPanelMenu = false;
+            advBandedGridView1.OptionsMenu.ShowGroupSortSummaryItems = false;
+
         }
 
         protected override async void OnShown(EventArgs e)
@@ -364,20 +379,152 @@ namespace Winforms_App_Template.Forms
             //}
         }
 
+        // Ví dụ: gọi từ một Form (ví dụ khi nhấn nút)
+        private void btnShowReport_Click(object sender, EventArgs e)
+        {
+            string connStr = "Server=.;Database=YourDB;Trusted_Connection=True;";
+            // hoặc từ appsettings.json
+
+            //var rows = await InspectionRepository.GetRowsAsync(connStr, top: 20);
+            var rows = new List<Catthoong_Model>
+            {
+                new Catthoong_Model {
+                    Reason="Định kỳ",
+                    TimeAndWorker="09:30 2025-10-20\nNguyễn A",
+                    Machine="V-01",
+                    QtyUsed=100, QtyCut=30,
+                    ThickGauge="PR-IK-0001",
+                    OuterDiameter="⌀ 2.80",
+                    Pin098="OK",
+                    InnerJudge="通過 / Xuyên",
+                    CutState="OK",
+                    CutLengths="100 / 100 / 100",
+                    Acceptance="OK",
+                    NG_CatVat=0, NG_Bep=0, NG_Bavia=1, NG_Roi=0, NG_LengthOut=0, NG_Khac=0
+                }
+                //},
+                //new Catthoong_Model {
+                //    Reason="Bất thường",
+                //    TimeAndWorker="10:15 2025-10-20\nLê B",
+                //    Machine="V-02",
+                //    QtyUsed=90, QtyCut=25,
+                //    ThickGauge="PR-IK-0014",
+                //    OuterDiameter="⌀ 2.79",
+                //    Pin098="NG",
+                //    InnerJudge="不通過 / Không xuyên",
+                //    CutState="NG",
+                //    CutLengths="98 / 99 / 100",
+                //    Acceptance="NG",
+                //    NG_CatVat=0, NG_Bep=2, NG_Bavia=0, NG_Roi=1, NG_LengthOut=1, NG_Khac=0
+                //}
+            };
+
+            var rpt = new Testreport();
+            rpt.DataSource = rows;     // List<InspectionRow>
+                                       // rpt.DataMember = null;  // không cần cho List<T>
+
+            // (nếu bạn chưa set ExpressionBindings trong Designer,
+            //  có thể set bằng code như ví dụ dưới)
+            // rpt.FindControl("cellReason", true).ExpressionBindings.Add(
+            //     new ExpressionBinding("BeforePrint", "Text", "[Reason]"));
+
+            new ReportPrintTool(rpt).ShowRibbonPreviewDialog();
+        }
+        private void ApplyGridPrintSettingsRecursive(Control parent)
+        {
+            foreach (Control child in parent.Controls)
+            {
+                if (child is GridControl gc)
+                {
+                    switch (gc.MainView)
+                    {
+                        case AdvBandedGridView abv:
+                            ConfigureAdvBanded(abv);
+                            break;
+
+                        case BandedGridView bv:
+                            ConfigureBanded(bv);
+                            break;
+
+                        case GridView gv:
+                            ConfigureGrid(gv);
+                            break;
+
+                        case ColumnView:
+                            // Fallback: KHÔNG set RowAutoHeight/AppearancePrint.Row ở đây
+                            // vì lớp base ColumnView không có các thuộc tính đó.
+                            break;
+                    }
+                }
+
+                // đi sâu các control con
+                ApplyGridPrintSettingsRecursive(child);
+            }
+        }
+
+        private void ConfigureAdvBanded(AdvBandedGridView v)
+        {
+            // In/Export: co chiều ngang để vừa trang
+            v.OptionsPrint.AutoWidth = true;
+            v.OptionsPrint.PrintHeader = true;
+            v.OptionsPrint.PrintBandHeader = true;
+
+            // Hiển thị & in văn bản dài: wrap + auto height
+            v.OptionsView.RowAutoHeight = true;                              // chỉ có trên AdvBandedGridView
+            v.Appearance.Row.TextOptions.WordWrap = WordWrap.Wrap;           // on-screen
+            v.AppearancePrint.Row.TextOptions.WordWrap = WordWrap.Wrap;      // khi in/xuất
+        }
+
+        private void ConfigureBanded(BandedGridView v)
+        {
+            v.OptionsPrint.AutoWidth = true;
+            v.OptionsPrint.PrintHeader = true;
+            v.OptionsPrint.PrintBandHeader = true;
+
+            v.OptionsView.RowAutoHeight = true;
+            v.Appearance.Row.TextOptions.WordWrap = WordWrap.Wrap;
+            v.AppearancePrint.Row.TextOptions.WordWrap = WordWrap.Wrap;
+        }
+
+        private void ConfigureGrid(GridView v)
+        {
+            v.OptionsPrint.AutoWidth = true;
+            v.OptionsPrint.PrintHeader = true;
+
+            v.OptionsView.RowAutoHeight = true;
+            v.Appearance.Row.TextOptions.WordWrap = WordWrap.Wrap;
+            v.AppearancePrint.Row.TextOptions.WordWrap = WordWrap.Wrap;
+        }
+
         private void PrintWholeLayoutAsImage(LayoutControl layoutRoot)
         {
-            // Check whether the LayoutControl can be previewed.
+            // 1) Kiểm tra thư viện in ấn
             if (!layoutRoot.IsPrintingAvailable)
             {
-                MessageBox.Show("The 'DevExpress.XtraPrinting' library is not found", "Error");
+                MessageBox.Show("Thiếu DevExpress.XtraPrinting", "Error");
                 return;
             }
-            // keep layout
+            // 2) Cấu hình GridControl bên trong để phần lưới rõ nét (in vector)
+            foreach (Control c in layoutRoot.Controls)
+                ApplyGridPrintSettingsRecursive(c);
+
+            // 2) (Tùy chọn) In theo bố cục y như UI (WYSIWYG)
+            //    Ở phiên bản của bạn, dùng OptionsPrint (không phải OptionsPrintControl)
             layoutRoot.OptionsPrint.OldPrinting = true;
-            // set A3
-            //layoutRoot
-            // Open the Preview window.
-            layoutRoot.ShowPrintPreview();
+
+            // 3) Tạo hệ in ấn + link tới chính LayoutControl
+            using var ps = new PrintingSystem();
+            var link = new PrintableComponentLink(ps)
+            {
+                Component = layoutRoot,             // LayoutControl là IPrintable
+                PaperKind = DXPaperKind.A3,         // KHỔ GIẤY A3
+                Landscape = true,                   // In ngang (false = dọc)
+                Margins = new Margins(20, 20, 20, 20) // Lề trái/phải/trên/dưới (đơn vị 1/100 inch)
+            };
+
+            // 4) Tạo tài liệu và mở preview
+            link.CreateDocument();
+            new PrintTool(ps).ShowRibbonPreviewDialog();
 
             // 1) Đảm bảo control đã có handle & layout xong
             //if (!layoutRoot.IsHandleCreated)

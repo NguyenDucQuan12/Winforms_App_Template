@@ -13,5 +13,8 @@
     <Compile Update="Forms\test.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="Forms\Testreport.cs">
+      <SubType>XtraReport</SubType>
+    </Compile>
   </ItemGroup>
 </Project>
