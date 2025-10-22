@@ -10,6 +10,23 @@ namespace Winforms_App_Template.Forms
 {
     public partial class Testreport : XtraReport
     {
+
+        private readonly Parameter pOK = new Parameter
+        {
+            Name = "p_OKText",          // Tên dùng trong Expression: Parameters.p_OKText
+            Type = typeof(string),
+            Value = "OK",               // Giá trị mặc định
+            Visible = false             // Ẩn khỏi UI
+        };
+
+        private readonly Parameter pNG = new Parameter
+        {
+            Name = "p_NGText",
+            Type = typeof(string),
+            Value = "NG",
+            Visible = false
+        };
+
         public Testreport()
         {
             InitializeComponent();
@@ -17,6 +34,49 @@ namespace Winforms_App_Template.Forms
             // KHÔNG gán DataSource ở cấp Report → tránh lặp tất cả controls trong Detail của Report.
             this.DataSource = null;
             this.DataMember = null;
+
+            // Không hiện UI hỏi tham số khi in/xem
+            this.RequestParameters = false;
+
+            // GẮN tham số vào report để có thể sử dụng
+            this.Parameters.AddRange(new[] { pOK, pNG });
+        }
+
+        // Khi giá trị trong trường (fieldName) là True, False, Y, N thì tự động đổi sang value của parameter tương ứng mà ta đã khai báo bên trên
+        private static void BindYesNo(XRTableCell cell, string fieldName)
+        {
+            // In(value, a, b, c, ...) trả true nếu value thuộc 1 trong các giá trị liệt kê.
+            // Tương tự (Xuống dòng thì sử dụng dấu +):
+            // "Iif(Lower([val5]) == 'true' Or [val5] == '1' Or Lower([val5]) == 'y' Or Lower([val5]) == 'yes', " +
+            // "Parameters.p_OKText, Parameters.p_NGText))"
+            cell.ExpressionBindings.Clear();
+            cell.ExpressionBindings.Add(new ExpressionBinding(
+                "BeforePrint",                                                     // chạy trước khi in/hiển thị
+                "Text",                                                            // gán vào thuộc tính Text của cell
+                $"Iif(IsNullOrEmpty([{fieldName}]), '', " +    // Nếu giá trị fieldName là rỗng hoặc null thì trả về Text là "" (chuỗi trồng)
+                $"Iif(In(Lower([{fieldName}]), 'true','1','y','yes'), Parameters.p_OKText, Parameters.p_NGText))"  // Nếu giá trị là 1 trong những từ kia thì lấy value Ok, ko thì lấy value NH
+            ));
+
+            // Hoặc có thể bind data bằng CalculatedField để tạo hàm ExpressionBindings tương đồng khi bind bằng "[fieldname]"
+            //var cfVal5 = new CalculatedField
+            //{
+            //    Name = "calc_val5",
+            //    FieldType = FieldType.String,
+            //    // Có thể dùng biểu thức In(...) như trên
+            //    Expression = "Iif(IsNullOrEmpty([val5]), '', Iif(In(Lower([val5]), 'true','1','y','yes'), Parameters.p_OKText, Parameters.p_NGText))"
+            //};
+            //this.CalculatedFields.Add(cfVal5);
+
+            //// Cell chỉ cần bind "[calc_val5]" đã khai báo Name
+            //cellVal5.ExpressionBindings.Clear();
+            //cellVal5.ExpressionBindings.Add(new ExpressionBinding("BeforePrint", "Text", "[calc_val5]"));
+        }
+
+        // Hàm công khai để form bên ngoài đổi text OK/NG động (ví dụ: “Đạt/Không đạt, Xuyêm/Không xuyên”)
+        public void SetOkNgText(string okText, string ngText)
+        {
+            this.Parameters["p_OKText"].Value = okText;
+            this.Parameters["p_NGText"].Value = ngText;
         }
 
         /// <summary>
