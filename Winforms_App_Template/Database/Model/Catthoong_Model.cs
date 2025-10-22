@@ -6,6 +6,18 @@ using System.Threading.Tasks;
 
 namespace Winforms_App_Template.Database.Model
 {
+    public sealed class Catongtho_HeaderModel
+    {
+        public string Name_Congdoan { get; set; } = "";
+        public string ID_Congdoan { get; set; } = "";
+        public string Code_Congdoan { get; set; } = "";
+        public string Category_Code { get; set; } = "";
+        public string Lotno_Congdoan { get; set; } = "";
+        public string Batch_Number { get; set; } = "";
+        public int? NG_Qty_Total { get; set; }
+        public int? OK_Qty_Total { get; set; }
+    }
+
     public sealed class Catthoong_Model
     {
         public string Reason { get; set; } = ""; // Lý do kiểm tra

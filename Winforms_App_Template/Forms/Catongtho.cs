@@ -69,7 +69,7 @@ namespace Winforms_App_Template.Forms
             // 5) Gắn sự kiện
             _btnLoad.Click += async (_, __) => await LoadDataAsync();
             _btnCancel.Click += (_, __) => _cts?.Cancel();
-            _btnExportPdf.Click += (s, e) => btnShowReport_Click(s, e);
+            _btnExportPdf.Click += async (s, e) => await btnShowReport_Click(s, e);
             _btnPrintPdf.Click += (_, __) => PrintWholeLayoutAsImage(layoutControl1);
 
             // Ẩn panel "Drag a column header here to group by that column"
@@ -380,12 +380,27 @@ namespace Winforms_App_Template.Forms
         }
 
         // Ví dụ: gọi từ một Form (ví dụ khi nhấn nút)
-        private void btnShowReport_Click(object sender, EventArgs e)
+        private async Task btnShowReport_Click(object? sender, EventArgs? e)
         {
-            string connStr = "Server=.;Database=YourDB;Trusted_Connection=True;";
-            // hoặc từ appsettings.json
+            // truy vấn dữ liệu từ DB
 
-            //var rows = await InspectionRepository.GetRowsAsync(connStr, top: 20);
+            // Lấy data cho header
+            Catongtho_HeaderModel header = await _repo.Get_Header_catthoong(IdCongDoan: 68, ItemNumber: "CRS25E50K10W", LotNo: "120814G01", So_Me: 1);
+            // b) Header in 1 lần
+            //Catongtho_HeaderModel header = new Catongtho_HeaderModel
+            //{
+            //    Name_Congdoan = "Cắt thô ống/ abc",
+            //    ID_Congdoan = "68",
+            //    Code_Congdoan = "zzzzzzz",
+            //    Category_Code = "123456G01",
+            //    Lotno_Congdoan = "12316541",
+            //    Batch_Number = "1",
+            //    NG_Qty_Total = 1,
+            //    OK_Qty_Total = 900
+            //};
+
+            // Lấy data cho bảng
+            //List<Catthoong_Model> rows = await _repo.Get_Cat_Ong_Tho();
             var rows = new List<Catthoong_Model>
             {
                 new Catthoong_Model {
@@ -401,32 +416,33 @@ namespace Winforms_App_Template.Forms
                     CutLengths="100 / 100 / 100",
                     Acceptance="OK",
                     NG_CatVat=0, NG_Bep=0, NG_Bavia=1, NG_Roi=0, NG_LengthOut=0, NG_Khac=0
+
+                },
+                new Catthoong_Model
+                {
+                    Reason = "Bất thường",
+                    TimeAndWorker = "10:15 2025-10-20\nLê B",
+                    Machine = "V-02",
+                    QtyUsed = 90,
+                    QtyCut = 25,
+                    ThickGauge = "PR-IK-0014",
+                    OuterDiameter = "⌀ 2.79",
+                    Pin098 = "NG",
+                    InnerJudge = "不通過 / Không xuyên",
+                    CutState = "NG",
+                    CutLengths = "98 / 99 / 100",
+                    Acceptance = "NG",
+                    NG_CatVat = 0,
+                    NG_Bep = 2,
+                    NG_Bavia = 0,
+                    NG_Roi = 1,
+                    NG_LengthOut = 1,
+                    NG_Khac = 0
                 }
-                //},
-                //new Catthoong_Model {
-                //    Reason="Bất thường",
-                //    TimeAndWorker="10:15 2025-10-20\nLê B",
-                //    Machine="V-02",
-                //    QtyUsed=90, QtyCut=25,
-                //    ThickGauge="PR-IK-0014",
-                //    OuterDiameter="⌀ 2.79",
-                //    Pin098="NG",
-                //    InnerJudge="不通過 / Không xuyên",
-                //    CutState="NG",
-                //    CutLengths="98 / 99 / 100",
-                //    Acceptance="NG",
-                //    NG_CatVat=0, NG_Bep=2, NG_Bavia=0, NG_Roi=1, NG_LengthOut=1, NG_Khac=0
-                //}
             };
 
             var rpt = new Testreport();
-            rpt.DataSource = rows;     // List<InspectionRow>
-                                       // rpt.DataMember = null;  // không cần cho List<T>
-
-            // (nếu bạn chưa set ExpressionBindings trong Designer,
-            //  có thể set bằng code như ví dụ dưới)
-            // rpt.FindControl("cellReason", true).ExpressionBindings.Add(
-            //     new ExpressionBinding("BeforePrint", "Text", "[Reason]"));
+            rpt.ConfigureLayoutForCatongtho(rows, header, /*notePrintOnlyOnce*/ false);
 
             new ReportPrintTool(rpt).ShowRibbonPreviewDialog();
         }

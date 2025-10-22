@@ -10,16 +10,11 @@ using System.Windows.Forms;
 
 namespace Winforms_App_Template.Forms
 {
-    public partial class test : Form
+    public partial class Test : Form
     {
-        public test()
+        public Test()
         {
             InitializeComponent();
-        }
-
-        private void textEdit1_EditValueChanged(object sender, EventArgs e)
-        {
-
         }
     }
 }

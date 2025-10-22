@@ -120,11 +120,11 @@ namespace Winforms_App_Template.Forms
             // 
             // gridControl1
             // 
-            gridControl1.Location = new Point(12, 155);
+            gridControl1.Location = new Point(12, 167);
             gridControl1.MainView = advBandedGridView1;
             gridControl1.Name = "gridControl1";
             gridControl1.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] { repositoryItemDateTimeOffsetEdit1 });
-            gridControl1.Size = new Size(548, 283);
+            gridControl1.Size = new Size(536, 307);
             gridControl1.TabIndex = 2;
             gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { advBandedGridView1, gridView1 });
             // 
@@ -596,7 +596,7 @@ namespace Winforms_App_Template.Forms
             layoutControl1.Name = "layoutControl1";
             layoutControl1.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new Rectangle(1270, 211, 650, 400);
             layoutControl1.Root = Root;
-            layoutControl1.Size = new Size(850, 450);
+            layoutControl1.Size = new Size(840, 486);
             layoutControl1.TabIndex = 4;
             layoutControl1.Text = "layoutControl1";
             // 
@@ -607,7 +607,7 @@ namespace Winforms_App_Template.Forms
             gridControl3.MainView = gridView3;
             gridControl3.Margin = new Padding(2);
             gridControl3.Name = "gridControl3";
-            gridControl3.Size = new Size(548, 139);
+            gridControl3.Size = new Size(536, 151);
             gridControl3.TabIndex = 0;
             gridControl3.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gridView3 });
             // 
@@ -704,19 +704,19 @@ namespace Winforms_App_Template.Forms
             // 
             // textEdit1
             // 
-            textEdit1.Location = new Point(611, 398);
+            textEdit1.Location = new Point(599, 434);
             textEdit1.MinimumSize = new Size(0, 40);
             textEdit1.Name = "textEdit1";
-            textEdit1.Size = new Size(227, 40);
+            textEdit1.Size = new Size(229, 40);
             textEdit1.StyleController = layoutControl1;
             textEdit1.TabIndex = 4;
             // 
             // gridControl2
             // 
-            gridControl2.Location = new Point(564, 12);
+            gridControl2.Location = new Point(552, 12);
             gridControl2.MainView = gridView2;
             gridControl2.Name = "gridControl2";
-            gridControl2.Size = new Size(274, 382);
+            gridControl2.Size = new Size(276, 418);
             gridControl2.TabIndex = 3;
             gridControl2.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gridView2 });
             // 
@@ -810,9 +810,9 @@ namespace Winforms_App_Template.Forms
             columnDefinition2.SizeType = SizeType.Percent;
             columnDefinition2.Width = 100D;
             columnDefinition3.SizeType = SizeType.AutoSize;
-            columnDefinition3.Width = 278D;
+            columnDefinition3.Width = 280D;
             Root.OptionsTableLayoutGroup.ColumnDefinitions.AddRange(new DevExpress.XtraLayout.ColumnDefinition[] { columnDefinition1, columnDefinition2, columnDefinition3 });
-            rowDefinition1.Height = 143D;
+            rowDefinition1.Height = 155D;
             rowDefinition1.SizeType = SizeType.AutoSize;
             rowDefinition2.Height = 100D;
             rowDefinition2.SizeType = SizeType.Percent;
@@ -821,17 +821,17 @@ namespace Winforms_App_Template.Forms
             Root.OptionsTableLayoutGroup.RowDefinitions.AddRange(new DevExpress.XtraLayout.RowDefinition[] { rowDefinition1, rowDefinition2, rowDefinition3 });
             Root.OptionsTableLayoutItem.RowIndex = 1;
             Root.OptionsTableLayoutItem.RowSpan = 2;
-            Root.Size = new Size(850, 450);
+            Root.Size = new Size(840, 486);
             Root.TextVisible = false;
             // 
             // layoutControlItem3
             // 
             layoutControlItem3.Control = textEdit1;
-            layoutControlItem3.Location = new Point(552, 386);
+            layoutControlItem3.Location = new Point(540, 422);
             layoutControlItem3.Name = "layoutControlItem3";
             layoutControlItem3.OptionsTableLayoutItem.ColumnIndex = 2;
             layoutControlItem3.OptionsTableLayoutItem.RowIndex = 2;
-            layoutControlItem3.Size = new Size(278, 44);
+            layoutControlItem3.Size = new Size(280, 44);
             layoutControlItem3.Text = "Ghi chú";
             layoutControlItem3.TextSize = new Size(35, 13);
             // 
@@ -841,35 +841,35 @@ namespace Winforms_App_Template.Forms
             layoutControlItem4.Location = new Point(0, 0);
             layoutControlItem4.Name = "layoutControlItem4";
             layoutControlItem4.OptionsTableLayoutItem.ColumnSpan = 2;
-            layoutControlItem4.Size = new Size(552, 143);
+            layoutControlItem4.Size = new Size(540, 155);
             layoutControlItem4.TextVisible = false;
             // 
             // layoutControlItem1
             // 
             layoutControlItem1.Control = gridControl1;
-            layoutControlItem1.Location = new Point(0, 143);
+            layoutControlItem1.Location = new Point(0, 155);
             layoutControlItem1.Name = "layoutControlItem1";
             layoutControlItem1.OptionsTableLayoutItem.ColumnSpan = 2;
             layoutControlItem1.OptionsTableLayoutItem.RowIndex = 1;
             layoutControlItem1.OptionsTableLayoutItem.RowSpan = 2;
-            layoutControlItem1.Size = new Size(552, 287);
+            layoutControlItem1.Size = new Size(540, 311);
             layoutControlItem1.TextVisible = false;
             // 
             // layoutControlItem2
             // 
             layoutControlItem2.Control = gridControl2;
-            layoutControlItem2.Location = new Point(552, 0);
+            layoutControlItem2.Location = new Point(540, 0);
             layoutControlItem2.Name = "layoutControlItem2";
             layoutControlItem2.OptionsTableLayoutItem.ColumnIndex = 2;
             layoutControlItem2.OptionsTableLayoutItem.RowSpan = 2;
-            layoutControlItem2.Size = new Size(278, 386);
+            layoutControlItem2.Size = new Size(280, 422);
             layoutControlItem2.TextVisible = false;
             // 
             // Catongtho
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(850, 450);
+            ClientSize = new Size(840, 486);
             Controls.Add(layoutControl1);
             Name = "Catongtho";
             Text = "app";

@@ -1,6 +1,6 @@
 namespace Winforms_App_Template.Forms
 {
-    partial class test
+    partial class Test
     {
         /// <summary>
         /// Required designer variable.
@@ -28,45 +28,18 @@ namespace Winforms_App_Template.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
-            Root = new DevExpress.XtraLayout.LayoutControlGroup();
-            ((System.ComponentModel.ISupportInitialize)layoutControl1).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)Root).BeginInit();
             SuspendLayout();
             // 
-            // layoutControl1
-            // 
-            layoutControl1.Location = new Point(43, 12);
-            layoutControl1.Name = "layoutControl1";
-            layoutControl1.Root = Root;
-            layoutControl1.Size = new Size(180, 120);
-            layoutControl1.TabIndex = 0;
-            layoutControl1.Text = "layoutControl1";
-            // 
-            // Root
-            // 
-            Root.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
-            Root.GroupBordersVisible = false;
-            Root.Name = "Root";
-            Root.Size = new Size(180, 120);
-            Root.TextVisible = false;
-            // 
-            // test
+            // Test
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Controls.Add(layoutControl1);
-            Name = "test";
+            Name = "Test";
             Text = "test";
-            ((System.ComponentModel.ISupportInitialize)layoutControl1).EndInit();
-            ((System.ComponentModel.ISupportInitialize)Root).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
-
-        private DevExpress.XtraLayout.LayoutControl layoutControl1;
-        private DevExpress.XtraLayout.LayoutControlGroup Root;
     }
 }
