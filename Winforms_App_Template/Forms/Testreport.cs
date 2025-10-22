@@ -1,7 +1,8 @@
+using DevExpress.XtraReports.Parameters;
 using DevExpress.XtraReports.UI;
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using DevExpress.XtraReports.Parameters;
 using Winforms_App_Template.Database.Model;
 using Winforms_App_Template.Utils;
 
@@ -28,11 +29,11 @@ namespace Winforms_App_Template.Forms
         /// <param name="headerData">Dữ liệu in 1 lần cho header</param>
         /// <param name="notePrintOnlyOnce">true => Note_Richtext chỉ in ở record đầu</param>
         public void ConfigureLayoutForCatongtho(
-            IList<Catthoong_Model> rows,
+            IList<Catthoong_Row> rows,
             Catongtho_HeaderModel headerData,
             bool notePrintOnlyOnce = false)
         {
-            // Kiểm tra có dữ liệu đầu vào không
+            // Kiểm tra có dữ liệu đầu vào
             if (rows == null)
             {
                 throw new ArgumentNullException(nameof(rows), "rows null: không có dữ liệu để lặp.");
@@ -45,24 +46,17 @@ namespace Winforms_App_Template.Forms
             dr.DataSource = rows;
             dr.DataMember = null; // List<T> không cần DataMember
 
+            // Hiển thị ra datasource đã gắn vào có bao nhiêu bản ghi
+            XtraTableAutoBinder.AssertBandDataSource(dr: dr);
+
             // Lấy ReportHeader của Detail Report theo Name = "Catongtho_Header" (Header chỉ in 1 lần)
             ReportHeaderBand drHeader = this.FindChildReportHeader(dr, "Catongtho_Header");
             // Lấy header table cần bind dữ liệu
             XRTable? header_table = drHeader.FindControl("Header_Table", true) as XRTable;
             // Bind dữ liệu từ tag với cấu trúc a|b|c|d|e, c sẽ là FiledName trong DB
             this.AutoBindHeaderTable_ByTag_UsingParameters(header_table, headerData);
-            //Binding_Xtratbale_Tag.AutoBindCellsByDelimitedMeta(header_table, true);
-
-            // Lấy bảng cần chứa dữ liệu từ DB
-
-            // Tìm các cột cần chứa dữ liệu trong header
-            XRControl h_Name = drHeader.FindControl("Name_Congdoan", true);
-            XRControl h_ID = drHeader.FindControl("ID_Congdoan", true);
-            XRControl h_Code = drHeader.FindControl("Code_Congdoan", true);
-            XRControl h_Lot = drHeader.FindControl("Lotno_Congdoan", true);
-            XRControl h_Batch = drHeader.FindControl("Batch_Number", true);
-            XRControl h_NG = drHeader.FindControl("NG_Qty_Total", true);
-            XRControl h_OK = drHeader.FindControl("OK_Qty_Total", true);
+            // kiểm tra xem bảng hearder đã bind được dữ liệu hay chưa
+            //XtraTableAutoBinder.DumpBindings(header_table, "Header_Table");
 
             // Lấy Detail con đầu tiên trong Deatil Report cha
             DetailBand drDetail = this.FindChildDetail(dr);
@@ -71,48 +65,51 @@ namespace Winforms_App_Template.Forms
                 throw new InvalidOperationException("Catongtho_Report thiếu Detail (band con).");
             }
 
-            // Truy vấn 2 bảng và 1 richtext trong detail con
-            XRTable tblA = drDetail.FindControl("Catthoong_Table", true) as XRTable;
-            XRTable tblB = drDetail.FindControl("Check_Table", true) as XRTable;
-            XRRichText noteRtf = drDetail.FindControl("Note_Richtext", true) as XRRichText;
+            // Tìm kiếm 2 bảng và 1 richtext trong detail con
+            XRTable? tblA = drDetail.FindControl("Catthoong_Table", true) as XRTable;
+            XRTable? tblB = drDetail.FindControl("Check_Table", true) as XRTable;
+            XRRichText? noteRtf = drDetail.FindControl("Note_Richtext", true) as XRRichText;
 
             if (tblA == null) throw new InvalidOperationException("Thiếu XRTable: Catthoong_Table trong Catongtho_Report.Detail.");
             if (tblB == null) throw new InvalidOperationException("Thiếu XRTable: Check_Table trong Catongtho_Report.Detail.");
             if (noteRtf == null) { /* không bắt buộc, nhưng cảnh báo nhẹ */ }
 
-            //// ==== Bind dữ liệu cho header ====
-            //// Nếu có dữ liệu header riêng --> gán trực tiếp Text qua ExpressionBinding với nguồn là Parameters
-            //if (headerData != null)
-            //{
-            //    // Tạo các Parameter nội bộ để header bind vào (cách sạch, không đụng rows).
-            //    // Vì ReportHeader của DR cũng có DataContext, ta muốn tách độc lập → dùng Parameters là đơn giản nhất.
-            //    this.BindHeaderByParameters(drHeader, headerData, h_Name, h_ID, h_Code, h_Lot, h_Batch, h_NG, h_OK);
-            //}
-            //else
-            //{
-            //    // Không có headerData → lấy từ record đầu của rows (bind aggregate hoặc First)
-            //    // Ở DevExpress, có thể dùng Min/Max cho text ổn định, nếu field giống nhau mọi record.
-            //    this.BindHeaderFromFirstRecord(drHeader, h_Name, h_ID, h_Code, h_Lot, h_Batch, h_NG, h_OK);
-            //}
+            // Gọi auto-bind cho tất cả bảng thuộc DR (đọc meta từ Tag, yêu cầu tối thiểu 3 phần a|b|c):
+            //XtraTableAutoBinder.AutoBindAllTablesInDetailReportByTag(
+            //    dr,
+            //    readFromTag: true,
+            //    delimiter: '|',
+            //    fieldSegmentIndex: 2,   // lấy c
+            //    minSegmentCount: 3,
+            //    strictMeta: false,      // true nếu muốn fail-fast khi meta sai
+            //    checkFieldExists: true  // bật để cảnh báo field không tồn tại trong model
+            //);
 
-            // ==== Bind 2 bảng lặp trong DETAIL ====
+            // Hoặc bind cụ thể 1 bảng
+            XtraTableAutoBinder.AutoBindSingleTableByTag(
+                    table: tblA,
+                    checkFieldExists: true,
+                    dataSourceForCheck: rows
+                );
+
+            // Kiểm tra 1 bảng cụ thể các binding trong từng cell
+            XtraTableAutoBinder.DumpBindings(tblA, "Catthoong_Table");
 
             // Catthoong_Table: dùng map cell -> biểu thức theo Catthoong_Model
-            this.BindCatthoongTableCells(tblA);
+            //this.BindCatthoongTableCells(tblA);
 
             // Check_Table
             //this.BindCheckTableCells(tblB);
 
-            // 7.3 Note_Richtext:
+            //  Note_Richtext:
             if (noteRtf != null)
             {
-                // Trường hợp 1: muốn GHI CHÚ theo từng record:
                 //  - Nếu dữ liệu là plain text: bind "Text"
                 //  - Nếu dữ liệu là chuỗi RTF:   bind "Rtf" (hoặc SerializableRtfString)
                 noteRtf.ExpressionBindings.Clear();
                 noteRtf.ExpressionBindings.Add(new ExpressionBinding("BeforePrint", "Text", "[Note]"));
 
-                // Trường hợp 2: chỉ in ghi chú ở record đầu:
+                // Trường hợp chỉ in ghi chú ở record đầu:
                 if (notePrintOnlyOnce)
                 {
                     bool printedOnce = false; // cờ đóng trên instance report
@@ -138,61 +135,6 @@ namespace Winforms_App_Template.Forms
             // 8) (Tuỳ chọn) đảm bảo band cao vừa đủ
             //drDetail.HeightF = this.ComputeBandHeight(drDetail, 4f);
             //drHeader.HeightF = this.ComputeBandHeight(drHeader, 6f);
-        }
-
-        // ----------------- BINDING IMPLEMENTATIONS -----------------
-
-        /// <summary>
-        /// Bind HEADER từ một đối tượng headerData bằng Parameters → ReportHeader in 1 lần, độc lập với rows.
-        /// </summary>
-        private void BindHeaderByParameters(
-            ReportHeaderBand header,
-            Catongtho_HeaderModel headerData,
-            XRControl name, XRControl id, XRControl code, XRControl lot, XRControl batch, XRControl ng, XRControl ok)
-        {
-            // Tạo parameters :
-            // Vì header in-một - lần, dùng Parameter giúp:
-            //    - Không phụ thuộc vào dữ liệu chi tiết (có thể rows = 0 vẫn hiển thị).
-            //    - Không cần field tương ứng trong model chi tiết.
-            //    - Giá trị ổn định, không đổi khi band lặp record.
-            this.CreateOrUpdateParameter("p_Name_Congdoan", headerData.Name_Congdoan);
-            this.CreateOrUpdateParameter("p_ID_Congdoan", headerData.Code_Congdoan);
-            this.CreateOrUpdateParameter("p_Code_Congdoan", headerData.Category_Code);
-            this.CreateOrUpdateParameter("p_Lotno_Congdoan", headerData.Lotno_Congdoan);
-            this.CreateOrUpdateParameter("p_Batch_Number", headerData.Batch_Number);
-            this.CreateOrUpdateParameter("p_NG_Qty_Total", headerData.NG_Qty_Total);
-            this.CreateOrUpdateParameter("p_OK_Qty_Total", headerData.OK_Qty_Total);
-
-            // Gán ExpressionBindings cho từng control trong header.
-            //    Ở DevExpress, khi viết expression tham chiếu parameter, ta dùng: Parameters.TenParameter
-            this.BindTextToParameter(name, "Parameters.p_Name_Congdoan");
-            this.BindTextToParameter(id, "Parameters.p_ID_Congdoan");
-            this.BindTextToParameter(code, "Parameters.p_Code_Congdoan");
-            this.BindTextToParameter(lot, "Parameters.p_Lotno_Congdoan");
-            this.BindTextToParameter(batch, "Parameters.p_Batch_Number");
-            this.BindTextToParameter(ng, "Parameters.p_NG_Qty_Total");
-            this.BindTextToParameter(ok, "Parameters.p_OK_Qty_Total");
-        }
-
-        /// <summary>
-        /// Bind HEADER “lấy từ record đầu” (nếu không truyền headerData).
-        /// Dùng aggregate Min(...) để ổn định giá trị (giả định các record cùng giá trị).
-        /// </summary>
-        private void BindHeaderFromFirstRecord(
-            ReportHeaderBand header,
-            XRControl name, XRControl id, XRControl code, XRControl lot, XRControl batch, XRControl ng, XRControl ok)
-        {
-            // Dùng Min([Field]) vì:
-            //     - DevExpress hỗ trợ Min/Max/Avg/Sum/Count chuẩn.
-            //     - Nếu tất cả record có cùng giá trị header, Min == Max == giá trị đó.
-            //     - Tránh phụ thuộc "thứ tự" (không có "First()" chuẩn trong mọi phiên bản).
-            this.SetTextBindingSafe(name, "Min([Name_Congdoan])");
-            this.SetTextBindingSafe(id, "Min([ID_Congdoan])");
-            this.SetTextBindingSafe(code, "Min([Code_Congdoan])");
-            this.SetTextBindingSafe(lot, "Min([Lotno_Congdoan])");
-            this.SetTextBindingSafe(batch, "Min([Batch_Number])");
-            this.SetTextBindingSafe(ng, "Min([NG_Qty_Total])");
-            this.SetTextBindingSafe(ok, "Min([OK_Qty_Total])");
         }
 
         /// <summary>
@@ -263,7 +205,6 @@ namespace Winforms_App_Template.Forms
             this.BindCellsByMap(tableScope, map, /*strict*/ false); // để false cho “nhẹ tay”, đỡ ném lỗi khi cell chưa trùng tên
         }
 
-        // ----------------- HELPERs: tìm band, bind an toàn, v.v. -----------------
 
         /// <summary>
         /// Tìm DetailReportBand theo Name (đúng với Name bạn đặt trong Designer).
@@ -273,7 +214,7 @@ namespace Winforms_App_Template.Forms
         {
             foreach (Band b in this.Bands)
             {
-                DetailReportBand dr = b as DetailReportBand;
+                DetailReportBand? dr = b as DetailReportBand;
                 if (dr != null && string.Equals(dr.Name, name, StringComparison.Ordinal))
                 {
                     return dr;
@@ -289,7 +230,7 @@ namespace Winforms_App_Template.Forms
         {
             foreach (Band b in dr.Bands)
             {
-                ReportHeaderBand rh = b as ReportHeaderBand;
+                ReportHeaderBand? rh = b as ReportHeaderBand;
                 if (rh != null && string.Equals(rh.Name, name, StringComparison.Ordinal))
                 {
                     return rh;
@@ -298,7 +239,7 @@ namespace Winforms_App_Template.Forms
             // Nếu Designer không đặt Name, lấy ReportHeader đầu tiên
             foreach (Band b in dr.Bands)
             {
-                ReportHeaderBand rh = b as ReportHeaderBand;
+                ReportHeaderBand? rh = b as ReportHeaderBand;
                 if (rh != null) return rh;
             }
             throw new InvalidOperationException("Không tìm thấy ReportHeaderBand con: " + name);
@@ -311,34 +252,13 @@ namespace Winforms_App_Template.Forms
         {
             foreach (Band b in dr.Bands)
             {
-                DetailBand d = b as DetailBand;
+                DetailBand? d = b as DetailBand;
                 if (d != null) return d;
             }
             return null;
         }
 
-        /// <summary>
-        /// Bind Text = [expr] an toàn: bỏ qua nếu control null.
-        /// </summary>
-        private void SetTextBindingSafe(XRControl control, string expr)
-        {
-            if (control == null) return;
-            control.ExpressionBindings.Clear();
-            control.ExpressionBindings.Add(new ExpressionBinding("BeforePrint", "Text", expr));
-        }
-
-        /// <summary>
-        /// Bind Text = Parameters.xxx cho một control (cell header).
-        /// </summary>
-        private void BindTextToParameter(XRControl control, string paramPath)
-        {
-            // Kiểm tra có truyền vào control không
-            if (control == null) return;
-            // Xóa các bind đang tồn tại
-            control.ExpressionBindings.Clear();
-            // Binding dữ liệu trước khi in (BeforePrint) vào trường Text của control
-            control.ExpressionBindings.Add(new ExpressionBinding("BeforePrint", "Text", paramPath));
-        }
+       
 
         /// <summary>
         /// Duyệt map và bind cell trong 1 scope (table/band).
@@ -440,14 +360,14 @@ namespace Winforms_App_Template.Forms
                     }
 
                     // Lấy giá trị từ key được gán cho pi
-                    object value = pi.GetValue(headerData, null);
+                    object? value = pi.GetValue(headerData, null);
 
                     // Tạo/cập nhật parameter p_<fieldName>
                     string paramName = "p_" + fieldName;
                     this.CreateOrUpdateParameter(paramName, value);
 
                     // Bind Text = Parameters.p_<fieldName>
-                    cell.ExpressionBindings.Clear();
+                    cell.ExpressionBindings.Clear();  // Xóa các bind nếu nó tồn tại, tránh chồng chéo bind 
                     cell.ExpressionBindings.Add(
                         new ExpressionBinding("BeforePrint", "Text", "Parameters." + paramName)
                     );
@@ -460,31 +380,22 @@ namespace Winforms_App_Template.Forms
         /// </summary>
         private void CreateOrUpdateParameter(string name, object value)
         {
-            // Tạo parameter vì Datasource chỉ áp dụng trên toàn detail, các band khác không thể 
-            // Nếu đã có, cập nhật; nếu chưa, thêm mới
-            Parameter p = this.Parameters[name];
+            // [Field] trong ExpressionBinding("BeforePrint", "Text", "[Field]") luôn được lấy từ DataSource/DataMember của band chứa control đó (Detail, GroupHeader/GroupFooter, DetailReportBand,…)
+            // Header lấy từ nguồn khác dataset Detail (ví dụ headerData là object khác, query khác), thì [Field] sẽ không thấy gì → ra trống.
+            // Vi vậy sử dụng Parameter: tạo Parameters.p_... = headerData.X, rồi bind Text = Parameters.p_....
+
+            // Lấy parameter theo tên từ bộ sưu tập this.Parameters của report. Parameter chỉ tồn tại trong report của DevExpress
+            Parameter p = Parameters[name];
+            // Nếu chưa có thì tiến hành tạo mới
             if (p == null)
             {
                 p = new Parameter();
                 p.Name = name;
                 p.Visible = false; // không hiện ở UI
-                this.Parameters.Add(p);
+                Parameters.Add(p);
             }
+            // Gán giá trị cho parameter này
             p.Value = value;
-        }
-
-        /// <summary>
-        /// Tính chiều cao đủ chứa controls bên trong một band, cộng padding phụ.
-        /// </summary>
-        private float ComputeBandHeight(Band band, float extraPadding)
-        {
-            float maxBottom = 0f;
-            foreach (XRControl c in band.Controls)
-            {
-                float bottom = c.LocationF.Y + c.HeightF;
-                if (bottom > maxBottom) maxBottom = bottom;
-            }
-            return maxBottom + extraPadding;
         }
     }
 }

@@ -53,34 +53,43 @@ namespace Winforms_App_Template.Database.Table
             // Trả dòng đầu nếu có, hoặc null nếu không có
             return rows.FirstOrDefault();
         }
-        public async Task<NewInput_Model> Get_Cat_Ong_Tho(int IdCongDoan, string ItemNumber, string LotNo, int So_Me, CancellationToken ct = default)
+        public async Task<List<Catthoong_Row>> Get_Cat_Ong_Tho(int IdCongDoan, string ItemNumber, string LotNo, int So_Me, CancellationToken ct = default)
         {
             var cat_ong_tho_query = @"
                 SELECT 
-                       idInput
-                      ,idCongDoan
-                      ,idLydoKT
-                      ,idMay_ban
-                      ,Somay
-                      ,ItemNumber
-                      ,LotNo
-                      ,SLSudung
-                      ,OKQty
-                      ,NGQty
-                      ,So_Me
-                      ,StartTime
-                      ,NguoiTT
-                      ,Remark
-                      ,val1, val2, val3, val4, val5, val6, val7, val8, val9, val10
-                      , val11, val12, val13, val14, val15
+                        ld.MaKT,
+                        mb.TenMay_Ban,
+                        ni.SLSudung,
+                        ni.StartTime,
+                        ni.NguoiTT,
+                        ni.val1,                -- Số lượng ống dài sử dụng
+                        ni.val2,                -- Số lượng ống dài cắt được
+                        ni.val3,                -- Mã quản lý thicness gauge
+                        ni.val4,                -- Đường kính ngoài ống dài
+                        ni.val5,                -- Đường kính ngoài ống dài yes no
+                        ni.val6,                -- Mã pingauge 098mm
+                        ni.val7,                -- Đường kính trong loại 4Fr, 4KFr xuyên (yes no)
+                        ni.val8,                -- Đường kính trong loại 4Fr, 4KFr không xuyên (yes no)
+                        ni.val9,                -- Trạng thái cắt 10 ống
+                        ni.val10,               -- Mã thước sử dụng
+                        ni.val11,               -- Thước sử dụng 1
+                        ni.val12,               -- Thước sử dụng 2
+                        ni.val13,               -- Thước sử dụng 3
+                        ni.val14,               -- Thước sử dụng yes no
+                        ni.val15                -- Kết quả xác nhận tồn lưu yes no
                 FROM
-                      tblNewInput
-                WHERE 
-                      idCongDoan = @idCongDoan AND
-                      ItemNumber = @ItemNumber AND
-                      LotNo = @LotNo AND
-                      So_Me = @So_Me
-                ORDER BY StartTime DESC, IdInput DESC;
+                        tblNewInput AS ni
+                LEFT JOIN 
+                        tblMay_Ban    AS mb ON mb.IdMay_ban   = ni.IdMay_ban
+                LEFT JOIN 
+                        tblLydoKT    AS ld ON ld.idLydoKT    = ni.idLydoKT
+                WHERE
+                        ni.IdCongDoan = @IdCongDoan AND
+                        ni.ItemNumber = @ItemNumber AND
+                        ni.LotNo      = @LotNo      AND
+                        ni.So_Me      = @So_Me
+                ORDER BY
+                        ni.StartTime DESC;
             ";
 
             var param = new
@@ -92,9 +101,9 @@ namespace Winforms_App_Template.Database.Table
             };
 
             // Thực thi
-            var rows = (await _db.QueryAsync<NewInput_Row>(cat_ong_tho_query, param, ct: ct)).ToList();
+            var rows = (await _db.QueryAsync<Catthoong_Row>(cat_ong_tho_query, param, ct: ct)).ToList();
 
-            return new NewInput_Model { Rows = rows };
+            return rows;
         }
     }
 }

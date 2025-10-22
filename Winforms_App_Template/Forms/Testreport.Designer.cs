@@ -613,6 +613,7 @@ namespace Winforms_App_Template.Forms
             this.Machine_number.Multiline = true;
             this.Machine_number.Name = "Machine_number";
             this.Machine_number.RowSpan = 3;
+            this.Machine_number.Tag = "a|b|TenMay_Ban|d|e";
             this.Machine_number.Weight = 1.6844553619017941D;
             // 
             // Raw_Materials
@@ -623,6 +624,7 @@ namespace Winforms_App_Template.Forms
             this.Raw_Materials.Name = "Raw_Materials";
             this.Raw_Materials.RowSpan = 3;
             this.Raw_Materials.StylePriority.UseBorders = false;
+            this.Raw_Materials.Tag = "a|b|val1|d|e";
             this.Raw_Materials.Weight = 1.4938699785205753D;
             // 
             // xrTableCell62
@@ -645,6 +647,7 @@ namespace Winforms_App_Template.Forms
             this.Number_Of_Cut_Pipes.Name = "Number_Of_Cut_Pipes";
             this.Number_Of_Cut_Pipes.RowSpan = 3;
             this.Number_Of_Cut_Pipes.StylePriority.UseBorders = false;
+            this.Number_Of_Cut_Pipes.Tag = "a|b|val2|d|e";
             this.Number_Of_Cut_Pipes.Weight = 1.7024866384607877D;
             // 
             // xrTableCell57
@@ -669,6 +672,7 @@ namespace Winforms_App_Template.Forms
             this.Thickness_Gauge_Code.RowSpan = 3;
             this.Thickness_Gauge_Code.StylePriority.UseBorders = false;
             this.Thickness_Gauge_Code.StylePriority.UseTextAlignment = false;
+            this.Thickness_Gauge_Code.Tag = "a|b|val3|d|e";
             this.Thickness_Gauge_Code.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
             this.Thickness_Gauge_Code.Weight = 1.5498702218657081D;
             // 
@@ -677,6 +681,7 @@ namespace Winforms_App_Template.Forms
             this.Outer_Diameter.Multiline = true;
             this.Outer_Diameter.Name = "Outer_Diameter";
             this.Outer_Diameter.RowSpan = 2;
+            this.Outer_Diameter.Tag = "a|b|val4|d|e";
             this.Outer_Diameter.Weight = 2.6834399676378622D;
             // 
             // xrTableCell59
@@ -701,6 +706,7 @@ namespace Winforms_App_Template.Forms
             this.Pingauge_Code.RowSpan = 3;
             this.Pingauge_Code.StylePriority.UseBorders = false;
             this.Pingauge_Code.StylePriority.UseTextAlignment = false;
+            this.Pingauge_Code.Tag = "a|b|val6|d|e";
             this.Pingauge_Code.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
             this.Pingauge_Code.Weight = 1.641743816612006D;
             // 
@@ -709,6 +715,7 @@ namespace Winforms_App_Template.Forms
             this.xrTableCell74.Multiline = true;
             this.xrTableCell74.Name = "xrTableCell74";
             this.xrTableCell74.RowSpan = 3;
+            this.xrTableCell74.Tag = "a|b|val7|d|e";
             this.xrTableCell74.Weight = 3.403466430030647D;
             // 
             // Cut_Check
@@ -716,6 +723,7 @@ namespace Winforms_App_Template.Forms
             this.Cut_Check.Multiline = true;
             this.Cut_Check.Name = "Cut_Check";
             this.Cut_Check.RowSpan = 3;
+            this.Cut_Check.Tag = "a|b|val9|d|e";
             this.Cut_Check.Weight = 2.7443918963921039D;
             // 
             // xrTableCell86
@@ -738,7 +746,8 @@ namespace Winforms_App_Template.Forms
             this.Cutting_Length.Name = "Cutting_Length";
             this.Cutting_Length.StylePriority.UseBorders = false;
             this.Cutting_Length.StylePriority.UseTextAlignment = false;
-            this.Cutting_Length.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
+            this.Cutting_Length.Tag = "a|b|val10|d|e";
+            this.Cutting_Length.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleJustify;
             this.Cutting_Length.Weight = 2.2701948522848578D;
             // 
             // xrTableRow14
@@ -871,6 +880,7 @@ namespace Winforms_App_Template.Forms
             this.Cutting_Length_Number_1.Multiline = true;
             this.Cutting_Length_Number_1.Name = "Cutting_Length_Number_1";
             this.Cutting_Length_Number_1.StylePriority.UseBorders = false;
+            this.Cutting_Length_Number_1.Tag = "a|b|val11|d|e";
             this.Cutting_Length_Number_1.Weight = 1.1457712123181572D;
             // 
             // xrTableCell117
@@ -890,6 +900,7 @@ namespace Winforms_App_Template.Forms
             this.Cutting_Length_Number_2.Multiline = true;
             this.Cutting_Length_Number_2.Name = "Cutting_Length_Number_2";
             this.Cutting_Length_Number_2.StylePriority.UseBorders = false;
+            this.Cutting_Length_Number_2.Tag = "a|b|val12|d|e";
             this.Cutting_Length_Number_2.Weight = 1.0013559121849374D;
             // 
             // xrTableCell118
@@ -910,6 +921,7 @@ namespace Winforms_App_Template.Forms
             this.Cutting_Length_Number_3.Multiline = true;
             this.Cutting_Length_Number_3.Name = "Cutting_Length_Number_3";
             this.Cutting_Length_Number_3.StylePriority.UseBorders = false;
+            this.Cutting_Length_Number_3.Tag = "a|b|val13|d|e";
             this.Cutting_Length_Number_3.Weight = 1.23748691725112D;
             // 
             // xrTableRow12
@@ -999,6 +1011,7 @@ namespace Winforms_App_Template.Forms
             this.Outer_Diameter_Check.Multiline = true;
             this.Outer_Diameter_Check.Name = "Outer_Diameter_Check";
             this.Outer_Diameter_Check.StylePriority.UseBorders = false;
+            this.Outer_Diameter_Check.Tag = "a|b|val5|d|e";
             this.Outer_Diameter_Check.Weight = 2.6834399676378622D;
             // 
             // xrTableCell72
@@ -1033,6 +1046,7 @@ namespace Winforms_App_Template.Forms
             // 
             this.Cutting_Length_Check.Multiline = true;
             this.Cutting_Length_Check.Name = "Cutting_Length_Check";
+            this.Cutting_Length_Check.Tag = "a|b|val14|d|e";
             this.Cutting_Length_Check.Weight = 4.3653368088731934D;
             // 
             // xrTableRow6
@@ -1051,6 +1065,7 @@ namespace Winforms_App_Template.Forms
             this.Reason_Check.Multiline = true;
             this.Reason_Check.Name = "Reason_Check";
             this.Reason_Check.RowSpan = 3;
+            this.Reason_Check.Tag = "a|b|MaKT|d|e";
             this.Reason_Check.Weight = 0.61946239384051627D;
             // 
             // Time_Check
@@ -1060,6 +1075,7 @@ namespace Winforms_App_Template.Forms
             this.Time_Check.Multiline = true;
             this.Time_Check.Name = "Time_Check";
             this.Time_Check.StylePriority.UseBorders = false;
+            this.Time_Check.Tag = "a|b|StartTime|d|e";
             this.Time_Check.Weight = 2.0557647348368309D;
             // 
             // xrTableCell2
@@ -1117,6 +1133,7 @@ namespace Winforms_App_Template.Forms
             this.Person_Check.RowSpan = 2;
             this.Person_Check.StylePriority.UseBorders = false;
             this.Person_Check.StylePriority.UseTextAlignment = false;
+            this.Person_Check.Tag = "a|b|NguoiTT|d|e";
             this.Person_Check.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             this.Person_Check.Weight = 0.98732893242943209D;
             // 
@@ -1126,6 +1143,7 @@ namespace Winforms_App_Template.Forms
             this.Number_Of_Use.Name = "Number_Of_Use";
             this.Number_Of_Use.RowSpan = 2;
             this.Number_Of_Use.StylePriority.UseTextAlignment = false;
+            this.Number_Of_Use.Tag = "a|b|SLSudung|d|e";
             this.Number_Of_Use.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             this.Number_Of_Use.Weight = 0.79376058549972717D;
             // 
@@ -1189,6 +1207,7 @@ namespace Winforms_App_Template.Forms
             this.Check_Inventory.Name = "Check_Inventory";
             this.Check_Inventory.RowSpan = 2;
             this.Check_Inventory.StylePriority.UseTextAlignment = false;
+            this.Check_Inventory.Tag = "a|b|val15|d|e";
             this.Check_Inventory.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             this.Check_Inventory.Weight = 1.2637829676703822D;
             // 
@@ -1243,6 +1262,7 @@ namespace Winforms_App_Template.Forms
             this.Bevel_Cut.Multiline = true;
             this.Bevel_Cut.Name = "Bevel_Cut";
             this.Bevel_Cut.StylePriority.UseTextAlignment = false;
+            this.Bevel_Cut.Tag = "a|b|Bevel_Cut|d|e";
             this.Bevel_Cut.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             this.Bevel_Cut.Weight = 0.64306350473785812D;
             // 
@@ -1251,6 +1271,7 @@ namespace Winforms_App_Template.Forms
             this.Flat.Multiline = true;
             this.Flat.Name = "Flat";
             this.Flat.StylePriority.UseTextAlignment = false;
+            this.Flat.Tag = "a|b|Flat|d|e";
             this.Flat.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             this.Flat.Weight = 0.65575996009951665D;
             // 
@@ -1259,6 +1280,7 @@ namespace Winforms_App_Template.Forms
             this.Bavia.Multiline = true;
             this.Bavia.Name = "Bavia";
             this.Bavia.StylePriority.UseTextAlignment = false;
+            this.Bavia.Tag = "a|b|Bavia|d|e";
             this.Bavia.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             this.Bavia.Weight = 0.68786561057455253D;
             // 
@@ -1267,6 +1289,7 @@ namespace Winforms_App_Template.Forms
             this.Fall.Multiline = true;
             this.Fall.Name = "Fall";
             this.Fall.StylePriority.UseTextAlignment = false;
+            this.Fall.Tag = "a|b|Fall|d|e";
             this.Fall.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             this.Fall.Weight = 0.782120496822017D;
             // 
@@ -1275,6 +1298,7 @@ namespace Winforms_App_Template.Forms
             this.Beyond_The_Standard.Multiline = true;
             this.Beyond_The_Standard.Name = "Beyond_The_Standard";
             this.Beyond_The_Standard.StylePriority.UseTextAlignment = false;
+            this.Beyond_The_Standard.Tag = "a|b|Beyond_The_Standard|d|e";
             this.Beyond_The_Standard.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             this.Beyond_The_Standard.Weight = 1.2099166070334586D;
             // 
@@ -1283,6 +1307,7 @@ namespace Winforms_App_Template.Forms
             this.Other.Multiline = true;
             this.Other.Name = "Other";
             this.Other.StylePriority.UseTextAlignment = false;
+            this.Other.Tag = "a|b|Other|d|e";
             this.Other.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             this.Other.Weight = 1.045204444516203D;
             // 
@@ -1763,7 +1788,6 @@ namespace Winforms_App_Template.Forms
             // 
             this.Catongtho_Data.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
             this.xrPanel1});
-            this.Catongtho_Data.Expanded = false;
             this.Catongtho_Data.HeightF = 178.9388F;
             this.Catongtho_Data.Name = "Catongtho_Data";
             // 
@@ -1795,7 +1819,6 @@ namespace Winforms_App_Template.Forms
             // 
             this.Catongtho_Header.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
             this.xrPanel2});
-            this.Catongtho_Header.Expanded = false;
             this.Catongtho_Header.HeightF = 68.13847F;
             this.Catongtho_Header.Name = "Catongtho_Header";
             // 

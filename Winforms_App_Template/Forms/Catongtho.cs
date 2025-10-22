@@ -123,14 +123,14 @@ namespace Winforms_App_Template.Forms
             gridControl1.RepositoryItems.Add(_repMay);
 
             // 4) Gán editor cho cột ID máy (NHỚ: FieldName phải là NewInput_Row.IdMayBan)
-            var colIdMay = advBandedGridView1.Columns[nameof(NewInput_Row.IdMay_ban)];
-            if (colIdMay != null)
-            {
-                colIdMay.ColumnEdit = _repMay;                         // render tên thay cho ID
-                colIdMay.OptionsColumn.AllowEdit = false;              // chỉ xem
-                colIdMay.FilterMode = DevExpress.XtraGrid.ColumnFilterMode.DisplayText; // lọc theo tên
-                colIdMay.SortMode = DevExpress.XtraGrid.ColumnSortMode.DisplayText;   // sắp theo tên
-            }
+            //var colIdMay = advBandedGridView1.Columns[nameof(Catthoong_Row.IdMay_ban)];
+            //if (colIdMay != null)
+            //{
+            //    colIdMay.ColumnEdit = _repMay;                         // render tên thay cho ID
+            //    colIdMay.OptionsColumn.AllowEdit = false;              // chỉ xem
+            //    colIdMay.FilterMode = DevExpress.XtraGrid.ColumnFilterMode.DisplayText; // lọc theo tên
+            //    colIdMay.SortMode = DevExpress.XtraGrid.ColumnSortMode.DisplayText;   // sắp theo tên
+            //}
         }
 
 
@@ -310,19 +310,19 @@ namespace Winforms_App_Template.Forms
         private void WireGridFieldNames()
         {
             // CÁCH 1 (khuyến nghị): nếu bạn biết tên biến cột trong Designer
-            bdglydokiemtra.FieldName = nameof(NewInput_Row.IdLydoKT);
-            bdgngaythaotac.FieldName = nameof(NewInput_Row.StartTime);
-            bdgnguoithaotac.FieldName = nameof(NewInput_Row.NguoiTT);
-            bdgsomaythaotac.FieldName = nameof(NewInput_Row.IdMay_ban);
-            bdgsoluongongdaisudung.FieldName = nameof(NewInput_Row.val1);
-            bdgmaquanlythickness.FieldName = nameof(NewInput_Row.val3);
-            bdgduongkinhngoaiongdai.FieldName = nameof(NewInput_Row.val4);
-            bdgmapingauge.FieldName = nameof(NewInput_Row.val6);
-            bdgduongkinhtrong.FieldName = nameof(NewInput_Row.val7);
-            bdgtrangthaicat.FieldName = nameof(NewInput_Row.val9);
-            bdgchieudaicat.FieldName = nameof(NewInput_Row.val11);
-            bdgthuocsudung.FieldName = nameof(NewInput_Row.val10);
-            bdgsoluongsudung.FieldName = nameof(NewInput_Row.SLSudung);
+            //bdglydokiemtra.FieldName = nameof(Catthoong_Row.IdLydoKT);
+            bdgngaythaotac.FieldName = nameof(Catthoong_Row.StartTime);
+            bdgnguoithaotac.FieldName = nameof(Catthoong_Row.NguoiTT);
+            //bdgsomaythaotac.FieldName = nameof(Catthoong_Row.IdMay_ban);
+            bdgsoluongongdaisudung.FieldName = nameof(Catthoong_Row.val1);
+            bdgmaquanlythickness.FieldName = nameof(Catthoong_Row.val3);
+            bdgduongkinhngoaiongdai.FieldName = nameof(Catthoong_Row.val4);
+            bdgmapingauge.FieldName = nameof(Catthoong_Row.val6);
+            bdgduongkinhtrong.FieldName = nameof(Catthoong_Row.val7);
+            bdgtrangthaicat.FieldName = nameof(Catthoong_Row.val9);
+            bdgchieudaicat.FieldName = nameof(Catthoong_Row.val11);
+            bdgthuocsudung.FieldName = nameof(Catthoong_Row.val10);
+            bdgsoluongsudung.FieldName = nameof(Catthoong_Row.SLSudung);
             //bdgcatvat.FieldName = nameof(NewInput_Row.);
             //bdgbep.FieldName = nameof(NewInput_Row);
             //bdgbavia.FieldName = nameof(NewInput_Row);
@@ -385,7 +385,7 @@ namespace Winforms_App_Template.Forms
             // truy vấn dữ liệu từ DB
 
             // Lấy data cho header
-            Catongtho_HeaderModel header = await _repo.Get_Header_catthoong(IdCongDoan: 68, ItemNumber: "CRS25E50K10W", LotNo: "120814G01", So_Me: 1);
+            Catongtho_HeaderModel header = await _repo.Get_Header_catthoong(IdCongDoan: 68, ItemNumber: "CRS25C60N10W", LotNo: "250505G01", So_Me: 1);
             // b) Header in 1 lần
             //Catongtho_HeaderModel header = new Catongtho_HeaderModel
             //{
@@ -400,46 +400,46 @@ namespace Winforms_App_Template.Forms
             //};
 
             // Lấy data cho bảng
-            //List<Catthoong_Model> rows = await _repo.Get_Cat_Ong_Tho();
-            var rows = new List<Catthoong_Model>
-            {
-                new Catthoong_Model {
-                    Reason="Định kỳ",
-                    TimeAndWorker="09:30 2025-10-20\nNguyễn A",
-                    Machine="V-01",
-                    QtyUsed=100, QtyCut=30,
-                    ThickGauge="PR-IK-0001",
-                    OuterDiameter="⌀ 2.80",
-                    Pin098="OK",
-                    InnerJudge="通過 / Xuyên",
-                    CutState="OK",
-                    CutLengths="100 / 100 / 100",
-                    Acceptance="OK",
-                    NG_CatVat=0, NG_Bep=0, NG_Bavia=1, NG_Roi=0, NG_LengthOut=0, NG_Khac=0
+            List<Catthoong_Row> rows = await _repo.Get_Cat_Ong_Tho(IdCongDoan: 68, ItemNumber: "CRS25C60N10W", LotNo: "250505G01", So_Me: 1);
+            //var rows = new List<Catthoong_Model>
+            //{
+            //    new Catthoong_Model {
+            //        Reason="Định kỳ",
+            //        TimeAndWorker="09:30 2025-10-20\nNguyễn A",
+            //        Machine="V-01",
+            //        QtyUsed=100, QtyCut=30,
+            //        ThickGauge="PR-IK-0001",
+            //        OuterDiameter="⌀ 2.80",
+            //        Pin098="OK",
+            //        InnerJudge="通過 / Xuyên",
+            //        CutState="OK",
+            //        CutLengths="100 / 100 / 100",
+            //        Acceptance="OK",
+            //        NG_CatVat=0, NG_Bep=0, NG_Bavia=1, NG_Roi=0, NG_LengthOut=0, NG_Khac=0
 
-                },
-                new Catthoong_Model
-                {
-                    Reason = "Bất thường",
-                    TimeAndWorker = "10:15 2025-10-20\nLê B",
-                    Machine = "V-02",
-                    QtyUsed = 90,
-                    QtyCut = 25,
-                    ThickGauge = "PR-IK-0014",
-                    OuterDiameter = "⌀ 2.79",
-                    Pin098 = "NG",
-                    InnerJudge = "不通過 / Không xuyên",
-                    CutState = "NG",
-                    CutLengths = "98 / 99 / 100",
-                    Acceptance = "NG",
-                    NG_CatVat = 0,
-                    NG_Bep = 2,
-                    NG_Bavia = 0,
-                    NG_Roi = 1,
-                    NG_LengthOut = 1,
-                    NG_Khac = 0
-                }
-            };
+            //    },
+            //    new Catthoong_Model
+            //    {
+            //        Reason = "Bất thường",
+            //        TimeAndWorker = "10:15 2025-10-20\nLê B",
+            //        Machine = "V-02",
+            //        QtyUsed = 90,
+            //        QtyCut = 25,
+            //        ThickGauge = "PR-IK-0014",
+            //        OuterDiameter = "⌀ 2.79",
+            //        Pin098 = "NG",
+            //        InnerJudge = "不通過 / Không xuyên",
+            //        CutState = "NG",
+            //        CutLengths = "98 / 99 / 100",
+            //        Acceptance = "NG",
+            //        NG_CatVat = 0,
+            //        NG_Bep = 2,
+            //        NG_Bavia = 0,
+            //        NG_Roi = 1,
+            //        NG_LengthOut = 1,
+            //        NG_Khac = 0
+            //    }
+            //};
 
             var rpt = new Testreport();
             rpt.ConfigureLayoutForCatongtho(rows, header, /*notePrintOnlyOnce*/ false);
@@ -717,7 +717,7 @@ namespace Winforms_App_Template.Forms
                 var result = await _repo.Get_Cat_Ong_Tho(idCongDoan, itemNumber, lotNo, soMe, _cts.Token);
 
                 // Bind vào grid (Rows là List<NewInput_Row>)
-                _bs.DataSource = new BindingList<NewInput_Row>(result.Rows);
+                _bs.DataSource = new BindingList<Catthoong_Row>(result);
 
                 // Tự fit cột cho đẹp
                 advBandedGridView1.BestFitColumns();
