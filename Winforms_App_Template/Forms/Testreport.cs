@@ -89,7 +89,7 @@ namespace Winforms_App_Template.Forms
         /// <param name="headerData">Dữ liệu in 1 lần cho header</param>
         /// <param name="notePrintOnlyOnce">true => Note_Richtext chỉ in ở record đầu</param>
         public void ConfigureLayoutForCatongtho(
-            IList<Catthoong_Row> rows,
+            IList<Catthoong_ReportRow> rows,
             Catongtho_HeaderModel headerData,
             bool notePrintOnlyOnce = false)
         {

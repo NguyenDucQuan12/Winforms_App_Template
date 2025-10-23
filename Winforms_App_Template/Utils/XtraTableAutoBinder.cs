@@ -188,13 +188,24 @@ namespace Winforms_App_Template.Utils
                         }
                     }
 
-                    // Xây expression [FieldName]
-                    string expression = "[" + fieldName + "]";
+                    // Lấy transform keyword (phần thứ 4: index 3) để xác định có đổi kiểu dữ liệu từ True/False thành OK/NG ko
+                    string? transform = (parts.Length > 3)
+                        ? parts[3]?.Trim()
+                        : null;
 
-                    // Gán binding: BeforePrint, Text = [FieldName]
-                    cell.ExpressionBindings.Clear(); // xoá binding cũ để tránh chồng
-                    // Binding mới được khuyên trong XtraReport, trước khi gọi hàm Print thì gán expression vào trường Text của cell này
-                    cell.ExpressionBindings.Add(new ExpressionBinding("BeforePrint", "Text", expression));
+                    // Nếu transform == "OK" (không phân biệt hoa thường) → bind theo OK/NG
+                    if (!string.IsNullOrEmpty(transform) &&
+                        string.Equals(transform, "OK", StringComparison.OrdinalIgnoreCase))
+                    {
+                        BindOkNgTextAndNgBackground(cell, fieldName);
+                    }
+                    else
+                    {
+                        // Gán binding: BeforePrint, Text = [FieldName]
+                        cell.ExpressionBindings.Clear(); // xoá binding cũ để tránh chồng
+                        // Binding mới được khuyên trong XtraReport, trước khi gọi hàm Print thì gán expression vào trường Text của cell này
+                        cell.ExpressionBindings.Add(new ExpressionBinding("BeforePrint", "Text", $"[{fieldName}]"));
+                    };
 
                     // nếu muốn auto multiline
                     // cell.Multiline = true;
@@ -203,6 +214,72 @@ namespace Winforms_App_Template.Utils
             }
         }
 
+        // Xây biểu thức OK/NG theo field
+        //    - Dùng In(Lower([field]), 'true','1','y','yes') → OK
+        //    - Rỗng/null → in rỗng
+        //    - Còn lại → NG
+        // =========================
+        private static string BuildOkNgExpression(string fieldName, string okParamName = "p_OKText", string ngParamName = "p_NGText")
+        {
+            // Ép về chuỗi: ToStr([field])
+            // Sau đó Lower(...) + In(...)
+            var f = $"Lower(ToStr([{fieldName}]))";
+            return
+                $"Iif(IsNullOrEmpty(ToStr([{fieldName}])), '', " +
+                $"Iif({f} == 'true' Or {f} == '1' Or {f} == 'y' Or {f} == 'yes', Parameters.{okParamName}, Parameters.{ngParamName}))";
+
+        }
+
+        // Điều kiện “truthy” sau khi ép về chuỗi và lower-case
+        private static string BuildTruthyCondition(string fieldName)
+        {
+            var f = $"Lower(ToStr([{fieldName}]))";
+            return $"{f} == 'true' Or {f} == '1' Or {f} == 'y' Or {f} == 'yes'";
+        }
+
+        // Biểu thức BackColor: NG thì tô nền, còn lại trong suốt
+        // Argb(a,r,g,b): a=255 là đậm, a=0 là trong suốt.
+        // Ví dụ tô MistyRose (#FFEFE5E5 ~ 255,239,229,229)
+        private static string BuildNgBackColorExpression(string fieldName)
+        {
+            var hasVal = $"Not IsNullOrEmpty(ToStr([{fieldName}]))";
+            var truthy = BuildTruthyCondition(fieldName);
+            var isNg = $"{hasVal} And Not ({truthy})";
+
+            // NG → MistyRose; khác → Transparent
+            return $"Iif({isNg}, Argb(255,239,229,229), Argb(0,0,0,0))";
+        }
+
+        // =========================
+        // Bind theo OK/NG (transform)
+        // =========================
+        private static void BindOkNg(XRTableCell cell, string fieldName, string okParamName = "p_OKText", string ngParamName = "p_NGText")
+        {
+            cell.ExpressionBindings.Clear();
+            cell.ExpressionBindings.Add(new ExpressionBinding("BeforePrint", "Text", BuildOkNgExpression(fieldName, okParamName, ngParamName)));
+        }
+
+        /// <summary>
+        /// Tạo binding vừa bind dữ liệu vừa bind màu nền
+        /// </summary>
+        /// <param name="cell"></param>
+        /// <param name="fieldName"></param>
+        private static void BindOkNgTextAndNgBackground(XRTableCell cell, string fieldName)
+        {
+            cell.ExpressionBindings.Clear();
+            cell.ExpressionBindings.AddRange(new[]
+            {
+                // 1) Bind Text → OK/NG
+                new ExpressionBinding("BeforePrint", "Text",      BuildOkNgExpression(fieldName)),
+
+                // 2) Bind BackColor → tô nền khi NG
+                new ExpressionBinding("BeforePrint", "BackColor", BuildNgBackColorExpression(fieldName)),
+            });
+
+            // (tuỳ chọn) chữ đậm khi NG:
+            // cell.ExpressionBindings.Add(new ExpressionBinding("BeforePrint", "Font.Bold", 
+            //     $"Iif(Not IsNullOrEmpty(ToStr([{fieldName}])) And Not ({BuildTruthyCondition(fieldName)}), True, False)"));
+        }
 
         /// <summary>
         /// Tìm tất cả XRTable trong một band (đệ quy trong cây control).

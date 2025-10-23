@@ -57,6 +57,7 @@ namespace Winforms_App_Template.Database.Table
         {
             var cat_ong_tho_query = @"
                 SELECT 
+                        ni.idInput,
                         ld.MaKT,
                         mb.TenMay_Ban,
                         ni.SLSudung,
@@ -76,13 +77,14 @@ namespace Winforms_App_Template.Database.Table
                         ni.val12,               -- Thước sử dụng 2
                         ni.val13,               -- Thước sử dụng 3
                         ni.val14,               -- Thước sử dụng yes no
-                        ni.val15                -- Kết quả xác nhận tồn lưu yes no
+                        ni.val15,               -- Kết quả xác nhận tồn lưu yes no
+                        ni.Remark               -- Ghi chú cho mỗi dòng thao tác
                 FROM
                         tblNewInput AS ni
                 LEFT JOIN 
-                        tblMay_Ban    AS mb ON mb.IdMay_ban   = ni.IdMay_ban
+                        tblMay_Ban        AS mb ON mb.IdMay_ban   = ni.IdMay_ban
                 LEFT JOIN 
-                        tblLydoKT    AS ld ON ld.idLydoKT    = ni.idLydoKT
+                        tblLydoKT         AS ld ON ld.idLydoKT    = ni.idLydoKT
                 WHERE
                         ni.IdCongDoan = @IdCongDoan AND
                         ni.ItemNumber = @ItemNumber AND

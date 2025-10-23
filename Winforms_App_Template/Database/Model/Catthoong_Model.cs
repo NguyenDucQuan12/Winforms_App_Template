@@ -42,6 +42,7 @@ namespace Winforms_App_Template.Database.Model
 
     public sealed class Catthoong_Row
     {
+        public int idInput { get; init; }                          // ID Form nhập dữ liệu để lấy chi tiết lỗi
         public string MaKT { get; init; } = "";                    // Mã lý do kiểm tra: I, II, III, IV
         public DateTime StartTime { get; init; }                   // Thời gian bắt đầu thao tác
         public string NguoiTT { get; init; } = "";                 // Người thao tác
@@ -62,6 +63,7 @@ namespace Winforms_App_Template.Database.Model
         public string? val14 { get; set; }                         // Thước sử dụng yes no
         public string? val15 { get; set; }                         // Kết quả xác nhận tồn lưu yes no
         public int SLSudung { get; init; }                         // Số lượng sản phẩm đã sử dụng
+        public string? Remark { get; init; }                         // Số lượng sản phẩm đã sử dụng
     }
 
     public sealed class NewInput_Row

@@ -715,7 +715,7 @@ namespace Winforms_App_Template.Forms
             this.xrTableCell74.Multiline = true;
             this.xrTableCell74.Name = "xrTableCell74";
             this.xrTableCell74.RowSpan = 3;
-            this.xrTableCell74.Tag = "a|b|val7|d|e";
+            this.xrTableCell74.Tag = "a|b|val7|OK|e";
             this.xrTableCell74.Weight = 3.403466430030647D;
             // 
             // Cut_Check
@@ -723,7 +723,7 @@ namespace Winforms_App_Template.Forms
             this.Cut_Check.Multiline = true;
             this.Cut_Check.Name = "Cut_Check";
             this.Cut_Check.RowSpan = 3;
-            this.Cut_Check.Tag = "a|b|val9|d|e";
+            this.Cut_Check.Tag = "a|b|val9|OK|e";
             this.Cut_Check.Weight = 2.7443918963921039D;
             // 
             // xrTableCell86
@@ -1011,7 +1011,7 @@ namespace Winforms_App_Template.Forms
             this.Outer_Diameter_Check.Multiline = true;
             this.Outer_Diameter_Check.Name = "Outer_Diameter_Check";
             this.Outer_Diameter_Check.StylePriority.UseBorders = false;
-            this.Outer_Diameter_Check.Tag = "a|b|val5|d|e";
+            this.Outer_Diameter_Check.Tag = "a|b|val5|OK|e";
             this.Outer_Diameter_Check.Weight = 2.6834399676378622D;
             // 
             // xrTableCell72
@@ -1046,7 +1046,7 @@ namespace Winforms_App_Template.Forms
             // 
             this.Cutting_Length_Check.Multiline = true;
             this.Cutting_Length_Check.Name = "Cutting_Length_Check";
-            this.Cutting_Length_Check.Tag = "a|b|val14|d|e";
+            this.Cutting_Length_Check.Tag = "a|b|val14|OK|e";
             this.Cutting_Length_Check.Weight = 4.3653368088731934D;
             // 
             // xrTableRow6
@@ -1207,7 +1207,7 @@ namespace Winforms_App_Template.Forms
             this.Check_Inventory.Name = "Check_Inventory";
             this.Check_Inventory.RowSpan = 2;
             this.Check_Inventory.StylePriority.UseTextAlignment = false;
-            this.Check_Inventory.Tag = "a|b|val15|d|e";
+            this.Check_Inventory.Tag = "a|b|val15|OK|e";
             this.Check_Inventory.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             this.Check_Inventory.Weight = 1.2637829676703822D;
             // 
