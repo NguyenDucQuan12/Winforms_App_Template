@@ -31,8 +31,6 @@ namespace Winforms_App_Template.Forms
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Testreport));
             this.TopMargin = new DevExpress.XtraReports.UI.TopMarginBand();
             this.BottomMargin = new DevExpress.XtraReports.UI.BottomMarginBand();
-            this.Note_Richtext = new DevExpress.XtraReports.UI.XRRichText();
-            this.Detail = new DevExpress.XtraReports.UI.DetailBand();
             this.Check_Table = new DevExpress.XtraReports.UI.XRTable();
             this.xrTableRow15 = new DevExpress.XtraReports.UI.XRTableRow();
             this.xrTableCell45 = new DevExpress.XtraReports.UI.XRTableCell();
@@ -62,6 +60,7 @@ namespace Winforms_App_Template.Forms
             this.Cut_Length_Pingauge_Through = new DevExpress.XtraReports.UI.XRTableCell();
             this.Cut_Length_Pingauge_Not_Through = new DevExpress.XtraReports.UI.XRTableCell();
             this.Cut_Length_Criterion = new DevExpress.XtraReports.UI.XRTableCell();
+            this.Note_Richtext = new DevExpress.XtraReports.UI.XRRichText();
             this.Catthoong_Table = new DevExpress.XtraReports.UI.XRTable();
             this.xrTableRow2 = new DevExpress.XtraReports.UI.XRTableRow();
             this.xrTableCell4 = new DevExpress.XtraReports.UI.XRTableCell();
@@ -195,12 +194,14 @@ namespace Winforms_App_Template.Forms
             this.xrLabel1 = new DevExpress.XtraReports.UI.XRLabel();
             this.Catongtho_Report = new DevExpress.XtraReports.UI.DetailReportBand();
             this.Catongtho_Data = new DevExpress.XtraReports.UI.DetailBand();
-            this.xrPanel1 = new DevExpress.XtraReports.UI.XRPanel();
             this.xrLabel3 = new DevExpress.XtraReports.UI.XRLabel();
+            this.xrSubreport1 = new DevExpress.XtraReports.UI.XRSubreport();
+            this.xrPanel1 = new DevExpress.XtraReports.UI.XRPanel();
             this.Catongtho_Header = new DevExpress.XtraReports.UI.ReportHeaderBand();
             this.xrPanel2 = new DevExpress.XtraReports.UI.XRPanel();
-            ((System.ComponentModel.ISupportInitialize)(this.Note_Richtext)).BeginInit();
+            this.Detail = new DevExpress.XtraReports.UI.DetailBand();
             ((System.ComponentModel.ISupportInitialize)(this.Check_Table)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Note_Richtext)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Catthoong_Table)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Header_Table)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable4)).BeginInit();
@@ -214,28 +215,10 @@ namespace Winforms_App_Template.Forms
             // 
             // BottomMargin
             // 
-            this.BottomMargin.HeightF = 41.00634F;
+            this.BottomMargin.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+            this.Check_Table});
+            this.BottomMargin.HeightF = 148.3364F;
             this.BottomMargin.Name = "BottomMargin";
-            // 
-            // Note_Richtext
-            // 
-            this.Note_Richtext.Borders = ((DevExpress.XtraPrinting.BorderSide)((((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Top) 
-            | DevExpress.XtraPrinting.BorderSide.Right) 
-            | DevExpress.XtraPrinting.BorderSide.Bottom)));
-            this.Note_Richtext.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
-            this.Note_Richtext.LocationFloat = new DevExpress.Utils.PointFloat(675.4199F, 138.3364F);
-            this.Note_Richtext.Name = "Note_Richtext";
-            this.Note_Richtext.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
-            this.Note_Richtext.SerializableRtfString = resources.GetString("Note_Richtext.SerializableRtfString");
-            this.Note_Richtext.SizeF = new System.Drawing.SizeF(473.8713F, 32.83202F);
-            this.Note_Richtext.StylePriority.UseBorders = false;
-            this.Note_Richtext.StylePriority.UseFont = false;
-            // 
-            // Detail
-            // 
-            this.Detail.Expanded = false;
-            this.Detail.HeightF = 0F;
-            this.Detail.Name = "Detail";
             // 
             // Check_Table
             // 
@@ -243,7 +226,7 @@ namespace Winforms_App_Template.Forms
             | DevExpress.XtraPrinting.BorderSide.Right) 
             | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.Check_Table.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
-            this.Check_Table.LocationFloat = new DevExpress.Utils.PointFloat(675.4202F, 1.835823E-05F);
+            this.Check_Table.LocationFloat = new DevExpress.Utils.PointFloat(532.9877F, 31.74184F);
             this.Check_Table.Name = "Check_Table";
             this.Check_Table.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
             this.Check_Table.Rows.AddRange(new DevExpress.XtraReports.UI.XRTableRow[] {
@@ -327,6 +310,7 @@ namespace Winforms_App_Template.Forms
             // 
             this.xrTableCell126.Multiline = true;
             this.xrTableCell126.Name = "xrTableCell126";
+            this.xrTableCell126.Tag = "a|b|TenTieuChuan|d|e";
             this.xrTableCell126.Text = "Đường kính ngoài ống dài (mm)";
             this.xrTableCell126.Weight = 1.6184551200321173D;
             // 
@@ -458,6 +442,20 @@ namespace Winforms_App_Template.Forms
             this.Cut_Length_Criterion.Name = "Cut_Length_Criterion";
             this.Cut_Length_Criterion.Weight = 0.76436089016734365D;
             // 
+            // Note_Richtext
+            // 
+            this.Note_Richtext.Borders = ((DevExpress.XtraPrinting.BorderSide)((((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Top) 
+            | DevExpress.XtraPrinting.BorderSide.Right) 
+            | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.Note_Richtext.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
+            this.Note_Richtext.LocationFloat = new DevExpress.Utils.PointFloat(665.9576F, 140.8576F);
+            this.Note_Richtext.Name = "Note_Richtext";
+            this.Note_Richtext.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
+            this.Note_Richtext.SerializableRtfString = resources.GetString("Note_Richtext.SerializableRtfString");
+            this.Note_Richtext.SizeF = new System.Drawing.SizeF(483.3336F, 32.83202F);
+            this.Note_Richtext.StylePriority.UseBorders = false;
+            this.Note_Richtext.StylePriority.UseFont = false;
+            // 
             // Catthoong_Table
             // 
             this.Catthoong_Table.Borders = ((DevExpress.XtraPrinting.BorderSide)((((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Top) 
@@ -549,7 +547,7 @@ namespace Winforms_App_Template.Forms
             // 
             this.xrTableCell44.Multiline = true;
             this.xrTableCell44.Name = "xrTableCell44";
-            this.xrTableCell44.Text = "Mã pingauge\r\n0.98mm";
+            this.xrTableCell44.Text = "`";
             this.xrTableCell44.Weight = 2.9769956875139494D;
             // 
             // xrTableCell73
@@ -1787,25 +1785,17 @@ namespace Winforms_App_Template.Forms
             // Catongtho_Data
             // 
             this.Catongtho_Data.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
-            this.xrPanel1});
-            this.Catongtho_Data.HeightF = 178.9388F;
-            this.Catongtho_Data.Name = "Catongtho_Data";
-            // 
-            // xrPanel1
-            // 
-            this.xrPanel1.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
             this.xrLabel3,
-            this.Catthoong_Table,
             this.Note_Richtext,
-            this.Check_Table});
-            this.xrPanel1.LocationFloat = new DevExpress.Utils.PointFloat(0F, 2.521197F);
-            this.xrPanel1.Name = "xrPanel1";
-            this.xrPanel1.SizeF = new System.Drawing.SizeF(1149.291F, 176.2922F);
+            this.xrSubreport1,
+            this.xrPanel1});
+            this.Catongtho_Data.HeightF = 178.9118F;
+            this.Catongtho_Data.Name = "Catongtho_Data";
             // 
             // xrLabel3
             // 
             this.xrLabel3.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
-            this.xrLabel3.LocationFloat = new DevExpress.Utils.PointFloat(675.4202F, 125.3524F);
+            this.xrLabel3.LocationFloat = new DevExpress.Utils.PointFloat(665.9576F, 127.8736F);
             this.xrLabel3.Multiline = true;
             this.xrLabel3.Name = "xrLabel3";
             this.xrLabel3.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
@@ -1814,6 +1804,22 @@ namespace Winforms_App_Template.Forms
             this.xrLabel3.StylePriority.UseTextAlignment = false;
             this.xrLabel3.Text = "Ghi chú:";
             this.xrLabel3.TextAlignment = DevExpress.XtraPrinting.TextAlignment.BottomLeft;
+            // 
+            // xrSubreport1
+            // 
+            this.xrSubreport1.CanShrink = true;
+            this.xrSubreport1.LocationFloat = new DevExpress.Utils.PointFloat(665.9576F, 2.521197F);
+            this.xrSubreport1.Name = "xrSubreport1";
+            this.xrSubreport1.ReportSource = new Winforms_App_Template.Forms.SubReport.StandardsSubreport();
+            this.xrSubreport1.SizeF = new System.Drawing.SizeF(483.3335F, 125.3524F);
+            // 
+            // xrPanel1
+            // 
+            this.xrPanel1.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+            this.Catthoong_Table});
+            this.xrPanel1.LocationFloat = new DevExpress.Utils.PointFloat(0F, 2.521197F);
+            this.xrPanel1.Name = "xrPanel1";
+            this.xrPanel1.SizeF = new System.Drawing.SizeF(665.9576F, 176.2922F);
             // 
             // Catongtho_Header
             // 
@@ -1831,6 +1837,12 @@ namespace Winforms_App_Template.Forms
             this.xrPanel2.Name = "xrPanel2";
             this.xrPanel2.SizeF = new System.Drawing.SizeF(1149.291F, 68.13847F);
             // 
+            // Detail
+            // 
+            this.Detail.Expanded = false;
+            this.Detail.HeightF = 0F;
+            this.Detail.Name = "Detail";
+            // 
             // Testreport
             // 
             this.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
@@ -1840,13 +1852,13 @@ namespace Winforms_App_Template.Forms
             this.ReportHeader,
             this.Catongtho_Report});
             this.Font = new DevExpress.Drawing.DXFont("Arial", 4F);
-            this.Margins = new DevExpress.Drawing.DXMargins(10F, 10F, 20F, 41.00634F);
+            this.Margins = new DevExpress.Drawing.DXMargins(10F, 10F, 20F, 148.3364F);
             this.PageHeightF = 1653.543F;
             this.PageWidthF = 1169.291F;
             this.PaperKind = DevExpress.Drawing.Printing.DXPaperKind.A3;
             this.Version = "25.1";
-            ((System.ComponentModel.ISupportInitialize)(this.Note_Richtext)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Check_Table)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Note_Richtext)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Catthoong_Table)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Header_Table)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable4)).EndInit();
@@ -1859,7 +1871,6 @@ namespace Winforms_App_Template.Forms
 
         private DevExpress.XtraReports.UI.TopMarginBand TopMargin;
         private DevExpress.XtraReports.UI.BottomMarginBand BottomMargin;
-        private DevExpress.XtraReports.UI.DetailBand Detail;
         private DevExpress.XtraReports.UI.ReportHeaderBand ReportHeader;
         private DevExpress.XtraReports.UI.XRTable xrTable2;
         private DevExpress.XtraReports.UI.XRTableRow xrTableRow3;
@@ -1873,7 +1884,6 @@ namespace Winforms_App_Template.Forms
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell18;
         private DevExpress.XtraReports.UI.XRTable Header_Table;
         private DevExpress.XtraReports.UI.XRTableRow xrTableRow7;
-        private DevExpress.XtraReports.UI.XRTableCell xrTableCell6;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell10;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell21;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell23;
@@ -1881,7 +1891,6 @@ namespace Winforms_App_Template.Forms
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell25;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell26;
         private DevExpress.XtraReports.UI.XRTableRow xrTableRow8;
-        private DevExpress.XtraReports.UI.XRTableCell Name_Congdoan;
         private DevExpress.XtraReports.UI.XRTableCell ID_Congdoan;
         private DevExpress.XtraReports.UI.XRTableCell Code_Congdoan;
         private DevExpress.XtraReports.UI.XRTableCell Lotno_Congdoan;
@@ -2027,5 +2036,9 @@ namespace Winforms_App_Template.Forms
         private DevExpress.XtraReports.UI.XRTableCell Cut_Length_Pingauge_Not_Through;
         private DevExpress.XtraReports.UI.XRTableCell Cut_Length_Criterion;
         private DevExpress.XtraReports.UI.XRLabel xrLabel3;
+        private DevExpress.XtraReports.UI.XRTableCell xrTableCell6;
+        private DevExpress.XtraReports.UI.XRTableCell Name_Congdoan;
+        private DevExpress.XtraReports.UI.DetailBand Detail;
+        private DevExpress.XtraReports.UI.XRSubreport xrSubreport1;
     }
 }

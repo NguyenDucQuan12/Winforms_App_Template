@@ -39,6 +39,7 @@ namespace Winforms_App_Template.Forms
         private List<MayBan_Model> _listMay = new();
 
         private readonly Input_Error_Table input_error_repo;         // Repository cho bảng input_Error
+        private readonly Standard_Table standard_repo;         // Repository cho bảng tiêu chuẩn
 
         // == Thanh điều khiển trên cùng (LayoutControl + editors + buttons) ==
         private LayoutControl _layoutTop = null!;
@@ -59,6 +60,7 @@ namespace Winforms_App_Template.Forms
             _repo = new NewInputs_Table(executor);
             _mayRepo = new MayBan_Table(executor);
             input_error_repo = new Input_Error_Table(executor);
+            standard_repo = new Standard_Table(executor);
             //await InitMayLookupAsync();     // nếu ctor không async, gọi ở Shown event (đoạn dưới có ví dụ)
 
             // 1) Gắn nguồn dữ liệu cho GridControl
@@ -515,8 +517,23 @@ namespace Winforms_App_Template.Forms
                 result.Add(r);
             }
 
+            // Lấy dữ liệu cho bảng tiêu chuẩn
+            List<Standard_Model> List_Standard_Report = await standard_repo.Get_Detail_Standard(idInputs: List_IdInput);
+            // Nhóm tiêu chuẩn theo idInput để tra nhanh
+            var stdByInput = List_Standard_Report
+                .GroupBy(s => s.idInput)
+                .ToDictionary(g => g.Key, g => g.ToList());
+
+            foreach (var m in result)
+            {
+                if (stdByInput.TryGetValue(m.idInput, out var list))
+                    m.Standards = list;                 // ~ 3 dòng cho mỗi lần nhập
+                else
+                    m.Standards = new List<Standard_Model>();
+            }
+
             var rpt = new Testreport();
-            rpt.ConfigureLayoutForCatongtho(result, header, /*notePrintOnlyOnce*/ false);
+            rpt.ConfigureLayoutForCatongtho(result, List_Standard_Report, header, /*notePrintOnlyOnce*/ false);
 
             new ReportPrintTool(rpt).ShowRibbonPreviewDialog();
         }

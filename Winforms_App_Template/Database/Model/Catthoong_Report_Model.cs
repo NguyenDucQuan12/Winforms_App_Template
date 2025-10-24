@@ -40,5 +40,8 @@ namespace Winforms_App_Template.Database.Model
         public int Fall { get; set; }                              // Lỗi rơi
         public int Beyond_The_Standard { get; set; }               // Lỗi Chiều dài ngoài tiêu chuẩn
         public int Other { get; set; }                             // Lỗi khác
+
+        // Phần bảng tiêu chuẩn
+        public List<Standard_Model> Standards { get; set; } = new();
     }
 }

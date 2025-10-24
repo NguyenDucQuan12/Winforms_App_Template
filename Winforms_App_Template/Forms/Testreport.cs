@@ -3,8 +3,11 @@ using DevExpress.XtraReports.UI;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using Winforms_App_Template.Database.Model;
+using Winforms_App_Template.Forms.SubReport;
 using Winforms_App_Template.Utils;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolTip;
 
 namespace Winforms_App_Template.Forms
 {
@@ -90,6 +93,7 @@ namespace Winforms_App_Template.Forms
         /// <param name="notePrintOnlyOnce">true => Note_Richtext chỉ in ở record đầu</param>
         public void ConfigureLayoutForCatongtho(
             IList<Catthoong_ReportRow> rows,
+            IList<Standard_Model> list_standard,
             Catongtho_HeaderModel headerData,
             bool notePrintOnlyOnce = false)
         {
@@ -127,11 +131,11 @@ namespace Winforms_App_Template.Forms
 
             // Tìm kiếm 2 bảng và 1 richtext trong detail con
             XRTable? tblA = drDetail.FindControl("Catthoong_Table", true) as XRTable;
-            XRTable? tblB = drDetail.FindControl("Check_Table", true) as XRTable;
+            //XRTable? tblB = drDetail.FindControl("Check_Table", true) as XRTable;
             XRRichText? noteRtf = drDetail.FindControl("Note_Richtext", true) as XRRichText;
 
             if (tblA == null) throw new InvalidOperationException("Thiếu XRTable: Catthoong_Table trong Catongtho_Report.Detail.");
-            if (tblB == null) throw new InvalidOperationException("Thiếu XRTable: Check_Table trong Catongtho_Report.Detail.");
+            //if (tblB == null) throw new InvalidOperationException("Thiếu XRTable: Check_Table trong Catongtho_Report.Detail.");
             if (noteRtf == null) { /* không bắt buộc, nhưng cảnh báo nhẹ */ }
 
             // Gọi auto-bind cho tất cả bảng thuộc DR (đọc meta từ Tag, yêu cầu tối thiểu 3 phần a|b|c):
@@ -192,9 +196,67 @@ namespace Winforms_App_Template.Forms
                 }
             }
 
-            // 8) (Tuỳ chọn) đảm bảo band cao vừa đủ
-            //drDetail.HeightF = this.ComputeBandHeight(drDetail, 4f);
-            //drHeader.HeightF = this.ComputeBandHeight(drHeader, 6f);
+            //// Bind dữ liệu cho bảng tiêu chuẩn
+            //XtraTableAutoBinder.AutoBindSingleTableByTag(
+            //        table: tblB,
+            //        checkFieldExists: true,
+            //        dataSourceForCheck: list_standard
+            //    );
+
+            //// Kiểm tra 1 bảng cụ thể các binding trong từng cell
+            //XtraTableAutoBinder.DumpBindings(tblB, "Check_Table");
+
+            // Gọi auto-layout cho Check_Table (header row index = 0, value row index = 1)
+            //ReportLayoutHelpers.AutoHideAndResizeByMaxText(
+            //    table: this.Check_Table,
+            //    dataSource: (IEnumerable)rows,
+            //    fieldSegmentIndex: 2,    // nếu Tag = a|b|Field|..., sửa theo bạn
+            //    delimiter: '|',
+            //    minWidthF: 60f,          // mỗi cột tối thiểu 60 (đơn vị report)
+            //    maxWidthF: 0f,           // không giới hạn upper; set >0 để ép max width
+            //    headerPadPx: 12,         // padding px thêm cho header
+            //    cellPadPx: 18,           // padding px thêm cho value
+            //    dateFormat: "yyyy-MM-dd HH:mm" // nếu có cột DateTime
+            //);
+            var sub = drDetail.FindControl("xrSubreport1", true) as XRSubreport; // XRSubreport đặt bên phải panel
+                                                                                 // 3) Gán instance report con (nếu bạn đang dùng class code)
+            if (sub.ReportSource == null)
+                sub.ReportSource = new StandardsSubreport(); // hoặc XtraReport.FromFile("StandardsSubreport.repx", true);
+            
+            var stdMap = list_standard
+                .GroupBy(s => s.idInput)
+                .ToDictionary(g => g.Key, g => g.ToList()); // Dictionary<int, List<Standard_Model>>
+
+            sub.ReportSource.DataSource = rows;
+            sub.ReportSource.DataMember = "Standards";
+
+            //// Tránh đăng ký trùng
+            //sub.BeforePrint -= Sub_BeforePrint;
+            //sub.BeforePrint += Sub_BeforePrint;
+
+
+
+            // Handler: bơm đúng list theo idInput của dòng cha
+            void Sub_BeforePrint(object? sender, System.ComponentModel.CancelEventArgs eArgs)
+            {
+                // Lấy idInput của dòng cha hiện tại
+                int id = 0;
+                var v = this.GetCurrentColumnValue("idInput");
+                if (v != null && int.TryParse(v.ToString(), out var tmp)) id = tmp;
+
+                // Tra ra list tiêu chuẩn của idInput này
+                IEnumerable<Standard_Model> list =
+                    (id != 0 && stdMap.TryGetValue(id, out var bucket)) ? bucket
+                                                                        : Enumerable.Empty<Standard_Model>();
+
+                // Gán datasource cho subreport instance đang in
+                var child = (XtraReport)sub.ReportSource;
+                child.DataSource = list;     // <<< CHỈ list con của idInput hiện tại
+                child.DataMember = null;
+
+                // Có/không có dữ liệu → ẩn/hiện subreport (để bảng trái full nếu trống)
+                sub.Visible = list.Any();
+            }
         }
 
         /// <summary>
