@@ -15,6 +15,17 @@ namespace Winforms_App_Template.Forms.SubReport
         {
             InitializeComponent();
 
+            if (Parameters["pIdInput"] == null)
+            {
+                Parameters.Add(new DevExpress.XtraReports.Parameters.Parameter
+                {
+                    Name = "pIdInput",        // Tên phải trùng với tên bind ở report cha
+                    Type = typeof(int),       // Kiểu int (khóa idInput)
+                    Visible = false,          // Ẩn khỏi UI, chỉ dùng nội bộ để lọc
+                    Value = 0                 // Giá trị mặc định (không in nếu không có)
+                });
+            }
+
             var detail = Bands[BandKind.Detail] as DetailBand
                  ?? throw new InvalidOperationException("No Detail band");
             var tblB = FindControl("Check_Table", true) as XRTable
@@ -28,6 +39,7 @@ namespace Winforms_App_Template.Forms.SubReport
                 // Subreport hiện đang có DataSource là Dictionary<int, List<Standard_Model>>
                 var ds = this.DataSource;
 
+                // Tiến hành chuẩn hóa lại thông tin Datasource cho subreport
                 // Mặc định: rỗng
                 IEnumerable<Standard_Model> list = Enumerable.Empty<Standard_Model>();
 
@@ -47,9 +59,9 @@ namespace Winforms_App_Template.Forms.SubReport
                     list = ready;
                 }
 
-                // ĐỔI DataSource của *instance đang in* thành list con
-                this.DataSource = list;
-                this.DataMember = null;
+                /// ĐỔI DataSource của *instance đang in* thành list con
+                this.DataSource = list;  // Từ đây subreport hoạt động trên list con (đúng idInput)
+                this.DataMember = null;  // IEnumerable không cần DataMember
 
                 // (Tuỳ chọn) nếu muốn xác thực field tồn tại theo schema thực tế:
                 if (tblB != null)
@@ -60,9 +72,6 @@ namespace Winforms_App_Template.Forms.SubReport
                         dataSourceForCheck: this.DataSource
                     );
                 }
-
-                // (Tuỳ chọn) Không in gì nếu DataSource rỗng (tránh header trống)
-                this.PrintOnEmptyDataSource = false; // hoặc this.ReportPrintOptions.PrintOnEmptyDataSource = false;
             };
         }
     }

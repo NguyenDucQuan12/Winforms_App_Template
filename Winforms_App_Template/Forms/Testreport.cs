@@ -196,67 +196,34 @@ namespace Winforms_App_Template.Forms
                 }
             }
 
-            //// Bind dữ liệu cho bảng tiêu chuẩn
-            //XtraTableAutoBinder.AutoBindSingleTableByTag(
-            //        table: tblB,
-            //        checkFieldExists: true,
-            //        dataSourceForCheck: list_standard
-            //    );
+            // Chuẩn bị dữ liệu cho subreport: idInput -> List<Standard_Model>
+            var stdMap = (list_standard ?? Enumerable.Empty<Standard_Model>())
+                .GroupBy(s => s.idInput)                           // Gom các tiêu chuẩn theo idInput (khóa của dòng cha)
+                .ToDictionary(g => g.Key, g => g.ToList());       // => Dictionary<int, List<Standard_Model>> để tra nhanh theo id
 
-            //// Kiểm tra 1 bảng cụ thể các binding trong từng cell
-            //XtraTableAutoBinder.DumpBindings(tblB, "Check_Table");
+            //  Lấy band Detail của DetailReport "Catongtho_Report"
+            //DetailReportBand dr = this.FindDetailReportBandByName("Catongtho_Report");
+            DetailBand drDetailsub = this.FindChildDetail(dr);  // Lấy Detail bên trong DetailReport (nơi chứa XRSubreport)
 
-            // Gọi auto-layout cho Check_Table (header row index = 0, value row index = 1)
-            //ReportLayoutHelpers.AutoHideAndResizeByMaxText(
-            //    table: this.Check_Table,
-            //    dataSource: (IEnumerable)rows,
-            //    fieldSegmentIndex: 2,    // nếu Tag = a|b|Field|..., sửa theo bạn
-            //    delimiter: '|',
-            //    minWidthF: 60f,          // mỗi cột tối thiểu 60 (đơn vị report)
-            //    maxWidthF: 0f,           // không giới hạn upper; set >0 để ép max width
-            //    headerPadPx: 12,         // padding px thêm cho header
-            //    cellPadPx: 18,           // padding px thêm cho value
-            //    dateFormat: "yyyy-MM-dd HH:mm" // nếu có cột DateTime
-            //);
-            var sub = drDetail.FindControl("xrSubreport1", true) as XRSubreport; // XRSubreport đặt bên phải panel
-                                                                                 // 3) Gán instance report con (nếu bạn đang dùng class code)
+            //  Lấy subreport control
+            var sub = drDetailsub.FindControl("xrSubreport1", true) as XRSubreport
+                      ?? throw new InvalidOperationException("Thiếu XRSubreport 'xrSubreport1'.");
+
+            // 4) Gắn instance report con
             if (sub.ReportSource == null)
-                sub.ReportSource = new StandardsSubreport(); // hoặc XtraReport.FromFile("StandardsSubreport.repx", true);
-            
-            var stdMap = list_standard
-                .GroupBy(s => s.idInput)
-                .ToDictionary(g => g.Key, g => g.ToList()); // Dictionary<int, List<Standard_Model>>
+                sub.ReportSource = new StandardsSubreport();
 
-            sub.ReportSource.DataSource = rows;
-            sub.ReportSource.DataMember = "Standards";
+            // Truyền idInput đang in xuống subreport qua ParameterBindings
+            sub.ParameterBindings.Clear();
+            // "pIdInput" là Parameter (int) đã khai báo trong StandardsSubreport
+            // Khi in mỗi dòng cha, lấy giá trị trường idInput của dòng hiện tại, truyền vào parameter pIdInput của subreport.
+            sub.ParameterBindings.Add(new ParameterBinding("pIdInput", null, "idInput"));
 
-            //// Tránh đăng ký trùng
-            //sub.BeforePrint -= Sub_BeforePrint;
-            //sub.BeforePrint += Sub_BeforePrint;
+            // Cho subreport biết toàn bộ map (nó sẽ tự chọn list theo pIdInput)
+            var child = (XtraReport)sub.ReportSource;
+            child.DataSource = stdMap;   // Đặt DataSource của subreport là map (Dictionary<int, List<Standard_Model>>)
+            child.DataMember = null;     // Dictionary không cần DataMember
 
-
-
-            // Handler: bơm đúng list theo idInput của dòng cha
-            void Sub_BeforePrint(object? sender, System.ComponentModel.CancelEventArgs eArgs)
-            {
-                // Lấy idInput của dòng cha hiện tại
-                int id = 0;
-                var v = this.GetCurrentColumnValue("idInput");
-                if (v != null && int.TryParse(v.ToString(), out var tmp)) id = tmp;
-
-                // Tra ra list tiêu chuẩn của idInput này
-                IEnumerable<Standard_Model> list =
-                    (id != 0 && stdMap.TryGetValue(id, out var bucket)) ? bucket
-                                                                        : Enumerable.Empty<Standard_Model>();
-
-                // Gán datasource cho subreport instance đang in
-                var child = (XtraReport)sub.ReportSource;
-                child.DataSource = list;     // <<< CHỈ list con của idInput hiện tại
-                child.DataMember = null;
-
-                // Có/không có dữ liệu → ẩn/hiện subreport (để bảng trái full nếu trống)
-                sub.Visible = list.Any();
-            }
         }
 
         /// <summary>
