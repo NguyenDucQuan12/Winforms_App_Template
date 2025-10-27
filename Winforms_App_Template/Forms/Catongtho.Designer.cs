@@ -42,6 +42,7 @@ namespace Winforms_App_Template.Forms
             Export_Document_Button = new Button();
             tablePanel2 = new DevExpress.Utils.Layout.TablePanel();
             Cancel_Export_Document = new Button();
+            simpleButton1 = new DevExpress.XtraEditors.SimpleButton();
             ((System.ComponentModel.ISupportInitialize)ID_Cong_Doan_Text.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)behaviorManager1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)tablePanel1).BeginInit();
@@ -196,11 +197,11 @@ namespace Winforms_App_Template.Forms
             // Export_Document_Button
             // 
             tablePanel2.SetColumn(Export_Document_Button, 5);
-            Export_Document_Button.Location = new Point(427, 107);
+            Export_Document_Button.Location = new Point(382, 107);
             Export_Document_Button.Margin = new Padding(2);
             Export_Document_Button.Name = "Export_Document_Button";
             tablePanel2.SetRow(Export_Document_Button, 2);
-            Export_Document_Button.Size = new Size(97, 42);
+            Export_Document_Button.Size = new Size(86, 42);
             Export_Document_Button.TabIndex = 2;
             Export_Document_Button.Text = "Xuất báo cáo";
             Export_Document_Button.UseVisualStyleBackColor = true;
@@ -208,7 +209,8 @@ namespace Winforms_App_Template.Forms
             // 
             // tablePanel2
             // 
-            tablePanel2.Columns.AddRange(new DevExpress.Utils.Layout.TablePanelColumn[] { new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 0F), new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 55F), new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 50F), new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 50F), new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 50F), new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 50F), new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 50F), new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 50F), new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 50F) });
+            tablePanel2.Columns.AddRange(new DevExpress.Utils.Layout.TablePanelColumn[] { new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 0F), new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 55F), new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 50F), new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 50F), new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 50F), new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 50F), new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 50F), new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 50F), new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 50F), new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 50F) });
+            tablePanel2.Controls.Add(simpleButton1);
             tablePanel2.Controls.Add(Cancel_Export_Document);
             tablePanel2.Controls.Add(Export_Document_Button);
             tablePanel2.Dock = DockStyle.Fill;
@@ -224,15 +226,27 @@ namespace Winforms_App_Template.Forms
             // 
             tablePanel2.SetColumn(Cancel_Export_Document, 4);
             Cancel_Export_Document.Enabled = false;
-            Cancel_Export_Document.Location = new Point(326, 107);
+            Cancel_Export_Document.Location = new Point(292, 107);
             Cancel_Export_Document.Margin = new Padding(2);
             Cancel_Export_Document.Name = "Cancel_Export_Document";
             tablePanel2.SetRow(Cancel_Export_Document, 2);
-            Cancel_Export_Document.Size = new Size(97, 42);
+            Cancel_Export_Document.Size = new Size(86, 42);
             Cancel_Export_Document.TabIndex = 3;
             Cancel_Export_Document.Text = "Hủy";
             Cancel_Export_Document.UseVisualStyleBackColor = true;
             Cancel_Export_Document.Click += Cancel_Export_Document_Click;
+            // 
+            // simpleButton1
+            // 
+            tablePanel2.SetColumn(simpleButton1, 6);
+            simpleButton1.Cursor = Cursors.Hand;
+            simpleButton1.Location = new Point(471, 108);
+            simpleButton1.Name = "simpleButton1";
+            tablePanel2.SetRow(simpleButton1, 2);
+            simpleButton1.Size = new Size(86, 39);
+            simpleButton1.TabIndex = 4;
+            simpleButton1.Text = "Thiết kế báo cáo";
+            simpleButton1.Click += simpleButton1_Click;
             // 
             // Catongtho
             // 
@@ -272,5 +286,6 @@ namespace Winforms_App_Template.Forms
         private Label label6;
         private DevExpress.Utils.Layout.TablePanel tablePanel2;
         private Button Cancel_Export_Document;
+        private DevExpress.XtraEditors.SimpleButton simpleButton1;
     }
 }

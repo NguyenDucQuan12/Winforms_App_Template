@@ -1,30 +1,12 @@
-using DevExpress.Drawing.Printing;
-using DevExpress.Utils;
-using DevExpress.XtraEditors;                   // TextEdit, SimpleButton
-using DevExpress.XtraGrid;
-using DevExpress.XtraGrid.Views.BandedGrid;    // BandedGridView, BandedGridColumn
-using DevExpress.XtraGrid.Views.Base;
-using DevExpress.XtraGrid.Views.Grid;
-using DevExpress.XtraLayout;                   // LayoutControl, LayoutControlGroup
-using DevExpress.XtraLayout.Utils;             // LayoutMode.Table
-using DevExpress.XtraPrinting;
-using DevExpress.XtraPrinting.Drawing; // ImageSource
-using DevExpress.XtraPrintingLinks;
-using DevExpress.XtraReports.UI;
-using System;
-using System.ComponentModel;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Drawing.Printing;                 // PaperKind, Margins
-using System.Linq;
-using System.Security.Policy;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using DevExpress.LookAndFeel;                        // UserLookAndFeel cho form Designer
+using DevExpress.XtraReports.UI;                    // XtraReport, ReportDesignTool
+using DevExpress.XtraReports.UserDesigner;          // XRDesignMdiController, XRDesignPanel, ReportState
+using System.IO;
+using System.Threading.Tasks;                       // Task/async
 using Winforms_App_Template.Database;
 using Winforms_App_Template.Database.Model;
 using Winforms_App_Template.Database.Table;
+using Winforms_App_Template.Utils;
 
 namespace Winforms_App_Template.Forms
 {
@@ -336,6 +318,71 @@ namespace Winforms_App_Template.Forms
             Export_Document_Button.Enabled = !loading;
             Cancel_Export_Document.Enabled = loading;
             UseWaitCursor = loading;
+        }
+
+        private async void simpleButton1_Click(object sender, EventArgs e)
+        {
+            var reportName = "Testreport";                  // Tên logic của report (dùng làm key trong DB)
+            var rpt = new Testreport();                     // Instance report ban đầu (layout mặc định/embedded khi không thể lấy bản mới nhất từ máy chủ)
+
+            // Khai báo class chịu trách nhiệm quản lý việc tải form mới, lưu form vào DB
+
+            string connString = DbConfig.GetConnectionString(); // Chuỗi kết nối đến DB của bạn
+            var store = new ReportLayoutStore(
+                connString: connString,
+                reportName: reportName,
+                updatedBy: Environment.UserName             // Audit: ai là người “Save”
+            );
+
+            // Trước khi mở Designer – thử nạp layout mới nhất từ DB 
+            await store.TryLoadAsync(rpt);                  // Nếu có trong DB → LoadLayoutFromXml; nếu không → giữ layout mặc định
+
+            // Tạo ReportDesignTool để mở End-User Designer
+            var tool = new ReportDesignTool(rpt);           // tool chứa form Designer (Ribbon) và controller MDI
+
+            // Lấy IDesignForm & MDI Controller (mọi event/active panel nằm trên controller)
+            var form = tool.DesignRibbonForm;               // IDesignForm (XRDesignRibbonForm implements IDesignForm) chính là cửa sổ Designer (bản Ribbon).
+            var controller = form.DesignMdiController;      // XRDesignMdiController: trung tâm điều phối các "DesignPanel" (tab) trong Designer
+
+            //XRDesignPanel? openedPanel = null;                     // Giữ tham chiếu panel đã mở (để auto-save sau)
+
+            // Khi một DesignPanel MỚI được tạo (Designer mở report)
+            // KHI PANEL ĐƯỢC TẠO XONG → GẮN HANDLER LÊN CHÍNH PANEL ẤY
+            controller.DesignPanelLoaded += (s, args) =>
+            {
+                // Theo tài liệu: 'sender' chính là XRDesignPanel
+                var panel = (XRDesignPanel)s;          
+                panel.FileName = $"{reportName} (DB + Local)";
+
+                // Gắn handler chặn Save/Save As/Save All → LƯU AppData + DB, KHÔNG mở SaveDialog
+                panel.AddCommandHandler(new SaveCommandHandler(panel, store, reportName));
+            };
+
+            // Mở Designer dạng MODAL: block cho đến khi người dùng đóng
+            tool.ShowRibbonDesignerDialog(UserLookAndFeel.Default);       // Khác với ShowRibbonDesigner(): modal giúp “đóng → rồi save”
+
+            // Sau khi Designer đóng: nếu còn thay đổi mà user QUÊN bấm Save → auto-save
+            var activePanel = controller.ActiveDesignPanel; // Lấy panel đang/đã active qua MDI controller (không cần cast form) 
+            if (activePanel != null && activePanel.ReportState == ReportState.Changed) // KHÔNG dùng Modified; đúng là Changed
+            {
+                // a) Local
+                var localPath = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                    Application.ProductName, "Reports", $"{reportName}.repx");
+                            Directory.CreateDirectory(Path.GetDirectoryName(localPath)!);
+                rpt.SaveLayoutToXml(localPath);
+
+                // b) DB
+                await store.SaveAsync(activePanel.Report);  // Lưu vào DB để lần sau mọi máy cùng nhận bản mới
+            }
+
+            //ReportDesignTool designTool = new ReportDesignTool(new Testreport());
+
+            //// Mở cửa sổ thiết kế form nhưng chương trình chính vẫn chạy bình thường
+            ////designTool.ShowRibbonDesigner();
+
+            //// Mở cửa sổ thiết kế form (dạng hộp thoại). Chặn luồng chương trình chính cho đến khi người dùng đóng cửa sổ design
+            //designTool.ShowRibbonDesignerDialog(UserLookAndFeel.Default);
         }
     }
 }

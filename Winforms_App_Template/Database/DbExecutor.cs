@@ -49,6 +49,92 @@ namespace Winforms_App_Template.Database
             return result; // IEnumerable<T>
         }, ct).AsTask();  // <— CHUYỂN ValueTask<IEnumerable<T>> → Task<IEnumerable<T>>
 
+        // ---------------------------
+        // 2) SELECT: đúng 1 dòng hoặc default (null)
+        // ---------------------------
+        public Task<T?> QuerySingleOrDefaultAsync<T>(
+            string sql,
+            object? param = null,
+            int commandTimeoutSeconds = 30,
+            CommandType commandType = CommandType.Text,
+            CancellationToken ct = default)
+        => _pipeline.ExecuteAsync(async token =>
+        {
+            using var conn = await SqlConnectionFactory.OpenAsync(_connString, token).ConfigureAwait(false);
+
+            var row = await conn.QuerySingleOrDefaultAsync<T>(new CommandDefinition(
+                commandText: sql,
+                parameters: param,
+                commandType: commandType,
+                commandTimeout: commandTimeoutSeconds,
+                cancellationToken: token)).ConfigureAwait(false);
+
+            return row;
+        }, ct).AsTask();
+
+        // (Tuỳ chọn) SELECT: đúng 1 dòng, ném lỗi nếu không có
+        public Task<T> QuerySingleAsync<T>(
+            string sql,
+            object? param = null,
+            int commandTimeoutSeconds = 30,
+            CommandType commandType = CommandType.Text,
+            CancellationToken ct = default)
+        => _pipeline.ExecuteAsync(async token =>
+        {
+            using var conn = await SqlConnectionFactory.OpenAsync(_connString, token).ConfigureAwait(false);
+
+            var row = await conn.QuerySingleAsync<T>(new CommandDefinition(
+                commandText: sql,
+                parameters: param,
+                commandType: commandType,
+                commandTimeout: commandTimeoutSeconds,
+                cancellationToken: token)).ConfigureAwait(false);
+
+            return row;
+        }, ct).AsTask();
+
+
+        // (Tuỳ chọn) SELECT: lấy dòng đầu hoặc default
+        public Task<T?> QueryFirstOrDefaultAsync<T>(
+            string sql,
+            object? param = null,
+            int commandTimeoutSeconds = 30,
+            CommandType commandType = CommandType.Text,
+            CancellationToken ct = default)
+        => _pipeline.ExecuteAsync(async token =>
+        {
+            using var conn = await SqlConnectionFactory.OpenAsync(_connString, token).ConfigureAwait(false);
+
+            var row = await conn.QueryFirstOrDefaultAsync<T>(new CommandDefinition(
+                commandText: sql,
+                parameters: param,
+                commandType: commandType,
+                commandTimeout: commandTimeoutSeconds,
+                cancellationToken: token)).ConfigureAwait(false);
+
+            return row;
+        }, ct).AsTask();
+
+        public Task<T> ExecuteScalarAsync<T>(
+            string sql,
+            object? param = null,
+            int commandTimeoutSeconds = 30,
+            CommandType commandType = CommandType.Text,
+            CancellationToken ct = default)
+        => _pipeline.ExecuteAsync(async token =>
+        {
+            using var conn = await SqlConnectionFactory.OpenAsync(_connString, token).ConfigureAwait(false);
+
+            var scalar = await conn.ExecuteScalarAsync<T>(new CommandDefinition(
+                commandText: sql,
+                parameters: param,
+                commandType: commandType,
+                commandTimeout: commandTimeoutSeconds,
+                cancellationToken: token)).ConfigureAwait(false);
+
+            return scalar;
+        }, ct).AsTask();
+
         /// <summary>
         /// INSERT/UPDATE/DELETE trả số dòng ảnh hưởng.
         /// </summary>
