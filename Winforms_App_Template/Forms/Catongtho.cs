@@ -361,7 +361,7 @@ namespace Winforms_App_Template.Forms
             // Mở Designer dạng MODAL: block cho đến khi người dùng đóng
             tool.ShowRibbonDesignerDialog(UserLookAndFeel.Default);       // Khác với ShowRibbonDesigner(): modal giúp “đóng → rồi save”
 
-            // Sau khi Designer đóng: nếu còn thay đổi mà user QUÊN bấm Save → auto-save
+            // Sau khi Designer đóng: nếu còn thay đổi mà user QUÊN bấm Save → auto-save (Chọn ko save cũng là yes luôn)
             var activePanel = controller.ActiveDesignPanel; // Lấy panel đang/đã active qua MDI controller (không cần cast form) 
             if (activePanel != null && activePanel.ReportState == ReportState.Changed) // KHÔNG dùng Modified; đúng là Changed
             {
