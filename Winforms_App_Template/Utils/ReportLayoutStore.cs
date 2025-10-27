@@ -97,7 +97,7 @@ public sealed class ReportLayoutStore
             updatedBy: Environment.UserName,
             contentGz: gz,
             sha256: hash,
-            ct: ct);
+            ct: ct).ConfigureAwait(false);
 
         return newVersion;
     }
@@ -111,7 +111,7 @@ public sealed class ReportLayoutStore
     {
         //Truy vấn phiên bản mới nhất từ DB
         var repo = new ReportLayoutVersions_Table(new DbExecutor());
-        var row = await repo.GetLatestAsync(reportName: "Testreport", ct: ct);
+        var row = await repo.GetLatestAsync(reportName: "Testreport", ct: ct).ConfigureAwait(false);
         if (row == null)
             return false;
 
