@@ -13,7 +13,7 @@ namespace Winforms_App_Template.Forms
 {
     public partial class Testreport : XtraReport
     {
-
+        // Tạo các parameter để sử dụng chuyển đổi các giá trị True/False sang OK/NG
         private readonly Parameter pOK = new Parameter
         {
             Name = "p_OKText",          // Tên dùng trong Expression: Parameters.p_OKText
@@ -34,18 +34,24 @@ namespace Winforms_App_Template.Forms
         {
             InitializeComponent();
 
-            // KHÔNG gán DataSource ở cấp Report → tránh lặp tất cả controls trong Detail của Report.
+            // KHÔNG gán DataSource ở cấp Report → tránh lặp tất cả controls trong Detail của Report khi datasource là list và có nhiều dòng dữ liệu.
             this.DataSource = null;
             this.DataMember = null;
 
             // Không hiện UI hỏi tham số khi in/xem
             this.RequestParameters = false;
 
-            // GẮN tham số vào report để có thể sử dụng
+            // Gắn tham số (Parameter) vào report để có thể sử dụng
             this.Parameters.AddRange(new[] { pOK, pNG });
         }
 
-        // Khi giá trị trong trường (fieldName) là True, False, Y, N thì tự động đổi sang value của parameter tương ứng mà ta đã khai báo bên trên
+        /// <summary>
+        /// Binding dữ liệu Yes/No cho cell dựa trên fieldName.
+        /// Khi giá trị trong trường (fieldName) là True, False, Y, N thì tự động đổi sang value của parameter tương ứng mà ta đã khai báo bên trên
+        /// Trong Designer, gọi hàm này để bind cell, tuy nhiên DevExpress chưa hỗ trợ cú pháp In(value, a, b, c, ...), nên sử dụng so sánh truyền thống
+        /// </summary>
+        /// <param name="cell"> Là cell mà cần ghi giá trị từ DB</param>
+        /// <param name="fieldName"> Là trường thông tin được lưu trữ trong DB</param>
         private static void BindYesNo(XRTableCell cell, string fieldName)
         {
             // In(value, a, b, c, ...) trả true nếu value thuộc 1 trong các giá trị liệt kê.
@@ -100,7 +106,7 @@ namespace Winforms_App_Template.Forms
             // Kiểm tra có dữ liệu đầu vào
             if (rows == null)
             {
-                throw new ArgumentNullException(nameof(rows), "rows null: không có dữ liệu để lặp.");
+                throw new ArgumentNullException(nameof(rows), "rows null: không có dữ liệu cho bảng thao tác.");
             }
 
             // Lấy đúng DetailReportBand (dr) theo Name = "Catongtho_Report"
@@ -110,31 +116,34 @@ namespace Winforms_App_Template.Forms
             dr.DataSource = rows;
             dr.DataMember = null; // List<T> không cần DataMember
 
-            // Hiển thị ra datasource đã gắn vào có bao nhiêu bản ghi
-            XtraTableAutoBinder.AssertBandDataSource(dr: dr);
+            // Kiểm tra datasource đã gắn vào có bao nhiêu bản ghi
+            //XtraTableAutoBinder.AssertBandDataSource(dr: dr);
 
             // Lấy ReportHeader của Detail Report theo Name = "Catongtho_Header" (Header chỉ in 1 lần)
             ReportHeaderBand drHeader = this.FindChildReportHeader(dr, "Catongtho_Header");
             // Lấy header table cần bind dữ liệu
             XRTable? header_table = drHeader.FindControl("Header_Table", true) as XRTable;
+            if (header_table == null)
+            {
+                throw new InvalidOperationException("Thiếu XRTable: Header_Table trong Catongtho_Report.ReportHeader.");
+            }
             // Bind dữ liệu từ tag với cấu trúc a|b|c|d|e, c sẽ là FiledName trong DB
             this.AutoBindHeaderTable_ByTag_UsingParameters(header_table, headerData);
             // kiểm tra xem bảng hearder đã bind được dữ liệu hay chưa
             //XtraTableAutoBinder.DumpBindings(header_table, "Header_Table");
 
             // Lấy Detail con đầu tiên trong Deatil Report cha
-            DetailBand drDetail = this.FindChildDetail(dr);
+            DetailBand? drDetail = this.FindChildDetail(dr);
             if (drDetail == null)
             {
                 throw new InvalidOperationException("Catongtho_Report thiếu Detail (band con).");
             }
 
-            // Tìm kiếm 2 bảng và 1 richtext trong detail con
-            XRTable? tblA = drDetail.FindControl("Catthoong_Table", true) as XRTable;
-            //XRTable? tblB = drDetail.FindControl("Check_Table", true) as XRTable;
+            // Tìm kiếm bảng và richtext trong detail con
+            XRTable? catthoong_Table = drDetail.FindControl("Catthoong_Table", true) as XRTable;
             XRRichText? noteRtf = drDetail.FindControl("Note_Richtext", true) as XRRichText;
 
-            if (tblA == null) throw new InvalidOperationException("Thiếu XRTable: Catthoong_Table trong Catongtho_Report.Detail.");
+            if (catthoong_Table == null) throw new InvalidOperationException("Thiếu XRTable: Catthoong_Table trong Catongtho_Report.Detail.");
             //if (tblB == null) throw new InvalidOperationException("Thiếu XRTable: Check_Table trong Catongtho_Report.Detail.");
             if (noteRtf == null) { /* không bắt buộc, nhưng cảnh báo nhẹ */ }
 
@@ -151,16 +160,16 @@ namespace Winforms_App_Template.Forms
 
             // Hoặc bind cụ thể 1 bảng
             XtraTableAutoBinder.AutoBindSingleTableByTag(
-                    table: tblA,
+                    table: catthoong_Table,
                     checkFieldExists: true,
                     dataSourceForCheck: rows
                 );
 
             // Kiểm tra 1 bảng cụ thể các binding trong từng cell
-            XtraTableAutoBinder.DumpBindings(tblA, "Catthoong_Table");
+            //XtraTableAutoBinder.DumpBindings(catthoong_Table, "Catthoong_Table");
 
             // Catthoong_Table: dùng map cell -> biểu thức theo Catthoong_Model
-            //this.BindCatthoongTableCells(tblA);
+            //this.BindCatthoongTableCells(catthoong_Table);
 
             // Check_Table
             //this.BindCheckTableCells(tblB);
@@ -196,34 +205,36 @@ namespace Winforms_App_Template.Forms
                 }
             }
 
-            // Chuẩn bị dữ liệu cho subreport: idInput -> List<Standard_Model>
+            // Chuẩn bị dữ liệu cho subreport
+            // Nhóm data theo các lần nhập dữ liệu
             var stdMap = (list_standard ?? Enumerable.Empty<Standard_Model>())
                 .GroupBy(s => s.idInput)                           // Gom các tiêu chuẩn theo idInput (khóa của dòng cha)
                 .ToDictionary(g => g.Key, g => g.ToList());       // => Dictionary<int, List<Standard_Model>> để tra nhanh theo id
 
             //  Lấy band Detail của DetailReport "Catongtho_Report"
-            //DetailReportBand dr = this.FindDetailReportBandByName("Catongtho_Report");
-            DetailBand drDetailsub = this.FindChildDetail(dr);  // Lấy Detail bên trong DetailReport (nơi chứa XRSubreport)
+            DetailBand? drDetailsub = this.FindChildDetail(dr);  // Lấy Detail bên trong DetailReport (nơi chứa XRSubreport)
 
-            //  Lấy subreport control
-            var sub = drDetailsub.FindControl("xrSubreport1", true) as XRSubreport
-                      ?? throw new InvalidOperationException("Thiếu XRSubreport 'xrSubreport1'.");
+            if (drDetailsub != null)
+            {
+                //  Lấy subreport control
+                var sub = drDetailsub.FindControl("xrSubreport1", true) as XRSubreport
+                          ?? throw new InvalidOperationException("Thiếu XRSubreport 'xrSubreport1'.");
 
-            // 4) Gắn instance report con
-            if (sub.ReportSource == null)
-                sub.ReportSource = new StandardsSubreport();
+                // Tạo instance report con
+                if (sub.ReportSource == null)
+                    sub.ReportSource = new StandardsSubreport();
 
-            // Truyền idInput đang in xuống subreport qua ParameterBindings
-            sub.ParameterBindings.Clear();
-            // "pIdInput" là Parameter (int) đã khai báo trong StandardsSubreport
-            // Khi in mỗi dòng cha, lấy giá trị trường idInput của dòng hiện tại, truyền vào parameter pIdInput của subreport.
-            sub.ParameterBindings.Add(new ParameterBinding("pIdInput", null, "idInput"));
+                // Truyền idInput đang in xuống subreport qua ParameterBindings
+                sub.ParameterBindings.Clear();
+                // "pIdInput" là Parameter (int) đã khai báo trong StandardsSubreport
+                // Khi in mỗi dòng cha, lấy giá trị trường idInput của dòng hiện tại, truyền vào parameter pIdInput của subreport.
+                sub.ParameterBindings.Add(new ParameterBinding("pIdInput", null, "idInput"));
 
-            // Cho subreport biết toàn bộ map (nó sẽ tự chọn list theo pIdInput)
-            var child = (XtraReport)sub.ReportSource;
-            child.DataSource = stdMap;   // Đặt DataSource của subreport là map (Dictionary<int, List<Standard_Model>>)
-            child.DataMember = null;     // Dictionary không cần DataMember
-
+                // Cho subreport biết toàn bộ map (nó sẽ tự chọn list cần điền vào subreport theo pIdInput)
+                var child = (XtraReport)sub.ReportSource;
+                child.DataSource = stdMap;   // Đặt DataSource của subreport là map (Dictionary<int, List<Standard_Model>>)
+                child.DataMember = null;     // Dictionary không cần DataMember
+            }
         }
 
         /// <summary>
@@ -337,7 +348,7 @@ namespace Winforms_App_Template.Forms
         /// <summary>
         /// Lấy Detail (con) đầu tiên của một DetailReportBand.
         /// </summary>
-        private DetailBand FindChildDetail(DetailReportBand dr)
+        private DetailBand? FindChildDetail(DetailReportBand dr)
         {
             foreach (Band b in dr.Bands)
             {
@@ -346,8 +357,6 @@ namespace Winforms_App_Template.Forms
             }
             return null;
         }
-
-       
 
         /// <summary>
         /// Duyệt map và bind cell trong 1 scope (table/band).
@@ -388,7 +397,8 @@ namespace Winforms_App_Template.Forms
         }
 
         /// <summary>
-        /// Bind dữ liệu từ Tag của một cell có cấu trúc tên: a|b|c|d|e với c là FiledName
+        /// Bind dữ liệu từ Tag của một cell có cấu trúc tên: a|b|c|d|e với c là FiledName bằng parameter.
+        /// Parameter được tạo/ghi đè với tên p_<fieldName>, dành cho header (in 1 lần) và có datasource khác với detail.
         /// </summary>
         /// <param name="headerTable"></param>
         /// <param name="headerData"></param>
@@ -438,7 +448,7 @@ namespace Winforms_App_Template.Forms
                     if (string.IsNullOrEmpty(fieldName)) continue;
 
                     // Tìm property tương ứng trên headerData
-                    System.Reflection.PropertyInfo pi; // Khai báo biến pi kiểu PropertyInfo
+                    System.Reflection.PropertyInfo? pi; // Khai báo biến pi kiểu PropertyInfo
 
                     // Tìm trong promap key = fieldname gán vào biến pi, nếu ko tồn tại fieldname (False) thì thông báo
                     if (!propMap.TryGetValue(fieldName, out pi))
@@ -467,7 +477,7 @@ namespace Winforms_App_Template.Forms
         /// <summary>
         /// Tạo/ghi đè một Parameter tên 'name' với 'value' (dùng cho header).
         /// </summary>
-        private void CreateOrUpdateParameter(string name, object value)
+        private void CreateOrUpdateParameter(string name, object? value)
         {
             // [Field] trong ExpressionBinding("BeforePrint", "Text", "[Field]") luôn được lấy từ DataSource/DataMember của band chứa control đó (Detail, GroupHeader/GroupFooter, DetailReportBand,…)
             // Header lấy từ nguồn khác dataset Detail (ví dụ headerData là object khác, query khác), thì [Field] sẽ không thấy gì → ra trống.

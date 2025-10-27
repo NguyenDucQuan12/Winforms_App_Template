@@ -31,35 +31,6 @@ namespace Winforms_App_Template.Forms
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Testreport));
             this.TopMargin = new DevExpress.XtraReports.UI.TopMarginBand();
             this.BottomMargin = new DevExpress.XtraReports.UI.BottomMarginBand();
-            this.Check_Table = new DevExpress.XtraReports.UI.XRTable();
-            this.xrTableRow15 = new DevExpress.XtraReports.UI.XRTableRow();
-            this.xrTableCell45 = new DevExpress.XtraReports.UI.XRTableCell();
-            this.xrTableCell48 = new DevExpress.XtraReports.UI.XRTableCell();
-            this.xrTableCell76 = new DevExpress.XtraReports.UI.XRTableCell();
-            this.xrTableCell50 = new DevExpress.XtraReports.UI.XRTableCell();
-            this.xrTableCell83 = new DevExpress.XtraReports.UI.XRTableCell();
-            this.xrTableCell119 = new DevExpress.XtraReports.UI.XRTableCell();
-            this.xrTableRow17 = new DevExpress.XtraReports.UI.XRTableRow();
-            this.xrTableCell126 = new DevExpress.XtraReports.UI.XRTableCell();
-            this.Outer_Diameter_Item = new DevExpress.XtraReports.UI.XRTableCell();
-            this.Outer_Diameter_Size = new DevExpress.XtraReports.UI.XRTableCell();
-            this.Outer_Diameter_Pingauge_Through = new DevExpress.XtraReports.UI.XRTableCell();
-            this.Outer_Diameter_Pingauge_Not_Through = new DevExpress.XtraReports.UI.XRTableCell();
-            this.Outer_Diameter_Criterion = new DevExpress.XtraReports.UI.XRTableCell();
-            this.xrTableRow16 = new DevExpress.XtraReports.UI.XRTableRow();
-            this.xrTableCell120 = new DevExpress.XtraReports.UI.XRTableCell();
-            this.Number_Cut_Item = new DevExpress.XtraReports.UI.XRTableCell();
-            this.Number_Cut_Size = new DevExpress.XtraReports.UI.XRTableCell();
-            this.Number_Cut_Pingauge_Through = new DevExpress.XtraReports.UI.XRTableCell();
-            this.Number_Cut_Pingauge_Not_Through = new DevExpress.XtraReports.UI.XRTableCell();
-            this.Number_Cut_Criterion = new DevExpress.XtraReports.UI.XRTableCell();
-            this.xrTableRow18 = new DevExpress.XtraReports.UI.XRTableRow();
-            this.xrTableCell132 = new DevExpress.XtraReports.UI.XRTableCell();
-            this.Cut_Length_Item = new DevExpress.XtraReports.UI.XRTableCell();
-            this.Cut_Length_Size = new DevExpress.XtraReports.UI.XRTableCell();
-            this.Cut_Length_Pingauge_Through = new DevExpress.XtraReports.UI.XRTableCell();
-            this.Cut_Length_Pingauge_Not_Through = new DevExpress.XtraReports.UI.XRTableCell();
-            this.Cut_Length_Criterion = new DevExpress.XtraReports.UI.XRTableCell();
             this.Note_Richtext = new DevExpress.XtraReports.UI.XRRichText();
             this.Catthoong_Table = new DevExpress.XtraReports.UI.XRTable();
             this.xrTableRow2 = new DevExpress.XtraReports.UI.XRTableRow();
@@ -200,7 +171,6 @@ namespace Winforms_App_Template.Forms
             this.Catongtho_Header = new DevExpress.XtraReports.UI.ReportHeaderBand();
             this.xrPanel2 = new DevExpress.XtraReports.UI.XRPanel();
             this.Detail = new DevExpress.XtraReports.UI.DetailBand();
-            ((System.ComponentModel.ISupportInitialize)(this.Check_Table)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Note_Richtext)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Catthoong_Table)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Header_Table)).BeginInit();
@@ -215,232 +185,8 @@ namespace Winforms_App_Template.Forms
             // 
             // BottomMargin
             // 
-            this.BottomMargin.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
-            this.Check_Table});
-            this.BottomMargin.HeightF = 148.3364F;
+            this.BottomMargin.HeightF = 15.755F;
             this.BottomMargin.Name = "BottomMargin";
-            // 
-            // Check_Table
-            // 
-            this.Check_Table.Borders = ((DevExpress.XtraPrinting.BorderSide)((((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Top) 
-            | DevExpress.XtraPrinting.BorderSide.Right) 
-            | DevExpress.XtraPrinting.BorderSide.Bottom)));
-            this.Check_Table.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
-            this.Check_Table.LocationFloat = new DevExpress.Utils.PointFloat(532.9877F, 31.74184F);
-            this.Check_Table.Name = "Check_Table";
-            this.Check_Table.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
-            this.Check_Table.Rows.AddRange(new DevExpress.XtraReports.UI.XRTableRow[] {
-            this.xrTableRow15,
-            this.xrTableRow17,
-            this.xrTableRow16,
-            this.xrTableRow18});
-            this.Check_Table.SizeF = new System.Drawing.SizeF(473.8708F, 116.5945F);
-            this.Check_Table.StylePriority.UseBorders = false;
-            this.Check_Table.StylePriority.UseFont = false;
-            this.Check_Table.StylePriority.UseTextAlignment = false;
-            this.Check_Table.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
-            // 
-            // xrTableRow15
-            // 
-            this.xrTableRow15.Cells.AddRange(new DevExpress.XtraReports.UI.XRTableCell[] {
-            this.xrTableCell45,
-            this.xrTableCell48,
-            this.xrTableCell76,
-            this.xrTableCell50,
-            this.xrTableCell83,
-            this.xrTableCell119});
-            this.xrTableRow15.Name = "xrTableRow15";
-            this.xrTableRow15.Weight = 0.3381703794002533D;
-            // 
-            // xrTableCell45
-            // 
-            this.xrTableCell45.Multiline = true;
-            this.xrTableCell45.Name = "xrTableCell45";
-            this.xrTableCell45.Text = "Hạng mục kiểm tra";
-            this.xrTableCell45.Weight = 1.6184551200321173D;
-            // 
-            // xrTableCell48
-            // 
-            this.xrTableCell48.Multiline = true;
-            this.xrTableCell48.Name = "xrTableCell48";
-            this.xrTableCell48.Text = "Chủng loại (cm)";
-            this.xrTableCell48.Weight = 1.0891739526699671D;
-            // 
-            // xrTableCell76
-            // 
-            this.xrTableCell76.Multiline = true;
-            this.xrTableCell76.Name = "xrTableCell76";
-            this.xrTableCell76.Text = "Kích cỡ Fr";
-            this.xrTableCell76.Weight = 0.77314946646262483D;
-            // 
-            // xrTableCell50
-            // 
-            this.xrTableCell50.Multiline = true;
-            this.xrTableCell50.Name = "xrTableCell50";
-            this.xrTableCell50.Text = "Pingauge xuyên (mm)";
-            this.xrTableCell50.Weight = 0.96502185857214862D;
-            // 
-            // xrTableCell83
-            // 
-            this.xrTableCell83.Multiline = true;
-            this.xrTableCell83.Name = "xrTableCell83";
-            this.xrTableCell83.Text = "Pingauge không xuyên (mm)";
-            this.xrTableCell83.Weight = 0.95123551420493835D;
-            // 
-            // xrTableCell119
-            // 
-            this.xrTableCell119.Multiline = true;
-            this.xrTableCell119.Name = "xrTableCell119";
-            this.xrTableCell119.Text = "Tiêu chuẩn";
-            this.xrTableCell119.Weight = 0.76436089016734365D;
-            // 
-            // xrTableRow17
-            // 
-            this.xrTableRow17.Cells.AddRange(new DevExpress.XtraReports.UI.XRTableCell[] {
-            this.xrTableCell126,
-            this.Outer_Diameter_Item,
-            this.Outer_Diameter_Size,
-            this.Outer_Diameter_Pingauge_Through,
-            this.Outer_Diameter_Pingauge_Not_Through,
-            this.Outer_Diameter_Criterion});
-            this.xrTableRow17.Name = "xrTableRow17";
-            this.xrTableRow17.Weight = 0.22060985863208771D;
-            // 
-            // xrTableCell126
-            // 
-            this.xrTableCell126.Multiline = true;
-            this.xrTableCell126.Name = "xrTableCell126";
-            this.xrTableCell126.Tag = "a|b|TenTieuChuan|d|e";
-            this.xrTableCell126.Text = "Đường kính ngoài ống dài (mm)";
-            this.xrTableCell126.Weight = 1.6184551200321173D;
-            // 
-            // Outer_Diameter_Item
-            // 
-            this.Outer_Diameter_Item.Multiline = true;
-            this.Outer_Diameter_Item.Name = "Outer_Diameter_Item";
-            this.Outer_Diameter_Item.Weight = 1.0891739526699671D;
-            // 
-            // Outer_Diameter_Size
-            // 
-            this.Outer_Diameter_Size.Multiline = true;
-            this.Outer_Diameter_Size.Name = "Outer_Diameter_Size";
-            this.Outer_Diameter_Size.Weight = 0.77314946646262483D;
-            // 
-            // Outer_Diameter_Pingauge_Through
-            // 
-            this.Outer_Diameter_Pingauge_Through.Multiline = true;
-            this.Outer_Diameter_Pingauge_Through.Name = "Outer_Diameter_Pingauge_Through";
-            this.Outer_Diameter_Pingauge_Through.Weight = 0.96502185857214862D;
-            // 
-            // Outer_Diameter_Pingauge_Not_Through
-            // 
-            this.Outer_Diameter_Pingauge_Not_Through.Multiline = true;
-            this.Outer_Diameter_Pingauge_Not_Through.Name = "Outer_Diameter_Pingauge_Not_Through";
-            this.Outer_Diameter_Pingauge_Not_Through.Weight = 0.95123551420493835D;
-            // 
-            // Outer_Diameter_Criterion
-            // 
-            this.Outer_Diameter_Criterion.Multiline = true;
-            this.Outer_Diameter_Criterion.Name = "Outer_Diameter_Criterion";
-            this.Outer_Diameter_Criterion.Weight = 0.76436089016734365D;
-            // 
-            // xrTableRow16
-            // 
-            this.xrTableRow16.Cells.AddRange(new DevExpress.XtraReports.UI.XRTableCell[] {
-            this.xrTableCell120,
-            this.Number_Cut_Item,
-            this.Number_Cut_Size,
-            this.Number_Cut_Pingauge_Through,
-            this.Number_Cut_Pingauge_Not_Through,
-            this.Number_Cut_Criterion});
-            this.xrTableRow16.Name = "xrTableRow16";
-            this.xrTableRow16.Weight = 0.22060985863208771D;
-            // 
-            // xrTableCell120
-            // 
-            this.xrTableCell120.Multiline = true;
-            this.xrTableCell120.Name = "xrTableCell120";
-            this.xrTableCell120.Text = "Số lần cắt";
-            this.xrTableCell120.Weight = 1.6184551200321173D;
-            // 
-            // Number_Cut_Item
-            // 
-            this.Number_Cut_Item.Multiline = true;
-            this.Number_Cut_Item.Name = "Number_Cut_Item";
-            this.Number_Cut_Item.Weight = 1.0891739526699671D;
-            // 
-            // Number_Cut_Size
-            // 
-            this.Number_Cut_Size.Multiline = true;
-            this.Number_Cut_Size.Name = "Number_Cut_Size";
-            this.Number_Cut_Size.Weight = 0.77314946646262483D;
-            // 
-            // Number_Cut_Pingauge_Through
-            // 
-            this.Number_Cut_Pingauge_Through.Multiline = true;
-            this.Number_Cut_Pingauge_Through.Name = "Number_Cut_Pingauge_Through";
-            this.Number_Cut_Pingauge_Through.Weight = 0.96502185857214862D;
-            // 
-            // Number_Cut_Pingauge_Not_Through
-            // 
-            this.Number_Cut_Pingauge_Not_Through.Multiline = true;
-            this.Number_Cut_Pingauge_Not_Through.Name = "Number_Cut_Pingauge_Not_Through";
-            this.Number_Cut_Pingauge_Not_Through.Weight = 0.95123551420493835D;
-            // 
-            // Number_Cut_Criterion
-            // 
-            this.Number_Cut_Criterion.Multiline = true;
-            this.Number_Cut_Criterion.Name = "Number_Cut_Criterion";
-            this.Number_Cut_Criterion.Weight = 0.76436089016734365D;
-            // 
-            // xrTableRow18
-            // 
-            this.xrTableRow18.Cells.AddRange(new DevExpress.XtraReports.UI.XRTableCell[] {
-            this.xrTableCell132,
-            this.Cut_Length_Item,
-            this.Cut_Length_Size,
-            this.Cut_Length_Pingauge_Through,
-            this.Cut_Length_Pingauge_Not_Through,
-            this.Cut_Length_Criterion});
-            this.xrTableRow18.Name = "xrTableRow18";
-            this.xrTableRow18.Weight = 0.22060985863208771D;
-            // 
-            // xrTableCell132
-            // 
-            this.xrTableCell132.Multiline = true;
-            this.xrTableCell132.Name = "xrTableCell132";
-            this.xrTableCell132.Text = "Chiều dài cắt (mm)";
-            this.xrTableCell132.Weight = 1.6184551200321173D;
-            // 
-            // Cut_Length_Item
-            // 
-            this.Cut_Length_Item.Multiline = true;
-            this.Cut_Length_Item.Name = "Cut_Length_Item";
-            this.Cut_Length_Item.Weight = 1.0891739526699671D;
-            // 
-            // Cut_Length_Size
-            // 
-            this.Cut_Length_Size.Multiline = true;
-            this.Cut_Length_Size.Name = "Cut_Length_Size";
-            this.Cut_Length_Size.Weight = 0.77314946646262483D;
-            // 
-            // Cut_Length_Pingauge_Through
-            // 
-            this.Cut_Length_Pingauge_Through.Multiline = true;
-            this.Cut_Length_Pingauge_Through.Name = "Cut_Length_Pingauge_Through";
-            this.Cut_Length_Pingauge_Through.Weight = 0.96502185857214862D;
-            // 
-            // Cut_Length_Pingauge_Not_Through
-            // 
-            this.Cut_Length_Pingauge_Not_Through.Multiline = true;
-            this.Cut_Length_Pingauge_Not_Through.Name = "Cut_Length_Pingauge_Not_Through";
-            this.Cut_Length_Pingauge_Not_Through.Weight = 0.95123551420493835D;
-            // 
-            // Cut_Length_Criterion
-            // 
-            this.Cut_Length_Criterion.Multiline = true;
-            this.Cut_Length_Criterion.Name = "Cut_Length_Criterion";
-            this.Cut_Length_Criterion.Weight = 0.76436089016734365D;
             // 
             // Note_Richtext
             // 
@@ -448,11 +194,11 @@ namespace Winforms_App_Template.Forms
             | DevExpress.XtraPrinting.BorderSide.Right) 
             | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.Note_Richtext.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
-            this.Note_Richtext.LocationFloat = new DevExpress.Utils.PointFloat(665.9576F, 140.8576F);
+            this.Note_Richtext.LocationFloat = new DevExpress.Utils.PointFloat(665.9575F, 140.8576F);
             this.Note_Richtext.Name = "Note_Richtext";
             this.Note_Richtext.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
             this.Note_Richtext.SerializableRtfString = resources.GetString("Note_Richtext.SerializableRtfString");
-            this.Note_Richtext.SizeF = new System.Drawing.SizeF(483.3336F, 32.83202F);
+            this.Note_Richtext.SizeF = new System.Drawing.SizeF(379.2396F, 32.83202F);
             this.Note_Richtext.StylePriority.UseBorders = false;
             this.Note_Richtext.StylePriority.UseFont = false;
             // 
@@ -1852,12 +1598,11 @@ namespace Winforms_App_Template.Forms
             this.ReportHeader,
             this.Catongtho_Report});
             this.Font = new DevExpress.Drawing.DXFont("Arial", 4F);
-            this.Margins = new DevExpress.Drawing.DXMargins(10F, 10F, 20F, 148.3364F);
+            this.Margins = new DevExpress.Drawing.DXMargins(10F, 10F, 20F, 15.755F);
             this.PageHeightF = 1653.543F;
             this.PageWidthF = 1169.291F;
             this.PaperKind = DevExpress.Drawing.Printing.DXPaperKind.A3;
             this.Version = "25.1";
-            ((System.ComponentModel.ISupportInitialize)(this.Check_Table)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Note_Richtext)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Catthoong_Table)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Header_Table)).EndInit();
@@ -1908,22 +1653,7 @@ namespace Winforms_App_Template.Forms
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell39;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell41;
         private DevExpress.XtraReports.UI.XRLabel xrLabel2;
-        private DevExpress.XtraReports.UI.XRTable Check_Table;
-        private DevExpress.XtraReports.UI.XRTableRow xrTableRow15;
-        private DevExpress.XtraReports.UI.XRTableCell xrTableCell45;
-        private DevExpress.XtraReports.UI.XRTableCell xrTableCell48;
-        private DevExpress.XtraReports.UI.XRTableCell xrTableCell76;
-        private DevExpress.XtraReports.UI.XRTableCell xrTableCell50;
-        private DevExpress.XtraReports.UI.XRTableCell xrTableCell83;
-        private DevExpress.XtraReports.UI.XRTableCell xrTableCell119;
         private DevExpress.XtraReports.UI.XRRichText Note_Richtext;
-        private DevExpress.XtraReports.UI.XRTableRow xrTableRow17;
-        private DevExpress.XtraReports.UI.XRTableCell xrTableCell126;
-        private DevExpress.XtraReports.UI.XRTableCell Outer_Diameter_Item;
-        private DevExpress.XtraReports.UI.XRTableCell Outer_Diameter_Size;
-        private DevExpress.XtraReports.UI.XRTableCell Outer_Diameter_Pingauge_Through;
-        private DevExpress.XtraReports.UI.XRTableCell Outer_Diameter_Pingauge_Not_Through;
-        private DevExpress.XtraReports.UI.XRTableCell Outer_Diameter_Criterion;
         private DevExpress.XtraReports.UI.XRTable Catthoong_Table;
         private DevExpress.XtraReports.UI.XRTableRow xrTableRow2;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell4;
@@ -2021,20 +1751,6 @@ namespace Winforms_App_Template.Forms
         private DevExpress.XtraReports.UI.XRPanel xrPanel2;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell7;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell12;
-        private DevExpress.XtraReports.UI.XRTableRow xrTableRow16;
-        private DevExpress.XtraReports.UI.XRTableCell xrTableCell120;
-        private DevExpress.XtraReports.UI.XRTableCell Number_Cut_Item;
-        private DevExpress.XtraReports.UI.XRTableCell Number_Cut_Size;
-        private DevExpress.XtraReports.UI.XRTableCell Number_Cut_Pingauge_Through;
-        private DevExpress.XtraReports.UI.XRTableCell Number_Cut_Pingauge_Not_Through;
-        private DevExpress.XtraReports.UI.XRTableCell Number_Cut_Criterion;
-        private DevExpress.XtraReports.UI.XRTableRow xrTableRow18;
-        private DevExpress.XtraReports.UI.XRTableCell xrTableCell132;
-        private DevExpress.XtraReports.UI.XRTableCell Cut_Length_Item;
-        private DevExpress.XtraReports.UI.XRTableCell Cut_Length_Size;
-        private DevExpress.XtraReports.UI.XRTableCell Cut_Length_Pingauge_Through;
-        private DevExpress.XtraReports.UI.XRTableCell Cut_Length_Pingauge_Not_Through;
-        private DevExpress.XtraReports.UI.XRTableCell Cut_Length_Criterion;
         private DevExpress.XtraReports.UI.XRLabel xrLabel3;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell6;
         private DevExpress.XtraReports.UI.XRTableCell Name_Congdoan;

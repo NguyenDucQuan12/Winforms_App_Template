@@ -98,110 +98,10 @@ namespace Winforms_App_Template.Forms
             dest.Other = kv.TryGetValue("khác", out var v6) ? v6 : 0;
         }
 
-        // Ví dụ: gọi từ một Form (ví dụ khi nhấn nút)
-        private async Task btnShowReport_Click(object? sender, EventArgs? e)
-        {
-            // Lấy data cho header
-            Catongtho_HeaderModel header = await _repo.Get_Header_catthoong(IdCongDoan: 68, ItemNumber: "CRS25C60N10W", LotNo: "250505G01", So_Me: 1);
-            // Dữ liệu mẫu cho Header in 1 lần
-            //Catongtho_HeaderModel header = new Catongtho_HeaderModel
-            //{
-            //    Name_Congdoan = "Cắt thô ống/ abc",
-            //    ID_Congdoan = "68",
-            //    Code_Congdoan = "zzzzzzz",
-            //    Category_Code = "123456G01",
-            //    Lotno_Congdoan = "12316541",
-            //    Batch_Number = "1",
-            //    NG_Qty_Total = 1,
-            //    OK_Qty_Total = 900
-            //};
-
-            // Lấy data cho bảng trong detail
-            List<Catthoong_Row> rows = await _repo.Get_Cat_Ong_Tho(IdCongDoan: 68, ItemNumber: "CRS25C60N10W", LotNo: "250505G01", So_Me: 1);
-
-            // Lấy danh sách id_input từ list thu được
-            var List_IdInput = rows.Select(x => x.idInput).Distinct().ToArray();
-
-            // Lấy chi tiết lỗi
-            List<Input_Error_Model> detail_error = await input_error_repo.Get_Detail_Error(idInputs: List_IdInput);
-
-            var pivot = BuildPivotMap(detail_error); // idInput -> (tenLoi->qty)
-
-            // Xử lý data trước khi bind Gom lỗi theo IdInput để lookup nhanh
-            //var errByInput = detail_error
-            //    .GroupBy(e => e.idInput)
-            //    .ToDictionary(g => g.Key, g => g.ToList());
-
-            // Gộp dữ liệu vào 1 list
-            List<Catthoong_ReportRow> result = new List<Catthoong_ReportRow>(rows.Count);
-
-            // Thêm từng dòng chi tiết lỗi cũng 1 idinput vào cùng nhau
-            foreach (var m in rows)
-            {
-                // Tìm dictionary lỗi của idInput hiện tại
-                pivot.TryGetValue(m.idInput, out var errsDict);
-                // Tóm tắt lỗi
-
-
-                // Tạo report-row
-
-                var r = new Catthoong_ReportRow
-                {
-                    // copy main
-                    idInput = m.idInput,
-                    MaKT = m.MaKT,
-                    TenMay_Ban = m.TenMay_Ban,
-                    SLSudung = m.SLSudung,
-                    StartTime = m.StartTime,
-                    NguoiTT = m.NguoiTT,
-
-                    val1 = m.val1,
-                    val2 = m.val2,
-                    val3 = m.val3,
-                    val4 = m.val4,
-                    val5 = m.val5,
-                    val6 = m.val6,
-                    val7 = m.val7,
-                    val8 = m.val8,
-                    val9 = m.val9,
-                    val10 = m.val10,
-                    val11 = m.val11,
-                    val12 = m.val12,
-                    val13 = m.val13,
-                    val14 = m.val14,
-                    val15 = m.val15,
-
-                    Remark = m.Remark
-                };
-                // Gán 6 cột lỗi ngang theo map (KHÔNG dùng qtySum cho tất cả)
-                SetKnownErrorColumns(r, errsDict);
-
-                result.Add(r);
-            }
-
-            // Lấy dữ liệu cho bảng tiêu chuẩn
-            List<Standard_Model> List_Standard_Report = await standard_repo.Get_Detail_Standard(idInputs: List_IdInput);
-            // Nhóm tiêu chuẩn theo idInput để tra nhanh
-            var stdByInput = List_Standard_Report
-                .GroupBy(s => s.idInput)
-                .ToDictionary(g => g.Key, g => g.ToList());
-
-            foreach (var m in result)
-            {
-                if (stdByInput.TryGetValue(m.idInput, out var list))
-                    m.Standards = list;                 // ~ 3 dòng cho mỗi lần nhập
-                else
-                    m.Standards = new List<Standard_Model>();
-            }
-
-            var rpt = new Testreport();
-            rpt.ConfigureLayoutForCatongtho(result, List_Standard_Report, header, /*notePrintOnlyOnce*/ false);
-
-            new ReportPrintTool(rpt).ShowRibbonPreviewDialog();
-        }
-
         private async void Export_Document_Button_Click(object sender, EventArgs e)
         {
+            // Hiển thị loading
+            ToggleUiLoading(true);
 
             // Lấy dữ liệu đầu vào
             string ID_Cong_Doan_String = ID_Cong_Doan_Text.Text;
@@ -213,6 +113,10 @@ namespace Winforms_App_Template.Forms
             int ID_Cong_Doan;
             int So_Me;
 
+            // Token hủy tải dữ liệu
+            using var cts = new CancellationTokenSource();
+            _cts = cts;
+
             // Validation dữ liệu
             if (LotNo == string.Empty || ItemNumber == string.Empty)
             {
@@ -220,19 +124,38 @@ namespace Winforms_App_Template.Forms
                 return;
             }
 
-            if(!int.TryParse(ID_Cong_Doan_String, out ID_Cong_Doan) || ID_Cong_Doan_String == string.Empty || !int.TryParse(So_Me_String, out So_Me) || So_Me_String == string.Empty)
+            if (!int.TryParse(ID_Cong_Doan_String, out ID_Cong_Doan) || ID_Cong_Doan_String == string.Empty || !int.TryParse(So_Me_String, out So_Me) || So_Me_String == string.Empty)
             {
                 MessageBox.Show("ID công đoạn hoặc số mẻ không hợp lệ!");
-                return ;
+                return;
             }
 
             // Lấy data cho header của công đoạn
-            Catongtho_HeaderModel header = await _repo.Get_Header_catthoong(IdCongDoan: ID_Cong_Doan, ItemNumber: ItemNumber, LotNo: LotNo, So_Me: So_Me);
-            
+            Catongtho_HeaderModel? header = null;
+            try
+            {
+                header = await _repo.Get_Header_catthoong(IdCongDoan: ID_Cong_Doan, ItemNumber: ItemNumber, LotNo: LotNo, So_Me: So_Me, ct: cts.Token);
+            }
+            catch (OperationCanceledException)
+            {
+                // Hủy quá trình tải dữ liệu
+                MessageBox.Show("Quá trình tải dữ liệu đã bị hủy.");
+                return;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.Message, "Lỗi tải dữ liệu", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             // Validation dữ liệu nhận từ DB
             if (header == null)
             {
                 MessageBox.Show($"Không tìm thấy dữ liệu cho công đoạn {ID_Cong_Doan}, Itemnumber: {ItemNumber}, Số lô: {LotNo} và số mẻ: {So_Me}");
+                // Ẩn loading và mở khóa các nút
+                ToggleUiLoading(false);
+                _cts?.Dispose();
+                _cts = null;
                 return;
             }
 
@@ -250,13 +173,43 @@ namespace Winforms_App_Template.Forms
             //};
 
             // Lấy data cho bảng trong detail
-            List<Catthoong_Row> rows = await _repo.Get_Cat_Ong_Tho(IdCongDoan: ID_Cong_Doan, ItemNumber: ItemNumber, LotNo: LotNo, So_Me: So_Me);
+            List<Catthoong_Row>? rows = null;
+            try
+            {
+                rows = await _repo.Get_Cat_Ong_Tho(IdCongDoan: ID_Cong_Doan, ItemNumber: ItemNumber, LotNo: LotNo, So_Me: So_Me, ct: cts.Token);
+            }
+            catch (OperationCanceledException)
+            {
+                // Hủy quá trình tải dữ liệu
+                MessageBox.Show("Quá trình tải dữ liệu đã bị hủy.");
+                return;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.Message, "Lỗi tải dữ liệu", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
             // Lấy danh sách id_input từ list thu được
             var List_IdInput = rows.Select(x => x.idInput).Distinct().ToArray();
 
             // Lấy chi tiết lỗi
-            List<Input_Error_Model> detail_error = await input_error_repo.Get_Detail_Error(idInputs: List_IdInput);
+            List<Input_Error_Model>? detail_error = null;
+            try
+            {
+                detail_error = await input_error_repo.Get_Detail_Error(idInputs: List_IdInput, ct: cts.Token);
+            }
+            catch (OperationCanceledException)
+            {
+                // Hủy quá trình tải dữ liệu
+                MessageBox.Show("Quá trình tải dữ liệu đã bị hủy.");
+                return;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.Message, "Lỗi tải dữ liệu", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
             var pivot = BuildPivotMap(detail_error); // idInput -> (tenLoi->qty)
 
@@ -313,12 +266,29 @@ namespace Winforms_App_Template.Forms
             }
 
             // Lấy dữ liệu cho bảng tiêu chuẩn
-            List<Standard_Model> List_Standard_Report = await standard_repo.Get_Detail_Standard(idInputs: List_IdInput);
+            List<Standard_Model>? List_Standard_Report = null;
+            try
+            {
+                List_Standard_Report = await standard_repo.Get_Detail_Standard(idInputs: List_IdInput);
+            }
+            catch (OperationCanceledException)
+            {
+                // Hủy quá trình tải dữ liệu
+                MessageBox.Show("Quá trình tải dữ liệu đã bị hủy.");
+                return;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.Message, "Lỗi tải dữ liệu", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             // Nhóm tiêu chuẩn theo idInput để tra nhanh
             var stdByInput = List_Standard_Report
                 .GroupBy(s => s.idInput)
                 .ToDictionary(g => g.Key, g => g.ToList());
 
+            // Gán tiêu chuẩn vào từng dòng của datasource, nếu sử dụng thì cần khai báo Datamember vì nó là List <T> trong 1 List<T> khác
             foreach (var m in result)
             {
                 if (stdByInput.TryGetValue(m.idInput, out var list))
@@ -326,11 +296,46 @@ namespace Winforms_App_Template.Forms
                 else
                     m.Standards = new List<Standard_Model>();
             }
+            // Ẩn loading và mở khóa các nút
+            ToggleUiLoading(false);
+            _cts?.Dispose();
+            _cts = null;
 
+            // Tạo mẫu báo cáo mới
             var rpt = new Testreport();
+            // Cấu hình Dữ liệu cho báo cáo
             rpt.ConfigureLayoutForCatongtho(result, List_Standard_Report, header, /*notePrintOnlyOnce*/ false);
-
+            // Hiển thị giao diện báo cáo
             new ReportPrintTool(rpt).ShowRibbonPreviewDialog();
+        }
+
+        /// <summary>
+        /// Hủy truy vấn dữ liệu nếu đang chạy và hủy xuất báo cáo
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Cancel_Export_Document_Click(object sender, EventArgs e)
+        {
+            // Hủy truy vấn dữ liệu nếu đang chạy
+            if (_cts != null && !_cts.IsCancellationRequested)
+            {
+                _cts.Cancel();
+            }
+
+            // Hủy xuất báo cáo
+            MessageBox.Show("Đã hủy xuất báo cáo.");
+
+        }
+
+        /// <summary>
+        /// Ẩn hiện biểu tượng loading và khóa nút bấm tương ứng
+        /// </summary>
+        /// <param name="loading"></param>
+        private void ToggleUiLoading(bool loading)
+        {
+            Export_Document_Button.Enabled = !loading;
+            Cancel_Export_Document.Enabled = loading;
+            UseWaitCursor = loading;
         }
     }
 }

@@ -31,6 +31,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.TopMargin = new DevExpress.XtraReports.UI.TopMarginBand();
             this.BottomMargin = new DevExpress.XtraReports.UI.BottomMarginBand();
             this.Detail = new DevExpress.XtraReports.UI.DetailBand();
+            this.xrLabel1 = new DevExpress.XtraReports.UI.XRLabel();
             this.Check_Table = new DevExpress.XtraReports.UI.XRTable();
             this.xrTableRow17 = new DevExpress.XtraReports.UI.XRTableRow();
             this.xrTableCell126 = new DevExpress.XtraReports.UI.XRTableCell();
@@ -65,14 +66,26 @@ namespace Winforms_App_Template.Forms.SubReport
             // Detail
             // 
             this.Detail.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+            this.xrLabel1,
             this.Check_Table});
             this.Detail.HeightF = 25.7219F;
             this.Detail.Name = "Detail";
             // 
+            // xrLabel1
+            // 
+            this.xrLabel1.LocationFloat = new DevExpress.Utils.PointFloat(484.6065F, 0F);
+            this.xrLabel1.Multiline = true;
+            this.xrLabel1.Name = "xrLabel1";
+            this.xrLabel1.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
+            this.xrLabel1.SizeF = new System.Drawing.SizeF(168.75F, 23F);
+            this.xrLabel1.StylePriority.UseTextAlignment = false;
+            this.xrLabel1.Text = "Bỏ border phía trên của từng hàng\r\nVì nó sẽ bị ghi đè lên nhau và đậm hơn";
+            this.xrLabel1.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            this.xrLabel1.Visible = false;
+            // 
             // Check_Table
             // 
-            this.Check_Table.Borders = ((DevExpress.XtraPrinting.BorderSide)((((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Top) 
-            | DevExpress.XtraPrinting.BorderSide.Right) 
+            this.Check_Table.Borders = ((DevExpress.XtraPrinting.BorderSide)(((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Right) 
             | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.Check_Table.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
             this.Check_Table.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
@@ -227,7 +240,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.Detail,
             this.ReportHeader});
             this.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
-            this.Margins = new DevExpress.Drawing.DXMargins(0F, 10F, 0F, 0F);
+            this.Margins = new DevExpress.Drawing.DXMargins(10F, 10F, 0F, 0F);
             this.PageHeightF = 1653.543F;
             this.PageWidthF = 1169.291F;
             this.PaperKind = DevExpress.Drawing.Printing.DXPaperKind.A3;
@@ -260,5 +273,6 @@ namespace Winforms_App_Template.Forms.SubReport
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell4;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell5;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell6;
+        private DevExpress.XtraReports.UI.XRLabel xrLabel1;
     }
 }
