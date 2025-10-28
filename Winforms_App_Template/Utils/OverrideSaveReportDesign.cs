@@ -2,19 +2,18 @@
 using DevExpress.XtraReports.UserDesigner;
 using DevExpress.XtraReports.UI;
 using System.IO;
+using DevExpress.XtraEditors;
 
 // Handler cho lệnh Save trong End-User Designer (Save, Save As, Save All)
 sealed class SaveCommandHandler : ICommandHandler
 {
-    private readonly XRDesignPanel _panel;          // Panel hiện đang edit report
-    private readonly ReportLayoutStore _store;      // Helper lưu/đọc DB (class của bạn)
-    private readonly string _reportName;            // Key logic dùng đặt tên cache AppData
+    private readonly XRDesignPanel _panel;          // panel hiện tại (có thể là report chính hoặc subreport)
+    private readonly ReportLayoutStore _store;      // store được khởi tạo THEO KEY của panel hiện tại
+    private readonly string _reportKey;             // key hiển thị/lưu (DisplayName hoặc Type.Name)
 
-    public SaveCommandHandler(XRDesignPanel panel, ReportLayoutStore store, string reportName)
+    public SaveCommandHandler(XRDesignPanel panel, ReportLayoutStore store, string reportKey)
     {
-        _panel = panel;
-        _store = store;
-        _reportName = reportName;
+        _panel = panel; _store = store; _reportKey = reportKey;
     }
 
     // Nói cho Designer biết handler này sẽ xử lý các lệnh nào
@@ -35,16 +34,28 @@ sealed class SaveCommandHandler : ICommandHandler
     // Thực thi lệnh Save: lưu AppData + lưu DB, không hiện hộp thoại
     public void HandleCommand(ReportCommand command, object[] args)
     {
-        // 1) Lưu LOCAL (AppData) để máy này chạy offline/lần sau vẫn có layout mới
-        var localPath = GetLocalLayoutPath(_reportName);
-        _panel.Report.SaveLayoutToXml(localPath);  // Hàm lưu vào local của DevXpress
+        try
+        {
+            // 1) Lưu LOCAL (AppData) để máy này chạy offline/lần sau vẫn có layout mới
+            var localPath = GetLocalLayoutPath(_reportKey);
+            _panel.Report.SaveLayoutToXml(localPath);  // Hàm lưu vào local của DevXpress
 
-        // 2) Lưu DB (tập trung) để các máy khác nạp được giao diện mới
-        // ICommandHandler là sync → gọi helper async theo kiểu đồng bộ
-        _store.SaveAsync(_panel.Report).GetAwaiter().GetResult();
+            // 2) Lưu DB (tập trung) để các máy khác nạp được giao diện mới
+            // ICommandHandler là sync → gọi helper async theo kiểu đồng bộ
+            var newVersion = Task.Run(async () =>
+                    await _store.SaveAsync(_panel.Report).ConfigureAwait(false)
+                ).GetAwaiter().GetResult();
 
-        // 3) Báo “đã lưu” để Designer tắt dấu *
-        _panel.ReportState = ReportState.Saved;
+            // 3) Báo “đã lưu” để Designer tắt dấu *
+            _panel.ReportState = ReportState.Saved;
+
+            // (tuỳ chọn) thông báo
+            XtraMessageBox.Show($"Đã lưu '{_reportKey}' v{newVersion}");
+        }
+        catch (Exception ex)
+        {
+            XtraMessageBox.Show($"Lỗi khi lưu '{_reportKey}': {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
     }
 
     // Đường dẫn cache: %LOCALAPPDATA%\{AppName}\Reports\{reportName}.repx

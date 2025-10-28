@@ -71,12 +71,16 @@ public sealed class ReportLayoutStore
         return sha.ComputeHash(data);
     }
 
-    /// <summary>
-    /// Lưu layout của report vào DB, trả về Version mới.
-    /// </summary>
-    /// <param name="report"></param>
-    /// <returns></returns>
-    public async Task<int> SaveAsync(XtraReport report, CancellationToken ct = default)
+    // Ưu tiên DisplayName (bạn có thể set thủ công để stable), fallback GetType().Name
+    public static string GetKey(XtraReport rpt)
+        => string.IsNullOrWhiteSpace(rpt.DisplayName) ? rpt.GetType().Name : rpt.DisplayName;
+
+/// <summary>
+/// Lưu layout của report vào DB, trả về Version mới.
+/// </summary>
+/// <param name="report"></param>
+/// <returns></returns>
+public async Task<int> SaveAsync(XtraReport report, CancellationToken ct = default)
     {
         // Ghi XML của layout vào MemoryStream (ms)
         byte[] xml;
@@ -93,7 +97,7 @@ public sealed class ReportLayoutStore
         // Gọi Store Procedure lưu vào DB
         var repo = new ReportLayoutVersions_Table(new DbExecutor());
         int newVersion = await repo.AddVersionAsync(
-            reportName: "Testreport",
+            reportName: _reportName,
             updatedBy: Environment.UserName,
             contentGz: gz,
             sha256: hash,
@@ -111,7 +115,7 @@ public sealed class ReportLayoutStore
     {
         //Truy vấn phiên bản mới nhất từ DB
         var repo = new ReportLayoutVersions_Table(new DbExecutor());
-        var row = await repo.GetLatestAsync(reportName: "Testreport", ct: ct).ConfigureAwait(false);
+        var row = await repo.GetLatestAsync(reportName: _reportName, ct: ct).ConfigureAwait(false);
         if (row == null)
             return false;
 

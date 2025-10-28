@@ -231,4 +231,25 @@ public static class ReportLayoutHelpers
         //     cols[i].valueCell.TextAlignment  = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
         // }
     }
+
+    // Duyệt tất cả XRSubreport trong một report
+    public static IEnumerable<XRSubreport> EnumerateSubreports(XtraReport rpt)
+    {
+        foreach (Band b in rpt.Bands)
+        {
+            foreach (XRControl c in EnumerateControls(b))
+                if (c is XRSubreport sr) yield return sr;
+        }
+
+        static IEnumerable<XRControl> EnumerateControls(XRControl parent)
+        {
+            foreach (XRControl c in parent.Controls)
+            {
+                yield return c;
+                foreach (var child in EnumerateControls(c))
+                    yield return child;
+            }
+        }
+    }
+
 }

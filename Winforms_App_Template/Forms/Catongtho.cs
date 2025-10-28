@@ -1,3 +1,4 @@
+using DevExpress.DataAccess.ObjectBinding;
 using DevExpress.LookAndFeel;                        // UserLookAndFeel cho form Designer
 using DevExpress.XtraReports.UI;                    // XtraReport, ReportDesignTool
 using DevExpress.XtraReports.UserDesigner;          // XRDesignMdiController, XRDesignPanel, ReportState
@@ -322,59 +323,96 @@ namespace Winforms_App_Template.Forms
 
         private async void simpleButton1_Click(object sender, EventArgs e)
         {
-            var reportName = "Testreport";                  // Tên logic của report (dùng làm key trong DB)
-            var rpt = new Testreport();                     // Instance report ban đầu (layout mặc định/embedded khi không thể lấy bản mới nhất từ máy chủ)
-
-            // Khai báo class chịu trách nhiệm quản lý việc tải form mới, lưu form vào DB
-
-            string connString = DbConfig.GetConnectionString(); // Chuỗi kết nối đến DB của bạn
-            var store = new ReportLayoutStore(
-                connString: connString,
-                reportName: reportName,
-                updatedBy: Environment.UserName             // Audit: ai là người “Save”
-            );
-
-            // Trước khi mở Designer – thử nạp layout mới nhất từ DB 
-            await store.TryLoadAsync(rpt);                  // Nếu có trong DB → LoadLayoutFromXml; nếu không → giữ layout mặc định
-
-            // Tạo ReportDesignTool để mở End-User Designer
-            var tool = new ReportDesignTool(rpt);           // tool chứa form Designer (Ribbon) và controller MDI
-
-            // Lấy IDesignForm & MDI Controller (mọi event/active panel nằm trên controller)
-            var form = tool.DesignRibbonForm;               // IDesignForm (XRDesignRibbonForm implements IDesignForm) chính là cửa sổ Designer (bản Ribbon).
-            var controller = form.DesignMdiController;      // XRDesignMdiController: trung tâm điều phối các "DesignPanel" (tab) trong Designer
-
-            //XRDesignPanel? openedPanel = null;                     // Giữ tham chiếu panel đã mở (để auto-save sau)
-
-            // Khi một DesignPanel MỚI được tạo (Designer mở report)
-            // KHI PANEL ĐƯỢC TẠO XONG → GẮN HANDLER LÊN CHÍNH PANEL ẤY
-            controller.DesignPanelLoaded += (s, args) =>
+            try
             {
-                // Theo tài liệu: 'sender' chính là XRDesignPanel
-                var panel = (XRDesignPanel)s;          
-                panel.FileName = $"{reportName} (DB + Local)";
+                var rpt = new Testreport();                     // Instance report ban đầu (layout mặc định/embedded khi không thể lấy bản mới nhất từ máy chủ)
+                rpt.DisplayName = "Catongtho_Main";             // key ổn định cho report chính
 
-                // Gắn handler chặn Save/Save As/Save All → LƯU AppData + DB, KHÔNG mở SaveDialog
-                panel.AddCommandHandler(new SaveCommandHandler(panel, store, reportName));
-            };
+                // Khai báo class chịu trách nhiệm quản lý việc tải form mới, lưu form vào DB
+                var connString = DbConfig.GetConnectionString();  // Chuỗi kết nối đến DB
+                var updatedBy = Environment.UserName;
 
-            // Mở Designer dạng MODAL: block cho đến khi người dùng đóng
-            tool.ShowRibbonDesignerDialog(UserLookAndFeel.Default);       // Khác với ShowRibbonDesigner(): modal giúp “đóng → rồi save”
+                var reportName = ReportLayoutStore.GetKey(rpt);   // Lấy key ổn định cho report (dùng DisplayName nếu có, không thì lấy tên class)
+                var store = new ReportLayoutStore(
+                    connString: connString,
+                    reportName: reportName,
+                    updatedBy: updatedBy             // Audit: ai là người “Save”
+                );
 
-            // Sau khi Designer đóng: nếu còn thay đổi mà user QUÊN bấm Save → auto-save (Chọn ko save cũng là yes luôn)
-            var activePanel = controller.ActiveDesignPanel; // Lấy panel đang/đã active qua MDI controller (không cần cast form) 
-            if (activePanel != null && activePanel.ReportState == ReportState.Changed) // KHÔNG dùng Modified; đúng là Changed
-            {
-                // a) Local
-                var localPath = Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                    Application.ProductName, "Reports", $"{reportName}.repx");
-                            Directory.CreateDirectory(Path.GetDirectoryName(localPath)!);
-                rpt.SaveLayoutToXml(localPath);
+                // Trước khi mở Designer – thử nạp layout mới nhất từ DB 
+                await store.TryLoadAsync(rpt);                  // Nếu có trong DB → LoadLayoutFromXml; nếu không → giữ layout mặc định
 
-                // b) DB
-                await store.SaveAsync(activePanel.Report);  // Lưu vào DB để lần sau mọi máy cùng nhận bản mới
+                // Nạp layout DB cho từng Subreport con trước khi mở Designer
+                foreach (var sub in ReportLayoutHelpers.EnumerateSubreports(rpt))
+                {
+                    var child = sub.ReportSource as XtraReport;
+                    if (child == null) continue;
+
+                    // Nếu chưa set, đặt DisplayName mặc định = tên class
+                    if (string.IsNullOrWhiteSpace(child.DisplayName))
+                        child.DisplayName = child.GetType().Name;
+
+                    await new ReportLayoutStore(connString, ReportLayoutStore.GetKey(child), updatedBy)
+                        .TryLoadAsync(child);
+                }
+
+                // Tạo ReportDesignTool để mở End-User Designer
+                var tool = new ReportDesignTool(rpt);           // tool chứa form Designer (Ribbon) và controller MDI
+
+                // Lấy IDesignForm & MDI Controller (mọi event/active panel nằm trên controller)
+                var form = tool.DesignRibbonForm;               // IDesignForm (XRDesignRibbonForm implements IDesignForm) chính là cửa sổ Designer (bản Ribbon).
+                var controller = form.DesignMdiController;      // XRDesignMdiController: trung tâm điều phối các "DesignPanel" (tab) trong Designer
+
+                //XRDesignPanel? openedPanel = null;                     // Giữ tham chiếu panel đã mở (để auto-save sau)
+
+                // Khi một DesignPanel MỚI được tạo (Designer mở report)
+                // KHI PANEL ĐƯỢC TẠO XONG → GẮN HANDLER LÊN CHÍNH PANEL ẤY
+                controller.DesignPanelLoaded += (sender, e) =>
+                {
+                    // LẤY PANEL ĐÚNG CÁCH
+                    var panel = (XRDesignPanel)sender;
+                    if (panel == null) return;
+
+                    // Đặt nhãn hiển thị
+                    var currentKey = ReportLayoutStore.GetKey(panel.Report);
+                    panel.FileName = $"{currentKey} (DB + Local)";
+
+                    // Tránh gắn trùng nhiều lần (đánh dấu bằng Tag)
+                    if (panel.Tag as string == "SaveHandlerWired") return;
+
+                    var storeForThisPanel = new ReportLayoutStore(connString, currentKey, updatedBy);
+                    panel.AddCommandHandler(new SaveCommandHandler(panel, storeForThisPanel, currentKey));
+
+                    panel.Tag = "SaveHandlerWired"; // đánh dấu đã wire
+                };
+
+                ReportDesignSchemaHelper.AttachDesignSchema(rpt);  // <— Gọi 1 dòng trước khi mở Designer
+
+                // Mở Designer dạng MODAL: block cho đến khi người dùng đóng
+                tool.ShowRibbonDesignerDialog(UserLookAndFeel.Default);       // Khác với ShowRibbonDesigner(): modal giúp “đóng → rồi save”
+
+                // Sau khi Designer đóng: nếu còn thay đổi mà user QUÊN bấm Save → auto-save (Chọn ko save cũng là yes luôn)
+                var activePanel = controller.ActiveDesignPanel; // Lấy panel đang/đã active qua MDI controller (không cần cast form) 
+                if (activePanel != null && activePanel.ReportState == ReportState.Changed) // KHÔNG dùng Modified; đúng là Changed
+                {
+                    // a) Local
+                    var localPath = Path.Combine(
+                        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                        Application.ProductName, "Reports", $"{reportName}.repx");
+                    Directory.CreateDirectory(Path.GetDirectoryName(localPath)!);
+                    rpt.SaveLayoutToXml(localPath);
+
+                    // b) DB
+                    await store.SaveAsync(activePanel.Report);  // Lưu vào DB để lần sau mọi máy cùng nhận bản mới
+                }
             }
+            catch (Exception ex)
+            {
+                // BẮT MỌI LỖI ĐỂ KHÔNG VĂNG APP
+                MessageBox.Show(this, ex.Message, "Lỗi mở Designer/Nạp layout",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
 
             //ReportDesignTool designTool = new ReportDesignTool(new Testreport());
 
