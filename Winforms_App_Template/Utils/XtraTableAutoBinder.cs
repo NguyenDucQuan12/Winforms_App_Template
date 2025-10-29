@@ -378,6 +378,11 @@ namespace Winforms_App_Template.Utils
         {
             // Lấy tên bảng
             string tn = tableName ?? table?.Name ?? "(unknown table)";
+            if (table == null)
+            {
+                Console.WriteLine("Không có binding trong bảng");
+                return;
+            }
             // Duyệt qua từng hàng trong bảng, từng cell trong 1 hàng
             foreach (XRTableRow r in table.Rows)
             {

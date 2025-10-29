@@ -3,6 +3,7 @@ using DevExpress.LookAndFeel;                        // UserLookAndFeel cho form
 using DevExpress.XtraReports.UI;                    // XtraReport, ReportDesignTool
 using DevExpress.XtraReports.UserDesigner;          // XRDesignMdiController, XRDesignPanel, ReportState
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;                       // Task/async
 using Winforms_App_Template.Database;
 using Winforms_App_Template.Database.Model;
@@ -101,10 +102,10 @@ namespace Winforms_App_Template.Forms
             _cts = cts;
 
             // Validation dữ liệu
-            if (LotNo == string.Empty || ItemNumber == string.Empty)
+            if (string.IsNullOrWhiteSpace(ItemNumber) || string.IsNullOrWhiteSpace(LotNo))
             {
-                MessageBox.Show("Item Number hoặc số lô không hợp lệ!");
-                return;
+                MessageBox.Show("Item Number hoặc Số lô không hợp lệ!");
+                return; // dừng sớm
             }
 
             if (!int.TryParse(ID_Cong_Doan_String, out ID_Cong_Doan) || ID_Cong_Doan_String == string.Empty || !int.TryParse(So_Me_String, out So_Me) || So_Me_String == string.Empty)
@@ -216,7 +217,6 @@ namespace Winforms_App_Template.Forms
 
                 var r = new Catthoong_ReportRow
                 {
-                    // copy main
                     idInput = m.idInput,
                     MaKT = m.MaKT,
                     TenMay_Ban = m.TenMay_Ban,
@@ -242,7 +242,7 @@ namespace Winforms_App_Template.Forms
 
                     Remark = m.Remark
                 };
-                // Gán 6 cột lỗi ngang theo map (KHÔNG dùng qtySum cho tất cả)
+                // Gán 6 cột lỗi ngang theo map
                 SetKnownErrorColumns(r, errsDict);
 
                 result.Add(r);
@@ -286,10 +286,129 @@ namespace Winforms_App_Template.Forms
 
             // Tạo mẫu báo cáo mới
             var rpt = new Testreport();
+            rpt.DisplayName = "Catongtho_Main";          // key ổn định (đừng thay đổi)
+
+            // Truy vấn Layout mới nhất từ DB
+            var updatedBy = Environment.UserName;
+            var reportKey = ReportLayoutStore.GetKey(rpt);
+            var store = new ReportLayoutStore(reportKey, updatedBy);
+
+            // Load layout mới nhất
+            await store.TryLoadAsync(rpt);
+
+            // ==== CHUẨN HOÁ EXPRESSION + KIỂM TRA FIELD ( Khi người dùng thêm expression trong design) ====
+
+            // Loại bỏ prefix [Main]. (nếu người thiết kế vô tình để DataMember="Main" lúc design)
+            NormalizeFieldPrefixes(rpt, "[Main].");                // report chính
+            foreach (var sub in ReportLayoutHelpers.EnumerateSubreports(rpt))          // subreport trong report chính
+            {
+                if (sub.ReportSource is XtraReport child)
+                    NormalizeFieldPrefixes(child, "[Standards]."); // phòng khi sub có DataMember="Standards" lúc design
+            }
+
+            // Kiểm tra các field name xuất hiện trong ExpressionBindings có khớp model runtime không
+            var sb = new StringBuilder(); // Chứa các fieldname ko phù hợp
+
+            // Kiểm tra đối với report chính
+            var invalidMain = ReportLayoutHelpers.CollectInvalidFields(rpt, typeof(Catthoong_ReportRow));          // field dùng ở main
+
+            if (invalidMain.Count > 0)
+            {
+                sb.AppendLine("Các field KHÔNG tồn tại trong Catthoong_ReportRow:");
+                foreach (var f in invalidMain)
+                    sb.Append(" - ").AppendLine(f);
+            }
+            // Kiểm tra các Subreport có thể có trong report chính
+            var invalidSub = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            // Duyệt tất cả các subreport và kiểm tra
+            foreach (var sub in ReportLayoutHelpers.EnumerateSubreports(rpt))
+            {
+                if (sub.ReportSource is XtraReport child)
+                    foreach (var f in ReportLayoutHelpers.CollectInvalidFields(child, typeof(Standard_Model)))
+                        invalidSub.Add(f);
+            }
+
+            if (invalidSub.Count > 0)
+            {
+                sb.AppendLine("Các field KHÔNG tồn tại trong Standard_Model:");
+                foreach (var f in invalidSub)
+                    sb.Append(" - ").AppendLine(f);
+            }
+
+            // Nếu có field “lạ” → cảnh báo (Cảnh báo xong vẫn mở preview để sửa)
+            if (sb.Length > 0)
+            {
+                MessageBox.Show(this, sb.ToString(),
+                    "Cảnh báo field không khớp model",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            // ==== END CHUẨN HOÁ + KIỂM TRA FIELD ====
+
+            // ==== ĐỔ THAM SỐ HEADER VÀO REPORT (NẾU TRÙNG TÊN bINDING TRONG DESIGN VÀ MODEL) ====
+
+            // Tự động gán Parameter.Value nếu tên Parameter trùng với property của headerData (HeaderData dùng parameter)
+            ReportLayoutHelpers.ApplyParametersFromObject(rpt, header);
+
+            // ==== BIND RUNTIME DATASOURCE + SUBREPORT MAPPING ====
+
+            ReportLayoutHelpers.BindForRuntime(rpt, result, stdByInput, idFieldName: "idInput"); // gán List<Catthoong_ReportRow> + map subreport theo idInput
+            ReportLayoutHelpers.PushHeaderValues(rpt, header);
             // Cấu hình Dữ liệu cho báo cáo
-            rpt.ConfigureLayoutForCatongtho(result, List_Standard_Report, header, /*notePrintOnlyOnce*/ false);
+            //rpt.ConfigureLayoutForCatongtho(result, List_Standard_Report, header, /*notePrintOnlyOnce*/ false);
             // Hiển thị giao diện báo cáo
             new ReportPrintTool(rpt).ShowRibbonPreviewDialog();
+        }
+
+        /// <summary>
+        /// Loại bỏ prefix trong Expression kiểu "[Main].Field" → "Field".
+        /// Duyệt toàn bộ controls và mọi ExpressionBindings.
+        /// </summary>
+        private static void NormalizeFieldPrefixes(XtraReport rpt, string prefixToRemove)
+        {
+            // Kiểm tra đầu vào
+            if (rpt == null)
+                throw new ArgumentNullException(nameof(rpt), "Report không được null.");
+
+            if (string.IsNullOrWhiteSpace(prefixToRemove))
+                return;
+
+            // Loại bỏ dấu "." ở cuối prefix nếu có (để tránh Replace thừa)
+            prefixToRemove = prefixToRemove.Trim();
+            if (prefixToRemove.EndsWith("."))
+                prefixToRemove = prefixToRemove[..^1];
+
+            // Duyệt tất cả các band trong 1 report
+            foreach (Band band in rpt.Bands)
+            {
+                // Nếu band đấy không có control nào thì bảo qua, xử lý các band tiếp theo
+                if (band?.Controls == null || band.Controls.Count == 0)
+                    continue;
+
+                // Tiếp tục duyệt từng control trong 1 band
+                foreach (XRControl control in ReportLayoutHelpers.EnumerateControls(band.Controls))
+                {
+                    // Nếu ko có control hoặc control đấy đang không binding thì không cần loai tiền tố
+                    if (control == null || control.ExpressionBindings == null)
+                        continue;
+
+                    // Duyệt tất cả các binding của cotrol này (1 control có thể có nhiều binding)
+                    foreach (var binding in control.ExpressionBindings)
+                    {
+                        if (string.IsNullOrWhiteSpace(binding.Expression))
+                            continue;
+
+                        // So sánh không phân biệt hoa thường & có thể tránh Replace lỗi
+                        if (binding.Expression.Contains(prefixToRemove + ".", StringComparison.Ordinal))
+                        {
+                            binding.Expression = binding.Expression.Replace(
+                                prefixToRemove + ".",
+                                "",
+                                StringComparison.Ordinal
+                            );
+                        }
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -329,12 +448,10 @@ namespace Winforms_App_Template.Forms
                 rpt.DisplayName = "Catongtho_Main";             // key ổn định cho report chính
 
                 // Khai báo class chịu trách nhiệm quản lý việc tải form mới, lưu form vào DB
-                var connString = DbConfig.GetConnectionString();  // Chuỗi kết nối đến DB
                 var updatedBy = Environment.UserName;
 
                 var reportName = ReportLayoutStore.GetKey(rpt);   // Lấy key ổn định cho report (dùng DisplayName nếu có, không thì lấy tên class)
                 var store = new ReportLayoutStore(
-                    connString: connString,
                     reportName: reportName,
                     updatedBy: updatedBy             // Audit: ai là người “Save”
                 );
@@ -352,7 +469,7 @@ namespace Winforms_App_Template.Forms
                     if (string.IsNullOrWhiteSpace(child.DisplayName))
                         child.DisplayName = child.GetType().Name;
 
-                    await new ReportLayoutStore(connString, ReportLayoutStore.GetKey(child), updatedBy)
+                    await new ReportLayoutStore( ReportLayoutStore.GetKey(child), updatedBy)
                         .TryLoadAsync(child);
                 }
 
@@ -380,14 +497,15 @@ namespace Winforms_App_Template.Forms
                     // Tránh gắn trùng nhiều lần (đánh dấu bằng Tag)
                     if (panel.Tag as string == "SaveHandlerWired") return;
 
-                    var storeForThisPanel = new ReportLayoutStore(connString, currentKey, updatedBy);
+                    var storeForThisPanel = new ReportLayoutStore(currentKey, updatedBy);
                     panel.AddCommandHandler(new SaveCommandHandler(panel, storeForThisPanel, currentKey));
 
                     panel.Tag = "SaveHandlerWired"; // đánh dấu đã wire
                 };
 
-                ReportDesignSchemaHelper.AttachDesignSchema(rpt);  // <— Gọi 1 dòng trước khi mở Designer
-
+                // Gán các FieldName vào Design để có thể chọn các thuộc tính Expression
+                //ReportDesignSchemaHelper.AttachDesignSchema(rpt);  // <— Gọi 1 dòng trước khi mở Designer
+                ReportDesignSchemaHelper.AttachDesignSchema(rpt, attachHeaderParameters: true, headerModelType: typeof(Catongtho_HeaderModel));
                 // Mở Designer dạng MODAL: block cho đến khi người dùng đóng
                 tool.ShowRibbonDesignerDialog(UserLookAndFeel.Default);       // Khác với ShowRibbonDesigner(): modal giúp “đóng → rồi save”
 
@@ -395,10 +513,13 @@ namespace Winforms_App_Template.Forms
                 var activePanel = controller.ActiveDesignPanel; // Lấy panel đang/đã active qua MDI controller (không cần cast form) 
                 if (activePanel != null && activePanel.ReportState == ReportState.Changed) // KHÔNG dùng Modified; đúng là Changed
                 {
+                    string? Program_Name = Application.ProductName;
+                    if (Program_Name == string.Empty || Program_Name == null) Program_Name = "Default";
+
                     // a) Local
                     var localPath = Path.Combine(
                         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                        Application.ProductName, "Reports", $"{reportName}.repx");
+                        Program_Name, "Reports", $"{reportName}.repx");
                     Directory.CreateDirectory(Path.GetDirectoryName(localPath)!);
                     rpt.SaveLayoutToXml(localPath);
 

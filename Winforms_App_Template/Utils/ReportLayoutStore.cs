@@ -1,49 +1,36 @@
-// Utils/ReportLayoutStore.cs
-using Dapper;
-using DevExpress.CodeParser;
-using DevExpress.DataProcessing.InMemoryDataProcessor;
 using DevExpress.XtraReports.UI;
-using DevExpress.XtraReports.Wizards;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
 using System.IO;
 using System.IO.Compression;
-using System.Runtime.Intrinsics.Arm;
 using System.Security.Cryptography;
-using System.Threading.Tasks;
 using Winforms_App_Template.Database;
 using Winforms_App_Template.Database.Table;
-using static DevExpress.XtraBars.Docking2010.Views.BaseRegistrator;
+using Winforms_App_Template.Utils;
 
 public sealed class ReportLayoutStore
 {
-    private readonly string _connString;
-    private readonly string _reportName;       // ví dụ: "Testreport"
+    private readonly string _reportName;       // Tên report cần thao tác
     private readonly string _updatedBy;        // user hiện tại (để audit)
 
-    public ReportLayoutStore(string connString, string reportName, string updatedBy)
+    public ReportLayoutStore(string reportName, string updatedBy)
     {
-        _connString = connString;
         _reportName = reportName;
         _updatedBy = updatedBy;
     }
 
     /// <summary>
-    /// Nén byte[] bằng GZip
+    /// Nén dữ liệu bằng GZip trong bộ nhớ RAM
     /// </summary>
-    /// <param name="raw"></param>
+    /// <param name="raw">Tệp tin report của DevExpress</param>
     /// <returns></returns>
     private static byte[] Gzip(byte[] raw)
     {
-        // Nén dữ liệu
+        // Khởi tạo lớp cho phép lưu trữ dữ liệu dạng nhị phân ngay trong bộ nhớ RAM
         using var msOut = new MemoryStream();
-        // Khởi tạo GZipStream
+        // Khởi tạo GZipStream, dữ liệu sẽ được nén vào msOut
         using (var gz = new GZipStream(msOut, CompressionLevel.Optimal, leaveOpen: true))
-            gz.Write(raw, 0, raw.Length); // Ghi dữ liệu vào GZipStream
+            gz.Write(raw, 0, raw.Length); // Ghi toàn bộ dữ liệu vào gz và GZipStream sẽ nén dữ liệu rồi ghi vào msOut
 
-        return msOut.ToArray(); // Trả về mảng byte đã nén
+        return msOut.ToArray(); // Chuyển toàn bộ dữ liệu đã nén trong msOut thành mảng byte, rồi trả về.
     }
 
     /// <summary>
@@ -54,8 +41,11 @@ public sealed class ReportLayoutStore
     private static byte[] Gunzip(byte[] gzBytes)
     {
         using var msIn = new MemoryStream(gzBytes);
+        // Tạo 1 GZipStream để đọc và giải nén dữ liệu từ msIn
         using var gz = new GZipStream(msIn, CompressionMode.Decompress);
+        // Tạo MemoryStream để chứa dữ liệu sau khi giải nén.(Lưu trên RAM)
         using var msOut = new MemoryStream();
+        // Dữ liệu giải nén được copy vào msOut
         gz.CopyTo(msOut);
         return msOut.ToArray();
     }
@@ -67,43 +57,114 @@ public sealed class ReportLayoutStore
     /// <returns></returns>
     private static byte[] Sha256Of(byte[] data)
     {
+        // Kiểm tra đầu vào
+        if (data == null || data.Length == 0)
+            return Array.Empty<byte>();
+        
+        // Tính toán sha và trả về
         using var sha = SHA256.Create();
         return sha.ComputeHash(data);
     }
 
-    // Ưu tiên DisplayName (bạn có thể set thủ công để stable), fallback GetType().Name
+    // <summary>
+    /// Lấy "key" duy nhất cho report, ưu tiên DisplayName (nếu được set), fallback sang tên lớp report (GetType().Name).
+    /// Đảm bảo không trả về null hoặc chuỗi rỗng.
+    /// </summary>
     public static string GetKey(XtraReport rpt)
-        => string.IsNullOrWhiteSpace(rpt.DisplayName) ? rpt.GetType().Name : rpt.DisplayName;
-
-/// <summary>
-/// Lưu layout của report vào DB, trả về Version mới.
-/// </summary>
-/// <param name="report"></param>
-/// <returns></returns>
-public async Task<int> SaveAsync(XtraReport report, CancellationToken ct = default)
     {
+        if (rpt == null)
+            throw new ArgumentNullException(nameof(rpt), "Report không được null.");
+
+        // Ưu tiên DisplayName nếu hợp lệ
+        var name = rpt.DisplayName;
+        if (!string.IsNullOrWhiteSpace(name))
+            return name.Trim();
+
+        // Fallback sang tên kiểu (class name)
+        var typeName = rpt.GetType().Name;
+        if (!string.IsNullOrWhiteSpace(typeName))
+            return typeName.Trim();
+
+        // Trường hợp hiếm khi cả hai đều rỗng
+        return "UnnamedReport_" + Guid.NewGuid().ToString("N");
+    }
+
+    /// <summary>
+    /// Lưu layout của report vào DB, trả về Version mới.
+    /// </summary>
+    /// <param name="report"></param>
+    /// <returns></returns>
+    public async Task<int> SaveAsync(XtraReport report, CancellationToken ct = default)
+    {
+        // Kiểm tra đầu vào
+        if (report == null)
+            throw new ArgumentNullException(nameof(report), "Report không được null.");
+
+        if (string.IsNullOrWhiteSpace(_reportName))
+            throw new InvalidOperationException("Tên report (_reportName) chưa được thiết lập.");
+
         // Ghi XML của layout vào MemoryStream (ms)
         byte[] xml;
         using (var ms = new MemoryStream())
         {
-            report.SaveLayoutToXml(ms); // Nội dung tệp .repx nhưng đang nằm trong bộ nhớ RAM (mảng byte[] xml)
-            xml = ms.ToArray();
+            // Lưu tệp tin repx sang định dạng xml
+            try
+            {
+                report.SaveLayoutToXml(ms);
+                xml = ms.ToArray();
+
+                if (xml.Length == 0)
+                {
+                    LogEx.Error($"Tệp tin {_reportName} trống hoặc không hợp lệ để lưu dưới dạng xml");
+                    throw new InvalidDataException("Report layout trống hoặc không hợp lệ.");
+                }
+            }
+            catch (Exception ex)
+            {
+                LogEx.Error($"Không thể lưu tệp tin {_reportName} sang định dạng xml. Lỗi: {ex}");
+                throw new InvalidOperationException("Không thể xuất layout của report.", ex);
+            }
         }
 
-        // 2) Nén + checksum
-        byte[] gz = Gzip(xml);  // Nén xml thành gz để giảm kích thước trước khi lưu DB (tránh phình DB/băng thông).
-        byte[] hash = Sha256Of(xml);  // Tạo checksum SHA-256 trên XML gốc (không phải trên dữ liệu nén) để kiểm toàn vẹn
+        // Nén + checksum
+        byte[] gz;
+        byte[] hash;
+        try
+        {
+            gz = Gzip(xml);        // Nén xml thành byte để giảm kích thước trước khi lưu DB (tránh phình DB/băng thông).
+            hash = Sha256Of(xml);  // Tạo checksum SHA-256 trên XML gốc (không phải trên dữ liệu nén) để kiểm toàn vẹn sau này
+        }
+        catch (Exception ex)
+        {
+            LogEx.Error($"Không thể nén hoặc tạo checksum cho tệp tin {_reportName}. Lỗi: {ex}");
+            throw new InvalidOperationException("Không thể nén hoặc tạo checksum cho report.", ex);
+        }
 
         // Gọi Store Procedure lưu vào DB
-        var repo = new ReportLayoutVersions_Table(new DbExecutor());
-        int newVersion = await repo.AddVersionAsync(
-            reportName: _reportName,
-            updatedBy: Environment.UserName,
-            contentGz: gz,
-            sha256: hash,
-            ct: ct).ConfigureAwait(false);
+        try
+        {
+            var repo = new ReportLayoutVersions_Table(new DbExecutor());
 
-        return newVersion;
+            int newVersion = await repo.AddVersionAsync(
+                reportName: _reportName,
+                updatedBy: Environment.UserName ?? "UnknownUser",
+                contentGz: gz,
+                sha256: hash,
+                ct: ct
+            ).ConfigureAwait(false);
+
+            return newVersion;
+        }
+        catch (OperationCanceledException)
+        {
+            // Nếu người dùng hủy qua CancellationToken
+            throw;
+        }
+        catch (Exception ex)
+        {
+            LogEx.Error($"Lỗi khi lưu phiên bản report {_reportName} vào cơ sở dữ liệu. Lỗi: {ex}");
+            throw new InvalidOperationException("Lỗi khi lưu phiên bản report vào cơ sở dữ liệu.", ex);
+        }
     }
 
     /// <summary>
@@ -113,51 +174,61 @@ public async Task<int> SaveAsync(XtraReport report, CancellationToken ct = defau
     /// <returns></returns>
     public async Task<bool> TryLoadAsync(XtraReport report, int commandTimeoutSeconds = 30, CancellationToken ct = default)
     {
-        //Truy vấn phiên bản mới nhất từ DB
-        var repo = new ReportLayoutVersions_Table(new DbExecutor());
-        var row = await repo.GetLatestAsync(reportName: _reportName, ct: ct).ConfigureAwait(false);
-        if (row == null)
-            return false;
+        // Kiểm tra đầu vào
+        if (report == null)
+            throw new ArgumentNullException(nameof(report), "Report không được null.");
 
-        byte[] gz = row.ContentGz;  // GÓI DỮ LIỆU NÉN: GZip của XML .repx
-        byte[] xml = Gunzip(gz);    // GIẢI NÉN → bytes XML thuần của layout thành tệp .repx
-        byte[] sha = (byte[])row.Sha256;   // CHỮ KÝ/Checksum SHA-256 của XML (để kiểm toàn vẹn)
+        if (string.IsNullOrWhiteSpace(_reportName))
+            throw new InvalidOperationException("Tên report (_reportName) chưa được thiết lập.");
 
-        // Tự tính lại SHA256 của xml vừa giải nén, so sánh với sha trong DB (chống hỏng/tamper)
-        if (!CryptographicOperations.FixedTimeEquals(Sha256Of(xml), sha))
-            throw new InvalidOperationException("Checksum mismatch: layout bị hỏng khi tải từ DB.");
+        try
+        {
+            //Truy vấn phiên bản mới nhất từ DB
+            var repo = new ReportLayoutVersions_Table(new DbExecutor());
+            var row = await repo.GetLatestAsync(reportName: _reportName, ct: ct).ConfigureAwait(false);
+            if (row == null)
+                return false;
 
-        // Load layout mới vào report
-        using var ms = new MemoryStream(xml);  // Bọc bytes XML vào stream bộ nhớ (không cần file tạm)
-        report.LoadLayoutFromXml(ms);          // Nạp layout trực tiếp từ stream XML
-        return true;
+            // Giải nén tệp tin
+            byte[] gz = row.ContentGz;  // GÓI DỮ LIỆU NÉN: GZip của XML .repx
+            byte[] xml = Gunzip(gz);    // GIẢI NÉN → bytes XML thuần của layout thành tệp .repx
+            byte[] sha = (byte[])row.Sha256;   // CHỮ KÝ/Checksum SHA-256 của XML (để kiểm toàn vẹn)
 
-        // Trả mẫu: không có layout trong DB
-        //return false;
-    }
+            if (xml.Length == 0)
+            {
+                LogEx.Warning($"Layout tải từ DB sau khi giải nén rỗng. Không thể sử dụng");
+                throw new InvalidDataException("Layout XML sau khi giải nén rỗng.");
+            }
 
-    public async Task<int?> GetLatestVersionAsync(int commandTimeoutSeconds = 15, CancellationToken ct = default)
-    {
-        using var conn = new SqlConnection(_connString);
-        return await conn.ExecuteScalarAsync<int?>(
-            sql: "dbo.ReportLayout_GetLatestVersion",
-            param: new { ReportName = _reportName },
-            commandType: CommandType.StoredProcedure,
-            commandTimeout: commandTimeoutSeconds
-        );
-    }
+            // Tính lại SHA256 của xml vừa giải nén, so sánh với sha trong DB (chống hỏng/tamper)
+            if (!CryptographicOperations.FixedTimeEquals(Sha256Of(xml), sha))
+            {
+                LogEx.Error($"Checksum tệp tin report tải từ DB không hợp lệ: {sha} - {Sha256Of(xml)}");
+                throw new InvalidOperationException("Checksum mismatch: layout bị hỏng khi tải từ DB.");
+            }
 
-    /// <summary>
-    /// Lấy Version hiện tại (phục vụ polling hoặc so sánh)
-    /// </summary>
-    /// <returns></returns>
-    public async Task<int?> GetVersionAsync()
-    {
-        using var conn = new SqlConnection(_connString);
-        return await conn.ExecuteScalarAsync<int?>(
-            "dbo.ReportLayout_GetVersion",
-            new { ReportName = _reportName },
-            commandType: CommandType.StoredProcedure);
+            // Load layout mới vào report
+            using var ms = new MemoryStream(xml);  // Bọc bytes XML vào stream bộ nhớ (không cần file tạm)
+            report.LoadLayoutFromXml(ms);          // Nạp layout trực tiếp từ stream XML
+
+            // Ghi Log sử dụng phiên bản nào
+            LogEx.Info($"Người dùng sử dụng tệp tin {row.ReportName} với phiên bản {row.Version} được tải lên ngày {row.UpdatedAtUtc}");
+            return true;
+        }
+        catch (OperationCanceledException)
+        {
+            // Nếu người dùng hủy qua CancellationToken
+            throw;
+        }
+        catch (Exception ex)
+        {
+            // Ghi log
+            LogEx.Error($"Không thể tải layout cho report {_reportName}. Lỗi: {ex}");
+            throw new InvalidOperationException(
+                $"Không thể tải layout cho report '{_reportName}'.",
+                ex
+            );
+        }
     }
 }
 

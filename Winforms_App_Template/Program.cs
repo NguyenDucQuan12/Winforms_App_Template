@@ -1,4 +1,3 @@
-using Microsoft.VisualBasic.Logging;
 using Winforms_App_Template.Utils;
 using Winforms_App_Template.Forms;
 

@@ -1,25 +1,56 @@
 using DevExpress.XtraReports.UI;
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using System.Windows.Forms; // để dùng TextRenderer.MeasureText
-using System.Drawing;
+using Winforms_App_Template.Database.Model;
 
+
+/// <summary>
+/// Các thao tác với Report
+/// </summary>
 public static class ReportLayoutHelpers
 {
-    // ==========
-    // 0) Utils
-    // ==========
+
     private static string? GetFieldFromTag(object? tag, int fieldSegmentIndex = 2, char delimiter = '|')
     {
         var s = tag?.ToString();
         if (string.IsNullOrWhiteSpace(s)) return null;
         var parts = s.Split(delimiter);
         return parts.Length > fieldSegmentIndex ? parts[fieldSegmentIndex].Trim() : null;
+    }
+
+    /// <summary>
+    /// Tìm kiếm các subreport trong report chính
+    /// </summary>
+    /// <param name="rpt"></param>
+    /// <returns></returns>
+    public static IEnumerable<XRSubreport> EnumerateSubreports(XtraReport rpt)
+    {
+        if (rpt == null)
+            yield break;
+
+        // Duyệt tất cả các band trong report chính
+        foreach (Band b in rpt.Bands)
+        {
+            // Nếu ko có band nào thì bỏ qua 
+            if (b == null) continue;
+
+            // Duyệt các control con
+            foreach (XRControl c in EnumerateControls(b.Controls))
+            {
+                // Nếu control này là XRSubReport thì trả về để thao tác đã
+                if (c is XRSubreport s)
+                    yield return s;
+
+                // Nếu XRSubport có report con nữa, duyệt sâu (nếu cần)
+                if (c is XRSubreport hasChild && hasChild.ReportSource is XtraReport child)
+                {
+                    foreach (var nested in EnumerateSubreports(child))
+                        yield return nested;
+                }
+            }
+        }
     }
 
     // Thử đọc FieldName từ ExpressionBindings (BeforePrint, Text = "[Field]" hoặc biểu thức chứa [Field])
@@ -232,23 +263,188 @@ public static class ReportLayoutHelpers
         // }
     }
 
-    // Duyệt tất cả XRSubreport trong một report
-    public static IEnumerable<XRSubreport> EnumerateSubreports(XtraReport rpt)
+    /// <summary>
+    /// Tìm các Parameter của report, nếu tên Parameter trùng tên property của 'src' (hoặc trùng sau khi bỏ "p_")
+    /// thì gán p.Value = giá trị property tương ứng.
+    /// </summary>
+    public static void ApplyParametersFromObject(XtraReport rpt, object src)
     {
+        //  Kiểm tra đầu vào — tránh NullReferenceException
+        if (rpt == null || src == null) return;
+
+        //  Lấy kiểu của đối tượng nguồn (src)
+        //  => dùng Reflection để duyệt danh sách các property public của nó
+        var srcType = src.GetType();
+
+        //  Tạo từ điển ánh xạ {tên property → PropertyInfo} để tra cứu nhanh (O(1)) thay vì duyệt vòng lặp mỗi lần
+        // Dùng StringComparer.OrdinalIgnoreCase để không phân biệt hoa/thường
+        var map = srcType.GetProperties().ToDictionary(p => p.Name, p => p, StringComparer.OrdinalIgnoreCase);
+
+        // Duyệt toàn bộ các parameter trong report
+        foreach (DevExpress.XtraReports.Parameters.Parameter p in rpt.Parameters)
+        {
+            // ⚠️ Tuỳ chọn: Nếu không muốn ghi đè giá trị người dùng nhập,
+            // có thể bỏ qua các parameter có Visible = true (tức là hiển thị trong UI)
+            // if (p.Visible) continue;
+
+            // Thử khớp tên parameter với property 1:1
+            if (!map.TryGetValue(p.Name, out var prop))
+            {
+                // Nếu không có, thử bỏ tiền tố "p_"
+                // Ví dụ: Parameter "p_OKText" → so sánh với property "OKText"
+                var name2 = p.Name.StartsWith("p_", StringComparison.OrdinalIgnoreCase) ? p.Name.Substring(2) : p.Name;
+
+                // Nếu vẫn không khớp property nào → bỏ qua
+                if (!map.TryGetValue(name2, out prop))
+                    continue; 
+            }
+            // Lấy giá trị từ property tương ứng trong object nguồn
+            var val = prop.GetValue(src, null);
+            // Gán giá trị đó cho Parameter.Value
+            // DevExpress sẽ tự động convert kiểu dữ liệu cơ bản (int → decimal, string → object, ...)
+            p.Value = val; 
+        }
+    }
+
+    /// <summary>
+    /// Gắn dữ liệu runtime cho report chính (rows) và subreport (map idInput -> list Standards).
+    /// </summary>
+    public static void BindForRuntime(
+        XtraReport rpt,
+        IList<Catthoong_ReportRow> rows,
+        IDictionary<int, List<Standard_Model>> stdMap,
+        string idFieldName = "idInput")
+    {
+        // Gán null cho detail gốc, tránh lặp, đảm bảo không bị hiển thị lặp dữ liệu cũ (khi load layout từ DB).
+        rpt.DataSource = null;   
+        rpt.DataMember = null;
+
+        // Gọi helper `BindDetailReport` để gắn datasource cho band trong 1 report
+        SubreportWiring.BindDetailReport(rpt, "Catongtho_Report", rows);   // IEnumerable<Catthoong_ReportRow>
+        //SubreportWiring.BindDetailReport(rpt, "DetailBand_Report2", listA); // IEnumerable<ModelA>
+        //SubreportWiring.BindDetailReport(rpt, "DetailBand_Report3", listB); // IEnumerable<ModelB>
+
+        // Band chứa subreport: "Catongtho_Report"
+        // Subreport control name: "xrSubreport1"
+        // Mục tiêu: khi mỗi dòng cha có `idInput = x`, ta lấy danh sách `Standard_Model`
+        // tương ứng từ `stdMap[x]` và bơm vào report con.
+        SubreportWiring.WireSubreportLookup<Standard_Model>(
+            rpt,
+            hostBandName: "Catongtho_Report",
+            subreportName: "xrSubreport1",
+            parentKeyField: "idInput",
+            resolveChildren: key =>
+            {
+                // convert key to int một cách an toàn
+                int id = 0;
+                if (key != null) int.TryParse(key.ToString(), out id);
+
+                // Nếu tồn tại key trong stdMap → trả về danh sách con (List<Standard_Model>)
+                // Ngược lại → trả về danh sách rỗng (tránh null để không lỗi runtime)
+                return (id != 0 && stdMap.TryGetValue(id, out var bucket) && bucket != null)
+                    ? bucket
+                    : Enumerable.Empty<Standard_Model>();
+            });
+    }
+
+    /// <summary>
+    /// Bơm giá trị header thực tế vào các parameter ?p_{PropName}
+    /// Ví dụ: header.Name_Congdoan → ?p_Name_Congdoan
+    /// </summary>
+    public static void PushHeaderValues(XtraReport rpt, object header)
+    {
+        if (rpt == null) throw new ArgumentNullException(nameof(rpt));
+        if (header == null) return;
+
+        var t = header.GetType();
+        foreach (var pi in t.GetProperties(BindingFlags.Public | BindingFlags.Instance))
+        {
+            if (!pi.CanRead) continue;
+            var param = rpt.Parameters["p_" + pi.Name];            // tên p_* đã tạo ở design-time
+            if (param == null) continue;
+
+            var val = pi.GetValue(header);
+            param.Value = val ?? DBNull.Value;                     // gán giá trị thực tế để expression ?p_* hiển thị
+        }
+    }
+
+    /// <summary>
+    /// Quét tất cả ExpressionBindings trong report (bao gồm cả subreport),
+    /// trích các token dạng [Field] và đối chiếu với property của modelType.
+    /// Trả về danh sách các field không tồn tại trong model.
+    /// </summary>
+    public static HashSet<string> CollectInvalidFields(XtraReport rpt, Type modelType)
+    {
+        // Tạo 1 HashSet để chứa tên các field "không hợp lệ" (không tồn tại trong model).
+        // Dùng StringComparer.OrdinalIgnoreCase để so sánh không phân biệt hoa thường.
+        var invalid = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        // Lấy danh sách property hợp lệ từ modelType (tên property).
+        // Tạo HashSet để tra nhanh O(1) và cũng không phân biệt hoa thường.
+        var props = new HashSet<string>(
+            modelType.GetProperties().Select(p => p.Name),
+            StringComparer.OrdinalIgnoreCase);
+
+        // Định nghĩa regex để bắt các token trong biểu thức dạng [something].
+        // (?<name>...) đặt tên cho nhóm (group) là "name".
+        // Cho phép chữ A-Z a-z số 0-9 dấu gạch dưới _ và dấu chấm .
+        // RegexOptions.Compiled compile regex để chạy nhanh hơn (đổi chi phí khi tạo).
+        var rx = new Regex(@"\[(?<name>[A-Za-z0-9_\.]+)\]", RegexOptions.Compiled);
+
+        // Duyệt qua mọi Band trong report (Band thường là Header/Detail/Footer,...).
         foreach (Band b in rpt.Bands)
         {
-            foreach (XRControl c in EnumerateControls(b))
-                if (c is XRSubreport sr) yield return sr;
-        }
-
-        static IEnumerable<XRControl> EnumerateControls(XRControl parent)
-        {
-            foreach (XRControl c in parent.Controls)
+            // Duyệt tất cả control(bao gồm control con) trong band bằng helper EnumerateControls.
+            foreach (XRControl c in EnumerateControls(b.Controls))
             {
-                yield return c;
-                foreach (var child in EnumerateControls(c))
-                    yield return child;
+                // Duyệt tất cả expression binding của control (mỗi binding có thuộc tính Expression).
+                foreach (var eb in c.ExpressionBindings)
+                {
+                    // Nếu eb.Expression null thì dùng chuỗi rỗng (tránh NullReferenceException).
+                    var expr = eb.Expression ?? string.Empty;
+
+                    // Dùng regex để tìm mọi token [name] trong expression.
+                    foreach (Match m in rx.Matches(expr))
+                    {
+                        // Lấy giá trị của group "name" (chuỗi giữa dấu ngoặc vuông). [name]
+                        var token = m.Groups["name"]?.Value ?? "";
+                        // Nếu chuỗi là rỗng thì bỏ qua
+                        if (string.IsNullOrWhiteSpace(token))
+                            continue;
+
+                        // Bỏ qua các token không phải field dữ liệu:
+                        // - Token bắt đầu "Parameters." (tham số)
+                        // - Token chứa '.' (ví dụ [DataSource.CurrentRowIndex], [ReportItems.Text], …) → bỏ qua
+                        // - Hàm, toán tử… (regex này không bắt)
+                        if (token.StartsWith("Parameters.", StringComparison.OrdinalIgnoreCase))
+                            continue;
+
+                        // Bỏ qua token chứa dấu chấm (ví dụ hệ thống hoặc nested như DataSource.CurrentRowIndex).
+                        if (token.Contains('.'))
+                            continue;
+
+                        // Nếu token không tồn tại trong props thì thêm vào tập invalid
+                        if (!props.Contains(token))
+                            invalid.Add(token);
+                    }
+                }
             }
+        }
+        // Trả về tập tên field "không hợp lệ" (không trùng nhau do HashSet).
+        return invalid;
+    }
+
+    public static IEnumerable<XRControl> EnumerateControls(XRControlCollection controls)
+    {
+        // Với mỗi control trong collection truyền vào
+        foreach (XRControl c in controls)
+        {
+            // Trả về control hiện tại (yield return cho phép duyệt lazy/tiếp tục)
+            yield return c;
+
+            // Gọi đệ quy: nếu control có Controls (control lồng control), duyệt tiếp các control con
+            foreach (var inner in EnumerateControls(c.Controls))
+                yield return inner;
         }
     }
 
