@@ -225,8 +225,7 @@ public sealed class ReportLayoutStore
             // Ghi log
             LogEx.Error($"Không thể tải layout cho report {_reportName}. Lỗi: {ex}");
             throw new InvalidOperationException(
-                $"Không thể tải layout cho report '{_reportName}'.",
-                ex
+                $"Không thể tải layout cho report '{_reportName}'. Lỗi: {ex}."
             );
         }
     }

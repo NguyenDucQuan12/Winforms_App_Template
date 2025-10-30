@@ -1,5 +1,10 @@
 using Winforms_App_Template.Utils;
 using Winforms_App_Template.Forms;
+using System;
+using System.Windows.Forms;
+using DevExpress.Utils;                           // DeserializationSettings
+using DevExpress.XtraReports.Configuration;      // Settings.Default.UserDesignerOptions
+using Winforms_App_Template.Database.Model;      // Catthoong_ReportRow, Standard_Model
 
 namespace Winforms_App_Template
 {
@@ -11,6 +16,15 @@ namespace Winforms_App_Template
         [STAThread]
         static void Main()
         {
+            // ====== RẤT QUAN TRỌNG: Trust assembly/Type trước khi LoadLayoutFromXml ======
+            DevExpress.Utils.DeserializationSettings.RegisterTrustedClass(typeof(Catthoong_ReportRow));
+            DevExpress.Utils.DeserializationSettings.RegisterTrustedClass(typeof(Catthoong_ReportRow));
+            DevExpress.Utils.DeserializationSettings.RegisterTrustedClass(typeof(Standard_Model));
+
+            // (khuyến nghị) bật chế độ binding hiện đại trong Designer
+            //Settings.Default.UserDesignerOptions.DataBindingMode = DataBindingMode.ExpressionsAdvanced;
+            // ==============================================================================
+
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

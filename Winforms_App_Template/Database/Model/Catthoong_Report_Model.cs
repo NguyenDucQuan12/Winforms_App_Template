@@ -9,8 +9,11 @@ namespace Winforms_App_Template.Database.Model
     // DÒNG REPORT-READY (đã gộp main + error) ==
     public sealed class Catthoong_ReportRow
     {
-        // --- phần chính (copy những field sẽ hiển thị) ---
+
+        [System.ComponentModel.Browsable(false)] // <-- ẨN khỏi Field List
         public int idInput { get; init; }                          // ID Form nhập dữ liệu để lấy chi tiết lỗi
+
+        [System.ComponentModel.DisplayName("Mã kiểm tra")]
         public string MaKT { get; init; } = "";                    // Mã lý do kiểm tra: I, II, III, IV
         public DateTime StartTime { get; init; }                   // Thời gian bắt đầu thao tác
         public string NguoiTT { get; init; } = "";                 // Người thao tác
@@ -44,4 +47,30 @@ namespace Winforms_App_Template.Database.Model
         // Phần bảng tiêu chuẩn
         public List<Standard_Model> Standards { get; set; } = new();
     }
-}
+
+    static readonly DesignSchema.ColumnSpec[] MAIN_COLUMNS =
+{
+    new() { Name = "MaKT",        Type = typeof(string) },
+    new() { Name = "StartTime",   Type = typeof(DateTime) },
+    new() { Name = "NguoiTT",     Type = typeof(string) },
+    new() { Name = "TenMay_Ban",  Type = typeof(string) },
+    new() { Name = "SLSudung",    Type = typeof(int)     },
+    new() { Name = "Remark",      Type = typeof(string) },
+
+    // Mở rộng dần:
+    // new() { Name = "val1", Type = typeof(string) },
+    // new() { Name = "Bevel_Cut", Type = typeof(int) },
+    // ...
+};
+
+        // WHITELIST cho subreport (Standard_Model)
+        static readonly DesignSchema.ColumnSpec[] SUB_COLUMNS =
+        {
+    new() { Name = "TenTieuChuan", Type = typeof(string) },
+    new() { Name = "MaTieuChuan",  Type = typeof(string) },
+    new() { Name = "TCMin",        Type = typeof(string) },
+    new() { Name = "TCMax",        Type = typeof(string) },
+
+    // mở rộng khi cần: Loai_size, Loai_kytu, ...
+};
+    }
