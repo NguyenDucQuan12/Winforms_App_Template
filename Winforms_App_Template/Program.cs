@@ -16,12 +16,11 @@ namespace Winforms_App_Template
         [STAThread]
         static void Main()
         {
-            // ====== RẤT QUAN TRỌNG: Trust assembly/Type trước khi LoadLayoutFromXml ======
-            DevExpress.Utils.DeserializationSettings.RegisterTrustedClass(typeof(Catthoong_ReportRow));
-            DevExpress.Utils.DeserializationSettings.RegisterTrustedClass(typeof(Catthoong_ReportRow));
-            DevExpress.Utils.DeserializationSettings.RegisterTrustedClass(typeof(Standard_Model));
-
-            // (khuyến nghị) bật chế độ binding hiện đại trong Designer
+            // Trust assembly/Type trước khi LoadLayoutFromXml ======
+            DeserializationSettings.RegisterTrustedAssembly(typeof(Program).Assembly);
+            // Nếu dùng DataTable làm "schema design-time" cũng whitelist luôn:
+            DeserializationSettings.RegisterTrustedClass(typeof(System.Data.DataTable));
+            // bật chế độ binding hiện đại trong Designer
             //Settings.Default.UserDesignerOptions.DataBindingMode = DataBindingMode.ExpressionsAdvanced;
             // ==============================================================================
 

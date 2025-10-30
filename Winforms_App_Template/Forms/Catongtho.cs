@@ -1,13 +1,15 @@
 using DevExpress.DataAccess.ObjectBinding;
 using DevExpress.LookAndFeel;                        // UserLookAndFeel cho form Designer
+using DevExpress.XtraReports.Parameters;
 using DevExpress.XtraReports.UI;                    // XtraReport, ReportDesignTool
 using DevExpress.XtraReports.UserDesigner;          // XRDesignMdiController, XRDesignPanel, ReportState
 using System.IO;
 using System.Text;
-using System.Threading.Tasks;                       // Task/async
+using System.Data;
 using Winforms_App_Template.Database;
 using Winforms_App_Template.Database.Model;
 using Winforms_App_Template.Database.Table;
+using Winforms_App_Template.Report;
 using Winforms_App_Template.Utils;
 
 namespace Winforms_App_Template.Forms
@@ -449,7 +451,6 @@ namespace Winforms_App_Template.Forms
 
                 // Khai báo class chịu trách nhiệm quản lý việc tải form mới, lưu form vào DB
                 var updatedBy = Environment.UserName;
-
                 var reportName = ReportLayoutStore.GetKey(rpt);   // Lấy key ổn định cho report (dùng DisplayName nếu có, không thì lấy tên class)
                 var store = new ReportLayoutStore(
                     reportName: reportName,
@@ -473,16 +474,51 @@ namespace Winforms_App_Template.Forms
                         .TryLoadAsync(child);
                 }
 
+                //    Chuẩn bị whitelist → DataTable schema cho từng band để gắn vào datasource, dùng cho design
+                var bandSchemas = new Dictionary<string, DataTable>
+                {
+                    // Band "Catongtho_Report": Sử dụng bảng Catthoong và đặt tên hiển thị là Cat_tho_ong
+                    ["Catongtho_Report"] = FieldWhitelistRegistry.Catthoong.ToDesignSchema("Cat_tho_ong"),
+
+                    // Ví dụ band thứ 2 có whitelist khác:
+                    // ["DetailBand_Report2"] = FieldWhitelistRegistry.Band2.ToDesignSchema("Band2Rows"),
+                };
+
+                // Gắn schema cho từng band theo tên
+                DesignSchema.AttachBandSchemas(rpt, bandSchemas);
+
                 // Tạo ReportDesignTool để mở End-User Designer
                 var tool = new ReportDesignTool(rpt);           // tool chứa form Designer (Ribbon) và controller MDI
-
-                // Lấy IDesignForm & MDI Controller (mọi event/active panel nằm trên controller)
                 var form = tool.DesignRibbonForm;               // IDesignForm (XRDesignRibbonForm implements IDesignForm) chính là cửa sổ Designer (bản Ribbon).
                 var controller = form.DesignMdiController;      // XRDesignMdiController: trung tâm điều phối các "DesignPanel" (tab) trong Designer
 
-                //XRDesignPanel? openedPanel = null;                     // Giữ tham chiếu panel đã mở (để auto-save sau)
+                // 6) SUBREPORT SCHEMA: chỉ khi người dùng mở tab subreport → mới gắn schema phù hợp
+                DesignSchema.WireSubreportSchemaOnDemandByBand(
+                    controller: controller,
+                    mainReport: rpt,
+                    subSchemaFactory: sub =>
+                    {
+                        // Xác định sub này thuộc band nào
+                        var ownerBand = DesignSchema.FindOwningDetailReportBand(rpt, sub);
 
-                // Khi một DesignPanel MỚI được tạo (Designer mở report)
+                        // Nếu sub nằm trong band "Catongtho_Report" → dùng schema SUB mặc định
+                        if (ownerBand != null && string.Equals(ownerBand.Name, "Catongtho_Report", StringComparison.Ordinal))
+                            return FieldWhitelistRegistry.Standard_Catthoong.ToDesignSchema("StdRows");
+
+                        // Nếu bạn có band khác với schema khác, xử lý tại đây:
+                        // if (ownerBand?.Name == "DetailBand_Report2") return FieldWhitelistRegistry.Sub2.ToDesignSchema("StdRows2");
+
+                        // Mặc định: vẫn trả schema Sub
+                        return FieldWhitelistRegistry.Standard_Catthoong.ToDesignSchema("StdRows");
+                    });
+
+
+
+                // 4) (Tuỳ chọn) đổi nhãn trong whitelist trước khi mở:
+                // FieldWhitelistRegistry.Main.SetLabel("NguoiTT", "Người thao tác (VN)");
+                // FieldWhitelistRegistry.Main.Add("val1", typeof(string), "Ống dài sử dụng");
+                // FieldWhitelistRegistry.Main.Remove("Remark");
+
                 // KHI PANEL ĐƯỢC TẠO XONG → GẮN HANDLER LÊN CHÍNH PANEL ẤY
                 controller.DesignPanelLoaded += (sender, e) =>
                 {
@@ -503,29 +539,44 @@ namespace Winforms_App_Template.Forms
                     panel.Tag = "SaveHandlerWired"; // đánh dấu đã wire
                 };
 
-                // Gán các FieldName vào Design để có thể chọn các thuộc tính Expression
-                //ReportDesignSchemaHelper.AttachDesignSchema(rpt);  // <— Gọi 1 dòng trước khi mở Designer
-                ReportDesignSchemaHelper.AttachDesignSchema(rpt, attachHeaderParameters: true, headerModelType: typeof(Catongtho_HeaderModel));
+                //    Khai báo danh sách parameter cần cho band "Catongtho_Report"
+                var headerParams = new[]
+                {
+                    new ParameterSpec("Name_Congdoan",  typeof(string),  "Tên công đoạn"),
+                    new ParameterSpec("ID_Congdoan",    typeof(string),  "ID công đoạn"),
+                    new ParameterSpec("Code_Congdoan",  typeof(string),  "Mã công đoạn"),
+                    new ParameterSpec("Category_Code",  typeof(string),  "Mã sản phẩm"),
+                    new ParameterSpec("Lotno_Congdoan", typeof(string),  "Số lô"),
+                    new ParameterSpec("Batch_Number",   typeof(string),  "Số mẻ"),
+                };
+
+                //    Tạo các parameter dạng p_{Band}_{Param} ở cấp REPORT:
+                BandParameterHelper.EnsureParametersForBand(
+                    rpt,
+                    bandName: "Catongtho_Report",
+                    specs: headerParams,
+                    visible: false);
+
                 // Mở Designer dạng MODAL: block cho đến khi người dùng đóng
                 tool.ShowRibbonDesignerDialog(UserLookAndFeel.Default);       // Khác với ShowRibbonDesigner(): modal giúp “đóng → rồi save”
 
                 // Sau khi Designer đóng: nếu còn thay đổi mà user QUÊN bấm Save → auto-save (Chọn ko save cũng là yes luôn)
-                var activePanel = controller.ActiveDesignPanel; // Lấy panel đang/đã active qua MDI controller (không cần cast form) 
-                if (activePanel != null && activePanel.ReportState == ReportState.Changed) // KHÔNG dùng Modified; đúng là Changed
-                {
-                    string? Program_Name = Application.ProductName;
-                    if (Program_Name == string.Empty || Program_Name == null) Program_Name = "Default";
+                //var activePanel = controller.ActiveDesignPanel; // Lấy panel đang/đã active qua MDI controller (không cần cast form) 
+                //if (activePanel != null && activePanel.ReportState == ReportState.Changed) // KHÔNG dùng Modified; đúng là Changed
+                //{
+                //    string? Program_Name = Application.ProductName;
+                //    if (Program_Name == string.Empty || Program_Name == null) Program_Name = "Default";
 
-                    // a) Local
-                    var localPath = Path.Combine(
-                        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                        Program_Name, "Reports", $"{reportName}.repx");
-                    Directory.CreateDirectory(Path.GetDirectoryName(localPath)!);
-                    rpt.SaveLayoutToXml(localPath);
+                //    // a) Local
+                //    var localPath = Path.Combine(
+                //        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                //        Program_Name, "Reports", $"{reportName}.repx");
+                //    Directory.CreateDirectory(Path.GetDirectoryName(localPath)!);
+                //    rpt.SaveLayoutToXml(localPath);
 
-                    // b) DB
-                    await store.SaveAsync(activePanel.Report);  // Lưu vào DB để lần sau mọi máy cùng nhận bản mới
-                }
+                //    // b) DB
+                //    await store.SaveAsync(activePanel.Report);  // Lưu vào DB để lần sau mọi máy cùng nhận bản mới
+                //}
             }
             catch (Exception ex)
             {
@@ -533,15 +584,6 @@ namespace Winforms_App_Template.Forms
                 MessageBox.Show(this, ex.Message, "Lỗi mở Designer/Nạp layout",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
-
-            //ReportDesignTool designTool = new ReportDesignTool(new Testreport());
-
-            //// Mở cửa sổ thiết kế form nhưng chương trình chính vẫn chạy bình thường
-            ////designTool.ShowRibbonDesigner();
-
-            //// Mở cửa sổ thiết kế form (dạng hộp thoại). Chặn luồng chương trình chính cho đến khi người dùng đóng cửa sổ design
-            //designTool.ShowRibbonDesignerDialog(UserLookAndFeel.Default);
         }
     }
 }

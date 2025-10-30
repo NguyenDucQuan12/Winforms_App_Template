@@ -48,29 +48,4 @@ namespace Winforms_App_Template.Database.Model
         public List<Standard_Model> Standards { get; set; } = new();
     }
 
-    static readonly DesignSchema.ColumnSpec[] MAIN_COLUMNS =
-{
-    new() { Name = "MaKT",        Type = typeof(string) },
-    new() { Name = "StartTime",   Type = typeof(DateTime) },
-    new() { Name = "NguoiTT",     Type = typeof(string) },
-    new() { Name = "TenMay_Ban",  Type = typeof(string) },
-    new() { Name = "SLSudung",    Type = typeof(int)     },
-    new() { Name = "Remark",      Type = typeof(string) },
-
-    // Mở rộng dần:
-    // new() { Name = "val1", Type = typeof(string) },
-    // new() { Name = "Bevel_Cut", Type = typeof(int) },
-    // ...
-};
-
-        // WHITELIST cho subreport (Standard_Model)
-        static readonly DesignSchema.ColumnSpec[] SUB_COLUMNS =
-        {
-    new() { Name = "TenTieuChuan", Type = typeof(string) },
-    new() { Name = "MaTieuChuan",  Type = typeof(string) },
-    new() { Name = "TCMin",        Type = typeof(string) },
-    new() { Name = "TCMax",        Type = typeof(string) },
-
-    // mở rộng khi cần: Loai_size, Loai_kytu, ...
-};
-    }
+}
