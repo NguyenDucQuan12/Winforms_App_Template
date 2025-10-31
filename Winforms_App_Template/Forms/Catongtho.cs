@@ -298,6 +298,20 @@ namespace Winforms_App_Template.Forms
             // Load layout mới nhất
             await store.TryLoadAsync(rpt);
 
+            // Nạp layout DB cho từng Subreport con trước khi mở Designer
+            foreach (var sub in ReportLayoutHelpers.EnumerateSubreports(rpt))
+            {
+                var child = sub.ReportSource as XtraReport;
+                if (child == null) continue;
+
+                //// Nếu chưa set, đặt DisplayName mặc định = tên class
+                //if (string.IsNullOrWhiteSpace(child.DisplayName))
+                //    child.DisplayName = child.GetType().Name;
+
+                await new ReportLayoutStore(ReportLayoutStore.GetKey(child), updatedBy)
+                    .TryLoadAsync(child);
+            }
+
             // ==== CHUẨN HOÁ EXPRESSION + KIỂM TRA FIELD ( Khi người dùng thêm expression trong design) ====
 
             // Loại bỏ prefix [Main]. (nếu người thiết kế vô tình để DataMember="Main" lúc design)
@@ -446,12 +460,13 @@ namespace Winforms_App_Template.Forms
         {
             try
             {
+                // Khởi tạo report cần thiết kế
                 var rpt = new Testreport();                     // Instance report ban đầu (layout mặc định/embedded khi không thể lấy bản mới nhất từ máy chủ)
-                rpt.DisplayName = "Catongtho_Main";             // key ổn định cho report chính
+                rpt.DisplayName = "Catongtho_Main";             // Đặt display name cho báo cáo này để lưu trữ vào DB
 
                 // Khai báo class chịu trách nhiệm quản lý việc tải form mới, lưu form vào DB
                 var updatedBy = Environment.UserName;
-                var reportName = ReportLayoutStore.GetKey(rpt);   // Lấy key ổn định cho report (dùng DisplayName nếu có, không thì lấy tên class)
+                var reportName = ReportLayoutStore.GetKey(rpt);   // Lấy key của report (dùng DisplayName nếu có, không thì lấy tên class)
                 var store = new ReportLayoutStore(
                     reportName: reportName,
                     updatedBy: updatedBy             // Audit: ai là người “Save”
@@ -460,7 +475,7 @@ namespace Winforms_App_Template.Forms
                 // Trước khi mở Designer – thử nạp layout mới nhất từ DB 
                 await store.TryLoadAsync(rpt);                  // Nếu có trong DB → LoadLayoutFromXml; nếu không → giữ layout mặc định
 
-                // Nạp layout DB cho từng Subreport con trước khi mở Designer
+                // Nạp layout từ DB cho từng Subreport con trước khi mở Designer
                 foreach (var sub in ReportLayoutHelpers.EnumerateSubreports(rpt))
                 {
                     var child = sub.ReportSource as XtraReport;
@@ -470,11 +485,11 @@ namespace Winforms_App_Template.Forms
                     if (string.IsNullOrWhiteSpace(child.DisplayName))
                         child.DisplayName = child.GetType().Name;
 
-                    await new ReportLayoutStore( ReportLayoutStore.GetKey(child), updatedBy)
+                    await new ReportLayoutStore(ReportLayoutStore.GetKey(child), updatedBy)
                         .TryLoadAsync(child);
                 }
 
-                //    Chuẩn bị whitelist → DataTable schema cho từng band để gắn vào datasource, dùng cho design
+                // Chuẩn bị whitelist → DataTable schema cho từng band để gắn vào datasource, dùng cho design
                 var bandSchemas = new Dictionary<string, DataTable>
                 {
                     // Band "Catongtho_Report": Sử dụng bảng Catthoong và đặt tên hiển thị là Cat_tho_ong
@@ -492,7 +507,7 @@ namespace Winforms_App_Template.Forms
                 var form = tool.DesignRibbonForm;               // IDesignForm (XRDesignRibbonForm implements IDesignForm) chính là cửa sổ Designer (bản Ribbon).
                 var controller = form.DesignMdiController;      // XRDesignMdiController: trung tâm điều phối các "DesignPanel" (tab) trong Designer
 
-                // 6) SUBREPORT SCHEMA: chỉ khi người dùng mở tab subreport → mới gắn schema phù hợp
+                // 6) SUBREPORT SCHEMA: chỉ khi người dùng mở tab subreport → mới gắn schema phù hợp cho subreport đó
                 DesignSchema.WireSubreportSchemaOnDemandByBand(
                     controller: controller,
                     mainReport: rpt,
@@ -512,17 +527,17 @@ namespace Winforms_App_Template.Forms
                         return FieldWhitelistRegistry.Standard_Catthoong.ToDesignSchema("StdRows");
                     });
 
-
-
                 // 4) (Tuỳ chọn) đổi nhãn trong whitelist trước khi mở:
                 // FieldWhitelistRegistry.Main.SetLabel("NguoiTT", "Người thao tác (VN)");
                 // FieldWhitelistRegistry.Main.Add("val1", typeof(string), "Ống dài sử dụng");
                 // FieldWhitelistRegistry.Main.Remove("Remark");
 
-                // KHI PANEL ĐƯỢC TẠO XONG → GẮN HANDLER LÊN CHÍNH PANEL ẤY
+                // Ghi đè sự kiện DesignPanelLoaded để gắn SaveCommandHandler cho từng panel khi nó được tạo
+                // Mỗi panel sẽ tương ứng với 1 tab thiết kế (report chính hoặc subreport) trong Designer
+                // Ghi đè sự kiện mỗi khi người dùng ấn Save hoặc Ctrl+S trong Designer
                 controller.DesignPanelLoaded += (sender, e) =>
                 {
-                    // LẤY PANEL ĐÚNG CÁCH
+                    // Lấy panel đang hiển thị (Theo tài liệu chính thức từ DevXpress)
                     var panel = (XRDesignPanel)sender;
                     if (panel == null) return;
 
@@ -533,13 +548,14 @@ namespace Winforms_App_Template.Forms
                     // Tránh gắn trùng nhiều lần (đánh dấu bằng Tag)
                     if (panel.Tag as string == "SaveHandlerWired") return;
 
+                    // Tạo store riêng cho panel này (vì có thể là subreport)
                     var storeForThisPanel = new ReportLayoutStore(currentKey, updatedBy);
                     panel.AddCommandHandler(new SaveCommandHandler(panel, storeForThisPanel, currentKey));
 
                     panel.Tag = "SaveHandlerWired"; // đánh dấu đã wire
                 };
 
-                //    Khai báo danh sách parameter cần cho band "Catongtho_Report"
+                // Khai báo danh sách parameter cần cho band "Catongtho_Report"
                 var headerParams = new[]
                 {
                     new ParameterSpec("Name_Congdoan",  typeof(string),  "Tên công đoạn"),

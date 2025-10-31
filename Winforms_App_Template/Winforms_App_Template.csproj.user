@@ -13,6 +13,9 @@
     <Compile Update="Forms\SubReport\StandardsSubreport.cs">
       <SubType>XtraReport</SubType>
     </Compile>
+    <Compile Update="Forms\SubReport\Standards_Subreport_32061.cs">
+      <SubType>XtraReport</SubType>
+    </Compile>
     <Compile Update="Forms\Test.cs">
       <SubType>Form</SubType>
     </Compile>

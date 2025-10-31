@@ -209,6 +209,10 @@ public sealed class ReportLayoutStore
 
             // Load layout mới vào report
             using var ms = new MemoryStream(xml);  // Bọc bytes XML vào stream bộ nhớ (không cần file tạm)
+
+            // Một lưu ý: Nếu trong layout sử dụng các model binding chưa được khai báo sẽ gặp lỗi: NonTrustedTypeDeserializationException
+            // Cần đảm bảo tất cả các kiểu dữ liệu được sử dụng trong binding đã được đăng ký trong DevExpress trước khi load layout
+            // Ví dụ: DevExpress.DataAccess.Native.TypeDiscoveryHelper.RegisterKnownType(typeof(MyCustomModel)); ở tệp program khởi động
             report.LoadLayoutFromXml(ms);          // Nạp layout trực tiếp từ stream XML
 
             // Ghi Log sử dụng phiên bản nào
