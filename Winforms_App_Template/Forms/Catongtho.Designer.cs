@@ -41,8 +41,8 @@ namespace Winforms_App_Template.Forms
             label3 = new Label();
             Export_Document_Button = new Button();
             tablePanel2 = new DevExpress.Utils.Layout.TablePanel();
-            Cancel_Export_Document = new Button();
             simpleButton1 = new DevExpress.XtraEditors.SimpleButton();
+            Cancel_Export_Document = new Button();
             ((System.ComponentModel.ISupportInitialize)ID_Cong_Doan_Text.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)behaviorManager1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)tablePanel1).BeginInit();
@@ -124,7 +124,7 @@ namespace Winforms_App_Template.Forms
             // 
             tablePanel1.SetColumn(Lot_No_Text, 6);
             Lot_No_Text.Dock = DockStyle.Fill;
-            Lot_No_Text.EditValue = "250505G01";
+            Lot_No_Text.EditValue = "250923G01";
             Lot_No_Text.Location = new Point(531, 57);
             Lot_No_Text.Margin = new Padding(2);
             Lot_No_Text.Name = "Lot_No_Text";
@@ -140,7 +140,7 @@ namespace Winforms_App_Template.Forms
             // 
             tablePanel1.SetColumn(Item_Number_Text, 4);
             Item_Number_Text.Dock = DockStyle.Fill;
-            Item_Number_Text.EditValue = "CRS25C60N10W";
+            Item_Number_Text.EditValue = "CRS25C60D25W";
             Item_Number_Text.Location = new Point(331, 57);
             Item_Number_Text.Margin = new Padding(2);
             Item_Number_Text.Name = "Item_Number_Text";
@@ -222,6 +222,18 @@ namespace Winforms_App_Template.Forms
             tablePanel2.TabIndex = 3;
             tablePanel2.UseSkinIndents = true;
             // 
+            // simpleButton1
+            // 
+            tablePanel2.SetColumn(simpleButton1, 6);
+            simpleButton1.Cursor = Cursors.Hand;
+            simpleButton1.Location = new Point(471, 108);
+            simpleButton1.Name = "simpleButton1";
+            tablePanel2.SetRow(simpleButton1, 2);
+            simpleButton1.Size = new Size(86, 39);
+            simpleButton1.TabIndex = 4;
+            simpleButton1.Text = "Thiết kế báo cáo";
+            simpleButton1.Click += simpleButton1_Click;
+            // 
             // Cancel_Export_Document
             // 
             tablePanel2.SetColumn(Cancel_Export_Document, 4);
@@ -235,18 +247,6 @@ namespace Winforms_App_Template.Forms
             Cancel_Export_Document.Text = "Hủy";
             Cancel_Export_Document.UseVisualStyleBackColor = true;
             Cancel_Export_Document.Click += Cancel_Export_Document_Click;
-            // 
-            // simpleButton1
-            // 
-            tablePanel2.SetColumn(simpleButton1, 6);
-            simpleButton1.Cursor = Cursors.Hand;
-            simpleButton1.Location = new Point(471, 108);
-            simpleButton1.Name = "simpleButton1";
-            tablePanel2.SetRow(simpleButton1, 2);
-            simpleButton1.Size = new Size(86, 39);
-            simpleButton1.TabIndex = 4;
-            simpleButton1.Text = "Thiết kế báo cáo";
-            simpleButton1.Click += simpleButton1_Click;
             // 
             // Catongtho
             // 
