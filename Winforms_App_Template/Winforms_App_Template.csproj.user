@@ -22,5 +22,8 @@
     <Compile Update="Forms\Testreport.cs">
       <SubType>XtraReport</SubType>
     </Compile>
+    <Compile Update="Loading\LoadingDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
 </Project>

@@ -16,7 +16,7 @@ namespace Winforms_App_Template.Report
         public string Label;            // nhãn hiển thị trong Field List (tuỳ chọn)
         public object DefaultValue;     // giá trị mặc định (tuỳ chọn)
 
-        public ParameterSpec(string name, Type type, string label = null, object defaultValue = null)
+        public ParameterSpec(string name, Type type, string? label = null, object defaultValue = null)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("Parameter name is required.", nameof(name));
@@ -115,7 +115,7 @@ namespace Winforms_App_Template.Report
         /// <summary>
         /// Tìm control theo Name từ một container (band/control) theo chiều sâu.
         /// </summary>
-        private static XRControl FindControlRecursive(XRControl container, string name)
+        private static XRControl? FindControlRecursive(XRControl container, string name)
         {
             if (container == null || string.IsNullOrWhiteSpace(name)) return null; // an toàn
             foreach (XRControl c in container.Controls)

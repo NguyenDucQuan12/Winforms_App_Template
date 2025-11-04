@@ -115,7 +115,7 @@ namespace Winforms_App_Template.Database
             return row;
         }, ct).AsTask();
 
-        public Task<T> ExecuteScalarAsync<T>(
+        public Task<T?> ExecuteScalarAsync<T>(
             string sql,
             object? param = null,
             int commandTimeoutSeconds = 30,
