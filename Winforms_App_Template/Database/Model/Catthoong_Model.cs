@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Winforms_App_Template.Database.Model
 {
-    public sealed class Catongtho_HeaderModel
+    public sealed class Report_Header_Model
     {
         public string Name_Congdoan { get; set; } = "";
         public string ID_Congdoan { get; set; } = "";

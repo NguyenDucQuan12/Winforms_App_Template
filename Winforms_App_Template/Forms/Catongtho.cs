@@ -1,16 +1,18 @@
+using DevExpress.CodeParser;
 using DevExpress.DataAccess.ObjectBinding;
 using DevExpress.LookAndFeel;                        // UserLookAndFeel cho form Designer
+using DevExpress.UIAutomation;
 using DevExpress.XtraReports.Parameters;
 using DevExpress.XtraReports.UI;                    // XtraReport, ReportDesignTool
 using DevExpress.XtraReports.UserDesigner;          // XRDesignMdiController, XRDesignPanel, ReportState
+using System.Data;
 using System.IO;
 using System.Text;
-using System.Data;
 using Winforms_App_Template.Database;
 using Winforms_App_Template.Database.Model;
 using Winforms_App_Template.Database.Table;
-using Winforms_App_Template.Report;
 using Winforms_App_Template.Loading;
+using Winforms_App_Template.Report;
 using Winforms_App_Template.Utils;
 
 namespace Winforms_App_Template.Forms
@@ -98,10 +100,6 @@ namespace Winforms_App_Template.Forms
             int ID_Cong_Doan;
             int So_Me;
 
-            // Token hủy tải dữ liệu
-            using var cts = new CancellationTokenSource();
-            _cts = cts;
-
             // Validation dữ liệu
             if (string.IsNullOrWhiteSpace(ItemNumber) || string.IsNullOrWhiteSpace(LotNo))
             {
@@ -115,34 +113,29 @@ namespace Winforms_App_Template.Forms
                 return;
             }
 
-            // Tạo popup loading + khoá UI form chính
-            var dlg = new LoadingDialog(cts, "Đang lấy dữ liệu, vui lòng chờ...");
             XtraReport? rpt = null; // sẽ gán khi xong phần dữ liệu
 
-            // Thực hiện truy vấn và xử lý dữ liệu
-            try
-            {
-                using (new UiBlocker(this))
+            rpt = await LoadingHelper.RunFunctionWithLoadingAsync<XtraReport?>(
+                owner: this,
+                workMethod: async (ct) =>
                 {
-                    dlg.Show(this); // modeless: code vẫn chạy tiếp
-
                     // ====== BẮT ĐẦU CÔNG VIỆC NẶNG (có check hủy từng chặng) ======
                     // Lấy data cho header của công đoạn
-                    Catongtho_HeaderModel? header = null;
+                    Report_Header_Model? header = null;
                     try
                     {
-                        header = await _repo.Get_Header_catthoong(IdCongDoan: ID_Cong_Doan, ItemNumber: ItemNumber, LotNo: LotNo, So_Me: So_Me, ct: cts.Token);
+                        header = await _repo.Get_Header_catthoong(IdCongDoan: ID_Cong_Doan, ItemNumber: ItemNumber, LotNo: LotNo, So_Me: So_Me, ct: ct);
                     }
                     catch (OperationCanceledException)
                     {
                         // Hủy quá trình tải dữ liệu
                         MessageBox.Show("Quá trình tải dữ liệu đã bị hủy.");
-                        return;
+                        return null;
                     }
                     catch (Exception ex)
                     {
                         MessageBox.Show(this, ex.Message, "Lỗi tải dữ liệu", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
+                        return null;
                     }
 
                     // Validation dữ liệu nhận từ DB
@@ -150,10 +143,9 @@ namespace Winforms_App_Template.Forms
                     {
                         MessageBox.Show($"Không tìm thấy dữ liệu cho công đoạn {ID_Cong_Doan}, Itemnumber: {ItemNumber}, Số lô: {LotNo} và số mẻ: {So_Me}");
                         // Ẩn loading và mở khóa các nút
-                        ToggleUiLoading(false);
                         _cts?.Dispose();
                         _cts = null;
-                        return;
+                        return null;
                     }
 
                     // Dữ liệu mẫu cho Header in 1 lần
@@ -170,24 +162,24 @@ namespace Winforms_App_Template.Forms
                     //};
 
                     // Kiểm tra ngoại lệ khi click nút hủy
-                    cts.Token.ThrowIfCancellationRequested();
+                    ct.ThrowIfCancellationRequested();
 
                     // Lấy data cho bảng trong detail
                     List<Catthoong_Row>? rows = null;
                     try
                     {
-                        rows = await _repo.Get_Cat_Ong_Tho(IdCongDoan: ID_Cong_Doan, ItemNumber: ItemNumber, LotNo: LotNo, So_Me: So_Me, ct: cts.Token);
+                        rows = await _repo.Get_Cat_Ong_Tho(IdCongDoan: ID_Cong_Doan, ItemNumber: ItemNumber, LotNo: LotNo, So_Me: So_Me, ct: ct);
                     }
                     catch (OperationCanceledException)
                     {
                         // Hủy quá trình tải dữ liệu
                         MessageBox.Show("Quá trình tải dữ liệu đã bị hủy.");
-                        return;
+                        return null;
                     }
                     catch (Exception ex)
                     {
                         MessageBox.Show(this, ex.Message, "Lỗi tải dữ liệu", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
+                        return null;
                     }
 
                     // Lấy danh sách id_input từ list thu được
@@ -197,18 +189,18 @@ namespace Winforms_App_Template.Forms
                     List<Input_Error_Model>? detail_error = null;
                     try
                     {
-                        detail_error = await input_error_repo.Get_Detail_Error(idInputs: List_IdInput, ct: cts.Token);
+                        detail_error = await input_error_repo.Get_Detail_Error(idInputs: List_IdInput, ct: ct);
                     }
                     catch (OperationCanceledException)
                     {
                         // Hủy quá trình tải dữ liệu
                         MessageBox.Show("Quá trình tải dữ liệu đã bị hủy.");
-                        return;
+                        return null;
                     }
                     catch (Exception ex)
                     {
                         MessageBox.Show(this, ex.Message, "Lỗi tải dữ liệu", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
+                        return null;
                     }
 
                     var pivot = BuildPivotMap(detail_error); // idInput -> (tenLoi->qty)
@@ -219,7 +211,7 @@ namespace Winforms_App_Template.Forms
                     //    .ToDictionary(g => g.Key, g => g.ToList());
 
                     // Kiểm tra ngoại lệ khi click nút hủy
-                    cts.Token.ThrowIfCancellationRequested();
+                    ct.ThrowIfCancellationRequested();
 
                     // Gộp dữ liệu vào 1 list
                     List<Catthoong_ReportRow> result = new List<Catthoong_ReportRow>(rows.Count);
@@ -277,16 +269,16 @@ namespace Winforms_App_Template.Forms
                     {
                         // Hủy quá trình tải dữ liệu
                         MessageBox.Show("Quá trình tải dữ liệu đã bị hủy.");
-                        return;
+                        return null;
                     }
                     catch (Exception ex)
                     {
                         MessageBox.Show(this, ex.Message, "Lỗi tải dữ liệu", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
+                        return null;
                     }
 
                     // Kiểm tra ngoại lệ khi click nút hủy
-                    cts.Token.ThrowIfCancellationRequested();
+                    ct.ThrowIfCancellationRequested();
 
                     // Nhóm tiêu chuẩn theo idInput để tra nhanh
                     var stdByInput = List_Standard_Report
@@ -386,42 +378,73 @@ namespace Winforms_App_Template.Forms
                     ReportLayoutHelpers.BindForRuntime(rpt, result, stdByInput, idFieldName: "idInput"); // gán List<Catthoong_ReportRow> + map subreport theo idInput
                     ReportLayoutHelpers.PushHeaderValues(rpt, header);
 
-                    cts.Token.ThrowIfCancellationRequested();
-                    // Cấu hình Dữ liệu cho báo cáo
-                    //rpt.ConfigureLayoutForCatongtho(result, List_Standard_Report, header, /*notePrintOnlyOnce*/ false);
+                    ct.ThrowIfCancellationRequested();
+                    return rpt;
+                },
+                caption: "Đang xuất báo cáo...");
+            if (rpt != null)
+            {
+                // Show preview (modal) — lúc này popup đã đóng, không bị kẹt
+                new ReportPrintTool(rpt).ShowRibbonPreviewDialog();
+            }
+        }
 
-                    // *** QUAN TRỌNG: ĐÓNG POPUP + MỞ KHÓA TRƯỚC KHI MỞ PREVIEW ***
-                    dlg.SafeClose();
-                    // Kết thúc scope using UiBlocker → tự mở khóa form:
+        private async Task<XtraReport?> Prepare_report(string ItemNumber, string LotNo, int So_Me, CancellationToken ct)
+        {
 
-                    // Hiển thị giao diện báo cáo
-                    //new ReportPrintTool(rpt).ShowRibbonPreviewDialog();
-                }
+            XtraReport? rpt = null; // sẽ gán khi xong phần dữ liệu
 
-                // Ra khỏi using UiBlocker → form chính đã Enabled trở lại.
-                // Nếu đã bị huỷ, KHÔNG mở preview.
-                if (cts.IsCancellationRequested) return;
-                if (rpt != null)
-                {
-                    // Show preview (modal) — lúc này popup đã đóng, không bị kẹt
-                    new ReportPrintTool(rpt).ShowRibbonPreviewDialog();
-                }
+            // Lấy data cho header của công đoạn cắt thô ống
+            Report_Header_Model? Cat_tho_ong_Header = null;
+            try
+            {
+                Cat_tho_ong_Header = await _repo.Get_Header_catthoong(IdCongDoan: 68, ItemNumber: ItemNumber, LotNo: LotNo, So_Me: So_Me, ct: ct);
             }
             catch (OperationCanceledException)
             {
-                // Nếu huỷ trong lúc await mà chưa catch riêng → rơi vào đây
-                MessageBox.Show("Tác vụ đã bị huỷ.");
+                // Hủy quá trình tải dữ liệu
+                MessageBox.Show("Hủy tải dữ liệu cho báo cáo");
+                return null;
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this, ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(this, ex.Message, "Lỗi khi tải dữ liệu", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
             }
-            finally
+
+            // Validation dữ liệu nhận từ DB
+            if (Cat_tho_ong_Header == null)
             {
-                try { dlg.SafeClose(); } catch { }
-                _cts?.Dispose();
-                _cts = null;
+                MessageBox.Show($"Không tìm thấy dữ liệu cho công đoạn {68}, Itemnumber: {ItemNumber}, Số lô: {LotNo} và số mẻ: {So_Me}");
+                return null;
             }
+
+            // Lấy data cho header cho công đoạn kiểm tra ống sau cắt thô
+            Report_Header_Model? Cat_tho_ong_Header_Standard = null;
+            try
+            {
+                Cat_tho_ong_Header_Standard = await _repo.Get_Header_catthoong(IdCongDoan: 148, ItemNumber: ItemNumber, LotNo: LotNo, So_Me: So_Me, ct: ct);
+            }
+            catch (OperationCanceledException)
+            {
+                // Hủy quá trình tải dữ liệu
+                MessageBox.Show("Hủy tải dữ liệu cho báo cáo");
+                return null;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.Message, "Lỗi khi tải dữ liệu", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+
+            // Validation dữ liệu nhận từ DB
+            if (Cat_tho_ong_Header_Standard == null)
+            {
+                MessageBox.Show($"Không tìm thấy dữ liệu cho công đoạn {69}, Itemnumber: {ItemNumber}, Số lô: {LotNo} và số mẻ: {So_Me}");
+                return null;
+            }
+
+            return rpt;
         }
 
         /// <summary>
@@ -494,35 +517,65 @@ namespace Winforms_App_Template.Forms
 
         }
 
-        /// <summary>
-        /// Ẩn hiện biểu tượng loading và khóa nút bấm tương ứng
-        /// </summary>
-        /// <param name="loading"></param>
-        private void ToggleUiLoading(bool loading)
-        {
-            Export_Document_Button.Enabled = !loading;
-            Cancel_Export_Document.Enabled = loading;
-            UseWaitCursor = loading;
-        }
-
         private async void simpleButton1_Click(object sender, EventArgs e)
         {
             try
             {
-                // Khởi tạo report cần thiết kế
-                var rpt = new Testreport();                     // Instance report ban đầu (layout mặc định/embedded khi không thể lấy bản mới nhất từ máy chủ)
-                rpt.DisplayName = "Catongtho_Main";             // Đặt display name cho báo cáo này để lưu trữ vào DB
+                var tool = await LoadingHelper.RunFunctionWithLoadingAsync(
+                    owner: this,
+                    workMethod: LoadReportLayoutAsync,                   // <-- method group
+                    arg: "Catongtho_Main",                                 // reportKey
+                    caption: "Đang tải thiết kế ..."
+                     // gifOverride: Properties.Resources.loading_gif_khac // nếu muốn
+                 );
+                if (tool == null)
+                {
+                    // Lỗi khi tải layout
+                    MessageBox.Show(this, "Không thể tải trang thiết kế báo cáo.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                // Mở Designer dạng MODAL: block cho đến khi người dùng đóng
+                tool.ShowRibbonDesignerDialog(UserLookAndFeel.Default);       // Khác với ShowRibbonDesigner(): modal giúp “đóng → rồi save”
+            }
+            catch (OperationCanceledException)
+            {
+                // Người dùng bấm Hủy → không làm gì thêm (tuỳ ý)
+                MessageBox.Show(this,"Hủy", "Người dùng hủy",
+                    MessageBoxButtons.OK);
+            }
+            catch (Exception ex)
+            {
+                // ❗️BÁO LỖI Ở UI THREAD (hợp lệ, KHÔNG cross-thread)
+                MessageBox.Show(this, ex.Message, "Lỗi mở Designer/Nạp layout",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+            
 
-                // Khai báo class chịu trách nhiệm quản lý việc tải form mới, lưu form vào DB
+        /// <summary>
+        /// Tải trang thiết kế form cho từng công đoạn theo reportKey
+        /// </summary>
+        /// <param name="reportKey"></param>
+        /// <param name="ct"></param>
+        /// <returns></returns>
+        private async Task<ReportDesignTool?> LoadReportLayoutAsync(string reportkey, CancellationToken ct)
+        {
+            try
+            {
+                // Khởi tạo report cần thiết kế
+                XtraReport rpt = new Testreport();
+                rpt.DisplayName = reportkey;                       // Đặt display name cho báo cáo này để lưu trữ vào DB
+
+                // Khai báo class chịu trách nhiệm quản lý việc tải form, lưu form vào DB
                 var updatedBy = Environment.UserName;
-                var reportName = ReportLayoutStore.GetKey(rpt);   // Lấy key của report (dùng DisplayName nếu có, không thì lấy tên class)
+                var reportName = ReportLayoutStore.GetKey(rpt);    // Lấy key của report (dùng DisplayName nếu có, không thì lấy tên class)
                 var store = new ReportLayoutStore(
                     reportName: reportName,
                     updatedBy: updatedBy             // Audit: ai là người “Save”
                 );
 
-                // Trước khi mở Designer – thử nạp layout mới nhất từ DB 
-                await store.TryLoadAsync(rpt);                  // Nếu có trong DB → LoadLayoutFromXml; nếu không → giữ layout mặc định
+                // Trước khi mở Designer – thử nạp layout mới nhất từ DB thông qua từ khóa DisplayName hoặc tên class của report được truyền vào
+                await store.TryLoadAsync(rpt, ct: ct);                  // Nếu có trong DB → LoadLayoutFromXml; nếu không → giữ layout mặc định
 
                 // Nạp layout từ DB cho từng Subreport con trước khi mở Designer
                 foreach (var sub in ReportLayoutHelpers.EnumerateSubreports(rpt))
@@ -535,7 +588,7 @@ namespace Winforms_App_Template.Forms
                         child.DisplayName = child.GetType().Name;
 
                     await new ReportLayoutStore(ReportLayoutStore.GetKey(child), updatedBy)
-                        .TryLoadAsync(child);
+                        .TryLoadAsync(child,  ct: ct);
                 }
 
                 // Chuẩn bị whitelist → DataTable schema cho từng band để gắn vào datasource, dùng cho design
@@ -544,8 +597,8 @@ namespace Winforms_App_Template.Forms
                     // Band "Catongtho_Report": Sử dụng bảng Catthoong và đặt tên hiển thị là Cat_tho_ong
                     ["Catongtho_Report"] = FieldWhitelistRegistry.Catthoong.ToDesignSchema("Cat_tho_ong"),
 
-                    // Ví dụ band thứ 2 có whitelist khác:
-                    // ["DetailBand_Report2"] = FieldWhitelistRegistry.Band2.ToDesignSchema("Band2Rows"),
+                    // Band "Kiem_tra_ong_sau_cat_tho":
+                     ["Kiem_tra_ong_sau_cat_tho"] = FieldWhitelistRegistry.Kiemtrasaucattho.ToDesignSchema("Kiemtrasaucattho"),
                 };
 
                 // Gắn schema cho từng band theo tên
@@ -570,13 +623,13 @@ namespace Winforms_App_Template.Forms
                             return FieldWhitelistRegistry.Standard_Catthoong.ToDesignSchema("StdRows");
 
                         // Nếu bạn có band khác với schema khác, xử lý tại đây:
-                        // if (ownerBand?.Name == "DetailBand_Report2") return FieldWhitelistRegistry.Sub2.ToDesignSchema("StdRows2");
+                         if (ownerBand?.Name == "Kiem_tra_ong_sau_cat_tho") return FieldWhitelistRegistry.Kiemtrasaucattho_Standard.ToDesignSchema("StdRows2");
 
                         // Mặc định: vẫn trả schema Sub
                         return FieldWhitelistRegistry.Standard_Catthoong.ToDesignSchema("StdRows");
                     });
 
-                // 4) (Tuỳ chọn) đổi nhãn trong whitelist trước khi mở:
+                // đổi nhãn trong whitelist trước khi mở:
                 // FieldWhitelistRegistry.Main.SetLabel("NguoiTT", "Người thao tác (VN)");
                 // FieldWhitelistRegistry.Main.Add("val1", typeof(string), "Ống dài sử dụng");
                 // FieldWhitelistRegistry.Main.Remove("Remark");
@@ -622,33 +675,16 @@ namespace Winforms_App_Template.Forms
                     specs: headerParams,
                     visible: false);
 
-                // Mở Designer dạng MODAL: block cho đến khi người dùng đóng
-                tool.ShowRibbonDesignerDialog(UserLookAndFeel.Default);       // Khác với ShowRibbonDesigner(): modal giúp “đóng → rồi save”
+                return tool;
 
-                // Sau khi Designer đóng: nếu còn thay đổi mà user QUÊN bấm Save → auto-save (Chọn ko save cũng là yes luôn)
-                //var activePanel = controller.ActiveDesignPanel; // Lấy panel đang/đã active qua MDI controller (không cần cast form) 
-                //if (activePanel != null && activePanel.ReportState == ReportState.Changed) // KHÔNG dùng Modified; đúng là Changed
-                //{
-                //    string? Program_Name = Application.ProductName;
-                //    if (Program_Name == string.Empty || Program_Name == null) Program_Name = "Default";
-
-                //    // a) Local
-                //    var localPath = Path.Combine(
-                //        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                //        Program_Name, "Reports", $"{reportName}.repx");
-                //    Directory.CreateDirectory(Path.GetDirectoryName(localPath)!);
-                //    rpt.SaveLayoutToXml(localPath);
-
-                //    // b) DB
-                //    await store.SaveAsync(activePanel.Report);  // Lưu vào DB để lần sau mọi máy cùng nhận bản mới
-                //}
             }
             catch (Exception ex)
             {
                 // BẮT MỌI LỖI ĐỂ KHÔNG VĂNG APP
                 MessageBox.Show(this, ex.Message, "Lỗi mở Designer/Nạp layout",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+                return null;
+            }   
         }
     }
 }

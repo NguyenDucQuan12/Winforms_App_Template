@@ -100,7 +100,7 @@ namespace Winforms_App_Template.Forms
         public void ConfigureLayoutForCatongtho(
             IList<Catthoong_ReportRow> rows,
             IList<Standard_Model> list_standard,
-            Catongtho_HeaderModel headerData,
+            Report_Header_Model headerData,
             bool notePrintOnlyOnce = false)
         {
             // Kiểm tra có dữ liệu đầu vào

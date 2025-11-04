@@ -175,7 +175,7 @@ namespace Winforms_App_Template.Forms
             this.Kiem_tra_ong_sau_cat_tho_data = new DevExpress.XtraReports.UI.DetailBand();
             this.xrLabel4 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrRichText1 = new DevExpress.XtraReports.UI.XRRichText();
-            this.Standards_Subreport = new DevExpress.XtraReports.UI.XRSubreport();
+            this.Kiem_tra_ong_sau_cat_tho_Standards_Subreport = new DevExpress.XtraReports.UI.XRSubreport();
             this.xrPanel3 = new DevExpress.XtraReports.UI.XRPanel();
             this.xrTable3 = new DevExpress.XtraReports.UI.XRTable();
             this.xrTableRow17 = new DevExpress.XtraReports.UI.XRTableRow();
@@ -1714,7 +1714,7 @@ namespace Winforms_App_Template.Forms
             this.Kiem_tra_ong_sau_cat_tho_data.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
             this.xrLabel4,
             this.xrRichText1,
-            this.Standards_Subreport,
+            this.Kiem_tra_ong_sau_cat_tho_Standards_Subreport,
             this.xrPanel3});
             this.Kiem_tra_ong_sau_cat_tho_data.HeightF = 128.2153F;
             this.Kiem_tra_ong_sau_cat_tho_data.Name = "Kiem_tra_ong_sau_cat_tho_data";
@@ -1746,12 +1746,12 @@ namespace Winforms_App_Template.Forms
             this.xrRichText1.StylePriority.UseBorders = false;
             this.xrRichText1.StylePriority.UseFont = false;
             // 
-            // Standards_Subreport
+            // Kiem_tra_ong_sau_cat_tho_Standards_Subreport
             // 
-            this.Standards_Subreport.LocationFloat = new DevExpress.Utils.PointFloat(838.2239F, 0F);
-            this.Standards_Subreport.Name = "Standards_Subreport";
-            this.Standards_Subreport.ReportSource = new Winforms_App_Template.Forms.SubReport.Standards_Subreport_32061();
-            this.Standards_Subreport.SizeF = new System.Drawing.SizeF(311.0671F, 74.99998F);
+            this.Kiem_tra_ong_sau_cat_tho_Standards_Subreport.LocationFloat = new DevExpress.Utils.PointFloat(838.2239F, 0F);
+            this.Kiem_tra_ong_sau_cat_tho_Standards_Subreport.Name = "Kiem_tra_ong_sau_cat_tho_Standards_Subreport";
+            this.Kiem_tra_ong_sau_cat_tho_Standards_Subreport.ReportSource = new Winforms_App_Template.Forms.SubReport.Standards_Subreport_32061();
+            this.Kiem_tra_ong_sau_cat_tho_Standards_Subreport.SizeF = new System.Drawing.SizeF(311.0671F, 74.99998F);
             // 
             // xrPanel3
             // 
@@ -2968,6 +2968,6 @@ namespace Winforms_App_Template.Forms
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell170;
         private DevExpress.XtraReports.UI.XRLabel xrLabel4;
         private DevExpress.XtraReports.UI.XRRichText xrRichText1;
-        private DevExpress.XtraReports.UI.XRSubreport Standards_Subreport;
+        private DevExpress.XtraReports.UI.XRSubreport Kiem_tra_ong_sau_cat_tho_Standards_Subreport;
     }
 }

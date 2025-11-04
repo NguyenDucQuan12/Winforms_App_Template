@@ -50,10 +50,10 @@ namespace Winforms_App_Template.Report
         /// ta gắn schema cho CHÍNH subreport đó, chọn schema dựa vào subreport (ví dụ theo tên band cha).
         /// </summary>
         public static void WireSubreportSchemaOnDemandByBand(
-    XRDesignMdiController controller,    // MDI của Designer
-    XtraReport mainReport,               // report chính
-    Func<XRSubreport, DataTable> subSchemaFactory // chọn schema theo sub (theo band, theo tên, ...)
-)
+            XRDesignMdiController controller,    // MDI của Designer
+            XtraReport mainReport,               // report chính
+            Func<XRSubreport, DataTable> subSchemaFactory // chọn schema theo sub (theo band, theo tên, ...)
+        )
         {
             if (controller == null) throw new ArgumentNullException(nameof(controller));
             if (mainReport == null) throw new ArgumentNullException(nameof(mainReport));

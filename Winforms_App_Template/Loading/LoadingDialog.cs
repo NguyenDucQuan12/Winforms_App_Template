@@ -1,114 +1,161 @@
-using DevExpress.XtraRichEdit.Model;
 using System;
-using System.Drawing;               // Image, Icon, Size, Point, ContentAlignment
-using System.Windows.Forms;         // Form, PictureBox, Button, Label
-using System.IO;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Winforms_App_Template.Loading
 {
-    /// <summary>
-    /// Popup loading cực gọn:
-    /// - Hiển thị ảnh GIF động (đặt trong Resources hoặc load từ file).
-    /// - Chỉ có 1 nút Cancel để người dùng huỷ.
-    /// - Không có nút đóng/phóng to/thu nhỏ → buộc người dùng chỉ có thể bấm Cancel.
-    /// - Không tự đóng khi bấm Cancel; chỉ phát tín hiệu Cancel (CTS) và thay đổi text → 
-    ///   popup sẽ tự đóng khi công việc kết thúc (ta Close() trong finally).
-    /// </summary>
-    public sealed class LoadingDialog : Form
+    public partial class LoadingDialog : Form
     {
-        private readonly PictureBox _pic;
-        private readonly Button _btnCancel;
+        // Giữ tham chiếu tới CTS do caller truyền vào, để nút Hủy có thể Cancel thật sự.
         private readonly CancellationTokenSource _cts;
 
-        public LoadingDialog(CancellationTokenSource cts, string? message = null)
+        /// <summary>
+        /// Khởi tạo popup.
+        /// </summary>
+        /// <param name="cts">CTS do luồng công việc bên ngoài cung cấp</param>
+        /// <param name="caption">Tiêu đề form (ví dụ "Đang xử lý...")</param>
+        /// <param name="gif">Tuỳ chọn: ảnh GIF thay thế, nếu null dùng ảnh trong Designer</param>
+        public LoadingDialog(CancellationTokenSource cts, string? caption = "Đang xử lý...", Image? gif = null)
         {
+            // Lưu CTS hoặc báo lỗi nếu null
             _cts = cts ?? throw new ArgumentNullException(nameof(cts));
 
-            // ===== Form =====
-            FormBorderStyle = FormBorderStyle.FixedDialog; // có viền nhẹ
-            StartPosition = FormStartPosition.CenterParent;
-            ControlBox = false;                       // ẩn X / maximize / minimize
-            MinimizeBox = false;
-            MaximizeBox = false;
-            ShowIcon = false;
-            ShowInTaskbar = false;
-            TopMost = true;
-            Text = message ?? "Đang xử lý...";
-            ClientSize = new Size(420, 300);
-            DoubleBuffered = true;
+            // Khởi tạo UI theo layout (tablePanel1/pictureBox1/_btnCancel)
+            InitializeComponent();
 
-            // ===== Layout: 2 hàng (GIF, nút) =====
-            var layout = new TableLayoutPanel
-            {
-                Dock = DockStyle.Fill,
-                ColumnCount = 1,
-                RowCount = 2
-            };
-            layout.RowStyles.Add(new RowStyle(SizeType.Percent, 100f)); // GIF chiếm hết
-            layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 56f)); // Hàng của nút
-            Controls.Add(layout);
+            // ===== Cấu hình chung của form =====
 
-            // ===== GIF =====
-            _pic = new PictureBox
-            {
-                Dock = DockStyle.Fill,
-                SizeMode = PictureBoxSizeMode.Zoom // co giãn vừa khung, giữ tỉ lệ
-            };
-            // Ưu tiên resource:
-            try { _pic.Image = Properties.Resources.loading_gif; }
-            catch
-            {
-                var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "assets", "loading.gif");
-                if (File.Exists(path)) _pic.Image = Image.FromFile(path);
-            }
-            layout.Controls.Add(_pic, 0, 0);
+            // Ẩn toàn bộ nút hệ thống (Close/Min/Max) ở caption bar
+            ControlBox = false;     // ẩn nút X + menu hệ thống
+            MinimizeBox = false;     // ẩn nút thu nhỏ
+            MaximizeBox = false;     // ẩn nút phóng to
+            ShowIcon = false;     // không hiển thị icon nhỏ
+            ShowInTaskbar = false;     // không hiện taskbar
+            TopMost = true;      // nằm trên form cha (tránh bị che)
 
-            // ===== Khu nút Cancel (canh giữa) =====
-            var panelButtons = new FlowLayoutPanel
-            {
-                Dock = DockStyle.Fill,
-                FlowDirection = FlowDirection.LeftToRight,
-                WrapContents = false,
-                AutoSize = false,
-                Padding = new Padding(0),
-                Margin = new Padding(0)
-            };
-            panelButtons.Controls.Add((_btnCancel = new Button
-            {
-                Text = "Cancel",
-                AutoSize = true,
-                Anchor = AnchorStyles.None,
-                Margin = new Padding(0)
-            }));
-            panelButtons.Layout += (_, __) =>
-            {
-                // canh giữa nút theo chiều ngang và dọc
-                panelButtons.Padding = new Padding(
-                    Math.Max(0, (panelButtons.ClientSize.Width - _btnCancel.Width) / 2),
-                    Math.Max(0, (panelButtons.ClientSize.Height - _btnCancel.Height) / 2),
-                    0, 0);
-            };
-            layout.Controls.Add(panelButtons, 0, 1);
+            // ===== Loại bỏ mọi khoảng trống quanh TablePanel =====
+            // DevExpress TablePanel mặc định có "skin indents" → tạo padding 12px như bạn thấy (Location (13,12)).
+            // Tắt nó đi + đưa mọi padding/margin về 0.
+            tablePanel1.UseSkinIndents = false;             // QUAN TRỌNG: bỏ padding nội bộ theo skin
+            tablePanel1.Padding = new Padding(0);           // Không đệm viền trong
+            tablePanel1.Margin = new Padding(0);           // Không đệm viền ngoài
+            this.Padding = new Padding(0);           // Form cũng không có padding
+            this.AutoSize = false;                    // Tránh autosize gây nảy layout
 
-            // ===== Cancel =====
+            StartPosition = FormStartPosition.CenterParent; // bật giữa form gọi
+
+            // Đặt tiêu đề nếu có truyền vào
+            Text = string.IsNullOrWhiteSpace(caption) ? "Đang xử lý..." : caption;
+
+            // ===== Cấu hình GIF =====
+
+            // Bảo đảm PictureBox luôn co giãn phủ khung, giữ tỉ lệ (tránh méo ảnh)
+            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+
+            // Nếu caller truyền GIF riêng -> dùng GIF đó; nếu không, giữ ảnh từ Designer (Properties.Resources.loading_gif)
+            if (gif != null)
+                pictureBox1.Image = gif;
+
+            // ===== Cấu hình nút Hủy =====
+            // Gắn handler: khi bấm Hủy -> vô hiệu nút (tránh double click), gửi tín hiệu Cancel
             _btnCancel.Click += (_, __) =>
             {
-                _btnCancel.Enabled = false;
-                try { _cts.Cancel(); } catch { }
+                _btnCancel.Enabled = false;    // khoá tránh bấm thêm lần nữa
+                try { _cts.Cancel(); } catch { /* an toàn: CTS có thể đã bị Dispose */ }
             };
 
-            // Cho phép nhấn ESC = Cancel
-            KeyPreview = true;
+            // ===== Bắt phím ESC = Hủy =====
+            KeyPreview = true;                 // form bắt phím trước khi control con nhận
             KeyDown += (s, e) =>
             {
                 if (e.KeyCode == Keys.Escape && _btnCancel.Enabled)
                 {
-                    _btnCancel.PerformClick();
-                    e.Handled = true;
+                    _btnCancel.PerformClick(); // mô phỏng click nút
+                    e.Handled = true;          // đã xử lý ESC
                 }
             };
         }
 
+        /// <summary>
+        /// Khi form được hiển thị lần đầu → gắn theo dõi owner và căn giữa ngay.
+        /// </summary>
+        protected override void OnShown(EventArgs e)
+        {
+            base.OnShown(e);
+            AttachOwnerCentering();                       // gắn các event của owner để luôn bám giữa
+            CenterToOwnerClient();                        // căn giữa lần đầu
+        }
+
+        /// <summary>
+        /// ĐẶt popup luôn nằm giữa vùng client của owner.
+        /// </summary>
+        private void AttachOwnerCentering()
+        {
+            if (Owner == null) return;
+
+            // Khi owner di chuyển/đổi size/layout → recenter popup
+            Owner.LocationChanged += OwnerChanged_Recenter;
+            Owner.SizeChanged += OwnerChanged_Recenter;
+            Owner.Resize += OwnerChanged_Recenter;
+            Owner.Layout += OwnerChanged_Recenter;
+
+            // Nếu owner đóng thì popup cũng tự đóng theo
+            Owner.FormClosed += (_, __) => { if (!IsDisposed) SafeClose(); };
+        }
+
+        private void OwnerChanged_Recenter(object? sender, EventArgs e) => CenterToOwnerClient();
+
+        private void CenterToOwnerClient()
+        {
+            if (Owner == null || Owner.IsDisposed) return;
+
+            // Lấy hình chữ nhật "vùng client" của owner, convert sang toạ độ màn hình
+            Rectangle clientScreen = Owner.RectangleToScreen(Owner.ClientRectangle);
+
+            // Tính toạ độ để popup nằm chính giữa vùng client đó
+            int x = clientScreen.Left + (clientScreen.Width - Width) / 2;
+            int y = clientScreen.Top + (clientScreen.Height - Height) / 2;
+
+            // Đặt vị trí mới
+            Location = new Point(x, y);
+        }
+
+        /// <summary>
+        /// Chặn người dùng tự đóng (Alt+F4) để bắt buộc họ dùng nút Hủy.
+        /// </summary>
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            // Nếu người dùng cố đóng bằng hành động "UserClosing" (Alt+F4, menu), ta từ chối
+            if (e.CloseReason == CloseReason.UserClosing && Visible)
+            {
+                // Ta KHÔNG tự đóng tại đây, chỉ cho phép Hủy (Cancel) hoặc caller Close() chủ động
+                e.Cancel = true;
+                // Có thể hiển thị gợi ý:
+                // MessageBox.Show("Vui lòng bấm nút Hủy để dừng tiến trình.");
+            }
+            base.OnFormClosing(e);
+        }
+
+        /// <summary>
+        /// Cập nhật caption trong lúc chạy (tuỳ chọn).
+        /// Gọi an toàn từ mọi thread.
+        /// </summary>
+        public void SetCaption(string text)
+        {
+            if (IsDisposed) return;
+            if (InvokeRequired) { BeginInvoke(new Action<string>(SetCaption), text); return; }
+            Text = text;
+        }
+
+        /// <summary>
+        /// Đóng form an toàn từ mọi thread.
+        /// </summary>
         public void SafeClose()
         {
             if (IsDisposed) return;

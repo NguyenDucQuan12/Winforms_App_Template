@@ -35,4 +35,24 @@ namespace Winforms_App_Template.Database.Model
         public int Beyond_The_Standard { get; set; }          // Lỗi Chiều dài ngoài tiêu chuẩn
         public int Other { get; set; }                        // Lỗi khác
     }
+
+    public sealed class Kiem_tra_ong_sau_cat_tho_Standard_Model
+    {
+        public int idInput { get; init; }                             // ID Form nhập dữ liệu để lấy chi tiết lỗi
+        public int idStandard { get; init; }                          // ID Form nhập dữ liệu để lấy chi tiết lỗi
+        public string TenTieuChuan { get; init; } = "";               // Mã lý do kiểm tra: I, II, III, IV
+        public string MaTieuChuan { get; init; } = "";                // Mã lý do kiểm tra: I, II, III, IV
+        public string Loai_size { get; init; } = "";                  // Mã lý do kiểm tra: I, II, III, IV
+        public string Loai_kytu { get; init; } = "";                  // Mã lý do kiểm tra: I, II, III, IV
+        public string Loai_chieudai { get; init; } = "";              // Mã lý do kiểm tra: I, II, III, IV
+        public string Loai_somay { get; init; } = "";                 // Mã lý do kiểm tra: I, II, III, IV
+        public string Loai_masp { get; init; } = "";
+        public string Loai_ten { get; init; } = "";
+        public string TCMin { get; init; } = "";
+        public string TCMax { get; init; } = "";
+        public string TenNVL { get; init; } = "";
+        public string MaNVL { get; init; } = "";
+        public DateTime Fromdate { get; init; }
+        public DateTime Todate { get; init; }
+    }
 }

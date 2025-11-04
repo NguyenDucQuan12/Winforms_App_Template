@@ -14,7 +14,7 @@ namespace Winforms_App_Template.Database.Table
         private readonly DbExecutor _db; // Hạ tầng thực thi Dapper + Polly
         public NewInputs_Table(DbExecutor db) => _db = db; // Contructor lấy db
 
-        public async Task<Catongtho_HeaderModel> Get_Header_catthoong(int IdCongDoan, string ItemNumber, string LotNo, int So_Me, CancellationToken ct = default)
+        public async Task<Report_Header_Model> Get_Header_catthoong(int IdCongDoan, string ItemNumber, string LotNo, int So_Me, CancellationToken ct = default)
         {
             var get_header_catthoong_query = @"
                 SELECT
@@ -49,7 +49,7 @@ namespace Winforms_App_Template.Database.Table
             };
 
             // Thực thi
-            var rows = (await _db.QueryAsync<Catongtho_HeaderModel>(get_header_catthoong_query, param, ct: ct)).ToList();
+            var rows = (await _db.QueryAsync<Report_Header_Model>(get_header_catthoong_query, param, ct: ct)).ToList();
             // Trả dòng đầu nếu có, hoặc null nếu không có
             return rows.FirstOrDefault();
         }

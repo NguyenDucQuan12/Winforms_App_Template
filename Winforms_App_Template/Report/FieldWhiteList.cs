@@ -179,5 +179,32 @@ namespace Winforms_App_Template.Report
 
         // Mở rộng:
         // .Add("Loai_size", typeof(string), "Loại size")
+
+
+        public static readonly FieldWhitelist Kiemtrasaucattho = new FieldWhitelist()
+            .Add("StartTime", typeof(DateTime), "Thời gian bắt đầu")
+            .Add("NguoiTT", typeof(string), "Người thao tác")
+            .Add("TenMay_Ban", typeof(string), "Bàn thao tác")
+            .Add("SLSudung", typeof(int), "Số lượng sử dụng")
+            .Add("Remark", typeof(string), "Ghi chú")
+            .Add("val1", typeof(string), "Mã pingauge 1")
+            .Add("val2", typeof(string), "Mã pingauge 2")
+            .Add("val3", typeof(string), "Độ dài pingauge 1")
+            .Add("val4", typeof(string), "Độ dài pingauge 2")
+            .Add("val5", typeof(string), "Số lượng kiểm tra 1")
+            .Add("val6", typeof(string), "Số lượng kiểm tra 2")
+            .Add("val7", typeof(string), "Số lượng OK 1")
+            .Add("val8", typeof(string), "Số lượng OK 2")
+            .Add("val9", typeof(string), "Số lượng NG 1")
+            .Add("val10", typeof(string), "Số lượng NG 2")
+            .Add("val11", typeof(string), "Mã quản lý mẫu giới hạn")
+            .Add("val13", typeof(string), "Kết quả xác nhận tồn lưu");
+
+
+        public static readonly FieldWhitelist Kiemtrasaucattho_Standard = new FieldWhitelist()
+            .Add("TenTieuChuan", typeof(string), "Hạng mục kiểm tra")
+            .Add("MaTieuChuan", typeof(string), "Mã tiêu chuẩn")
+            .Add("TCMin", typeof(string), "TC Min")
+            .Add("TCMax", typeof(string), "TC Max");
     }
 }

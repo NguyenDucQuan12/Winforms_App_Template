@@ -52,22 +52,28 @@ namespace Winforms_App_Template.Report
             if (string.IsNullOrWhiteSpace(bandName)) throw new ArgumentException("bandName required.", nameof(bandName));
             if (specs == null) return;                                           // không có gì để tạo
 
+            // Tìm band theo tên
+            var band = DesignSchema.FindDetailReportBandByName(rpt, bandName);
+            if (band == null) throw new InvalidOperationException($"Không tìm thấy DetailReportBand '{bandName}'.");
+
             foreach (var spec in specs)
             {
                 // Tạo tên đầy đủ: p_{ParamName}
-                var full = $"p_{spec.Name}";
+                var fullName = $"p_{bandName}_{spec.Name}";
 
                 // Nếu đã có parameter trùng tên → bỏ qua
-                var existing = rpt.Parameters[full];
+                var existing = rpt.Parameters[fullName];
                 if (existing != null) continue;
 
                 // Tạo mới
                 var p = new Parameter
                 {
-                    Name = full,                                             // tên param
-                    Type = spec.Type,                                        // kiểu .NET
-                    Description = spec.Label,                                   // nhãn gợi ý (hiện ở Field List)
-                    Visible = visible                                           // thường để false
+                    Name = fullName,                                             // tên param
+                    Type = spec.Type,                                            // kiểu .NET
+                    Description = string.IsNullOrWhiteSpace(spec.Label)
+                                ? $"{bandName}.{spec.Name}"                      // gợi ý band + tên
+                                : spec.Label,                                    // nhãn gợi ý (hiện ở Field List)
+                    Visible = visible                                            // thường để false
                 };
 
                 // Giá trị mặc định (nếu có)
