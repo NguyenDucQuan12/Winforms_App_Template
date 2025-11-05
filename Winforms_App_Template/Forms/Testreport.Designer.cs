@@ -405,7 +405,7 @@ namespace Winforms_App_Template.Forms
             // 
             this.xrTableCell44.Multiline = true;
             this.xrTableCell44.Name = "xrTableCell44";
-            this.xrTableCell44.Text = "`";
+            this.xrTableCell44.Text = "Mã pingauge\r\n0.98mm";
             this.xrTableCell44.Weight = 2.9769956875139494D;
             // 
             // xrTableCell73
