@@ -14,9 +14,9 @@ namespace Winforms_App_Template.Database.Table
         private readonly DbExecutor _db; // Hạ tầng thực thi Dapper + Polly
         public NewInputs_Table(DbExecutor db) => _db = db; // Contructor lấy db
 
-        public async Task<Report_Header_Model> Get_Header_catthoong(int IdCongDoan, string ItemNumber, string LotNo, int So_Me, CancellationToken ct = default)
+        public async Task<Report_Header_Model?> Get_Report_Header(int IdCongDoan, string ItemNumber, string LotNo, int So_Me, CancellationToken ct = default)
         {
-            var get_header_catthoong_query = @"
+            var get_report_header_query = @"
                 SELECT
                     CAST(ni.idCongDoan AS nvarchar(20)) AS ID_Congdoan, 
                     cd.TenCongDoan                        AS Name_Congdoan,
@@ -49,20 +49,21 @@ namespace Winforms_App_Template.Database.Table
             };
 
             // Thực thi
-            var rows = (await _db.QueryAsync<Report_Header_Model>(get_header_catthoong_query, param, ct: ct)).ToList();
+            var rows = (await _db.QueryAsync<Report_Header_Model>(get_report_header_query, param, ct: ct)).ToList();
             // Trả dòng đầu nếu có, hoặc null nếu không có
             return rows.FirstOrDefault();
         }
-        public async Task<List<Catthoong_Row>> Get_Cat_Ong_Tho(int IdCongDoan, string ItemNumber, string LotNo, int So_Me, CancellationToken ct = default)
+        public async Task<List<New_Input_Row>> Get_Detail_Table(int IdCongDoan, string ItemNumber, string LotNo, int So_Me, CancellationToken ct = default)
         {
             var cat_ong_tho_query = @"
                 SELECT 
-                        ni.idInput,
-                        ld.MaKT,
-                        mb.TenMay_Ban,
-                        ni.SLSudung,
-                        ni.StartTime,
-                        ni.NguoiTT,
+                        ni.idInput,             -- ID Form nhập dữ liệu
+                        ld.MaKT,                -- Mã kiểm tra
+                        mb.TenMay_Ban,          -- Tên máy bàn
+                        ni.SLSudung,            -- Số lượng sử dụng
+                        ni.StartTime,           -- Thời gian bắt đầu
+                        ni.NguoiTT,             -- Người thao tác
+                        ni.Remark,               -- Ghi chú cho mỗi dòng thao tác
                         ni.val1,                -- Số lượng ống dài sử dụng
                         ni.val2,                -- Số lượng ống dài cắt được
                         ni.val3,                -- Mã quản lý thicness gauge
@@ -78,7 +79,24 @@ namespace Winforms_App_Template.Database.Table
                         ni.val13,               -- Thước sử dụng 3
                         ni.val14,               -- Thước sử dụng yes no
                         ni.val15,               -- Kết quả xác nhận tồn lưu yes no
-                        ni.Remark               -- Ghi chú cho mỗi dòng thao tác
+                        ni.val16,               -- Để cho các mục đích trong tương lai
+                        ni.val17,               -- Để cho các mục đích trong tương lai
+                        ni.val18,               -- Để cho các mục đích trong tương lai
+                        ni.val19,               -- Để cho các mục đích trong tương lai
+                        ni.val20,               -- Để cho các mục đích trong tương lai
+                        ni.val21,               -- Để cho các mục đích trong tương lai
+                        ni.val22,               -- Để cho các mục đích trong tương lai
+                        ni.val23,               -- Để cho các mục đích trong tương lai
+                        ni.val24,               -- Để cho các mục đích trong tương lai
+                        ni.val25,               -- Để cho các mục đích trong tương lai
+                        ni.val26,               -- Để cho các mục đích trong tương lai
+                        ni.val27,               -- Để cho các mục đích trong tương lai
+                        ni.val28,               -- Để cho các mục đích trong tương lai
+                        ni.val29,               -- Để cho các mục đích trong tương lai
+                        ni.val30,               -- Để cho các mục đích trong tương lai
+                        ni.val31,               -- Để cho các mục đích trong tương lai
+                        ni.val32                -- Để cho các mục đích trong tương lai
+
                 FROM
                         tblNewInput AS ni
                 LEFT JOIN 
@@ -103,7 +121,7 @@ namespace Winforms_App_Template.Database.Table
             };
 
             // Thực thi
-            var rows = (await _db.QueryAsync<Catthoong_Row>(cat_ong_tho_query, param, ct: ct)).ToList();
+            var rows = (await _db.QueryAsync<New_Input_Row>(cat_ong_tho_query, param, ct: ct)).ToList();
 
             return rows;
         }

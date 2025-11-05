@@ -1416,7 +1416,7 @@ namespace Winforms_App_Template.Forms
             this.xrTable4.Rows.AddRange(new DevExpress.XtraReports.UI.XRTableRow[] {
             this.xrTableRow9,
             this.xrTableRow10});
-            this.xrTable4.SizeF = new System.Drawing.SizeF(649.8844F, 50F);
+            this.xrTable4.SizeF = new System.Drawing.SizeF(599.9849F, 50F);
             this.xrTable4.StylePriority.UseFont = false;
             this.xrTable4.StylePriority.UseTextAlignment = false;
             this.xrTable4.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
@@ -1444,14 +1444,14 @@ namespace Winforms_App_Template.Forms
             this.xrTableCell35.Multiline = true;
             this.xrTableCell35.Name = "xrTableCell35";
             this.xrTableCell35.Text = "I - Tiếng Nhật Đầu lô, khi thay đổi chủng loại";
-            this.xrTableCell35.Weight = 1.9002297982457625D;
+            this.xrTableCell35.Weight = 1.2279931054236606D;
             // 
             // xrTableCell36
             // 
             this.xrTableCell36.Multiline = true;
             this.xrTableCell36.Name = "xrTableCell36";
             this.xrTableCell36.Text = "II - Tiếng Nhật Kiểm tra khi khởi đọng máy và trước khi kết thúc vận hành";
-            this.xrTableCell36.Weight = 1.819740142680347D;
+            this.xrTableCell36.Weight = 2.1350595397839576D;
             // 
             // xrTableRow10
             // 
@@ -1483,26 +1483,26 @@ namespace Winforms_App_Template.Forms
             this.xrTableCell39.Multiline = true;
             this.xrTableCell39.Name = "xrTableCell39";
             this.xrTableCell39.Text = "IV- Tiếng Nhật Kiểm tra khi thay thế dung môi";
-            this.xrTableCell39.Weight = 1.6557357639223185D;
+            this.xrTableCell39.Weight = 1.6206742614244196D;
             // 
             // xrTableCell41
             // 
             this.xrTableCell41.Multiline = true;
             this.xrTableCell41.Name = "xrTableCell41";
             this.xrTableCell41.Text = "V - Tiếng Nhật Khác";
-            this.xrTableCell41.Weight = 0.83624093526623067D;
+            this.xrTableCell41.Weight = 0.51438514204563834D;
             // 
             // xrTable2
             // 
             this.xrTable2.Font = new DevExpress.Drawing.DXFont("Times New Roman", 5F);
-            this.xrTable2.LocationFloat = new DevExpress.Utils.PointFloat(999.907F, 0F);
+            this.xrTable2.LocationFloat = new DevExpress.Utils.PointFloat(1007.26F, 0F);
             this.xrTable2.Name = "xrTable2";
             this.xrTable2.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
             this.xrTable2.Rows.AddRange(new DevExpress.XtraReports.UI.XRTableRow[] {
             this.xrTableRow3,
             this.xrTableRow4,
             this.xrTableRow5});
-            this.xrTable2.SizeF = new System.Drawing.SizeF(149.3843F, 91.98956F);
+            this.xrTable2.SizeF = new System.Drawing.SizeF(142.0313F, 91.98956F);
             this.xrTable2.StylePriority.UseFont = false;
             // 
             // xrTableRow3
@@ -1510,7 +1510,7 @@ namespace Winforms_App_Template.Forms
             this.xrTableRow3.Cells.AddRange(new DevExpress.XtraReports.UI.XRTableCell[] {
             this.xrTableCell9});
             this.xrTableRow3.Name = "xrTableRow3";
-            this.xrTableRow3.Weight = 1D;
+            this.xrTableRow3.Weight = 1.6201979143510545D;
             // 
             // xrTableCell9
             // 
@@ -1532,7 +1532,7 @@ namespace Winforms_App_Template.Forms
             this.xrTableRow4.Cells.AddRange(new DevExpress.XtraReports.UI.XRTableCell[] {
             this.xrTableCell11});
             this.xrTableRow4.Name = "xrTableRow4";
-            this.xrTableRow4.Weight = 3D;
+            this.xrTableRow4.Weight = 2.3798020856489455D;
             // 
             // xrTableCell11
             // 

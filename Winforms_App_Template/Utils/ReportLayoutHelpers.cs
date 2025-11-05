@@ -311,7 +311,7 @@ public static class ReportLayoutHelpers
     /// </summary>
     public static void BindForRuntime(
         XtraReport rpt,
-        IList<Catthoong_ReportRow> rows,
+        IList<Que_Nong_Rows> rows,
         IDictionary<int, List<Standard_Model>> stdMap,
         string idFieldName = "idInput")
     {
@@ -320,8 +320,8 @@ public static class ReportLayoutHelpers
         rpt.DataMember = null;
 
         // Gọi helper `BindDetailReport` để gắn datasource cho band trong 1 report
-        SubreportWiring.BindDetailReport(rpt, "Catongtho_Report", rows);   // IEnumerable<Catthoong_ReportRow>
-        //SubreportWiring.BindDetailReport(rpt, "DetailBand_Report2", listA); // IEnumerable<ModelA>
+        //SubreportWiring.BindDetailReport(rpt, "Catongtho_Report", rows);   // IEnumerable<Catthoong_ReportRow>
+        SubreportWiring.BindDetailReport(rpt, "Kiem_tra_ong_sau_cat_tho", rows); // IEnumerable<ModelA>
         //SubreportWiring.BindDetailReport(rpt, "DetailBand_Report3", listB); // IEnumerable<ModelB>
 
         // Band chứa subreport: "Catongtho_Report"

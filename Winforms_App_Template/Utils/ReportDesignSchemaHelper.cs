@@ -21,7 +21,7 @@ public static class ReportDesignSchemaHelper
         var odsMain = new ObjectDataSource
         {
             Name = "ODS_MainRows",                                         // Tên node trong Field List
-            DataSource = typeof(Winforms_App_Template.Database.Model.Catthoong_ReportRow) // dùng FQN để tránh lỗi security khi load layout
+            DataSource = typeof(Winforms_App_Template.Database.Model.Que_Nong_Rows) // dùng FQN để tránh lỗi security khi load layout
         };
         if (!rpt.ComponentStorage.Contains(odsMain))
             rpt.ComponentStorage.Add(odsMain);                             // thêm vào kho component để Designer quản lý vòng đời
