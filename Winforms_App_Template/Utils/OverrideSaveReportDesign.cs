@@ -61,9 +61,13 @@ sealed class SaveCommandHandler : ICommandHandler
     // Đường dẫn cache: %LOCALAPPDATA%\{AppName}\Reports\{reportName}.repx
     private static string GetLocalLayoutPath(string reportName)
     {
+        string? appName = Application.ProductName; // ví dụ "Winforms_App_Template"
+        if (string.IsNullOrWhiteSpace(appName))
+            appName = "MyApp"; // fallback
+
         var baseDir = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            Application.ProductName, "Reports");
+            appName, "Reports");
         Directory.CreateDirectory(baseDir);
         return Path.Combine(baseDir, $"{reportName}.repx");
     }

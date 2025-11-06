@@ -134,6 +134,7 @@ namespace Winforms_App_Template.Forms
             tablePanel1.SetRow(Lot_No_Text, 1);
             Lot_No_Text.Size = new Size(96, 20);
             Lot_No_Text.TabIndex = 7;
+            Lot_No_Text.Tag = "250920G01";
             Lot_No_Text.ToolTip = "Số lô ";
             // 
             // Item_Number_Text
@@ -150,6 +151,7 @@ namespace Winforms_App_Template.Forms
             tablePanel1.SetRow(Item_Number_Text, 1);
             Item_Number_Text.Size = new Size(96, 20);
             Item_Number_Text.TabIndex = 6;
+            Item_Number_Text.Tag = "CRS25C60G10W";
             Item_Number_Text.ToolTip = "Item Number";
             // 
             // label5

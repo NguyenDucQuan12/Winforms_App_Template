@@ -161,7 +161,13 @@ namespace Winforms_App_Template.Report
             .Add("val12", typeof(string), "Thước sử dụng 2")
             .Add("val13", typeof(string), "Thước sử dụng 3")
             .Add("val14", typeof(string), "Thước sử dụng yes no")
-            .Add("val15", typeof(string), "Kết quả xác nhận tồn lưu yes no");
+            .Add("val15", typeof(string), "Kết quả xác nhận tồn lưu yes no")
+            .Add("Cat_vat", typeof(string), "Lỗi cắt vát")
+            .Add("Bep", typeof(string), "Lỗi bẹp")
+            .Add("Bavia", typeof(string), "Lỗi Bavia")
+            .Add("Roi", typeof(string), "Lỗi rơi")
+            .Add("Chieu_dai_ngoai_tieu_chuan", typeof(string), "Lỗi ngoài tiêu chuẩn")
+            .Add("Khac", typeof(string), "Lỗi khác");
 
         // Mở rộng thêm:
         // .Add("val1", typeof(string), "Ống dài sử dụng")
@@ -198,10 +204,48 @@ namespace Winforms_App_Template.Report
             .Add("val9", typeof(string), "Số lượng NG 1")
             .Add("val10", typeof(string), "Số lượng NG 2")
             .Add("val11", typeof(string), "Mã quản lý mẫu giới hạn")
-            .Add("val13", typeof(string), "Kết quả xác nhận tồn lưu");
+            .Add("val13", typeof(string), "Kết quả xác nhận tồn lưu")
+            // Chi tiết lỗi
+            .Add("Di_vat_duc", typeof(string), "Lỗi dị vật đúc")
+            .Add("Xuoc", typeof(string), "Lỗi xước")
+            .Add("Cong", typeof(string), "Lỗi Cong")
+            .Add("Di_vat_ban", typeof(string), "Lỗi dị vật bẩn")
+            .Add("Lo_thung", typeof(string), "Lỗi lỗ thủng")
+            .Add("loi_lom", typeof(string), "Lỗi lồi lõm")
+            .Add("Nham_xu_long", typeof(string), "Lỗi nhám xù lông")
+            .Add("KTNQ_loi_lom", typeof(string), "Kiểm tra ngoại quan lỗi lõm")
+            .Add("KTNG_Khac", typeof(string), "Kiểm tra ngoại quan khác")
+            .Add("Khac", typeof(string), "Lỗi khác")
+            .Add("NG_xuyen_qua_1", typeof(string), "NG xuyên qua 1")
+            .Add("NG_xuyen_qua_2", typeof(string), "NG xuyên qua 2");
 
 
         public static readonly FieldWhitelist Kiemtrasaucattho_Standard = new FieldWhitelist()
+            .Add("TenTieuChuan", typeof(string), "Hạng mục kiểm tra")
+            .Add("MaTieuChuan", typeof(string), "Mã tiêu chuẩn")
+            .Add("TCMin", typeof(string), "TC Min")
+            .Add("TCMax", typeof(string), "TC Max");
+
+        public static readonly FieldWhitelist Camhot_auto = new FieldWhitelist()
+            .Add("StartTime", typeof(DateTime), "Thời gian bắt đầu")
+            .Add("NguoiTT", typeof(string), "Người thao tác")
+            .Add("TenMay_Ban", typeof(string), "Bàn thao tác")
+            .Add("SLSudung", typeof(int), "Số lượng sử dụng")
+            .Add("Remark", typeof(string), "Ghi chú")
+            .Add("val1", typeof(string), "U1")
+            .Add("val2", typeof(string), "U2")
+            .Add("val3", typeof(string), "U3")
+            .Add("val4", typeof(string), "U4")
+            .Add("val5", typeof(string), "Kết quả xác nhận tồn lưu")
+            // Chi tiết lỗi
+            .Add("Di_vat_duc", typeof(string), "Lỗi Nông sâu (độ sâu cắm không đạt)")
+            .Add("Xuoc", typeof(string), "Lỗi Bẹp ống")
+            .Add("Cong", typeof(string), "Lỗi Bất thường máy")
+            .Add("Di_vat_ban", typeof(string), "Lỗi Rơi")
+            .Add("Khac", typeof(string), "Lỗi khác");
+
+
+        public static readonly FieldWhitelist Camchot_auto_Standard = new FieldWhitelist()
             .Add("TenTieuChuan", typeof(string), "Hạng mục kiểm tra")
             .Add("MaTieuChuan", typeof(string), "Mã tiêu chuẩn")
             .Add("TCMin", typeof(string), "TC Min")

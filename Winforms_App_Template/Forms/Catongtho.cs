@@ -1,12 +1,7 @@
-using DevExpress.CodeParser;
-using DevExpress.DataAccess.ObjectBinding;
 using DevExpress.LookAndFeel;                        // UserLookAndFeel cho form Designer
-using DevExpress.UIAutomation;
-using DevExpress.XtraReports.Parameters;
 using DevExpress.XtraReports.UI;                    // XtraReport, ReportDesignTool
 using DevExpress.XtraReports.UserDesigner;          // XRDesignMdiController, XRDesignPanel, ReportState
 using System.Data;
-using System.IO;
 using System.Text;
 using Winforms_App_Template.Database;
 using Winforms_App_Template.Database.Model;
@@ -19,74 +14,30 @@ namespace Winforms_App_Template.Forms
 {
     public partial class Catongtho : Form
     {
-        private readonly NewInputs_Table _repo;         // Repository Dapper
-        private CancellationTokenSource? _cts;          // Hủy tải dữ liệu
+        private CancellationTokenSource? _cts;                   // Hủy tải dữ liệu
 
-        private MayBan_Table _mayRepo;                          // repo danh mục máy
-        private readonly Input_Error_Table input_error_repo;         // Repository cho bảng input_Error
-        private readonly Standard_Table standard_repo;         // Repository cho bảng tiêu chuẩn
+        private MayBan_Table _mayRepo;                           // repo danh mục máy
+        private NewInputs_Table get_detail_table_repo;           // repo cho bảng NewInput
+        private readonly Input_Error_Table input_error_repo;     // Repository cho bảng input_Error
+        private readonly Standard_Table standard_repo;           // Repository cho bảng tiêu chuẩn
 
         public Catongtho(DbExecutor? db = null)
         {
             InitializeComponent();
 
             var executor = db ?? new DbExecutor();
-            _repo = new NewInputs_Table(executor);
+            get_detail_table_repo = new NewInputs_Table(executor);
             _mayRepo = new MayBan_Table(executor);
             input_error_repo = new Input_Error_Table(executor);
             standard_repo = new Standard_Table(executor);
 
         }
 
-        // Chuẩn hoá tên lỗi để map chắc chắn (bỏ khoảng trắng thừa, không phân biệt hoa/thường)
-        private static string NormalizeKey(string? s)
-        {
-            if (string.IsNullOrWhiteSpace(s)) return "";
-            return s.Trim().ToLowerInvariant();
-        }
-
-        // Build: { idInput => { "cắt vát" => qty, "bẹp" => qty, ... } }
-        private static Dictionary<int, Dictionary<string, int>> BuildPivotMap(List<Input_Error_Model> errors)
-        {
-            var map = new Dictionary<int, Dictionary<string, int>>();
-
-            foreach (var e in errors)
-            {
-                var key = NormalizeKey(e.TenLoi); // dùng TenLoi; fallback có thể dùng $"e{e.IdError}"
-                if (!map.TryGetValue(e.idInput, out var inner))
-                {
-                    inner = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
-                    map[e.idInput] = inner;
-                }
-
-                // cộng dồn theo tên lỗi
-                inner[key] = inner.TryGetValue(key, out var cur) ? cur + e.Qty : e.Qty;
-            }
-
-            return map;
-        }
-
-        // Set 6 thuộc tính theo dictionary {tenLoi=>qty}
-        private static void SetKnownErrorColumns(Que_Nong_Rows dest, Dictionary<string, int>? kv)
-        {
-            dest.Bevel_Cut = 0;
-            dest.Flat = 0;
-            dest.Bavia = 0;
-            dest.Fall = 0;
-            dest.Beyond_The_Standard = 0;
-            dest.Other = 0;
-
-            if (kv == null || kv.Count == 0) return;
-
-            // Map theo khóa chuẩn hoá (lowercase)
-            dest.Bevel_Cut = kv.TryGetValue("cắt vát", out var v1) ? v1 : 0;
-            dest.Flat = kv.TryGetValue("bẹp", out var v2) ? v2 : 0;
-            dest.Bavia = kv.TryGetValue("bavia", out var v3) ? v3 : 0;
-            dest.Fall = kv.TryGetValue("rơi", out var v4) ? v4 : 0;
-            dest.Beyond_The_Standard = kv.TryGetValue("chiều dài ngoài tiêu chuẩn", out var v5) ? v5 : 0;
-            dest.Other = kv.TryGetValue("khác", out var v6) ? v6 : 0;
-        }
-
+        /// <summary>
+        /// Xuất dữ liệu báo cáo sang định dạng A3
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void Export_Document_Button_Click(object sender, EventArgs e)
         {
 
@@ -112,7 +63,8 @@ namespace Winforms_App_Template.Forms
                 MessageBox.Show("ID công đoạn hoặc số mẻ không hợp lệ!");
                 return;
             }
-
+            
+            // Truy vấn dữ liệu cho form và tạo báo cáo
             try
             {
                 var rpt = await LoadingHelper.RunFunctionWithLoadingAsync<string, string, int, XtraReport>(
@@ -123,6 +75,7 @@ namespace Winforms_App_Template.Forms
                     arg3: So_Me,
                     caption: "Đang tải dữ liệu báo cáo ...");
 
+                // Nếu tồn tại báo cáo thì hiển thị nó ra
                 if (rpt != null)
                     new ReportPrintTool(rpt).ShowRibbonPreviewDialog();
             }
@@ -150,31 +103,39 @@ namespace Winforms_App_Template.Forms
         {
 
             // Khai báo công đoạn sử dụng trong report hiện tại
-            // Đặt BandName/SubreportName đúng với layout bạn đã thiết kế & lưu trong DB
+            // Đặt BandName/SubreportName/Tham số parameter đúng với layout đã thiết kế & lưu trong DB
             var steps = new[]
             {
-                new Step_Definition(68 , "Catongtho_Report" , "xrSubreport1" , "cd68_"),
-                new Step_Definition(144, "Kiem_tra_ong_sau_cat_tho", "Kiem_tra_ong_sau_cat_tho_Standards_Subreport", "cd144_"),
+                new Step_Definition(68 , "Catongtho_Report" , "xrSubreport1" , "Catongtho_Report_"),
+                new Step_Definition(144, "Kiem_tra_ong_sau_cat_tho", "Kiem_tra_ong_sau_cat_tho_Standards_Subreport", "Kiem_tra_ong_sau_cat_tho_"),
+                new Step_Definition(70, "Cam_chot", "xrSubreport2", "Cam_chot_"),
                 // thêm công đoạn khác (221, 305, …) tại đây:
                 // new StepDefinition(221, "DR_CongDoan_221", "SR_Standards_221", "cd221_"),
             };
 
-            // 1) Lấy dữ liệu tất cả công đoạn (song song có giới hạn)
-            var blocks = await FetchAllStepsAsync(
-                steps.Select(s => s.Id),
-                ItemNumber, LotNo, So_Me,
-                maxConcurrency: 3, // tuỳ DB, 3–4 là an toàn
-                ct).ConfigureAwait(false);
+            // ===== KHỞI TẠO SERVICE DỮ LIỆU =====
+            var dataSvc = new ReportDataPreparer();
+
+            // Lấy dữ liệu tất cả công đoạn (song song)
+            var blocks = await dataSvc.FetchAllStepsAsync(
+                steps: steps,
+                itemNumber: ItemNumber,
+                lotNo: LotNo,
+                soMe: So_Me,
+                maxConcurrency: 3,           // 3–4 là hợp lý với 7–8 công đoạn
+                ct: ct);  //.ConfigureAwait(false);
 
             ct.ThrowIfCancellationRequested();
 
-            // 2) Tạo report và nạp layout từ DB như cũ
+            // Tạo report và nạp layout từ DB
             var rpt = new Testreport();
             rpt.DisplayName = "Quenong_Report";
 
             var updatedBy = Environment.UserName;
             var reportKey = ReportLayoutStore.GetKey(rpt);
             var store = new ReportLayoutStore(reportKey, updatedBy);
+
+            // Tải form mới nhất từ DB nếu có
             await store.TryLoadAsync(rpt).ConfigureAwait(false);
 
             // Nạp layout DB cho subreports con
@@ -185,13 +146,13 @@ namespace Winforms_App_Template.Forms
                         .TryLoadAsync(child).ConfigureAwait(false);
             }
 
-            // 3) Chuẩn hoá expression nếu cần (như code bạn đang làm)
+            // Chuẩn hoá expression nếu cần (như code bạn đang làm)
             NormalizeFieldPrefixes(rpt, "[Main].");
             foreach (var sub in ReportLayoutHelpers.EnumerateSubreports(rpt))
                 if (sub.ReportSource is XtraReport child)
                     NormalizeFieldPrefixes(child, "[Standards].");
 
-            // 4) Kiểm tra field sai (tuỳ chọn)
+            // Kiểm tra field sai 
             {
                 var sb = new StringBuilder();
                 var invalidMain = ReportLayoutHelpers.CollectInvalidFields(rpt, typeof(Que_Nong_Rows));
@@ -218,7 +179,7 @@ namespace Winforms_App_Template.Forms
                 }
             }
 
-            // 5) Bind từng công đoạn vào đúng Band/Subreport + đẩy Header với prefix
+            // Bind từng công đoạn vào đúng Band/Subreport + đẩy Header với prefix
             foreach (var step in steps)
             {
                 if (!blocks.TryGetValue(step.Id, out var block))
@@ -234,155 +195,11 @@ namespace Winforms_App_Template.Forms
             ct.ThrowIfCancellationRequested();
             return rpt;
         }
-
-        /// <summary>
-        /// Truy vấn dữ liệu phần tiêu đề và dữ liệu bảng cho 1 công đoạn con
-        /// </summary>
-        /// <param name="idCongDoan"></param>
-        /// <param name="itemNumber"></param>
-        /// <param name="lotNo"></param>
-        /// <param name="soMe"></param>
-        /// <param name="ct"></param>
-        /// <returns></returns>
-        /// <exception cref="InvalidOperationException"></exception>
-        private async Task<Data_Step_Model> FetchStepBlockAsync(int idCongDoan, string itemNumber, string lotNo, int soMe, CancellationToken ct)
-        {
-            // Chạy song song phần Header và Rows (độc lập)
-            var headerTask = _repo.Get_Report_Header(IdCongDoan: idCongDoan, ItemNumber: itemNumber, LotNo: lotNo, So_Me: soMe, ct: ct);
-
-            var rowsTask = _repo.Get_Detail_Table(IdCongDoan: idCongDoan, ItemNumber: itemNumber, LotNo: lotNo, So_Me: soMe, ct: ct);
-
-            await Task.WhenAll(headerTask, rowsTask).ConfigureAwait(false);
-
-            var header = headerTask.Result;
-            var rows = rowsTask.Result ?? new List<New_Input_Row>();
-
-            if (header is null)
-                throw new InvalidOperationException(
-                    $"Không tìm thấy HEADER (IdCongDoan={idCongDoan}, Item={itemNumber}, Lot={lotNo}, SoMe={soMe}).");
-
-            ct.ThrowIfCancellationRequested();
-
-            // Lấy idInput riêng của công đoạn này
-            var idInputs = rows.Select(r => r.idInput).Distinct().ToArray();
-
-            // Lấy lỗi & tiêu chuẩn: có thể chạy song song
-            var errorsTask = input_error_repo.Get_Detail_Error(idInputs: idInputs, ct: ct);
-            var stdTask = standard_repo.Get_Detail_Standard(idInputs: idInputs);
-
-            await Task.WhenAll(errorsTask, stdTask).ConfigureAwait(false);
-
-            var errorDetails = errorsTask.Result ?? new List<Input_Error_Model>();
-            var standards = stdTask.Result ?? new List<Standard_Model>();
-
-            // Pivot lỗi: idInput -> (tenLoi->qty)
-            var pivot = BuildPivotMap(errorDetails);
-
-            // Hợp nhất sang Row dành cho report
-            var resultRows = new List<Que_Nong_Rows>(rows.Count);
-            foreach (var m in rows)
-            {
-                pivot.TryGetValue(m.idInput, out var errsDict);
-
-                var r = new Que_Nong_Rows
-                {
-                    idInput = m.idInput,
-                    MaKT = m.MaKT,
-                    TenMay_Ban = m.TenMay_Ban,
-                    SLSudung = m.SLSudung,
-                    StartTime = m.StartTime,
-                    NguoiTT = m.NguoiTT,
-
-                    val1 = m.val1,
-                    val2 = m.val2,
-                    val3 = m.val3,
-                    val4 = m.val4,
-                    val5 = m.val5,
-                    val6 = m.val6,
-                    val7 = m.val7,
-                    val8 = m.val8,
-                    val9 = m.val9,
-                    val10 = m.val10,
-                    val11 = m.val11,
-                    val12 = m.val12,
-                    val13 = m.val13,
-                    val14 = m.val14,
-                    val15 = m.val15,
-                    val16 = m.val16,
-                    val17 = m.val17,
-                    val18 = m.val18,
-                    val19 = m.val19,
-                    val20 = m.val20,
-                    val21 = m.val21,
-                    val22 = m.val22,
-                    val23 = m.val23,
-                    val24 = m.val24,
-                    val25 = m.val25,
-                    val26 = m.val26,
-                    val27 = m.val27,
-                    val28 = m.val28,
-                    val29 = m.val29,
-                    val30 = m.val30,
-                    val31 = m.val31,
-                    val32 = m.val32,
-                    Remark = m.Remark
-                };
-                SetKnownErrorColumns(r, errsDict);
-                resultRows.Add(r);
-            }
-
-            // Nhóm tiêu chuẩn theo idInput
-            var stdByInput = standards
-                .GroupBy(s => s.idInput)
-                .ToDictionary(g => g.Key, g => g.ToList());
-
-            ct.ThrowIfCancellationRequested();
-
-            return new Data_Step_Model
-            {
-                Id = idCongDoan,
-                Header = header,
-                Rows = resultRows,
-                StandardsByInput = stdByInput
-            };
-        }
-
-        /// <summary>
-        /// Xử lý nhiều công đoạn cùng lúc
-        /// </summary>
-        /// <param name="stepIds"></param>
-        /// <param name="itemNumber"></param>
-        /// <param name="lotNo"></param>
-        /// <param name="soMe"></param>
-        /// <param name="maxConcurrency"></param>
-        /// <param name="ct"></param>
-        /// <returns></returns>
-        private async Task<Dictionary<int, Data_Step_Model>> FetchAllStepsAsync(
-                IEnumerable<int> stepIds, string itemNumber, string lotNo, int soMe,
-                int maxConcurrency, CancellationToken ct)
-        {
-            var dict = new Dictionary<int, Data_Step_Model>();
-            using var gate = new SemaphoreSlim(maxConcurrency);
-
-            var tasks = stepIds.Select(async id =>
-            {
-                await gate.WaitAsync(ct).ConfigureAwait(false);
-                try
-                {
-                    var block = await FetchStepBlockAsync(id, itemNumber, lotNo, soMe, ct).ConfigureAwait(false);
-                    lock (dict) dict[id] = block;
-                }
-                finally { gate.Release(); }
-            });
-
-            await Task.WhenAll(tasks).ConfigureAwait(false);
-            return dict;
-        }
-
+        
         // ==========================
-        // 5) Đẩy header theo prefix (tránh đè nhau giữa các công đoạn)
-        //    Designer sẽ dùng Parameters.p_{prefix}{Property}
-        //    ví dụ p_cd68_ItemNumber, p_cd144_ItemNumber
+        //  Đẩy header theo prefix (tránh đè nhau giữa các công đoạn)
+        //  Designer sẽ dùng Parameters.p_{prefix}{Property}
+        //  ví dụ p_cd68_ItemNumber, p_cd144_ItemNumber
         // ==========================
         private static void PushHeaderValuesWithPrefix(XtraReport rpt, object header, string prefix)
         {
@@ -400,7 +217,7 @@ namespace Winforms_App_Template.Forms
         }
 
         // ==========================
-        // 6) Bind 1 công đoạn vào 1 band + subreport theo quy ước tên
+        // Bind 1 công đoạn vào 1 band + subreport theo quy ước tên
         //    - bandName: DetailReportBand chứa lưới chính của công đoạn
         //    - subreportName: XRSubreport hiển thị Standards
         //    - idFieldName: tên property khoá (idInput)
@@ -669,12 +486,26 @@ namespace Winforms_App_Template.Forms
                     new ParameterSpec("Category_Code",  typeof(string),  "Mã sản phẩm"),
                     new ParameterSpec("Lotno_Congdoan", typeof(string),  "Số lô"),
                     new ParameterSpec("Batch_Number",   typeof(string),  "Số mẻ"),
+                    new ParameterSpec("NG_Qty_Total",   typeof(string),  "Tổng số hàng không phù hợp"),
+                    new ParameterSpec("OK_Qty_Total",   typeof(string),  "Tổng số lượng hàng chuyển công đoạn sau"),
                 };
 
                 //    Tạo các parameter dạng p_{Band}_{Param} ở cấp REPORT:
                 BandParameterHelper.EnsureParametersForBand(
                     rpt,
                     bandName: "Catongtho_Report",
+                    specs: headerParams,
+                    visible: false);
+
+                BandParameterHelper.EnsureParametersForBand(
+                    rpt,
+                    bandName: "Kiem_tra_ong_sau_cat_tho",
+                    specs: headerParams,
+                    visible: false);
+
+                BandParameterHelper.EnsureParametersForBand(
+                    rpt,
+                    bandName: "Cam_chot",
                     specs: headerParams,
                     visible: false);
 

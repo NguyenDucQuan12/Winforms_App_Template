@@ -116,7 +116,6 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell126.Multiline = true;
             this.xrTableCell126.Name = "xrTableCell126";
             this.xrTableCell126.Tag = "a|b|TenTieuChuan|d|e";
-            this.xrTableCell126.Text = "Đường kính ngoài ống dài (mm)";
             this.xrTableCell126.Weight = 1.6184551200321173D;
             // 
             // Outer_Diameter_Item
