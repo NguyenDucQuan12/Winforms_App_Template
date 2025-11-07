@@ -227,6 +227,7 @@ namespace Winforms_App_Template.Report
             .Add("TCMax", typeof(string), "TC Max");
 
         public static readonly FieldWhitelist Camchot = new FieldWhitelist()
+            .Add("MaKT", typeof(string), "Lý do kiểm tra")
             .Add("StartTime", typeof(DateTime), "Thời gian bắt đầu")
             .Add("NguoiTT", typeof(string), "Người thao tác")
             .Add("TenMay_Ban", typeof(string), "Bàn thao tác")
@@ -269,6 +270,63 @@ namespace Winforms_App_Template.Report
 
 
         public static readonly FieldWhitelist Camchot_Standard = new FieldWhitelist()
+            .Add("TenTieuChuan", typeof(string), "Hạng mục kiểm tra")
+            .Add("MaTieuChuan", typeof(string), "Mã tiêu chuẩn")
+            .Add("TCMin", typeof(string), "TC Min")
+            .Add("TCMax", typeof(string), "TC Max");
+
+        public static readonly FieldWhitelist Dap_chuoi_cat_dinh_muc = new FieldWhitelist()
+            .Add("MaKT", typeof(string), "Lý do kiểm tra")
+            .Add("StartTime", typeof(DateTime), "Thời gian bắt đầu")
+            .Add("NguoiTT", typeof(string), "Người thao tác")
+            .Add("TenMay_Ban", typeof(string), "Bàn thao tác")
+            .Add("SLSudung", typeof(int), "Số lượng sử dụng")
+            .Add("Remark", typeof(string), "Ghi chú")
+            .Add("val1", typeof(string), "Mã số quản lý dept gauge 1")
+            .Add("val2", typeof(string), "Mã số quản lý dept gauge 2")
+            .Add("val3", typeof(string), "Độ dập sâu 1")
+            .Add("val4", typeof(string), "Độ dập sâu 2")
+            .Add("val5", typeof(string), "Độ dập sâu 3")
+            .Add("val6", typeof(string), "Xác nhận kích thước cắt 1")
+            .Add("val7", typeof(string), "Xác nhận kích thước cắt 2")
+            .Add("val8", typeof(string), "Xác nhận kích thước cắt 3")
+            .Add("val9", typeof(string), "Xác nhận tình trạng dập")
+            .Add("val10", typeof(string), "Độ dập sâu 8")
+            .Add("val11", typeof(string), "Độ dập sâu 9")
+            .Add("val12", typeof(string), "Độ dập sâu 10")
+            .Add("val5", typeof(string), "Kết quả xác nhận tồn lưu")
+            // Chi tiết lỗi
+            .Add("Di_vat_duc", typeof(string), "Lỗi Nông sâu (độ sâu cắm không đạt)")
+            .Add("Xuoc", typeof(string), "Lỗi Bẹp ống")
+            .Add("Cong", typeof(string), "Lỗi Bất thường máy")
+            .Add("Di_vat_ban", typeof(string), "Lỗi Rơi")
+            .Add("Khac", typeof(string), "Lỗi khác");
+
+        public static readonly FieldWhitelist Dap_chuoi_cat_dinh_muc_DKM = new FieldWhitelist()
+            .Add("Thoigian", typeof(DateTime), "Thời gian bắt đầu")
+            .Add("NguoiThaotac", typeof(string), "Người thao tác")
+            .Add("Remark", typeof(string), "Ghi chú")
+            .Add("val1", typeof(string), "Mã quản lý thước kẹp")
+            .Add("val2", typeof(string), "Đường kính cắm chốt jig 1")
+            .Add("val3", typeof(string), "Đường kính cắm chốt jig 2")
+            .Add("val4", typeof(string), "Đường kính cắm chốt jig 3")
+            .Add("val5", typeof(string), "Đường kính cắm chốt jig 4")
+            .Add("val6", typeof(string), "Trạng thái jig cắm chốt 1")
+            .Add("val7", typeof(string), "Trạng thái jig cắm chốt 2")
+            .Add("val8", typeof(string), "Trạng thái jig cắm chốt 3")
+            .Add("val9", typeof(string), "Trạng thái jig cắm chốt 4")
+            .Add("val10", typeof(string), "Nhiệt độ bộ gia nhiệt 1")
+            .Add("val11", typeof(string), "Nhiệt độ bộ gia nhiệt 2")
+            .Add("val12", typeof(string), "Nhiệt độ bộ gia nhiệt 3")
+            .Add("val13", typeof(string), "Nhiệt độ bộ gia nhiệt 4")
+            .Add("val14", typeof(string), "Thời gian cắm")
+            .Add("val15", typeof(string), "Miếng đệm cho vào bộ kẹp")
+            .Add("val16", typeof(string), "Áp suất kẹp ống")
+            .Add("val17", typeof(string), "Moment xoắn")
+            .Add("val18", typeof(string), "Kết quả xác nhận tồn lưu");
+
+
+        public static readonly FieldWhitelist Dap_chuoi_cat_dinh_muc_Standard = new FieldWhitelist()
             .Add("TenTieuChuan", typeof(string), "Hạng mục kiểm tra")
             .Add("MaTieuChuan", typeof(string), "Mã tiêu chuẩn")
             .Add("TCMin", typeof(string), "TC Min")

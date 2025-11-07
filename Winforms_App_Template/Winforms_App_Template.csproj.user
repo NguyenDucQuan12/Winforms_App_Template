@@ -13,6 +13,9 @@
     <Compile Update="Forms\SubReport\Cam_chot_dkm.cs">
       <SubType>XtraReport</SubType>
     </Compile>
+    <Compile Update="Forms\SubReport\Dap_chuoi_cat_dinh_muc_dkm.cs">
+      <SubType>XtraReport</SubType>
+    </Compile>
     <Compile Update="Forms\SubReport\StandardsSubreport.cs">
       <SubType>XtraReport</SubType>
     </Compile>

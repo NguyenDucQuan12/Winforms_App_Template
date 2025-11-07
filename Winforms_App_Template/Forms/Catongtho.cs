@@ -109,6 +109,7 @@ namespace Winforms_App_Template.Forms
                 new Step_Definition(68 , "Catongtho_Report" , "Catongtho_Report_"),
                 new Step_Definition(144, "Kiem_tra_ong_sau_cat_tho", "Kiem_tra_ong_sau_cat_tho_"),
                 new Step_Definition(70, "Cam_chot", "Cam_chot_", true),
+                new Step_Definition(71, "Dap_chuoi_cat_dinh_muc", "Dap_chuoi_cat_dinh_muc_", true),
                 // thêm công đoạn khác (221, 305, …) tại đây:
                 // new StepDefinition(221, "DR_CongDoan_221", "SR_Standards_221", "cd221_"),
             };
@@ -493,6 +494,9 @@ namespace Winforms_App_Template.Forms
 
                     // Band "Cam_chot": Sử dụng bảng Camchot và đặt tên hiển thị là Cắm chốt
                     ["Cam_chot"] = FieldWhitelistRegistry.Camchot.ToDesignSchema("Cắm chốt"),
+
+                    // Band "Dap_chuoi_cat_dinh_muc": Sử dụng bảng Dap_chuoi_cat_dinh_muc và đặt tên hiển thị là Dập chuôi cắt định mức
+                    ["Dap_chuoi_cat_dinh_muc"] = FieldWhitelistRegistry.Dap_chuoi_cat_dinh_muc.ToDesignSchema("Dập chuôi cắt định mức"),
                 };
 
                 // Gắn schema cho từng band theo tên
@@ -513,6 +517,8 @@ namespace Winforms_App_Template.Forms
                     // Khai báo thêm các schema khác cho subreport tại đây
                     ["Cam_chot_standard"] = FieldWhitelistRegistry.Camchot_Standard.ToDesignSchema("Tiêu chuẩn cắm chốt"),
                     ["Cam_chot_dkm"] = FieldWhitelistRegistry.Camchot_DKM.ToDesignSchema("Điều kiện máy cắm chốt"),
+                    ["Dap_chuoi_cat_dinh_muc_standard"] = FieldWhitelistRegistry.Dap_chuoi_cat_dinh_muc_Standard.ToDesignSchema("Tiêu chuẩn dập chuôi cắt định mức"),
+                    ["Dap_chuoi_cat_dinh_muc_dkm"] = FieldWhitelistRegistry.Dap_chuoi_cat_dinh_muc_DKM.ToDesignSchema("Điều kiện máy dập chuôi cắt định mức"),
                 };
 
                 // Khai báo 1 schema mặc định (dùng nếu không match tên ở trên)
