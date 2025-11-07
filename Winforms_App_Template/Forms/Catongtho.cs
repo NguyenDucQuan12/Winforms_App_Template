@@ -106,9 +106,9 @@ namespace Winforms_App_Template.Forms
             // Đặt BandName/SubreportName/Tham số parameter đúng với layout đã thiết kế & lưu trong DB
             var steps = new[]
             {
-                new Step_Definition(68 , "Catongtho_Report" , "xrSubreport1" , "Catongtho_Report_"),
-                new Step_Definition(144, "Kiem_tra_ong_sau_cat_tho", "Kiem_tra_ong_sau_cat_tho_Standards_Subreport", "Kiem_tra_ong_sau_cat_tho_"),
-                new Step_Definition(70, "Cam_chot", "xrSubreport2", "Cam_chot_"),
+                new Step_Definition(68 , "Catongtho_Report" , "Catongtho_Report_"),
+                new Step_Definition(144, "Kiem_tra_ong_sau_cat_tho", "Kiem_tra_ong_sau_cat_tho_"),
+                new Step_Definition(70, "Cam_chot", "Cam_chot_", true),
                 // thêm công đoạn khác (221, 305, …) tại đây:
                 // new StepDefinition(221, "DR_CongDoan_221", "SR_Standards_221", "cd221_"),
             };
@@ -146,13 +146,13 @@ namespace Winforms_App_Template.Forms
                         .TryLoadAsync(child).ConfigureAwait(false);
             }
 
-            // Chuẩn hoá expression nếu cần (như code bạn đang làm)
-            NormalizeFieldPrefixes(rpt, "[Main].");
-            foreach (var sub in ReportLayoutHelpers.EnumerateSubreports(rpt))
-                if (sub.ReportSource is XtraReport child)
-                    NormalizeFieldPrefixes(child, "[Standards].");
+            // Chuẩn hoá expression 
+            //NormalizeFieldPrefixes(rpt, "[Main].");
+            //foreach (var sub in ReportLayoutHelpers.EnumerateSubreports(rpt))
+            //    if (sub.ReportSource is XtraReport child)
+            //        NormalizeFieldPrefixes(child, "[Standards].");
 
-            // Kiểm tra field sai 
+            // Kiểm tra field sai (Đang không hoạt động)
             {
                 var sb = new StringBuilder();
                 var invalidMain = ReportLayoutHelpers.CollectInvalidFields(rpt, typeof(Que_Nong_Rows));
@@ -186,7 +186,7 @@ namespace Winforms_App_Template.Forms
                     throw new InvalidOperationException($"Thiếu dữ liệu cho công đoạn {step.Id}.");
 
                 // Bind data vào band + subreport
-                BindStepToBand(rpt, block, step.BandName, step.StandardsSubreportName);
+                BindStepToBand(rpt, block, step.BandName);
 
                 // Đẩy header vào Parameters với prefix riêng cho công đoạn
                 PushHeaderValuesWithPrefix(rpt, block.Header, step.HeaderParamPrefix);
@@ -223,48 +223,118 @@ namespace Winforms_App_Template.Forms
         //    - idFieldName: tên property khoá (idInput)
         // ==========================
         private static void BindStepToBand(
-            XtraReport rpt, Data_Step_Model block, string bandName, string subreportName, string idFieldName = "idInput")
+            XtraReport rpt, Data_Step_Model block, string bandName, string idFieldName = "idInput")
         {
             // Tìm band của công đoạn
             var band = rpt.Bands
-                .OfType<DevExpress.XtraReports.UI.DetailReportBand>()
-                .FirstOrDefault(b => string.Equals(b.Name, bandName, StringComparison.Ordinal));
+                        .OfType<DetailReportBand>()                               // chỉ lấy các band kiểu DetailReportBand
+                        .FirstOrDefault(b => string.Equals(
+                            b.Name,                                               // tên band trong layout
+                            bandName,                                             // tên cấu hình trong Step_Definition
+                            StringComparison.Ordinal));                           // so sánh  phân biệt hoa thường
 
             if (band == null)
                 throw new InvalidOperationException($"Không thấy band '{bandName}' trong layout.");
 
-            // Bind rows cho band
+            // Bind dữ liệu cho band gốc
             band.DataSource = block.Rows;
             band.DataMember = null; // dùng trực tiếp List<T>, không cần DataMember
 
-            // Tìm subreport tiêu chuẩn trong band này
-            var sub = band.FindControl(subreportName, true) as DevExpress.XtraReports.UI.XRSubreport;
-            if (sub == null)
-                return; // có layout không có sub standards -> bỏ qua
-
-            // Mặc định: report con dùng Standard_Model
-            if (sub.ReportSource is XtraReport child)
+            // Tìm tất cả subreport trong band này
+            foreach (var sub in ReportLayoutHelpers.EnumerateSubreportsInBand(band))
             {
-                // Không bind cố định; feed theo từng dòng của band
-                child.DataSource = Array.Empty<Standard_Model>();
+                // Nếu sub không có ReportSource hoặc không phải XtraReport -> bỏ qua
+                if (sub.ReportSource is not XtraReport childReport)
+                    continue;
 
-                sub.BeforePrint += (_, __) =>
+                // Chuẩn hoá tên subreport về lowercase để kiểm tra pattern dễ hơn
+                var subName = (sub.Name ?? string.Empty).ToLowerInvariant();
+
+                // Quy ước: tên subreport có chứa "standard"
+                if (subName.Contains("standard"))
                 {
-                    // Lấy row hiện tại của band để tra idInput
-                    var current = band.GetCurrentRow() as Que_Nong_Rows;
-                    if (current != null &&
-                        block.StandardsByInput.TryGetValue(current.idInput, out var list))
+                    // Khởi tạo datasource rỗng mặc định cho report con
+                    childReport.DataSource = Array.Empty<Standard_Model>();
+                    childReport.DataMember = null;
+
+                    // Đăng ký BeforePrint riêng cho sub này
+                    sub.BeforePrint += (_, __) =>
                     {
-                        child.DataSource = list;
-                        child.DataMember = null;
-                    }
-                    else
+                        // Lấy row hiện tại của band (dòng Que_Nong_Rows đang in)
+                        var current = band.GetCurrentRow() as Que_Nong_Rows;
+
+                        if (current != null &&
+                            block.StandardsByInput != null &&
+                            block.StandardsByInput.TryGetValue(current.idInput, out var list) &&
+                            list != null)
+                        {
+                            // Nếu tìm được tiêu chuẩn theo idInput -> gán list đó cho report con
+                            childReport.DataSource = list;
+                            childReport.DataMember = null;
+                        }
+                        else
+                        {
+                            // Nếu không có dữ liệu -> để mảng rỗng để subreport in trống, tránh null
+                            childReport.DataSource = Array.Empty<Standard_Model>();
+                            childReport.DataMember = null;
+                        }
+                    };
+
+                    // Xử lý xong sub này -> tiếp tục vòng for với sub tiếp theo
+                    continue;
+                }
+
+                // Quy ước: tên subreport có chứa "dkm" hoặc "dieukienmay"
+                if (subName.Contains("dkm") || subName.Contains("dieukienmay"))
+                {
+                    // Khởi tạo datasource rỗng mặc định cho report con điều kiện máy
+                    childReport.DataSource = Array.Empty<Dieu_kien_may_Model>();
+                    childReport.DataMember = null;
+
+                    sub.BeforePrint += (_, __) =>
                     {
-                        child.DataSource = Array.Empty<Standard_Model>();
-                        child.DataMember = null;
-                    }
-                };
+                        var current = band.GetCurrentRow() as Que_Nong_Rows;
+
+                        if (current != null &&
+                            block.dkm != null)
+                        {
+                            // Gán danh sách điều kiện máy tương ứng idInput
+                            childReport.DataSource = block.dkm;
+                            childReport.DataMember = null;
+                        }
+                        else
+                        {
+                            // Không có dữ liệu -> cho list rỗng
+                            childReport.DataSource = Array.Empty<Dieu_kien_may_Model>();
+                            childReport.DataMember = null;
+                        }
+                    };
+                }
             }
+
+            //// Mặc định: report con dùng Standard_Model
+            //if (sub.ReportSource is XtraReport child)
+            //{
+            //    // Không bind cố định; feed theo từng dòng của band
+            //    child.DataSource = Array.Empty<Standard_Model>();
+
+            //    sub.BeforePrint += (_, __) =>
+            //    {
+            //        // Lấy row hiện tại của band để tra idInput
+            //        var current = band.GetCurrentRow() as Que_Nong_Rows;
+            //        if (current != null &&
+            //            block.StandardsByInput.TryGetValue(current.idInput, out var list))
+            //        {
+            //            child.DataSource = list;
+            //            child.DataMember = null;
+            //        }
+            //        else
+            //        {
+            //            child.DataSource = Array.Empty<Standard_Model>();
+            //            child.DataMember = null;
+            //        }
+            //    };
+            //}
         }
 
         /// <summary>
@@ -412,13 +482,17 @@ namespace Winforms_App_Template.Forms
                 }
 
                 // Chuẩn bị whitelist → DataTable schema cho từng band để gắn vào datasource, dùng cho design
+                // Lưu ý Key phải là tên trùng với tên DetailReportBand trong Designer để dễ quản lý
                 var bandSchemas = new Dictionary<string, DataTable>
                 {
-                    // Band "Catongtho_Report": Sử dụng bảng Catthoong và đặt tên hiển thị là Cat_tho_ong
-                    ["Catongtho_Report"] = FieldWhitelistRegistry.Catthoong.ToDesignSchema("Cat_tho_ong"),
+                    // Band "Catongtho_Report": Sử dụng bảng Catthoong và đặt tên hiển thị là Cắt thô ống
+                    ["Catongtho_Report"] = FieldWhitelistRegistry.Catthoong.ToDesignSchema("Cắt thô ống"),
 
                     // Band "Kiem_tra_ong_sau_cat_tho":
-                     ["Kiem_tra_ong_sau_cat_tho"] = FieldWhitelistRegistry.Kiemtrasaucattho.ToDesignSchema("Kiemtrasaucattho"),
+                     ["Kiem_tra_ong_sau_cat_tho"] = FieldWhitelistRegistry.Kiemtrasaucattho.ToDesignSchema("Kiểm tra sau cắt thô"),
+
+                    // Band "Cam_chot": Sử dụng bảng Camchot và đặt tên hiển thị là Cắm chốt
+                    ["Cam_chot"] = FieldWhitelistRegistry.Camchot.ToDesignSchema("Cắm chốt"),
                 };
 
                 // Gắn schema cho từng band theo tên
@@ -429,25 +503,29 @@ namespace Winforms_App_Template.Forms
                 var form = tool.DesignRibbonForm;               // IDesignForm (XRDesignRibbonForm implements IDesignForm) chính là cửa sổ Designer (bản Ribbon).
                 var controller = form.DesignMdiController;      // XRDesignMdiController: trung tâm điều phối các "DesignPanel" (tab) trong Designer
 
-                // 6) SUBREPORT SCHEMA: chỉ khi người dùng mở tab subreport → mới gắn schema phù hợp cho subreport đó
-                DesignSchema.WireSubreportSchemaOnDemandByBand(
+                // SUBREPORT SCHEMA: chỉ khi người dùng mở tab subreport → mới gắn schema phù hợp cho subreport đó
+                // Lưu ý đặt Key cho từng Schema phải trùng với tên với tên của XRsubreport trong Designer để dễ quản lý
+                var subSchemas = new Dictionary<string, DataTable>
+                {
+                    // Key phải trùng với XRSubreport.Name trong designer
+                    ["Cat_tho_ong_standard"] = FieldWhitelistRegistry.Standard_Catthoong.ToDesignSchema("Tiêu chuẩn cắt thô ống"),
+                    ["Kiem_tra_ong_sau_cat_tho_standard"] = FieldWhitelistRegistry.Kiemtrasaucattho_Standard.ToDesignSchema("Tiêu chuẩn kiểm tra sau cắt thô"),
+                    // Khai báo thêm các schema khác cho subreport tại đây
+                    ["Cam_chot_standard"] = FieldWhitelistRegistry.Camchot_Standard.ToDesignSchema("Tiêu chuẩn cắm chốt"),
+                    ["Cam_chot_dkm"] = FieldWhitelistRegistry.Camchot_DKM.ToDesignSchema("Điều kiện máy cắm chốt"),
+                };
+
+                // Khai báo 1 schema mặc định (dùng nếu không match tên ở trên)
+                var defaultSubSchema =
+                    FieldWhitelistRegistry.Standard_Catthoong.ToDesignSchema("Tiêu chuẩn mặc định");
+
+                // Gắn auto cho toàn bộ subreport trong Designer
+                DesignSchema.WireSubreportSchemaOnDemandBySubName(
                     controller: controller,
                     mainReport: rpt,
-                    subSchemaFactory: sub =>
-                    {
-                        // Xác định sub này thuộc band nào
-                        var ownerBand = DesignSchema.FindOwningDetailReportBand(rpt, sub);
-
-                        // Nếu sub nằm trong band "Catongtho_Report" → dùng schema SUB mặc định
-                        if (ownerBand != null && string.Equals(ownerBand.Name, "Catongtho_Report", StringComparison.Ordinal))
-                            return FieldWhitelistRegistry.Standard_Catthoong.ToDesignSchema("StdRows");
-
-                        // Nếu bạn có band khác với schema khác, xử lý tại đây:
-                         if (ownerBand?.Name == "Kiem_tra_ong_sau_cat_tho") return FieldWhitelistRegistry.Kiemtrasaucattho_Standard.ToDesignSchema("StdRows2");
-
-                        // Mặc định: vẫn trả schema Sub
-                        return FieldWhitelistRegistry.Standard_Catthoong.ToDesignSchema("StdRows");
-                    });
+                    schemasByName: subSchemas,
+                    defaultSchema: defaultSubSchema
+                );
 
                 // đổi nhãn trong whitelist trước khi mở:
                 // FieldWhitelistRegistry.Main.SetLabel("NguoiTT", "Người thao tác (VN)");
@@ -490,24 +568,16 @@ namespace Winforms_App_Template.Forms
                     new ParameterSpec("OK_Qty_Total",   typeof(string),  "Tổng số lượng hàng chuyển công đoạn sau"),
                 };
 
-                //    Tạo các parameter dạng p_{Band}_{Param} ở cấp REPORT:
-                BandParameterHelper.EnsureParametersForBand(
-                    rpt,
-                    bandName: "Catongtho_Report",
-                    specs: headerParams,
-                    visible: false);
+                // Tạo các parameter dạng p_{Band}_{Param} ở cấp REPORT
+                // Tạo parameter cho 1 band cụ thể
+                //DesignSchema.EnsureParametersForBand(
+                //    rpt,
+                //    bandName: "Catongtho_Report",
+                //    specs: headerParams,
+                //    visible: false);
 
-                BandParameterHelper.EnsureParametersForBand(
-                    rpt,
-                    bandName: "Kiem_tra_ong_sau_cat_tho",
-                    specs: headerParams,
-                    visible: false);
-
-                BandParameterHelper.EnsureParametersForBand(
-                    rpt,
-                    bandName: "Cam_chot",
-                    specs: headerParams,
-                    visible: false);
+                // Tạo tự động parameter và đặt tên theo từng band để tránh nhầm lẫn
+                DesignSchema.Attach_allparameter_report(rpt, headerParams);
 
                 return tool;
 

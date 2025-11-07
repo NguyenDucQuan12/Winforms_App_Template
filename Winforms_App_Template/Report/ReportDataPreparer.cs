@@ -31,7 +31,9 @@ namespace Winforms_App_Template.Report
         // Repo lấy lỗi chi tiết theo idInput
         private readonly Input_Error_Table input_error_repo;       
         // Repo lấy tiêu chuẩn theo idInput
-        private readonly Standard_Table standard_repo;           
+        private readonly Standard_Table standard_repo;
+        // Repo lấy điều kiện máy theo idInput
+        private readonly DieuKienMay_Table dieu_kien_may_repo = null!;
 
 
         // =========================
@@ -47,6 +49,7 @@ namespace Winforms_App_Template.Report
             get_detail_table_repo = new NewInputs_Table(executor);
             input_error_repo = new Input_Error_Table(executor);
             standard_repo = new Standard_Table(executor);
+            dieu_kien_may_repo = new DieuKienMay_Table(executor);
         }
 
         // ===========================================================
@@ -199,14 +202,26 @@ namespace Winforms_App_Template.Report
             // Lấy idInput duy nhất từ detail rows để query lỗi & tiêu chuẩn
             var idInputs = rows.Select(r => r.idInput).Distinct().ToArray();
 
-            // Chạy song song: lỗi & tiêu chuẩn
+            // Chạy song song: lỗi & tiêu chuẩn và điều kiện máy
             var errorsTask = input_error_repo.Get_Detail_Error(idInputs: idInputs, ct: ct);
             var stdsTask = standard_repo.Get_Detail_Standard(idInputs: idInputs);
+            var dkmTask = dieu_kien_may_repo.Get_Detail_Dieu_Kien_May(idInputs: idInputs, ct: ct);
 
             await Task.WhenAll(errorsTask, stdsTask).ConfigureAwait(false);
 
+            // Kiểm tra nếu nhận đầu vào có điều kiện máy là true thì tiến hành truy vấn dữ liệu điều kiện máy
+            if (step.Isdkm)
+            {
+                await dkmTask.ConfigureAwait(false);
+            } else
+            {
+                // Nếu không có điều kiện máy thì gán dkmTask là một Task trả về danh sách rỗng
+                dkmTask = Task.FromResult(new List<Dieu_kien_may_Model>());
+            }    
+
             var errorDetails = errorsTask.Result ?? new List<Input_Error_Model>();
             var standards = stdsTask.Result ?? new List<Standard_Model>();
+            var dieuKienMayDetails = dkmTask.Result ?? new List<Dieu_kien_may_Model>();
 
             // Pivot lỗi: idInput → (tên lỗi chuẩn hoá → tổng qty)
             var pivot = BuildPivotMap(errorDetails);
@@ -265,7 +280,7 @@ namespace Winforms_App_Template.Report
                     Remark = m.Remark
                 };
 
-                // Gán 6 cột lỗi ngang vào r (0 nếu không có)
+                // Gán các cột lỗi ngang vào r (0 nếu không có)
                 SetKnownErrorColumns(r, errsDict);
 
                 // Đưa vào list kết quả
@@ -286,6 +301,7 @@ namespace Winforms_App_Template.Report
                 Id = step.Id,   // Lưu Id để tầng UI biết block này thuộc công đoạn nào
                 Header = header,    // Header cho step.Id
                 Rows = resultRows,// Dòng chi tiết đã hợp nhất lỗi ngang
+                dkm = dieuKienMayDetails, // Dữ liệu cho điều kiện máy
                 StandardsByInput = stdByInput // Map idInput → List<Standard_Model>
             };
         }

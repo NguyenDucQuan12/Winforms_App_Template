@@ -2,16 +2,108 @@ using DevExpress.XtraReports.UI;                 // XtraReport, Bands, XRSubrepo
 using DevExpress.XtraReports.UserDesigner;       // XRDesignMdiController, XRDesignPanel
 using System;
 using System.Collections.Generic;
+using DevExpress.XtraReports.Parameters;   // Parameter
 using System.Data;
 
 namespace Winforms_App_Template.Report
 {
+
+    /// <summary>
+    /// Mô tả 1 parameter cần tạo: Name (logic), Type, Label (tên hiển thị), DefaultValue (tuỳ chọn)
+    /// </summary>
+    public sealed class ParameterSpec
+    {
+        public string Name;             // tên logic (ví dụ "Category_Code")
+        public Type Type;               // typeof(string)/typeof(int)/...
+        public string Label;            // nhãn hiển thị trong Field List (tuỳ chọn)
+        public object DefaultValue;     // giá trị mặc định (tuỳ chọn)
+
+        public ParameterSpec(string name, Type type, string? label = null, object defaultValue = null)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException("Parameter name is required.", nameof(name));
+
+            this.Name = name;
+            this.Type = type ?? typeof(string);
+            this.Label = label ?? name;
+            this.DefaultValue = defaultValue;
+        }
+    }
+
     /// <summary>
     /// Gắn schema DESIGN-TIME cho từng DetailReportBand (không gắn toàn report),
     /// Chỉ phục vụ cho lựa chọn expression trong design report, còn khi in ra phải binding vào dữ liệu thật
     /// </summary>
     public static class DesignSchema
     {
+        /// <summary>
+        /// Gắn một parameter theo danh sách specs cho MỘT band cụ thể trong report.
+        /// </summary>
+        /// <param name="rpt"></param>
+        /// <param name="bandName"></param>
+        /// <param name="specs"></param>
+        /// <param name="visible"></param>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
+        public static void EnsureParametersForBand(
+            XtraReport rpt,                 // report chính
+            string bandName,                // tên band (ví dụ "Catongtho_Report")
+            IEnumerable<ParameterSpec> specs,
+            bool visible = false            // để false: không bật dialog parameter mặc định
+        )
+        {
+            if (rpt == null) throw new ArgumentNullException(nameof(rpt));       // report không null
+            if (string.IsNullOrWhiteSpace(bandName)) throw new ArgumentException("bandName required.", nameof(bandName));
+            if (specs == null) return;                                           // không có gì để tạo
+
+            // Tìm band theo tên
+            var band = DesignSchema.FindDetailReportBandByName(rpt, bandName);
+            if (band == null) throw new InvalidOperationException($"Không tìm thấy DetailReportBand '{bandName}'.");
+
+            foreach (var spec in specs)
+            {
+                // Tạo tên đầy đủ: p_{ParamName}
+                var fullName = $"p_{bandName}_{spec.Name}";
+
+                // Nếu đã có parameter trùng tên → bỏ qua
+                var existing = rpt.Parameters[fullName];
+                if (existing != null) continue;
+
+                // Tạo mới
+                var p = new Parameter
+                {
+                    Name = fullName,                                             // tên param
+                    Type = spec.Type,                                            // kiểu .NET
+                    Description = string.IsNullOrWhiteSpace(spec.Label)
+                                ? $"{bandName}.{spec.Name}"                      // gợi ý band + tên
+                                : spec.Label,                                    // nhãn gợi ý (hiện ở Field List)
+                    Visible = visible                                            // thường để false
+                };
+
+                // Giá trị mặc định (nếu có)
+                if (spec.DefaultValue != null)
+                    p.Value = spec.DefaultValue;
+
+                // Thêm vào report
+                rpt.Parameters.Add(p);
+            }
+        }
+
+        public static void Attach_allparameter_report(XtraReport rpt, IEnumerable<ParameterSpec> specs)
+        {
+            if (rpt == null) throw new ArgumentNullException(nameof(rpt));                 // report không null
+            if (specs == null) return;                                           // không có gì để tạo
+
+            // Duyệt tất cả các band có thể có trong report
+            foreach (var band in EnumerateDetailReportBands(rpt))
+            {
+                // Gọi hàm tạo parameter cho từng band
+                EnsureParametersForBand(rpt, band.Name ?? string.Empty, specs);
+            }
+
+        }
+
         /// <summary>
         /// Gắn DataTable schema cho MỘT band (design-time): Field List của band đó sẽ có đúng cột whitelist.
         /// </summary>
@@ -50,47 +142,88 @@ namespace Winforms_App_Template.Report
         /// ta gắn schema cho CHÍNH subreport đó, chọn schema dựa vào subreport (ví dụ theo tên band cha).
         /// </summary>
         public static void WireSubreportSchemaOnDemandByBand(
-            XRDesignMdiController controller,    // MDI của Designer
-            XtraReport mainReport,               // report chính
-            Func<XRSubreport, DataTable> subSchemaFactory // chọn schema theo sub (theo band, theo tên, ...)
+            XRDesignMdiController controller,    // MDI của Designer, mỗi tab là 1 XRDesignPanel
+            XtraReport mainReport,               // report gốc chứa các XRsubreport
+            Func<XRSubreport, DataTable> subSchemaFactory //nhận vào 1 hàm có tham số đầu vào là XRSubreport, trả về DataTable schema tương ứng
         )
         {
             if (controller == null) throw new ArgumentNullException(nameof(controller));
             if (mainReport == null) throw new ArgumentNullException(nameof(mainReport));
             if (subSchemaFactory == null) throw new ArgumentNullException(nameof(subSchemaFactory));
 
-            // ❶ Chuẩn bị map UID một lần trước khi user mở bất kỳ tab nào
+            // Chuẩn bị map UID một lần trước khi user mở bất kỳ tab nào
             var uid2Sub = BuildSubreportUidMap(mainReport);
 
-            // ❷ Nghe khi một panel được tạo xong
+            // Bắt sự kiện khi một panel được mở
             controller.DesignPanelLoaded += (sender, e) =>
             {
-                // Lấy XRDesignPanel theo cách "an toàn" cho nhiều version DevExpress
-                var panel = (XRDesignPanel)sender;                                           // fallback
-                if (panel == null) return;
+                // Sender là panel đang mở (theo tài liệu chính thức từ DevXpress)
+                var panel = (XRDesignPanel)sender;                                           
+                if (panel == null) return;   // Trong trường hợp ko ép kiểu được panel thì bỏ qua
 
-                var opened = panel.Report;                 // Report clone đang mở trong tab
-                if (ReferenceEquals(opened, mainReport))
-                    return;                                // Đây là tab report chính → bỏ qua (schema band đã gắn trước đó)
+                var opened = panel.Report;                 // Report clone đang mở trong tab (DevExpress tự clone)
+                if (ReferenceEquals(opened, mainReport))   // Kiểm tra xem nếu panel đang mở là report chính thì return luôn
+                    return;                                // Vì report chính ta đã gắn schema từ trước
 
-                // Đọc UID từ clone (đã được serialize)
+                // Đọc UID từ clone (đã được serialize) và ép kiểu sang string
                 var p = opened.Parameters["p_DesignUID"];
                 var uid = p?.Value as string ?? p?.Value?.ToString();
-                if (string.IsNullOrWhiteSpace(uid)) return;   // Không có UID → không thể map
+                if (string.IsNullOrWhiteSpace(uid)) return;   // Không có UID → không thể biết clone này thuộc subreport nào trong main --> bỏ qua
 
-                // Map ngược: UID → XRSubreport trong cây main
+                // Dùng uid của report clone để xác minh subreport gốc trong mainReport, nếu không tìm thấy thì bỏ qua
+                // Nếu có thì ta có được XRSubreport gốc trong mainReport lưu vào biến sub
                 if (!uid2Sub.TryGetValue(uid, out var sub)) return;
 
-                // Xin schema phù hợp cho sub này (theo band/ theo tên sub, ...)
+                // Sử dụng hàm subSchemaFactory để lấy schema tương ứng cho subreport này
                 var schema = subSchemaFactory(sub);
                 if (schema == null) return;
 
-                // GẮN SCHEMA TRÊN BẢN CLONE (panel.Report), KHÔNG phải child cũ
+                // GẮN SCHEMA TRÊN BẢN CLONE (panel.Report), Không được gắn lên sub.ReportSource gốc, vì Designer làm việc với clone.
                 opened.DataSource = schema;
-                opened.DataMember = null; // ← QUAN TRỌNG: để Field List hiện đúng
+                opened.DataMember = null; 
             };
         }
 
+        public static void WireSubreportSchemaOnDemandBySubName(
+            XRDesignMdiController controller,             // MDI designer
+            XtraReport mainReport,                        // report chính
+            IDictionary<string, DataTable> schemasByName, // danh sách schema cho từng subreport theo tên
+            DataTable defaultSchema                       // schema mặc định nếu không khớp tên
+        )
+        {
+            // Kiểm tra tham số để tránh null-reference lỗi runtime
+            if (controller == null) throw new ArgumentNullException(nameof(controller));
+            if (mainReport == null) throw new ArgumentNullException(nameof(mainReport));
+            if (schemasByName == null) throw new ArgumentNullException(nameof(schemasByName));
+            if (defaultSchema == null) throw new ArgumentNullException(nameof(defaultSchema));
+
+            //  Gọi lại hàm tổng quát WireSubreportSchemaOnDemandByBand và truyền vào một "chiến lược" chọn schema dựa theo tên subreport.
+            WireSubreportSchemaOnDemandByBand(
+            controller,   // truyền controller đang dùng
+            mainReport,   // truyền report chính
+            sub =>        // đây là Func<XRSubreport, DataTable> (lambda)
+            {
+                // Nếu vì lý do gì sub là null → trả về defaultSchema (để ko gây lỗi).
+                if (sub == null)
+                    return defaultSchema;
+
+                // Lấy Name của XRSubreport trong layout (ví dụ: "SR_Standards_68")
+                var subName = sub.Name;
+
+                // Nếu tên hợp lệ và có trong dictionary schemasByName
+                if (!string.IsNullOrWhiteSpace(subName) &&           // có tên
+                    schemasByName.TryGetValue(subName, out var schemaFromMap) && // tra map
+                    schemaFromMap != null)                           // có DataTable hợp lệ
+                {
+                    // Trả về schema tương ứng → Field List của tab subreport sẽ dùng schema này
+                    return schemaFromMap;
+                }
+
+                // Ngược lại (không có trong map / null / tên rỗng):
+                // Trả về schema mặc định để vẫn có Field List dùng được.
+                return defaultSchema;
+            });
+        }
 
         /// <summary>
         /// Tìm band chứa một XRSubreport (để biết sub này thuộc band nào).
@@ -131,7 +264,7 @@ namespace Winforms_App_Template.Report
         }
 
         /// <summary>
-        /// Duyệt tất cả XRSubreport (kể cả lồng).
+        /// Duyệt tất cả XRSubreport (kể cả lồng nhau).
         /// </summary>
         public static IEnumerable<XRSubreport> EnumerateAllSubreports(XtraReport rpt)
         {
@@ -211,24 +344,35 @@ namespace Winforms_App_Template.Report
             return null;
         }
 
-        // Tạo/đảm bảo Parameter p_DesignUID trong report con, trả về UID (string)
+        /// <summary>
+        /// Tạo 1 parameter p_DesignUID (Mã định danh duy nhất cho mỗi report con) giữ giá trị duy nhất cho mỗi XtraReport con (ReportSource của XRSubreport).
+        /// Khi DevExpress clone report con ra, UID cũng được clone, đọc p_DesignUID → biết nó là bản sao của thằng nào trong main.
+        /// Lưu ý: Design trong XRDesignMdiController sẽ làm việc với bản clone của report con, không phải report con gốc trong main.
+        /// </summary>
+        /// <param name="report"></param>
+        /// <returns></returns>
         private static string EnsureDesignUid(XtraReport report)
         {
+            // Tạo cố định tên parameter để lưu UID và sử dụng lại
             const string ParamName = "p_DesignUID";
 
-            // Nếu đã có → dùng lại
+            // Lấy giá trị UID thông qua Parameter
             var p = report.Parameters[ParamName];
+
+            // Nếu report con đã có UID thì trả về giá trị đấy, ko tạo mới nữa tránh thay đổi
             if (p != null && p.Value is string s && !string.IsNullOrWhiteSpace(s))
                 return s;
 
-            // Chưa có → tạo mới
+            // Nếu chưa có → tạo mới
             p = new DevExpress.XtraReports.Parameters.Parameter
             {
                 Name = ParamName,
                 Type = typeof(string),
                 Visible = false,
-                Value = Guid.NewGuid().ToString("N")    // UID duy nhất
+                Value = Guid.NewGuid().ToString("N")    // Tạo 1 GUID, dạng 32 ký tự hexa không dấu gạch, gần như sẽ là duy nhất
             };
+
+            // Thêm vào Parameters của report con
             report.Parameters.Add(p);
             return (string)p.Value;
         }
@@ -236,13 +380,18 @@ namespace Winforms_App_Template.Report
         // Duyệt mọi XRSubreport trong main và build map: UID → XRSubreport
         private static Dictionary<string, XRSubreport> BuildSubreportUidMap(XtraReport mainReport)
         {
-            var map = new Dictionary<string, XRSubreport>(StringComparer.Ordinal);
-            foreach (var sub in DesignSchema.EnumerateAllSubreports(mainReport))
+            // Tạo dictionary để lưu map
+            var map = new Dictionary<string, XRSubreport>(StringComparer.Ordinal); // StringComparer.Ordinal: so sánh string theo byte/ASCII, chính xác, phân biệt hoa/thường.
+
+            // Duyệt toàn bộ XRSubreport trong mainReport
+            foreach (var sub in EnumerateAllSubreports(mainReport))
             {
+                // Chỉ quan tâm đến sub có ReportSource là XtraReport (report con đầy đủ)
+                // Nếu ReportSource là dạng khác (vd string path, object custom) thì bỏ qua
                 if (sub.ReportSource is XtraReport child)
                 {
-                    var uid = EnsureDesignUid(child);      // gắn/lấy UID ngay trên report con
-                    map[uid] = sub;                        // lưu map: UID → sub (control)
+                    var uid = EnsureDesignUid(child);      // gắn/lấy UID trên report con
+                    map[uid] = sub;                        // lưu map: UID này tương ứng sub trong mainReport (XRSubreport)
                 }
             }
             return map;

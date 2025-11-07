@@ -103,8 +103,9 @@ namespace Winforms_App_Template.Database.Model
     public sealed record Step_Definition(
         int Id,                           // ID công đoạn, ví dụ: 68, 144
         string BandName,                  // Tên DetailReportBand trong layout (ví dụ: "Catthoong, ...")
-        string StandardsSubreportName,    // Tên XRSubreport chứa bảng tiêu chuẩn trong band (ví dụ: "SR_Standards_68")
-        string HeaderParamPrefix          // Prefix đẩy tham số header (ví dụ: "cd68_")
+        //string StandardsSubreportName,    // Tên XRSubreport chứa bảng tiêu chuẩn trong band (ví dụ: "SR_Standards_68")
+        string HeaderParamPrefix,         // Prefix đẩy tham số header (ví dụ: "p_band_text")
+        bool Isdkm = false                // Công đoạn này có điều kiện máy không
     );
 
     /// <summary>
@@ -115,6 +116,7 @@ namespace Winforms_App_Template.Database.Model
         public required int Id { get; init; }
         public required Report_Header_Model Header { get; init; }          // Dữ liệu cho tiêu đề trong báo cáo
         public required List<Que_Nong_Rows> Rows { get; init; }            // Dữ liệu chi tiết cho bảng trong
+        public required List<Dieu_kien_may_Model> dkm { get; init; }       // Dữ liệu chi tiết cho bảng trong
         public required Dictionary<int, List<Standard_Model>> StandardsByInput { get; init; }   // Dữ liệu cho bảng tiêu chuẩn, theo idInput
     }
 

@@ -226,7 +226,7 @@ namespace Winforms_App_Template.Report
             .Add("TCMin", typeof(string), "TC Min")
             .Add("TCMax", typeof(string), "TC Max");
 
-        public static readonly FieldWhitelist Camhot_auto = new FieldWhitelist()
+        public static readonly FieldWhitelist Camchot = new FieldWhitelist()
             .Add("StartTime", typeof(DateTime), "Thời gian bắt đầu")
             .Add("NguoiTT", typeof(string), "Người thao tác")
             .Add("TenMay_Ban", typeof(string), "Bàn thao tác")
@@ -244,8 +244,31 @@ namespace Winforms_App_Template.Report
             .Add("Di_vat_ban", typeof(string), "Lỗi Rơi")
             .Add("Khac", typeof(string), "Lỗi khác");
 
+        public static readonly FieldWhitelist Camchot_DKM = new FieldWhitelist()
+            .Add("Thoigian", typeof(DateTime), "Thời gian bắt đầu")
+            .Add("NguoiThaotac", typeof(string), "Người thao tác")
+            .Add("Remark", typeof(string), "Ghi chú")
+            .Add("val1", typeof(string), "Mã quản lý thước kẹp")
+            .Add("val2", typeof(string), "Đường kính cắm chốt jig 1")
+            .Add("val3", typeof(string), "Đường kính cắm chốt jig 2")
+            .Add("val4", typeof(string), "Đường kính cắm chốt jig 3")
+            .Add("val5", typeof(string), "Đường kính cắm chốt jig 4")
+            .Add("val6", typeof(string), "Trạng thái jig cắm chốt 1")
+            .Add("val7", typeof(string), "Trạng thái jig cắm chốt 2")
+            .Add("val8", typeof(string), "Trạng thái jig cắm chốt 3")
+            .Add("val9", typeof(string), "Trạng thái jig cắm chốt 4")
+            .Add("val10", typeof(string), "Nhiệt độ bộ gia nhiệt 1")
+            .Add("val11", typeof(string), "Nhiệt độ bộ gia nhiệt 2")
+            .Add("val12", typeof(string), "Nhiệt độ bộ gia nhiệt 3")
+            .Add("val13", typeof(string), "Nhiệt độ bộ gia nhiệt 4")
+            .Add("val14", typeof(string), "Thời gian cắm")
+            .Add("val15", typeof(string), "Miếng đệm cho vào bộ kẹp")
+            .Add("val16", typeof(string), "Áp suất kẹp ống")
+            .Add("val17", typeof(string), "Moment xoắn")
+            .Add("val18", typeof(string), "Kết quả xác nhận tồn lưu");
 
-        public static readonly FieldWhitelist Camchot_auto_Standard = new FieldWhitelist()
+
+        public static readonly FieldWhitelist Camchot_Standard = new FieldWhitelist()
             .Add("TenTieuChuan", typeof(string), "Hạng mục kiểm tra")
             .Add("MaTieuChuan", typeof(string), "Mã tiêu chuẩn")
             .Add("TCMin", typeof(string), "TC Min")

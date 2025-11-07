@@ -6,27 +6,7 @@ using System.Linq;
 
 namespace Winforms_App_Template.Report
 {
-    /// <summary>
-    /// Mô tả 1 parameter cần tạo: Name (logic), Type, Label (tên hiển thị), DefaultValue (tuỳ chọn)
-    /// </summary>
-    public sealed class ParameterSpec
-    {
-        public string Name;             // tên logic (ví dụ "Category_Code")
-        public Type Type;             // typeof(string)/typeof(int)/...
-        public string Label;            // nhãn hiển thị trong Field List (tuỳ chọn)
-        public object DefaultValue;     // giá trị mặc định (tuỳ chọn)
-
-        public ParameterSpec(string name, Type type, string? label = null, object defaultValue = null)
-        {
-            if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentException("Parameter name is required.", nameof(name));
-
-            this.Name = name;
-            this.Type = type ?? typeof(string);
-            this.Label = label ?? name;
-            this.DefaultValue = defaultValue;
-        }
-    }
+    
 
     /// <summary>
     /// Helper tạo parameter theo band:

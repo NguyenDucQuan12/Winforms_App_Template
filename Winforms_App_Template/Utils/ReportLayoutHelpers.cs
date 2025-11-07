@@ -21,6 +21,30 @@ public static class ReportLayoutHelpers
     }
 
     /// <summary>
+    /// Duyệt toàn bộ XRSubreport nằm trong một band .
+    /// </summary>
+    public static IEnumerable<XRSubreport> EnumerateSubreportsInBand(Band band)
+    {
+        // Nếu ko có band nào thì bỏ qua 
+        if (band == null) yield break;
+
+        // Duyệt các control con
+        foreach (XRControl c in EnumerateControls(band.Controls))
+        {
+            // Nếu control này là XRSubReport thì trả về để thao tác đã
+            if (c is XRSubreport s)
+                yield return s;
+
+            // Nếu XRSubport có report con nữa, duyệt sâu (nếu cần)
+            if (c is XRSubreport hasChild && hasChild.ReportSource is XtraReport child)
+            {
+                foreach (var nested in EnumerateSubreports(child))
+                    yield return nested;
+            }
+        }
+    }
+
+    /// <summary>
     /// Tìm kiếm các subreport trong report chính
     /// </summary>
     /// <param name="rpt"></param>
