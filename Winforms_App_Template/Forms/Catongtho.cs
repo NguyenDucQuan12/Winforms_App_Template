@@ -111,7 +111,7 @@ namespace Winforms_App_Template.Forms
                 new Step_Definition(70, "Cam_chot", "Cam_chot_", true),
                 new Step_Definition(71, "Dap_chuoi_cat_dinh_muc", "Dap_chuoi_cat_dinh_muc_", true),
                 // thêm công đoạn khác (221, 305, …) tại đây:
-                // new StepDefinition(221, "DR_CongDoan_221", "SR_Standards_221", "cd221_"),
+                new Step_Definition(175, "Tu_dong_lap_rap_que_nong", "Tu_dong_lap_rap_que_nong_", true),
             };
 
             // ===== KHỞI TẠO SERVICE DỮ LIỆU =====
@@ -339,58 +339,6 @@ namespace Winforms_App_Template.Forms
         }
 
         /// <summary>
-        /// Loại bỏ prefix trong Expression kiểu "[Main].Field" → "Field".
-        /// Duyệt toàn bộ controls và mọi ExpressionBindings.
-        /// </summary>
-        private static void NormalizeFieldPrefixes(XtraReport rpt, string prefixToRemove)
-        {
-            // Kiểm tra đầu vào
-            if (rpt == null)
-                throw new ArgumentNullException(nameof(rpt), "Report không được null.");
-
-            if (string.IsNullOrWhiteSpace(prefixToRemove))
-                return;
-
-            // Loại bỏ dấu "." ở cuối prefix nếu có (để tránh Replace thừa)
-            prefixToRemove = prefixToRemove.Trim();
-            if (prefixToRemove.EndsWith("."))
-                prefixToRemove = prefixToRemove[..^1];
-
-            // Duyệt tất cả các band trong 1 report
-            foreach (Band band in rpt.Bands)
-            {
-                // Nếu band đấy không có control nào thì bảo qua, xử lý các band tiếp theo
-                if (band?.Controls == null || band.Controls.Count == 0)
-                    continue;
-
-                // Tiếp tục duyệt từng control trong 1 band
-                foreach (XRControl control in ReportLayoutHelpers.EnumerateControls(band.Controls))
-                {
-                    // Nếu ko có control hoặc control đấy đang không binding thì không cần loai tiền tố
-                    if (control == null || control.ExpressionBindings == null)
-                        continue;
-
-                    // Duyệt tất cả các binding của cotrol này (1 control có thể có nhiều binding)
-                    foreach (var binding in control.ExpressionBindings)
-                    {
-                        if (string.IsNullOrWhiteSpace(binding.Expression))
-                            continue;
-
-                        // So sánh không phân biệt hoa thường & có thể tránh Replace lỗi
-                        if (binding.Expression.Contains(prefixToRemove + ".", StringComparison.Ordinal))
-                        {
-                            binding.Expression = binding.Expression.Replace(
-                                prefixToRemove + ".",
-                                "",
-                                StringComparison.Ordinal
-                            );
-                        }
-                    }
-                }
-            }
-        }
-
-        /// <summary>
         /// Hủy truy vấn dữ liệu nếu đang chạy và hủy xuất báo cáo
         /// </summary>
         /// <param name="sender"></param>
@@ -497,6 +445,9 @@ namespace Winforms_App_Template.Forms
 
                     // Band "Dap_chuoi_cat_dinh_muc": Sử dụng bảng Dap_chuoi_cat_dinh_muc và đặt tên hiển thị là Dập chuôi cắt định mức
                     ["Dap_chuoi_cat_dinh_muc"] = FieldWhitelistRegistry.Dap_chuoi_cat_dinh_muc.ToDesignSchema("Dập chuôi cắt định mức"),
+
+                    ["Tu_dong_lap_rap_que_nong"] = FieldWhitelistRegistry.Tu_dong_lap_rap_que_nong.ToDesignSchema("Tự động lắp ráp que nong"),
+                    ["Gia_cong_dau_mut_v1_5"] = FieldWhitelistRegistry.Gia_cong_dau_mut_v1_5.ToDesignSchema("Gia công đầu mút V1~V5"),
                 };
 
                 // Gắn schema cho từng band theo tên
@@ -519,6 +470,10 @@ namespace Winforms_App_Template.Forms
                     ["Cam_chot_dkm"] = FieldWhitelistRegistry.Camchot_DKM.ToDesignSchema("Điều kiện máy cắm chốt"),
                     ["Dap_chuoi_cat_dinh_muc_standard"] = FieldWhitelistRegistry.Dap_chuoi_cat_dinh_muc_Standard.ToDesignSchema("Tiêu chuẩn dập chuôi cắt định mức"),
                     ["Dap_chuoi_cat_dinh_muc_dkm"] = FieldWhitelistRegistry.Dap_chuoi_cat_dinh_muc_DKM.ToDesignSchema("Điều kiện máy dập chuôi cắt định mức"),
+                    ["Tu_dong_lap_rap_que_nong_dkm"] = FieldWhitelistRegistry.Tu_dong_lap_rap_que_nong_DKM.ToDesignSchema("Điều kiện máy tự động lắp ráp que nong"),
+                    ["Tu_dong_lap_rap_que_nong_standard"] = FieldWhitelistRegistry.Tu_dong_lap_rap_que_nong_Standard.ToDesignSchema("Tiêu chuẩn tự động lắp ráp que nong"),
+                    ["Gia_cong_dau_mut_v1_5_standard"] = FieldWhitelistRegistry.Gia_cong_dau_mut_v1_5_Standard.ToDesignSchema("Tiêu chuẩn gia công đầu mút"),
+                    ["Gia_cong_dau_mut_v1_5_dkm"] = FieldWhitelistRegistry.Gia_cong_dau_mut_v1_5_DKM.ToDesignSchema("Điều kiện máy gia công đầu mút"),
                 };
 
                 // Khai báo 1 schema mặc định (dùng nếu không match tên ở trên)

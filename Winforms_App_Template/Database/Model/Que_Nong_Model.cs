@@ -32,6 +32,9 @@ namespace Winforms_App_Template.Database.Model
         public DateTime StartTime { get; init; }                   // Thời gian bắt đầu thao tác
         public string NguoiTT { get; init; } = "";                 // Người thao tác
         public string? TenMay_Ban { get; set; }                    // Tên máy bàn thao tác
+        public int SLSudung { get; init; }                         // Số lượng sản phẩm đã sử dụng
+        public int OKQty { get; init; }                            // Số lượng hàng phù hợp
+        public int NGQty { get; init; }                            // Số lượng hàng không phù hợp
         public string? val1 { get; set; }                          // Số lượng ống dài sử dụng
         public string? val2 { get; set; }                          // Số lượng ống dài cắt được
         public string? val3 { get; set; }                          // Mã quản lý thickness gauge
@@ -64,8 +67,6 @@ namespace Winforms_App_Template.Database.Model
         public string? val30 { get; set; }                         // Để trường cho tương lai
         public string? val31 { get; set; }                         // Để trường cho tương lai
         public string? val32 { get; set; }                         // Để trường cho tương lai
-        public int SLSudung { get; init; }                         // Số lượng sản phẩm đã sử dụng
-        public string? Remark { get; init; }                       // Số lượng sản phẩm đã sử dụng
 
         // --- phần chi tiết lỗi ---
         public int Cat_vat { get; set; }                          // 1: Lỗi cắt vát
@@ -86,15 +87,41 @@ namespace Winforms_App_Template.Database.Model
         public int Ngan { get; set; }                             // 18: Ngấn
         public int Mang_ca { get; set; }                          // 19: Mang cá
         public int Ran_ong { get; set; }                          // 20: Rạn ống
+        public int Bep_gap_ong { get; set; }                      // 30: Bẹp, gập ống
         public int Cong { get; set; }                             // 41: Lỗi Cong
         public int Di_vat_ban { get; set; }                       // 58: Dị vật bẩn
         public int Lo_thung { get; set; }                         // 128: Lỗ thung
         public int Nham_xu_long { get; set; }                     // 129: Nhám xù lông
         public int KTNQ_loi_lom { get; set; }                     // 130: KTNQ bằng tiếp xúc _ Lồi lõm
         public int KTNG_Khac { get; set; }                        // 131: KTNQ bằng tiếp xúc _ Khác
+        public int NG_cam_chot { get; set; }                      // 152: NG cắm chốt
+        public int NG_do_dap_sau { get; set; }                    // 153: NG độ dập sâu
         public int NG_xuyen_qua_1 { get; set; }                   // 158: Số lượng NG Ktra xuyên qua 1
         public int NG_xuyen_qua_2 { get; set; }                   // 159: Số lượng NG Ktra xuyên qua 2
         public int Loi_lom { get; set; }                          // 160: Lỗi lồi lõm
+        // Ghi chú
+        public string? Remark { get; init; }                      // Ghi chú
+    }
+
+
+    public sealed class Standard_Model
+    {
+        public int idInput { get; init; }                         // ID Form nhập dữ liệu để lấy chi tiết lỗi
+        public int idStandard { get; init; }                      // ID Form nhập dữ liệu để lấy chi tiết lỗi
+        public string TenTieuChuan { get; init; } = "";           // Mã lý do kiểm tra: I, II, III, IV
+        public string MaTieuChuan { get; init; } = "";            // Mã lý do kiểm tra: I, II, III, IV
+        public string Loai_size { get; init; } = "";              // Mã lý do kiểm tra: I, II, III, IV
+        public string Loai_kytu { get; init; } = "";              // Mã lý do kiểm tra: I, II, III, IV
+        public string Loai_chieudai { get; init; } = "";          // Mã lý do kiểm tra: I, II, III, IV
+        public string Loai_somay { get; init; } = "";             // Mã lý do kiểm tra: I, II, III, IV
+        public string Loai_masp { get; init; } = "";
+        public string Loai_ten { get; init; } = "";
+        public string TCMin { get; init; } = "";
+        public string TCMax { get; init; } = "";
+        public string TenNVL { get; init; } = "";
+        public string MaNVL { get; init; } = "";
+        public DateTime Fromdate { get; init; }
+        public DateTime Todate { get; init; }
     }
 
     /// <summary>

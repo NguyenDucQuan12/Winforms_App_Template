@@ -242,6 +242,8 @@ namespace Winforms_App_Template.Report
                     SLSudung = m.SLSudung,
                     StartTime = m.StartTime,
                     NguoiTT = m.NguoiTT,
+                    OKQty = m.OKQty,
+                    NGQty = m.NGQty,
 
                     // Sao chép 32 cột đo/giá trị sang model in
                     val1 = m.val1,

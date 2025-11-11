@@ -18,6 +18,8 @@ namespace Winforms_App_Template.Database.Model
         public string NguoiTT { get; init; } = "";                 // Người thao tác
         public string? TenMay_Ban { get; set; }                    // Tên máy bàn thao tác
         public int SLSudung { get; init; }                         // Số lượng sản phẩm đã sử dụng
+        public int OKQty { get; init; }                            // Số lượng hàng phù hợp
+        public int NGQty { get; init; }                            // Số lượng hàng không phù hợp
         public string? Remark { get; init; }                       // Ghi chú
         public string? val1 { get; set; }                          // Số lượng ống dài sử dụng
         public string? val2 { get; set; }                          // Số lượng ống dài cắt được

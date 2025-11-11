@@ -63,7 +63,9 @@ namespace Winforms_App_Template.Database.Table
                         ni.SLSudung,            -- Số lượng sử dụng
                         ni.StartTime,           -- Thời gian bắt đầu
                         ni.NguoiTT,             -- Người thao tác
-                        ni.Remark,               -- Ghi chú cho mỗi dòng thao tác
+                        ni.Remark,              -- Ghi chú cho mỗi dòng thao tác
+                        ni.OKQty,               -- Số lượng hàng phu hợp
+                        ni.NGQty,               -- Số lượng hàng không phù hợp
                         ni.val1,                -- Số lượng ống dài sử dụng
                         ni.val2,                -- Số lượng ống dài cắt được
                         ni.val3,                -- Mã quản lý thicness gauge
