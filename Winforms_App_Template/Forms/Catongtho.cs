@@ -3,6 +3,7 @@ using DevExpress.XtraReports.UI;                    // XtraReport, ReportDesignT
 using DevExpress.XtraReports.UserDesigner;          // XRDesignMdiController, XRDesignPanel, ReportState
 using System.Data;
 using System.Text;
+using System.Threading;
 using Winforms_App_Template.Database;
 using Winforms_App_Template.Database.Model;
 using Winforms_App_Template.Database.Table;
@@ -40,6 +41,11 @@ namespace Winforms_App_Template.Forms
         /// <param name="e"></param>
         private async void Export_Document_Button_Click(object sender, EventArgs e)
         {
+            //// Tạo ƯhiteList bằng hàm và các trường trong DB
+            //using var cts = new CancellationTokenSource();
+            //var whitelistBuilder = new Auto_Build_FieldWhiteList(); // Create an instance
+            //var whitelist = await whitelistBuilder.GetWhitelistsForFormsAsync([71], ct: cts.Token);
+
 
             // Lấy dữ liệu đầu vào
             string ID_Cong_Doan_String = ID_Cong_Doan_Text.Text;
@@ -63,7 +69,7 @@ namespace Winforms_App_Template.Forms
                 MessageBox.Show("ID công đoạn hoặc số mẻ không hợp lệ!");
                 return;
             }
-            
+
             // Truy vấn dữ liệu cho form và tạo báo cáo
             try
             {
@@ -112,6 +118,10 @@ namespace Winforms_App_Template.Forms
                 new Step_Definition(71, "Dap_chuoi_cat_dinh_muc", "Dap_chuoi_cat_dinh_muc_", true),
                 // thêm công đoạn khác (221, 305, …) tại đây:
                 new Step_Definition(175, "Tu_dong_lap_rap_que_nong", "Tu_dong_lap_rap_que_nong_", true),
+                new Step_Definition(73, "Rua_dau_mut_que_nong", "Rua_dau_mut_que_nong_"),
+                new Step_Definition(74, "Kiem_tra_ngoai_quan", "Kiem_tra_ngoai_quan_"),
+                new Step_Definition(75, "Xu_ly_silicon", "Xu_ly_silicon_"),
+                new Step_Definition(76, "Kiem_tra_lan_cuoi", "Kiem_tra_lan_cuoi_"),
             };
 
             // ===== KHỞI TẠO SERVICE DỮ LIỆU =====
@@ -448,6 +458,10 @@ namespace Winforms_App_Template.Forms
 
                     ["Tu_dong_lap_rap_que_nong"] = FieldWhitelistRegistry.Tu_dong_lap_rap_que_nong.ToDesignSchema("Tự động lắp ráp que nong"),
                     ["Gia_cong_dau_mut_v1_5"] = FieldWhitelistRegistry.Gia_cong_dau_mut_v1_5.ToDesignSchema("Gia công đầu mút V1~V5"),
+                    ["Rua_dau_mut_que_nong"] = FieldWhitelistRegistry.Rua_dau_mut_que_nong.ToDesignSchema("Rửa đầu mút que nong"),
+                    ["Kiem_tra_ngoai_quan"] = FieldWhitelistRegistry.Kiem_tra_ngoai_quan.ToDesignSchema("Kiểm tra ngoại quan"),
+                    ["Xu_ly_silicon"] = FieldWhitelistRegistry.Xu_ly_silicon.ToDesignSchema("Xử lý silicon"),
+                    ["Kiem_tra_lan_cuoi"] = FieldWhitelistRegistry.Kiem_tra_lan_cuoi.ToDesignSchema("Kiểm tra lần cuối"),
                 };
 
                 // Gắn schema cho từng band theo tên
@@ -474,6 +488,7 @@ namespace Winforms_App_Template.Forms
                     ["Tu_dong_lap_rap_que_nong_standard"] = FieldWhitelistRegistry.Tu_dong_lap_rap_que_nong_Standard.ToDesignSchema("Tiêu chuẩn tự động lắp ráp que nong"),
                     ["Gia_cong_dau_mut_v1_5_standard"] = FieldWhitelistRegistry.Gia_cong_dau_mut_v1_5_Standard.ToDesignSchema("Tiêu chuẩn gia công đầu mút"),
                     ["Gia_cong_dau_mut_v1_5_dkm"] = FieldWhitelistRegistry.Gia_cong_dau_mut_v1_5_DKM.ToDesignSchema("Điều kiện máy gia công đầu mút"),
+                    ["Kiem_tra_ngoai_quan"] = FieldWhitelistRegistry.Kiem_tra_ngoai_quan_Standard.ToDesignSchema("Điều kiện máy kiểm tra ngoại quan"),
                 };
 
                 // Khai báo 1 schema mặc định (dùng nếu không match tên ở trên)

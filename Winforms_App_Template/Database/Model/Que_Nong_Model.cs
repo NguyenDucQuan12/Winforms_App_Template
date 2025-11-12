@@ -87,9 +87,17 @@ namespace Winforms_App_Template.Database.Model
         public int Ngan { get; set; }                             // 18: Ngấn
         public int Mang_ca { get; set; }                          // 19: Mang cá
         public int Ran_ong { get; set; }                          // 20: Rạn ống
+        public int Vang_chay_dau_mut { get; set; }                // 21: Vàng cháy đầu mút
         public int Bep_gap_ong { get; set; }                      // 30: Bẹp, gập ống
+        public int Dap_dau_mut { get; set; }                      // 35: Dập đầu mút
+        public int Nut_vo { get; set; }                           // 36: Nứt, vỡ
+        public int Gia_cong_chua_hoan_thien { get; set; }         // 38: Gia công chưa hoàn thiện
+        public int Cong_bien_dang { get; set; }                   // 39: Cong, biến dạng
+        public int Thieu_linh_kien { get; set; }                  // 40: Thiếu linh kiện
         public int Cong { get; set; }                             // 41: Lỗi Cong
+        public int Loi { get; set; }                              // 44: Lỗi Lồi
         public int Di_vat_ban { get; set; }                       // 58: Dị vật bẩn
+        public int Lom_thieu_nhua { get; set; }                   // 115: Lõm, thiếu nhựa
         public int Lo_thung { get; set; }                         // 128: Lỗ thung
         public int Nham_xu_long { get; set; }                     // 129: Nhám xù lông
         public int KTNQ_loi_lom { get; set; }                     // 130: KTNQ bằng tiếp xúc _ Lồi lõm
