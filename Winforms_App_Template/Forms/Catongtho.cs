@@ -122,6 +122,7 @@ namespace Winforms_App_Template.Forms
                 new Step_Definition(74, "Kiem_tra_ngoai_quan", "Kiem_tra_ngoai_quan_"),
                 new Step_Definition(75, "Xu_ly_silicon", "Xu_ly_silicon_"),
                 new Step_Definition(76, "Kiem_tra_lan_cuoi", "Kiem_tra_lan_cuoi_"),
+                new Step_Definition(77, "Tong_ket", "Tong_ket_"),
             };
 
             // ===== KHỞI TẠO SERVICE DỮ LIỆU =====
@@ -462,6 +463,7 @@ namespace Winforms_App_Template.Forms
                     ["Kiem_tra_ngoai_quan"] = FieldWhitelistRegistry.Kiem_tra_ngoai_quan.ToDesignSchema("Kiểm tra ngoại quan"),
                     ["Xu_ly_silicon"] = FieldWhitelistRegistry.Xu_ly_silicon.ToDesignSchema("Xử lý silicon"),
                     ["Kiem_tra_lan_cuoi"] = FieldWhitelistRegistry.Kiem_tra_lan_cuoi.ToDesignSchema("Kiểm tra lần cuối"),
+                    ["Tong_ket"] = FieldWhitelistRegistry.Tong_ket.ToDesignSchema("Tổng kết"),
                 };
 
                 // Gắn schema cho từng band theo tên

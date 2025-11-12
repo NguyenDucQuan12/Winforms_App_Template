@@ -566,6 +566,19 @@ namespace Winforms_App_Template.Report
             .Add("Khac", typeof(string), "Lỗi khác")
             // Ghi chú
             .Add("Remark", typeof(string), "Ghi chú");
+
+        public static readonly FieldWhitelist Tong_ket = new FieldWhitelist()
+           .Add("MaKT", typeof(string), "Số lượng mẫu kiểm tra công đoạn trả lại")
+           .Add("StartTime", typeof(DateTime), "Thời gian bắt đầu")
+           .Add("NguoiTT", typeof(string), "Người thao tác")
+           .Add("TenMay_Ban", typeof(string), "Số máy sản xuất")
+           .Add("SLSudung", typeof(int), "Số lượng thao tác")
+           .Add("OKQty", typeof(int), "Số lượng hàng phù hợp")
+           .Add("NGQty", typeof(int), "Số lượng hàng không phù hợp")
+           .Add("val1", typeof(string), "Số lô dung dịch silicon sử dụng")
+           .Add("val2", typeof(string), "Số lượng hàng chuyển sang công đoạn sau (hàng phù hợp)")
+           .Add("val2", typeof(string), "Ngày/tháng xác nhận - hủy/ Người xác nhận - hủy")
+           .Add("val2", typeof(string), "Hủy");
     }
 
     /// Tự động tạo các filed tự động với dữ liệu đã có ở DB
