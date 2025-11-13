@@ -459,7 +459,7 @@ namespace Winforms_App_Template.Report
             .Add("Thieu_linh_kien", typeof(string), "Lỗi Thiếu linh kiện")
             .Add("Bat_thuong_may", typeof(string), "Lỗi Bất thường máy")
             .Add("Roi", typeof(string), "Lỗi rơi")
-            .Add("Khac", typeof(string), "Lỗi khác");
+            .Add("Khac", typeof(string), "Lỗi khác")
             // Ghi chú
             .Add("Remark", typeof(string), "Ghi chú");
 
