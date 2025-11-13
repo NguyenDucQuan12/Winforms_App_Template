@@ -32,6 +32,8 @@ namespace Winforms_App_Template.Forms.SubReport
             this.TopMargin = new DevExpress.XtraReports.UI.TopMarginBand();
             this.BottomMargin = new DevExpress.XtraReports.UI.BottomMarginBand();
             this.Detail = new DevExpress.XtraReports.UI.DetailBand();
+            this.xrRichText3 = new DevExpress.XtraReports.UI.XRRichText();
+            this.xrLabel9 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrTable11 = new DevExpress.XtraReports.UI.XRTable();
             this.xrTableRow36 = new DevExpress.XtraReports.UI.XRTableRow();
             this.xrTableCell338 = new DevExpress.XtraReports.UI.XRTableCell();
@@ -141,10 +143,8 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell449 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell442 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell365 = new DevExpress.XtraReports.UI.XRTableCell();
-            this.xrRichText3 = new DevExpress.XtraReports.UI.XRRichText();
-            this.xrLabel9 = new DevExpress.XtraReports.UI.XRLabel();
-            ((System.ComponentModel.ISupportInitialize)(this.xrTable11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrRichText3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.xrTable11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
             // 
             // TopMargin
@@ -163,14 +163,42 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrRichText3,
             this.xrLabel9,
             this.xrTable11});
-            this.Detail.HeightF = 175F;
+            this.Detail.HeightF = 115F;
             this.Detail.Name = "Detail";
+            // 
+            // xrRichText3
+            // 
+            this.xrRichText3.Borders = ((DevExpress.XtraPrinting.BorderSide)((((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Top) 
+            | DevExpress.XtraPrinting.BorderSide.Right) 
+            | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.xrRichText3.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
+            this.xrRichText3.LocationFloat = new DevExpress.Utils.PointFloat(813.8119F, 17.168F);
+            this.xrRichText3.Name = "xrRichText3";
+            this.xrRichText3.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
+            this.xrRichText3.SerializableRtfString = resources.GetString("xrRichText3.SerializableRtfString");
+            this.xrRichText3.SizeF = new System.Drawing.SizeF(298.4117F, 16.83201F);
+            this.xrRichText3.StylePriority.UseBorders = false;
+            this.xrRichText3.StylePriority.UseFont = false;
+            // 
+            // xrLabel9
+            // 
+            this.xrLabel9.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
+            this.xrLabel9.LocationFloat = new DevExpress.Utils.PointFloat(813.8119F, 4.184077F);
+            this.xrLabel9.Multiline = true;
+            this.xrLabel9.Name = "xrLabel9";
+            this.xrLabel9.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
+            this.xrLabel9.SizeF = new System.Drawing.SizeF(47.75366F, 12.98397F);
+            this.xrLabel9.StylePriority.UseFont = false;
+            this.xrLabel9.StylePriority.UseTextAlignment = false;
+            this.xrLabel9.Text = "備考Ghi chú:";
+            this.xrLabel9.TextAlignment = DevExpress.XtraPrinting.TextAlignment.BottomLeft;
             // 
             // xrTable11
             // 
             this.xrTable11.Borders = ((DevExpress.XtraPrinting.BorderSide)((((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Top) 
             | DevExpress.XtraPrinting.BorderSide.Right) 
             | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.xrTable11.BorderWidth = 0.5F;
             this.xrTable11.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
             this.xrTable11.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
             this.xrTable11.Name = "xrTable11";
@@ -183,8 +211,9 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableRow38,
             this.xrTableRow41,
             this.xrTableRow37});
-            this.xrTable11.SizeF = new System.Drawing.SizeF(801.2937F, 175F);
+            this.xrTable11.SizeF = new System.Drawing.SizeF(801.2937F, 115F);
             this.xrTable11.StylePriority.UseBorders = false;
+            this.xrTable11.StylePriority.UseBorderWidth = false;
             this.xrTable11.StylePriority.UseFont = false;
             this.xrTable11.StylePriority.UseTextAlignment = false;
             this.xrTable11.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
@@ -201,14 +230,14 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell349,
             this.xrTableCell436});
             this.xrTableRow36.Name = "xrTableRow36";
-            this.xrTableRow36.Weight = 1D;
+            this.xrTableRow36.Weight = 0.56D;
             // 
             // xrTableCell338
             // 
             this.xrTableCell338.Multiline = true;
             this.xrTableCell338.Name = "xrTableCell338";
             this.xrTableCell338.RowSpan = 3;
-            this.xrTableCell338.Text = "Lý do kiểm tra";
+            this.xrTableCell338.Text = "確認理由\r\nLý do kiểm tra";
             this.xrTableCell338.Weight = 0.50137806764634507D;
             // 
             // xrTableCell339
@@ -216,7 +245,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell339.Multiline = true;
             this.xrTableCell339.Name = "xrTableCell339";
             this.xrTableCell339.RowSpan = 3;
-            this.xrTableCell339.Text = "Giờ, Ngày/tháng thao tác, Người thao tác";
+            this.xrTableCell339.Text = "作業時間・日、担当者 \r\nGiờ, Ngày/ tháng thao tác , Người thao tác";
             this.xrTableCell339.Weight = 0.79570748577136785D;
             // 
             // xrTableCell340
@@ -224,7 +253,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell340.Multiline = true;
             this.xrTableCell340.Name = "xrTableCell340";
             this.xrTableCell340.RowSpan = 3;
-            this.xrTableCell340.Text = "Số máy sản xuất";
+            this.xrTableCell340.Text = "生産号機\r\nSố máy sản xuất";
             this.xrTableCell340.Weight = 0.52933549088448806D;
             // 
             // xrTableCell341
@@ -232,7 +261,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell341.Multiline = true;
             this.xrTableCell341.Name = "xrTableCell341";
             this.xrTableCell341.RowSpan = 3;
-            this.xrTableCell341.Text = "Xác nhận trạng thái jig cắm chốt";
+            this.xrTableCell341.Text = "かしめピン挿入冶具の状態\r\nXác nhận trạng thái jig cắm chốt";
             this.xrTableCell341.Weight = 1.1717178819532035D;
             // 
             // xrTableCell343
@@ -240,28 +269,28 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell343.Multiline = true;
             this.xrTableCell343.Name = "xrTableCell343";
             this.xrTableCell343.RowSpan = 3;
-            this.xrTableCell343.Text = "Chốt dập";
+            this.xrTableCell343.Text = "打ち込みピンの状態\r\nChốt dập";
             this.xrTableCell343.Weight = 0.5636075218308666D;
             // 
             // xrTableCell344
             // 
             this.xrTableCell344.Multiline = true;
             this.xrTableCell344.Name = "xrTableCell344";
-            this.xrTableCell344.Text = "Phần cắm chốt";
+            this.xrTableCell344.Text = "カシメピンパートPhần cắm chốt";
             this.xrTableCell344.Weight = 4.1138323493533449D;
             // 
             // xrTableCell349
             // 
             this.xrTableCell349.Multiline = true;
             this.xrTableCell349.Name = "xrTableCell349";
-            this.xrTableCell349.Text = "Phần dập chuôi";
+            this.xrTableCell349.Text = "ハーブ打ち込みパートPhần dập chuôi";
             this.xrTableCell349.Weight = 1.5406087841788563D;
             // 
             // xrTableCell436
             // 
             this.xrTableCell436.Multiline = true;
             this.xrTableCell436.Name = "xrTableCell436";
-            this.xrTableCell436.Text = "Kiểm tra dummy";
+            this.xrTableCell436.Text = "ダミー検査 Kiểm tra dummy";
             this.xrTableCell436.Weight = 1.9391203075519416D;
             // 
             // xrTableRow40
@@ -282,7 +311,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell437,
             this.xrTableCell407});
             this.xrTableRow40.Name = "xrTableRow40";
-            this.xrTableRow40.Weight = 1D;
+            this.xrTableRow40.Weight = 0.79999999999999993D;
             // 
             // xrTableCell394
             // 
@@ -323,7 +352,7 @@ namespace Winforms_App_Template.Forms.SubReport
             // 
             this.xrTableCell400.Multiline = true;
             this.xrTableCell400.Name = "xrTableCell400";
-            this.xrTableCell400.Text = "Nhiệt độ bộ gia nhiệt";
+            this.xrTableCell400.Text = "加熱部の温度\r\nNhiệt độ bộ gia nhiệt (℃)";
             this.xrTableCell400.Weight = 1.0822429539261569D;
             // 
             // xrTableCell402
@@ -331,7 +360,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell402.Multiline = true;
             this.xrTableCell402.Name = "xrTableCell402";
             this.xrTableCell402.RowSpan = 2;
-            this.xrTableCell402.Text = "Thời gian cắm (s)";
+            this.xrTableCell402.Text = "挿入時間\r\nThời gian cắm(s)";
             this.xrTableCell402.Weight = 0.695835526200492D;
             // 
             // xrTableCell403
@@ -339,7 +368,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell403.Multiline = true;
             this.xrTableCell403.Name = "xrTableCell403";
             this.xrTableCell403.RowSpan = 2;
-            this.xrTableCell403.Text = "Áp suất kẹp ống (mpa)";
+            this.xrTableCell403.Text = "チューブチャック圧力\r\nÁp suất kẹp ống (Mpa)";
             this.xrTableCell403.Weight = 0.64811420505268469D;
             // 
             // xrTableCell404
@@ -347,7 +376,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell404.Multiline = true;
             this.xrTableCell404.Name = "xrTableCell404";
             this.xrTableCell404.RowSpan = 2;
-            this.xrTableCell404.Text = "Vị trí ấn của Robocylinder cắm ống vào chốt A (mm)";
+            this.xrTableCell404.Text = "Aチューブかしめピン挿入ロボシリンダーの押し込み位置\r\nVị trí ấn của Robocylinder cắm ống";
             this.xrTableCell404.Weight = 0.82165354309800476D;
             // 
             // xrTableCell405
@@ -355,7 +384,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell405.Multiline = true;
             this.xrTableCell405.Name = "xrTableCell405";
             this.xrTableCell405.RowSpan = 2;
-            this.xrTableCell405.Text = "Vị trí ấn của Robocylinder cắm ống vào chốt B(mm)";
+            this.xrTableCell405.Text = "Bチューブかしめピン挿入ロボシリンダーの押し込み位置\r\nVị trí ấn của Robocylinder cắm ống vào chốt B (mm)";
             this.xrTableCell405.Weight = 0.86598580243537016D;
             // 
             // xrTableCell406
@@ -363,7 +392,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell406.Multiline = true;
             this.xrTableCell406.Name = "xrTableCell406";
             this.xrTableCell406.RowSpan = 2;
-            this.xrTableCell406.Text = "Vị trí cắt Robocylinder nâng hạ dao cắt";
+            this.xrTableCell406.Text = "カット刃昇降ロボシリンダーのカット位置\r\nVị trí cắt robocylinder nâng hạ dao cắt";
             this.xrTableCell406.Weight = 0.8166164719152802D;
             // 
             // xrTableCell444
@@ -371,7 +400,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell444.Multiline = true;
             this.xrTableCell444.Name = "xrTableCell444";
             this.xrTableCell444.RowSpan = 2;
-            this.xrTableCell444.Text = "Áp suất dập (mpa)";
+            this.xrTableCell444.Text = "打ち込み圧力\r\nÁp suất dập(MPa)";
             this.xrTableCell444.Weight = 0.72399231226357486D;
             // 
             // xrTableCell437
@@ -379,7 +408,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell437.Multiline = true;
             this.xrTableCell437.Name = "xrTableCell437";
             this.xrTableCell437.RowSpan = 2;
-            this.xrTableCell437.Text = "Hoạt động của thiết bị \r\nkiểm tra trạng thái cắm \r\nchốt";
+            this.xrTableCell437.Text = "カシメピン挿入状態確認設備の活動\r\nHoạt động của thiết bị kiểm tra trạng thái cắm chốt";
             this.xrTableCell437.Weight = 1.0657577619531395D;
             // 
             // xrTableCell407
@@ -387,7 +416,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell407.Multiline = true;
             this.xrTableCell407.Name = "xrTableCell407";
             this.xrTableCell407.RowSpan = 2;
-            this.xrTableCell407.Text = "Độ chính xác của thiết bị đo độ \r\ndập sâu";
+            this.xrTableCell407.Text = "打ち込み量測定設備の精度確認\r\nĐộ chính xác của thiết";
             this.xrTableCell407.Weight = 0.8733628642394391D;
             // 
             // xrTableRow39
@@ -409,7 +438,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell438,
             this.xrTableCell393});
             this.xrTableRow39.Name = "xrTableRow39";
-            this.xrTableRow39.Weight = 1D;
+            this.xrTableRow39.Weight = 1.0000000000000002D;
             // 
             // xrTableCell380
             // 
@@ -536,7 +565,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell439,
             this.xrTableCell435});
             this.xrTableRow42.Name = "xrTableRow42";
-            this.xrTableRow42.Weight = 1D;
+            this.xrTableRow42.Weight = 0.55999999999999983D;
             // 
             // xrTableCell422
             // 
@@ -671,7 +700,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell440,
             this.xrTableCell379});
             this.xrTableRow38.Name = "xrTableRow38";
-            this.xrTableRow38.Weight = 1D;
+            this.xrTableRow38.Weight = 0.56D;
             // 
             // xrTableCell366
             // 
@@ -803,7 +832,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell441,
             this.xrTableCell421});
             this.xrTableRow41.Name = "xrTableRow41";
-            this.xrTableRow41.Weight = 1D;
+            this.xrTableRow41.Weight = 0.56D;
             // 
             // xrTableCell408
             // 
@@ -938,7 +967,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell442,
             this.xrTableCell365});
             this.xrTableRow37.Name = "xrTableRow37";
-            this.xrTableRow37.Weight = 1D;
+            this.xrTableRow37.Weight = 0.56D;
             // 
             // xrTableCell352
             // 
@@ -1050,33 +1079,6 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell365.Text = "xrTableCell365";
             this.xrTableCell365.Weight = 0.873362439385257D;
             // 
-            // xrRichText3
-            // 
-            this.xrRichText3.Borders = ((DevExpress.XtraPrinting.BorderSide)((((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Top) 
-            | DevExpress.XtraPrinting.BorderSide.Right) 
-            | DevExpress.XtraPrinting.BorderSide.Bottom)));
-            this.xrRichText3.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
-            this.xrRichText3.LocationFloat = new DevExpress.Utils.PointFloat(813.8119F, 17.168F);
-            this.xrRichText3.Name = "xrRichText3";
-            this.xrRichText3.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
-            this.xrRichText3.SerializableRtfString = resources.GetString("xrRichText3.SerializableRtfString");
-            this.xrRichText3.SizeF = new System.Drawing.SizeF(298.4118F, 32.83201F);
-            this.xrRichText3.StylePriority.UseBorders = false;
-            this.xrRichText3.StylePriority.UseFont = false;
-            // 
-            // xrLabel9
-            // 
-            this.xrLabel9.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
-            this.xrLabel9.LocationFloat = new DevExpress.Utils.PointFloat(813.8119F, 4.184071F);
-            this.xrLabel9.Multiline = true;
-            this.xrLabel9.Name = "xrLabel9";
-            this.xrLabel9.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
-            this.xrLabel9.SizeF = new System.Drawing.SizeF(35.38385F, 12.98397F);
-            this.xrLabel9.StylePriority.UseFont = false;
-            this.xrLabel9.StylePriority.UseTextAlignment = false;
-            this.xrLabel9.Text = "Ghi chú:";
-            this.xrLabel9.TextAlignment = DevExpress.XtraPrinting.TextAlignment.BottomLeft;
-            // 
             // Tu_dong_lap_rap_que_nong_dkm
             // 
             this.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
@@ -1089,8 +1091,8 @@ namespace Winforms_App_Template.Forms.SubReport
             this.PageWidthF = 1169.291F;
             this.PaperKind = DevExpress.Drawing.Printing.DXPaperKind.A3;
             this.Version = "25.1";
-            ((System.ComponentModel.ISupportInitialize)(this.xrTable11)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrRichText3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.xrTable11)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 
         }
