@@ -7154,7 +7154,7 @@ namespace Winforms_App_Template.Forms
             this.xrLabel14,
             this.xrTable16,
             this.xrTable15});
-            this.Gia_cong_dau_mut_v1_5_data.HeightF = 489.9855F;
+            this.Gia_cong_dau_mut_v1_5_data.HeightF = 479.9856F;
             this.Gia_cong_dau_mut_v1_5_data.Name = "Gia_cong_dau_mut_v1_5_data";
             // 
             // Gia_cong_dau_mut_v1_5_standard
@@ -7177,7 +7177,7 @@ namespace Winforms_App_Template.Forms
             | DevExpress.XtraPrinting.BorderSide.Right) 
             | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.xrRichText7.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
-            this.xrRichText7.LocationFloat = new DevExpress.Utils.PointFloat(529.5902F, 437.9696F);
+            this.xrRichText7.LocationFloat = new DevExpress.Utils.PointFloat(529.559F, 427.9696F);
             this.xrRichText7.Name = "xrRichText7";
             this.xrRichText7.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
             this.xrRichText7.SerializableRtfString = resources.GetString("xrRichText7.SerializableRtfString");
@@ -7188,7 +7188,7 @@ namespace Winforms_App_Template.Forms
             // xrLabel16
             // 
             this.xrLabel16.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
-            this.xrLabel16.LocationFloat = new DevExpress.Utils.PointFloat(529.5902F, 424.9855F);
+            this.xrLabel16.LocationFloat = new DevExpress.Utils.PointFloat(529.5903F, 414.9856F);
             this.xrLabel16.Multiline = true;
             this.xrLabel16.Name = "xrLabel16";
             this.xrLabel16.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
@@ -7205,7 +7205,7 @@ namespace Winforms_App_Template.Forms
             | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.xrTable18.BorderWidth = 0.5F;
             this.xrTable18.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
-            this.xrTable18.LocationFloat = new DevExpress.Utils.PointFloat(1.504359F, 424.9855F);
+            this.xrTable18.LocationFloat = new DevExpress.Utils.PointFloat(1.504366F, 414.9856F);
             this.xrTable18.Name = "xrTable18";
             this.xrTable18.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
             this.xrTable18.Rows.AddRange(new DevExpress.XtraReports.UI.XRTableRow[] {

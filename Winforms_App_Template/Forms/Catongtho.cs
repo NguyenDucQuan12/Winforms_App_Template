@@ -46,7 +46,6 @@ namespace Winforms_App_Template.Forms
             //var whitelistBuilder = new Auto_Build_FieldWhiteList(); // Create an instance
             //var whitelist = await whitelistBuilder.GetWhitelistsForFormsAsync([71], ct: cts.Token);
 
-
             // Lấy dữ liệu đầu vào
             string ID_Cong_Doan_String = ID_Cong_Doan_Text.Text;
             string ItemNumber = Item_Number_Text.Text;
@@ -367,6 +366,11 @@ namespace Winforms_App_Template.Forms
 
         }
 
+        /// <summary>
+        /// Hiển thị chế độ designer để thiết kế báo cáo
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void simpleButton1_Click(object sender, EventArgs e)
         {
             try

@@ -1,7 +1,3 @@
-// ===============================
-// File: ReportDataPreparer.cs
-// Namespace giữ nguyên theo cấu trúc dự án của bạn
-// ===============================
 using System;                                                    // Exception, ArgumentNullException, …
 using System.Collections.Generic;                                // List<T>, Dictionary<TKey,TValue>
 using System.Globalization;
