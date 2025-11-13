@@ -95,7 +95,7 @@ namespace Winforms_App_Template.Report
 
 
         // -----------------------------
-        // 1) Map tĩnh từ propertyName -> pretty error name (nguyên dạng human)
+        //  Map tĩnh từ propertyName -> pretty error name (nguyên dạng human)
         //    Bạn có thể mở rộng/bổ sung nếu có property mới hoặc tên khóa DB khác.
         // -----------------------------
         private static readonly Dictionary<string, string> PropertyToPrettyName = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
@@ -113,9 +113,9 @@ namespace Winforms_App_Template.Report
             ["Sut"] = "Sứt",
             ["Nong_sau"] = "Nông sâu (độ sâu cắm không phù hợp)",
             ["Lom"] = "Lõm",
+            ["Loi_lom"] = "Lỗi lồi lõm",
             ["Di_vat_ban_khuon"] = "Dị vật bẩn khuôn",
             ["Di_vat_duc"] = "dị vật đúc",
-            ["Xuoc"] = "xước",
             ["Ngan"] = "ngấn",
             ["Mang_ca"] = "mang cá",
             ["Ran_ong"] = "Rạn ống",
@@ -138,12 +138,12 @@ namespace Winforms_App_Template.Report
             ["KTNG_Khac"] = "KTNQ bằng tiếp xúc _ Khác",
             ["NG_xuyen_qua_1"] = "Số lượng NG Ktra xuyên qua 1",
             ["NG_xuyen_qua_2"] = "số lượng NG Ktra xuyên qua 2",
-            // Thêm các mapping khác tương ứng với các property int trong Que_Nong_Rows...
+            // Thêm các mapping khác tương ứng với các property trong Que_Nong_Rows...
             // Nếu thiếu, code sẽ fallback dùng tên property đã normalize theo công thức nhất định bên dưới.
         };
 
         // -----------------------------
-        // 2) Cache: key = normalized(prettyName) -> PropertyInfo
+        // Cache: key = normalized(prettyName) -> PropertyInfo
         //    Dùng Lazy để khởi tạo một lần khi cần, thread-safe.
         // -----------------------------
         private static readonly Lazy<Dictionary<string, PropertyInfo>> NormalizedKeyToPropertyMapLazy =
@@ -153,7 +153,7 @@ namespace Winforms_App_Template.Report
         private static Dictionary<string, PropertyInfo> NormalizedKeyToPropertyMap => NormalizedKeyToPropertyMapLazy.Value;
 
         // -----------------------------
-        // 3) Hàm chính: gán tự động dựa trên map cache
+        // gán tự động dựa trên map cache
         // -----------------------------
         /// <summary>
         /// Gán các cột lỗi tự động cho dest từ dictionary kv (tên lỗi chuẩn hoá -> qty).
@@ -163,87 +163,119 @@ namespace Winforms_App_Template.Report
         /// <param name="kv">Pivot dictionary: key = tên lỗi (chưa chuẩn hoá), value = số lượng</param>
         public static void SetKnownErrorColumns_Cached(Que_Nong_Rows dest, Dictionary<string, int>? kv)
         {
-            // 1) Nếu null hoặc rỗng, gán 0 cho tất cả property int theo map để đảm bảo reset
+            // Nếu danh sách lỗi null hoặc rỗng:
+            //  → gán 0 cho TẤT CẢ CỘT LỖI trong model (theo map cache),
+            //    KHÔNG ĐỤNG tới các int khác (vì map chỉ chứa các cột lỗi)
             if (kv == null || kv.Count == 0)
             {
-                // Duyệt tất cả property trong cache và gán 0
+                // Duyệt tất cả PropertyInfo trong cache lỗi và gán 0
                 foreach (var prop in NormalizedKeyToPropertyMap.Values)
                 {
+                    // prop: chính là các property kiểu int tương ứng với mã lỗi
                     prop.SetValue(dest, 0);
                 }
                 return;
             }
 
-            // 2) Chuẩn hoá toàn bộ keys của kv sang dạng dùng để so sánh,
-            //    để giảm số lần chuẩn hoá nhiều lần ta tạo dictionary mới
+            // Chuẩn hoá toàn bộ keys của kv sang dạng dùng để so sánh (normalize)
             var normalizedKv = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+
             foreach (var item in kv)
             {
-                // NormalizeErrorKey sẽ:
-                // - lowercase, remove diacritics (dấu tiếng Việt), replace punctuation/underscores -> spaces, trim
+                // NormalizeErrorKey:
+                // - lowercase
+                // - bỏ dấu tiếng Việt
+                // - thay '_' '-' '/' ',' thành space
+                // - gộp nhiều space thành 1
                 var normKey = NormalizeErrorKey(item.Key);
-                // Nếu cùng key sau normalize xuất hiện nhiều lần, cộng dồn (nếu cần).
+
+                // Nếu cùng key sau normalize xuất hiện nhiều lần, cộng dồn số lượng lỗi
                 if (normalizedKv.ContainsKey(normKey))
                     normalizedKv[normKey] += item.Value;
                 else
                     normalizedKv[normKey] = item.Value;
             }
 
-            // 3) Duyệt map cache (tất cả property lỗi), lấy giá trị tương ứng từ normalizedKv nếu có, ngược lại = 0
+            // Duyệt các cột lỗi đã được cache trong NormalizedKeyToPropertyMap
             foreach (var kvp in NormalizedKeyToPropertyMap)
             {
-                var normKey = kvp.Key;           // key đã chuẩn hoá tương ứng với property
-                var propInfo = kvp.Value;       // property info cần gán
+                // normKey: key đã chuẩn hoá tương ứng với 1 cột lỗi trong model
+                var normKey = kvp.Key;
 
-                // Lấy giá trị từ normalizedKv (nếu có) hoặc 0
+                // propInfo: property tương ứng (VD: Cat_vat, Bep, Thieu_nhua, ...)
+                var propInfo = kvp.Value;
+
+                // Lấy giá trị lỗi từ normalizedKv nếu có, nếu không thì 0
                 var valueToSet = normalizedKv.TryGetValue(normKey, out var val) ? val : 0;
 
-                // Gán giá trị vào property (PropertyInfo.SetValue)
+                // Gán giá trị vào property tương ứng trên đối tượng dest
                 propInfo.SetValue(dest, valueToSet);
             }
         }
 
         // -----------------------------
-        // 4) BuildNormalizedMap: tạo dictionary normalizedKey -> PropertyInfo
-        //    gọi 1 lần khi Lazy khởi tạo
+        //  BuildNormalizedMap: tạo dictionary normalizedKey -> PropertyInfo
+        //    CHỈ cho các cột lỗi nằm trong PropertyToPrettyName
         // -----------------------------
         private static Dictionary<string, PropertyInfo> BuildNormalizedMap()
         {
-            // Lấy type của model
+            // Lấy type của model Que_Nong_Rows (model in báo cáo)
             var type = typeof(Que_Nong_Rows);
 
-            // Lấy tất cả property public instance
-            var props = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
-
-            // Tạo kết quả
+            // Tạo dictionary kết quả: key = tên lỗi đã normalize, value = PropertyInfo tương ứng
             var map = new Dictionary<string, PropertyInfo>(StringComparer.OrdinalIgnoreCase);
 
-            foreach (var prop in props)
+            // Duyệt TỪ ĐIỂN PropertyToPrettyName:
+            //   - Key: tên property trong model (VD: "Cat_vat")
+            //   - Value: tên lỗi dạng human (VD: "cắt vát")
+            foreach (var kv in PropertyToPrettyName)
             {
-                // Chúng ta chỉ quan tâm tới các property kiểu int (các cột lỗi)
-                if (prop.PropertyType != typeof(int)) continue;
+                // Lấy tên property trong model (VD: "Cat_vat")
+                var propertyName = kv.Key;
 
-                // 1) Nếu có mapping "pretty name" khai báo rõ ràng thì dùng nó
-                if (PropertyToPrettyName.TryGetValue(prop.Name, out var pretty))
+                // Lấy "pretty error name" (VD: "cắt vát")
+                var prettyName = kv.Value;
+
+                // Lấy PropertyInfo tương ứng với tên property trong model
+                // BindingFlags.Public | BindingFlags.Instance: chỉ lấy property public instance
+                // BindingFlags.IgnoreCase: không phân biệt hoa thường khi tìm property
+                var prop = type.GetProperty(
+                    propertyName,
+                    BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase
+                );
+
+                // Nếu không tìm thấy property trong model → bỏ qua (tránh crash)
+                if (prop == null)
                 {
-                    var normalized = NormalizeErrorKey(pretty);
-                    // Nếu có trùng key (hiếm), có thể ghi đè hoặc bỏ qua. Ở đây ghi đè.
-                    map[normalized] = prop;
+                    // Ở đây có thể ghi log lại nếu muốn:
+                    // Console.WriteLine($"[Warn] Không tìm thấy property '{propertyName}' trong Que_Nong_Rows.");
                     continue;
                 }
 
-                // 2) Nếu không có mapping thủ công, fallback dùng tên property (ví dụ "Cat_vat")
-                //    chuyển đổi propertyName -> readable -> normalize
-                var fallbackPretty = prop.Name.Replace('_', ' '); // Cat_vat -> "Cat vat"
-                var normalizedFallback = NormalizeErrorKey(fallbackPretty);
-                map[normalizedFallback] = prop;
+                // Chỉ nhận những property kiểu int (đúng là cột lỗi)
+                if (prop.PropertyType != typeof(int))
+                {
+                    // Nếu trong PropertyToPrettyName lỡ khai báo nhầm property không phải int thì bỏ qua
+                    continue;
+                }
+
+                // Normalize "pretty error name" để làm key tra cứu
+                // Ví dụ: "cắt vát" -> "cat vat"
+                var normalizedKey = NormalizeErrorKey(prettyName);
+
+                // Gán vào map:
+                //   - key: tên lỗi đã normalize
+                //   - value: PropertyInfo để set value sau này
+                // Nếu trùng key (hiếm khi) thì key sau sẽ ghi đè key trước
+                map[normalizedKey] = prop;
             }
 
+            // Trả về map đã xây dựng
             return map;
         }
 
         // -----------------------------
-        // 5) Hàm normalize: chuyển input thành dạng chuẩn để so sánh
+        //Hàm normalize: chuyển input thành dạng chuẩn để so sánh
         //    - lower case
         //    - remove diacritics (dấu tiếng Việt)
         //    - replace underscores/dashes/commas -> blank
@@ -270,7 +302,7 @@ namespace Winforms_App_Template.Report
         }
 
         // -----------------------------
-        // 6) RemoveDiacritics: loại bỏ dấu tiếng Việt (Unicode normalization)
+        // RemoveDiacritics: loại bỏ dấu tiếng Việt (Unicode normalization)
         // -----------------------------
         private static string RemoveDiacritics(string text)
         {
@@ -295,6 +327,102 @@ namespace Winforms_App_Template.Report
             cleaned = cleaned.Replace('đ', 'd').Replace('Đ', 'D');
 
             return cleaned;
+        }
+
+        /// <summary>
+        /// Chuẩn hoá các giá trị string "true"/"false"/null trong 1 object bất kỳ:
+        ///   - "true"  (không phân biệt hoa/thường, có thể có khoảng trắng) → "OK"
+        ///   - "false" (không phân biệt hoa/thường, có thể có khoảng trắng) → "NG"
+        ///   - null / rỗng / toàn khoảng trắng                     → "N/A"
+        ///   - Giá trị khác (số, text bình thường)                 → giữ nguyên
+        ///
+        /// Tham số onlyValPrefix:
+        ///   - true  → chỉ xử lý các property tên bắt đầu bằng "val" (val1..val32, v.v.)
+        ///   - false → xử lý TẤT CẢ property kiểu string trong object
+        /// </summary>
+        private static void NormalizeTrueFalseStringValues(object target, bool onlyValPrefix = true)
+        {
+            // Nếu object truyền vào null thì không làm gì, tránh lỗi NullReferenceException
+            if (target == null) return;
+
+            // Lấy kiểu runtime của object, ví dụ:
+            // - Que_Nong_Rows
+            // - Report_Header_Model
+            // - Dieu_kien_may_Model
+            // - v.v...
+            var type = target.GetType();
+
+            // Lấy danh sách TẤT CẢ property public instance trên type này
+            var props = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+            // Duyệt từng property trong danh sách
+            foreach (var prop in props)
+            {
+                // Nếu onlyValPrefix = true:
+                //   → chỉ xử lý những property có tên bắt đầu bằng "val" (val1, val2, valXYZ,...)
+                if (onlyValPrefix)
+                {
+                    // Nếu tên property KHÔNG bắt đầu bằng "val" (không phân biệt hoa/thường) → bỏ qua
+                    if (!prop.Name.StartsWith("val", StringComparison.OrdinalIgnoreCase))
+                        continue;
+                }
+
+                // Chỉ xử lý các property kiểu string
+                if (prop.PropertyType != typeof(string))
+                    continue; // nếu không phải string thì bỏ qua
+
+                // Nếu property không có setter (read-only) thì cũng bỏ qua
+                if (!prop.CanWrite)
+                    continue;
+
+                // Lấy giá trị hiện tại của property trên object
+                // sử dụng as string để nếu null thì raw sẽ là null
+                var raw = prop.GetValue(target) as string;
+
+                // Nếu string null, rỗng, hoặc toàn khoảng trắng
+                if (string.IsNullOrWhiteSpace(raw))
+                {
+                    // → gán lại value là "N/A"
+                    prop.SetValue(target, "N/A");
+
+                    // Xử lý xong property này, chuyển sang property tiếp theo
+                    continue;
+                }
+
+                // Loại bỏ khoảng trắng đầu/cuối để so sánh chính xác
+                var trimmed = raw.Trim();
+
+                // Nếu chuỗi là "true" (không phân biệt hoa/thường)
+                if (trimmed.Equals("true", StringComparison.OrdinalIgnoreCase))
+                {
+                    // → đổi thành "OK"
+                    prop.SetValue(target, "OK");
+                }
+                // Nếu chuỗi là "false" (không phân biệt hoa/thường)
+                else if (trimmed.Equals("false", StringComparison.OrdinalIgnoreCase))
+                {
+                    // → đổi thành "NG"
+                    prop.SetValue(target, "NG");
+                }
+                // Nếu không phải "true"/"false"
+                //   → giữ nguyên giá trị ban đầu (raw), nên không cần làm gì thêm
+            }
+        }
+
+        // ----------------------------------------------------------
+        // Hàm helper: chuẩn hoá "true"/"false"/null cho TỪNG PHẦN TỬ
+        // trong 1 collection (List<Dieu_kien_may_Model>, List<Que_Nong_Rows>, ...)
+        // ----------------------------------------------------------
+        private static void NormalizeTrueFalseStringValues<T>(IEnumerable<T> items, bool onlyValPrefix = true)
+        {
+            // Nếu collection null thì không làm gì
+            if (items == null) return;
+
+            // Duyệt từng phần tử và áp dụng hàm core
+            foreach (var item in items)
+            {
+                NormalizeTrueFalseStringValues(item!, onlyValPrefix); // item! để compiler khỏi warning nullable
+            }
         }
 
 
@@ -368,6 +496,14 @@ namespace Winforms_App_Template.Report
             var standards = stdsTask.Result ?? new List<Standard_Model>();
             var dieuKienMayDetails = dkmTask.Result ?? new List<Dieu_kien_may_Model>();
 
+            // ------------------------------------------------------
+            // chuẩn hoá các giá trị "true"/"false" trong val1..val32
+            //   - "true"  → "OK"
+            //   - "false" → "NG"
+            //   - null/rỗng → "N/A"
+            // ------------------------------------------------------
+            NormalizeTrueFalseStringValues(dieuKienMayDetails);
+
             // Pivot lỗi: idInput → (tên lỗi chuẩn hoá → tổng qty)
             var pivot = BuildPivotMap(errorDetails);
 
@@ -429,6 +565,14 @@ namespace Winforms_App_Template.Report
 
                 // Gán các cột lỗi ngang vào r (0 nếu không có)
                 SetKnownErrorColumns_Cached(r, errsDict);
+
+                // ------------------------------------------------------
+                // chuẩn hoá các giá trị "true"/"false" trong val1..val32
+                //   - "true"  → "OK"
+                //   - "false" → "NG"
+                //   - null/rỗng → "N/A"
+                // ------------------------------------------------------
+                NormalizeTrueFalseStringValues(r);
 
                 // Đưa vào list kết quả
                 resultRows.Add(r);
