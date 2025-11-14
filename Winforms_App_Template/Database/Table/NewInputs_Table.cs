@@ -1,4 +1,5 @@
 using Dapper;
+using DevExpress.CodeParser;
 using DevExpress.Pdf.ContentGeneration.Interop;
 using System;
 using System.Data;
@@ -6,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Winforms_App_Template.Database.Model;
+using static DevExpress.XtraBars.Docking2010.Views.BaseRegistrator;
 
 namespace Winforms_App_Template.Database.Table
 {
@@ -127,5 +129,153 @@ namespace Winforms_App_Template.Database.Table
 
             return rows;
         }
+
+        /// <summary>
+        /// Lấy bảng tổng sản phẩm cho TOÀN BỘ CÁC MẺ trong 1 lô (CRS25 / RS25).
+        /// Dữ liệu lấy từ stored procedure dbo.usp_GetLotSummary.
+        /// </summary>
+        public async Task<List<Lot_Summary_Row>> Get_Lot_Summary(
+            string itemNumber,
+            string lotNo,
+            CancellationToken ct = default)
+        {
+            // Tên procedure
+            const string procName = "dbo.usp_GetLotSummary";
+
+            // Tham số truyền vào SP
+            var param = new
+            {
+                ItemNumber = itemNumber,
+                ItemNumberRS = itemNumber.Substring(1),
+                LotNo = lotNo
+            };
+
+            // Gọi Dapper qua DbExecutor (thi hành SP)
+            var rows = await _db.QueryAsync<Lot_Summary_Row>(
+                sql: procName,
+                param: param,
+                commandType: CommandType.StoredProcedure,
+                ct: ct);
+
+            // Chuyển sang List để dễ dùng
+            return rows.ToList();
+        }
     }
 }
+
+/// Tạo Procedue
+//CREATE PROCEDURE dbo.usp_GetLotSummary
+//(
+//      @ItemNumber NVARCHAR(50)   -- Ví dụ: 'CRS25-001'
+//     ,@ItemNumberRS NVARCHAR(50)   --Ví dụ: 'RS25-001'
+//     ,@LotNo NVARCHAR(50)   --Ví dụ: 'L2024-001'
+//)
+//AS
+//BEGIN
+//    SET NOCOUNT ON;
+
+//-------------------------------------------------------------
+//--C R S 2 5 ...
+//    --  - Số lượng sử dụng   : tổng SLSudung ở công đoạn 68 (cắt ống)
+//    --  - Số hàng phù hợp    : tổng OKQty ở công đoạn 144 (kiểm tra ống sau cắt)
+//    --  - Số hàng không phù hợp
+//    --        = tổng NGQty ở cả 2 công đoạn 68 và 144
+//    -------------------------------------------------------------
+//    ; WITH CRS AS
+//    (
+//        SELECT
+//            Loai                 = N'CRS25',
+//            So_luong_su_dung = SUM(
+//                                        CASE
+//                                            WHEN ni.idCongDoan = 68
+//                                            THEN ISNULL(ni.SLSudung, 0)
+//                                            ELSE 0
+//                                        END
+//                                     ),
+//            So_hang_phu_hop = SUM(
+//                                        CASE
+//                                            WHEN ni.idCongDoan = 144
+//                                            THEN ISNULL(ni.OKQty, 0)
+//                                            ELSE 0
+//                                        END
+//                                     ),
+//            So_hang_khong_phu_hop = SUM(
+//                                        CASE
+//                                            WHEN ni.idCongDoan IN(68, 144)
+//                                            THEN ISNULL(ni.NGQty, 0)
+//                                            ELSE 0
+//                                        END
+//                                      )
+//        FROM tblNewInput AS ni
+//        WHERE ni.ItemNumber = @ItemNumber
+//          AND ni.LotNo      = @LotNo
+//    ),
+
+//    -------------------------------------------------------------
+//    --  R S 2 5 ...
+//    --  - Số lượng sử dụng   : tổng SLSudung ở công đoạn 70 (cắm chốt)
+//    --  - Số hàng phù hợp    : tổng SLChuyenCDSau ở công đoạn 76 
+//    --                         (Kiểm tra lần cuối / Kiểm tra công đoạn)
+//    --  - Số hàng không phù hợp:
+//    --        = tổng NGQty của các công đoạn 70,71,175,72,73,74,75,76
+//    -------------------------------------------------------------
+//    RS AS
+//    (
+//        SELECT
+//            Loai                 = N'RS25',
+//            So_luong_su_dung = SUM(
+//                                        CASE
+//                                            WHEN ni.idCongDoan = 70
+//                                            THEN ISNULL(ni.SLSudung, 0)
+//                                            ELSE 0
+//                                        END
+//                                     ),
+
+//            -- Số hàng phù hợp = "số lượng hàng chuyển sang công đoạn sau"
+//            -- ở công đoạn kiểm tra công đoạn (ở đây giả sử idCongDoan = 76)
+//            So_hang_phu_hop      = SUM(
+//                                        CASE 
+//                                            WHEN ni.idCongDoan = 76 
+//                                            THEN ISNULL(ni.OKQty, 0) 
+//                                            ELSE 0 
+//                                        END
+//                                     ),
+
+//            -- Tổng NG của chuỗi công đoạn từ cắm chốt -> kiểm tra lần cuối
+//            So_hang_khong_phu_hop = SUM(
+//                                        CASE 
+//                                            WHEN ni.idCongDoan IN (70,71,175,72,73,74,75,76)
+//                                            THEN ISNULL(ni.NGQty, 0) 
+//                                            ELSE 0 
+//                                        END
+//                                      )
+//        FROM tblNewInput AS ni
+//        WHERE ni.ItemNumber = @ItemNumberRS
+//          AND ni.LotNo      = @LotNo
+//    )
+
+//    -------------------------------------------------------------
+//    --  Trả về 2 dòng: CRS25..., RS25... cho lô @ItemNumber / @LotNo
+//    -------------------------------------------------------------
+//    SELECT
+//        ItemNumber            = @ItemNumber,
+//        LotNo = @LotNo,
+//        Loai,
+//        So_luong_su_dung = ISNULL(So_luong_su_dung, 0),
+//        So_hang_phu_hop = ISNULL(So_hang_phu_hop, 0),
+//        So_hang_khong_phu_hop = ISNULL(So_hang_khong_phu_hop, 0)
+//    FROM CRS
+
+//    UNION ALL
+
+//    SELECT
+//        ItemNumber            = @ItemNumberRS,
+//        LotNo = @LotNo,
+//        Loai,
+//        So_luong_su_dung = ISNULL(So_luong_su_dung, 0),
+//        So_hang_phu_hop = ISNULL(So_hang_phu_hop, 0),
+//        So_hang_khong_phu_hop = ISNULL(So_hang_khong_phu_hop, 0)
+//    FROM RS;
+//END
+//GO
+///

@@ -117,6 +117,7 @@ namespace Winforms_App_Template.Forms
                 new Step_Definition(71, "Dap_chuoi_cat_dinh_muc", "Dap_chuoi_cat_dinh_muc_", true),
                 // thêm công đoạn khác (221, 305, …) tại đây:
                 new Step_Definition(175, "Tu_dong_lap_rap_que_nong", "Tu_dong_lap_rap_que_nong_", true),
+                new Step_Definition(72, "Gia_cong_dau_mut_v1_5", "Gia_cong_dau_mut_v1_5_", true),
                 new Step_Definition(73, "Rua_dau_mut_que_nong", "Rua_dau_mut_que_nong_"),
                 new Step_Definition(74, "Kiem_tra_ngoai_quan", "Kiem_tra_ngoai_quan_"),
                 new Step_Definition(75, "Xu_ly_silicon", "Xu_ly_silicon_"),
@@ -204,6 +205,40 @@ namespace Winforms_App_Template.Forms
             }
 
             ct.ThrowIfCancellationRequested();
+
+            // Kiểm tra xem mẻ hiện tại có phải "mẻ cuối lô" hay không thông qua công đoạn 77 - Tong_ket
+            var isLastBatch = ReportDataPreparer. IsLastLotBatch(blocks);
+
+            // Tìm subreport tổng kết trong layout
+            var subFinal = rpt.FindControl("Summary_report", ignoreCase: true) as XRSubreport;
+
+            // Nếu không tìm thấy control -> bỏ qua
+            if (subFinal != null)
+            {
+                if (isLastBatch)
+                {
+                    // Không phải mẻ cuối lô:
+                    //  -> ẨN hẳn subreport, không hiển thị gì
+                    subFinal.Visible = false;
+                }
+                else
+                {
+                    // Là mẻ cuối lô:
+                    //  -> Tính DataTable tổng kết và gắn vào ReportSource của subreport
+
+                    // itemNumber / lotNo chính là arg của Prepare_report
+                    var lotSummaryList = await get_detail_table_repo.Get_Lot_Summary(ItemNumber, LotNo, ct);
+
+
+                    if (subFinal.ReportSource is XtraReport summaryReport)
+                    {
+                        // Gán datasource cho report con Summary_report
+                        summaryReport.DataSource = lotSummaryList;
+                        summaryReport.DataMember = null;
+                    }
+                }
+            }
+
             return rpt;
         }
         
@@ -261,7 +296,7 @@ namespace Winforms_App_Template.Forms
                 // Chuẩn hoá tên subreport về lowercase để kiểm tra pattern dễ hơn
                 var subName = (sub.Name ?? string.Empty).ToLowerInvariant();
 
-                // Quy ước: tên subreport có chứa "standard"
+                // Nếu subreport này có chứa từ standard thì xử lý truyền dữ liệu theo từng idinput
                 if (subName.Contains("standard"))
                 {
                     // Khởi tạo datasource rỗng mặc định cho report con
@@ -295,8 +330,8 @@ namespace Winforms_App_Template.Forms
                     continue;
                 }
 
-                // Quy ước: tên subreport có chứa "dkm" hoặc "dieukienmay"
-                if (subName.Contains("dkm") || subName.Contains("dieukienmay"))
+                // Nếu subreprt có chứa dkm thì gắn dữ liệu cho điều kiện máy
+                if (subName.Contains("dkm"))
                 {
                     // Khởi tạo datasource rỗng mặc định cho report con điều kiện máy
                     childReport.DataSource = Array.Empty<Dieu_kien_may_Model>();
@@ -321,6 +356,40 @@ namespace Winforms_App_Template.Forms
                         }
                     };
                 }
+
+                // Nếu subreport chứa tên này thì thực hiện xử lý gắn dữ liệu cho tiêu chuẩn của điều kiện máy
+                //if (subName.Contains("tieu_chuan_dieu_kien_may"))
+                //{
+                //    // Khởi tạo datasource rỗng mặc định cho report con
+                //    childReport.DataSource = Array.Empty<Standard_Model>();
+                //    childReport.DataMember = null;
+
+                //    // Đăng ký BeforePrint riêng cho sub này
+                //    sub.BeforePrint += (_, __) =>
+                //    {
+                //        // Lấy row hiện tại của band (dòng Que_Nong_Rows đang in)
+                //        var current = band.GetCurrentRow() as Que_Nong_Rows;
+
+                //        if (current != null &&
+                //            block.StandardsByInput != null &&
+                //            block.StandardsByInput.TryGetValue(current.idInput, out var list) &&
+                //            list != null)
+                //        {
+                //            // Nếu tìm được tiêu chuẩn theo idInput -> gán list đó cho report con
+                //            childReport.DataSource = list;
+                //            childReport.DataMember = null;
+                //        }
+                //        else
+                //        {
+                //            // Nếu không có dữ liệu -> để mảng rỗng để subreport in trống, tránh null
+                //            childReport.DataSource = Array.Empty<Standard_Model>();
+                //            childReport.DataMember = null;
+                //        }
+                //    };
+
+                //    // Xử lý xong sub này -> tiếp tục vòng for với sub tiếp theo
+                //    continue;
+                //}
             }
 
             //// Mặc định: report con dùng Standard_Model
@@ -467,7 +536,7 @@ namespace Winforms_App_Template.Forms
                     ["Kiem_tra_ngoai_quan"] = FieldWhitelistRegistry.Kiem_tra_ngoai_quan.ToDesignSchema("Kiểm tra ngoại quan"),
                     ["Xu_ly_silicon"] = FieldWhitelistRegistry.Xu_ly_silicon.ToDesignSchema("Xử lý silicon"),
                     ["Kiem_tra_lan_cuoi"] = FieldWhitelistRegistry.Kiem_tra_lan_cuoi.ToDesignSchema("Kiểm tra lần cuối"),
-                    ["Tong_ket"] = FieldWhitelistRegistry.Tong_ket.ToDesignSchema("Tổng kết"),
+                    ["Tong_ket"] = FieldWhitelistRegistry.Tong_ket.ToDesignSchema("Tổng kết"),               
                 };
 
                 // Gắn schema cho từng band theo tên
@@ -494,7 +563,9 @@ namespace Winforms_App_Template.Forms
                     ["Tu_dong_lap_rap_que_nong_standard"] = FieldWhitelistRegistry.Tu_dong_lap_rap_que_nong_Standard.ToDesignSchema("Tiêu chuẩn tự động lắp ráp que nong"),
                     ["Gia_cong_dau_mut_v1_5_standard"] = FieldWhitelistRegistry.Gia_cong_dau_mut_v1_5_Standard.ToDesignSchema("Tiêu chuẩn gia công đầu mút"),
                     ["Gia_cong_dau_mut_v1_5_dkm"] = FieldWhitelistRegistry.Gia_cong_dau_mut_v1_5_DKM.ToDesignSchema("Điều kiện máy gia công đầu mút"),
+                    ["Gia_cong_dau_mut_v1_5_dkm_standard"] = FieldWhitelistRegistry.Gia_cong_dau_mut_v1_5_dkm_Standard.ToDesignSchema("Tiêu chuẩn điều kiện máy gia công đầu mút"),
                     ["Kiem_tra_ngoai_quan"] = FieldWhitelistRegistry.Kiem_tra_ngoai_quan_Standard.ToDesignSchema("Điều kiện máy kiểm tra ngoại quan"),
+                    ["Summary_report"] = FieldWhitelistRegistry.Summary_Report.ToDesignSchema("Tổng kết theo lô"),
                 };
 
                 // Khai báo 1 schema mặc định (dùng nếu không match tên ở trên)

@@ -12,6 +12,7 @@ namespace Winforms_App_Template.Database.Model
         public string? NguoiThaotac { get; init; }               // ID Form nhập dữ liệu để lấy chi tiết lỗi
         public DateTime Thoigian { get; init; }                  // Mã lý do kiểm tra: I, II, III, IV
 
+        public string? TenMay_Ban { get; set; }                     // Tên điều kiện máy
         public string? Remark { get; init; }                     // Tên điều kiện máy
         public string? val1 { get; set; }                       // Tên điều kiện máy
         public string val2 { get; set; } = "";                  // Tên điều kiện máy
@@ -67,5 +68,6 @@ namespace Winforms_App_Template.Database.Model
         public string val52 { get; set; } = "";                 // Tên điều kiện máy
         public string val53 { get; set; } = "";                 // Tên điều kiện máy
         public string val54 { get; set; } = "";                 // Tên điều kiện máy
+        public string val74 { get; set; } = "";                 // Tên điều kiện máy
     }
 }

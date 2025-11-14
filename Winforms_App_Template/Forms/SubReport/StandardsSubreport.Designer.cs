@@ -87,6 +87,7 @@ namespace Winforms_App_Template.Forms.SubReport
             // 
             this.Check_Table.Borders = ((DevExpress.XtraPrinting.BorderSide)(((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Right) 
             | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.Check_Table.BorderWidth = 0.5F;
             this.Check_Table.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
             this.Check_Table.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
             this.Check_Table.Name = "Check_Table";
@@ -95,6 +96,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableRow17});
             this.Check_Table.SizeF = new System.Drawing.SizeF(386.2761F, 18F);
             this.Check_Table.StylePriority.UseBorders = false;
+            this.Check_Table.StylePriority.UseBorderWidth = false;
             this.Check_Table.StylePriority.UseFont = false;
             this.Check_Table.StylePriority.UseTextAlignment = false;
             this.Check_Table.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
@@ -165,6 +167,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTable1.Borders = ((DevExpress.XtraPrinting.BorderSide)((((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Top) 
             | DevExpress.XtraPrinting.BorderSide.Right) 
             | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.xrTable1.BorderWidth = 0.5F;
             this.xrTable1.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
             this.xrTable1.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
             this.xrTable1.Name = "xrTable1";
@@ -173,6 +176,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableRow1});
             this.xrTable1.SizeF = new System.Drawing.SizeF(386.2761F, 20F);
             this.xrTable1.StylePriority.UseBorders = false;
+            this.xrTable1.StylePriority.UseBorderWidth = false;
             this.xrTable1.StylePriority.UseFont = false;
             this.xrTable1.StylePriority.UseTextAlignment = false;
             this.xrTable1.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;

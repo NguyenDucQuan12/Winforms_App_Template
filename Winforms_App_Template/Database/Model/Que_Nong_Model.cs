@@ -153,6 +153,37 @@ namespace Winforms_App_Template.Database.Model
         public required List<Que_Nong_Rows> Rows { get; init; }            // Dữ liệu chi tiết cho bảng trong
         public required List<Dieu_kien_may_Model> dkm { get; init; }       // Dữ liệu chi tiết cho bảng trong
         public required Dictionary<int, List<Standard_Model>> StandardsByInput { get; init; }   // Dữ liệu cho bảng tiêu chuẩn, theo idInput
+                                                                                                // Tổng số lỗi (tổng Qty trong Input_Error_Model) của riêng công đoạn này
+        /// <summary>
+        /// Tổng số lượng sử dụng trong công đoạn (tạm lấy từ SLSudung).
+        /// </summary>
+        public int TotalSLSudung => Rows.Sum(r => r.SLSudung);
+
+        /// <summary>
+        /// Tổng số hàng phù hợp – ưu tiên Header.OK_Qty_Total, nếu null thì sum OKQty ở detail.
+        /// </summary>
+        public int TotalOKQty =>
+            Header.OK_Qty_Total ?? Rows.Sum(r => r.OKQty);
+
+        /// <summary>
+        /// Tổng số hàng không phù hợp – ưu tiên Header.NG_Qty_Total, nếu null thì sum NGQty ở detail.
+        /// </summary>
+        public int TotalNGQty =>
+            Header.NG_Qty_Total ?? Rows.Sum(r => r.NGQty);
     }
 
+    /// <summary>
+    /// Dòng tổng kết theo lô cho subreport Summary_report.
+    /// Mỗi dòng ứng với CRS25 hoặc RS25.
+    /// </summary>
+    public sealed class Lot_Summary_Row
+    {
+        public string ItemNumber { get; set; } = "";              // Mã sản phẩm
+        public string LotNo { get; set; } = "";              // Số lô
+        public string Loai { get; set; } = "";              // "CRS25" / "RS25"
+
+        public int So_luong_su_dung { get; set; }              // Tổng SLSudung
+        public int So_hang_phu_hop { get; set; }              // Tổng OK
+        public int So_hang_khong_phu_hop { get; set; }            // Tổng NG
+    }
 }

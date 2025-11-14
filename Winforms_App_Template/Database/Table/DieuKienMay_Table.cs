@@ -30,7 +30,7 @@ namespace Winforms_App_Template.Database.Table
                     ,[val21], [val22], [val23], [val24], [val25], [val26], [val27], [val28], [val29], [val30]
                     ,[val31], [val32], [val33], [val34], [val35], [val36], [val37], [val38], [val39], [val40]
                     ,[val41], [val42], [val43], [val44], [val45], [val46], [val47], [val48], [val49], [val50]
-                    ,[val51], [val52], [val53], [val54] --, [val55], [val56], [val57], [val58], [val59], [val60]
+                    ,[val51], [val52], [val53], [val54] --, [val55], [val56], [val57], [val58], [val59], [val74]
 
                 FROM 
                     [MESPlus].[dbo].[tblInputDKM]
@@ -68,7 +68,7 @@ namespace Winforms_App_Template.Database.Table
                     ,[val21], [val22], [val23], [val24], [val25], [val26], [val27], [val28], [val29], [val30]
                     ,[val31], [val32], [val33], [val34], [val35], [val36], [val37], [val38], [val39], [val40]
                     ,[val41], [val42], [val43], [val44], [val45], [val46], [val47], [val48], [val49], [val50]
-                    ,[val51], [val52], [val53], [val54] --, [val55], [val56], [val57], [val58], [val59], [val60]
+                    ,[val51], [val52], [val53], [val54], [val55], [val56], [val57], [val58], [val59], [val74]
 
                 FROM 
                     [MESPlus].[dbo].[tblInputDKM]

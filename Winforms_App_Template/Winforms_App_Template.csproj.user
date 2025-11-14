@@ -16,6 +16,9 @@
     <Compile Update="Forms\SubReport\Dap_chuoi_cat_dinh_muc_dkm.cs">
       <SubType>XtraReport</SubType>
     </Compile>
+    <Compile Update="Forms\SubReport\Gia_cong_dau_mut_v1_5_dkm_standard.cs">
+      <SubType>XtraReport</SubType>
+    </Compile>
     <Compile Update="Forms\SubReport\Gia_cong_dau_mut_dkm.cs">
       <SubType>XtraReport</SubType>
     </Compile>
@@ -29,6 +32,9 @@
       <SubType>XtraReport</SubType>
     </Compile>
     <Compile Update="Forms\SubReport\Standards_Subreport_32061.cs">
+      <SubType>XtraReport</SubType>
+    </Compile>
+    <Compile Update="Forms\SubReport\Summary_report.cs">
       <SubType>XtraReport</SubType>
     </Compile>
     <Compile Update="Forms\SubReport\Tu_dong_lap_rap_que_nong_dkm.cs">

@@ -336,7 +336,7 @@ namespace Winforms_App_Template.Report
         ///   - true  → chỉ xử lý các property tên bắt đầu bằng "val" (val1..val32, v.v.)
         ///   - false → xử lý TẤT CẢ property kiểu string trong object
         /// </summary>
-        private static void NormalizeTrueFalseStringValues(object target, bool onlyValPrefix = true)
+        private static void NormalizeTrueFalseStringValues(object target, bool onlyValPrefix = true, params string[] excludedPropertyNames)
         {
             // Nếu object truyền vào null thì không làm gì, tránh lỗi NullReferenceException
             if (target == null) return;
@@ -351,9 +351,19 @@ namespace Winforms_App_Template.Report
             // Lấy danh sách TẤT CẢ property public instance trên type này
             var props = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
 
+            // Chuẩn hoá danh sách tên property cần bỏ qua vào HashSet
+            // để so sánh nhanh & không phân biệt hoa/thường
+            var excluded =
+                new HashSet<string>(excludedPropertyNames ?? Array.Empty<string>(),
+                    StringComparer.OrdinalIgnoreCase);
+
             // Duyệt từng property trong danh sách
             foreach (var prop in props)
             {
+                // Nếu tên property nằm trong danh sách bị loại trừ → bỏ qua
+                if (excluded.Contains(prop.Name))
+                    continue;
+
                 // Nếu onlyValPrefix = true:
                 //   → chỉ xử lý những property có tên bắt đầu bằng "val" (val1, val2, valXYZ,...)
                 if (onlyValPrefix)
@@ -409,7 +419,7 @@ namespace Winforms_App_Template.Report
         // Hàm helper: chuẩn hoá "true"/"false"/null cho TỪNG PHẦN TỬ
         // trong 1 collection (List<Dieu_kien_may_Model>, List<Que_Nong_Rows>, ...)
         // ----------------------------------------------------------
-        private static void NormalizeTrueFalseStringValues<T>(IEnumerable<T> items, bool onlyValPrefix = true)
+        private static void NormalizeTrueFalseStringValues<T>(IEnumerable<T> items, bool onlyValPrefix = true, params string[] excludedPropertyNames)
         {
             // Nếu collection null thì không làm gì
             if (items == null) return;
@@ -417,24 +427,23 @@ namespace Winforms_App_Template.Report
             // Duyệt từng phần tử và áp dụng hàm core
             foreach (var item in items)
             {
-                NormalizeTrueFalseStringValues(item!, onlyValPrefix); // item! để compiler khỏi warning nullable
+                NormalizeTrueFalseStringValues(item!, onlyValPrefix, excludedPropertyNames); // item! để compiler khỏi warning nullable
             }
         }
-
 
         // ===========================================================
         // LẤY DỮ LIỆU CHO 1 CÔNG ĐOẠN (Step_Definition)
         // ===========================================================
 
-        /// <summary>
-        /// Truy vấn & hợp nhất dữ liệu cho **một** công đoạn nhỏ (Step_Definition).
-        /// hàm này CHỈ TRẢ VỀ DỮ LIỆU (Data_Step_Model).
-        /// </summary>
-        /// <param name="step">Đặc tả công đoạn nhỏ (Id, tên band/subreport, prefix header) — dùng Id ở đây</param>
-        /// <param name="itemNumber">Tham số chung</param>
-        /// <param name="lotNo">Tham số chung</param>
-        /// <param name="soMe">Tham số chung</param>
-        /// <param name="ct">Token hủy</param>
+            /// <summary>
+            /// Truy vấn & hợp nhất dữ liệu cho **một** công đoạn nhỏ (Step_Definition).
+            /// hàm này CHỈ TRẢ VỀ DỮ LIỆU (Data_Step_Model).
+            /// </summary>
+            /// <param name="step">Đặc tả công đoạn nhỏ (Id, tên band/subreport, prefix header) — dùng Id ở đây</param>
+            /// <param name="itemNumber">Tham số chung</param>
+            /// <param name="lotNo">Tham số chung</param>
+            /// <param name="soMe">Tham số chung</param>
+            /// <param name="ct">Token hủy</param>
         public async Task<Data_Step_Model> FetchStepBlockAsync(
             Step_Definition step,
             string itemNumber,
@@ -498,7 +507,10 @@ namespace Winforms_App_Template.Report
             //   - "false" → "NG"
             //   - null/rỗng → "N/A"
             // ------------------------------------------------------
-            NormalizeTrueFalseStringValues(dieuKienMayDetails);
+            NormalizeTrueFalseStringValues(dieuKienMayDetails, false, "Remark");
+
+            // Tổng số lỗi cho công đoạn này (tính theo Qty)
+            var totalErrorQtyForThisStep = errorDetails.Sum(e => e.Qty);
 
             // Pivot lỗi: idInput → (tên lỗi chuẩn hoá → tổng qty)
             var pivot = BuildPivotMap(errorDetails);
@@ -656,6 +668,45 @@ namespace Winforms_App_Template.Report
 
             // Trả về map Id → Data_Step_Model
             return dict;
+        }
+
+        /// <summary>
+        /// Trả về true nếu giá trị string "như là true" (true/OK/1/YES...).
+        /// </summary>
+        private static bool IsTrueLike(string? value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                return false;
+
+            var v = value.Trim();
+
+            return v.Equals("true", StringComparison.OrdinalIgnoreCase)
+                || v.Equals("ok", StringComparison.OrdinalIgnoreCase)
+                || v.Equals("1", StringComparison.OrdinalIgnoreCase)
+                || v.Equals("y", StringComparison.OrdinalIgnoreCase)
+                || v.Equals("yes", StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>
+        /// Kiểm tra trong blocks có công đoạn 77 (Tổng kết) và val7 ("Mẻ cuối lô") = true hay không.
+        /// </summary>
+        public static bool IsLastLotBatch(
+            IReadOnlyDictionary<int, Data_Step_Model> blocks)
+        {
+            // Không có công đoạn tổng kết -> chắc chắn không phải mẻ cuối
+            if (!blocks.TryGetValue(77, out var tongKetBlock))
+                return false;
+
+            // Lấy dòng đầu tiên (thường band Tong_ket chỉ có 1 dòng)
+            var row = tongKetBlock.Rows.FirstOrDefault();
+            if (row == null)
+                return false;
+
+            // Lấy giá trị val7 từ model in báo cáo (Que_Nong_Rows)
+            var flag = row.val7;
+
+            // Chuyển sang bool theo kiểu "true-like"
+            return IsTrueLike(flag);
         }
     }
 }
