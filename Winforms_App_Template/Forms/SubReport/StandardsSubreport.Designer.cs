@@ -31,6 +31,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.TopMargin = new DevExpress.XtraReports.UI.TopMarginBand();
             this.BottomMargin = new DevExpress.XtraReports.UI.BottomMarginBand();
             this.Detail = new DevExpress.XtraReports.UI.DetailBand();
+            this.xrLabel2 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel1 = new DevExpress.XtraReports.UI.XRLabel();
             this.Check_Table = new DevExpress.XtraReports.UI.XRTable();
             this.xrTableRow17 = new DevExpress.XtraReports.UI.XRTableRow();
@@ -66,10 +67,24 @@ namespace Winforms_App_Template.Forms.SubReport
             // Detail
             // 
             this.Detail.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+            this.xrLabel2,
             this.xrLabel1,
             this.Check_Table});
             this.Detail.HeightF = 18F;
             this.Detail.Name = "Detail";
+            // 
+            // xrLabel2
+            // 
+            this.xrLabel2.LocationFloat = new DevExpress.Utils.PointFloat(676.8982F, 0F);
+            this.xrLabel2.Multiline = true;
+            this.xrLabel2.Name = "xrLabel2";
+            this.xrLabel2.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
+            this.xrLabel2.SizeF = new System.Drawing.SizeF(426.5624F, 18F);
+            this.xrLabel2.StylePriority.UseTextAlignment = false;
+            this.xrLabel2.Text = "Công thức tính tiêu chuẩn: Iif([TCMin] == [TCMax], FormatString(\'{0:0.###}\', [TCM" +
+    "in]), FormatString(\'{0:0.###} - {1:0.###}\', [TCMin],[TCMax]))";
+            this.xrLabel2.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            this.xrLabel2.Visible = false;
             // 
             // xrLabel1
             // 
@@ -89,6 +104,7 @@ namespace Winforms_App_Template.Forms.SubReport
             | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.Check_Table.BorderWidth = 0.5F;
             this.Check_Table.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
+            this.Check_Table.KeepTogether = true;
             this.Check_Table.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
             this.Check_Table.Name = "Check_Table";
             this.Check_Table.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
@@ -169,6 +185,7 @@ namespace Winforms_App_Template.Forms.SubReport
             | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.xrTable1.BorderWidth = 0.5F;
             this.xrTable1.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
+            this.xrTable1.KeepTogether = true;
             this.xrTable1.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
             this.xrTable1.Name = "xrTable1";
             this.xrTable1.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
@@ -277,5 +294,6 @@ namespace Winforms_App_Template.Forms.SubReport
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell5;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell6;
         private DevExpress.XtraReports.UI.XRLabel xrLabel1;
+        private DevExpress.XtraReports.UI.XRLabel xrLabel2;
     }
 }

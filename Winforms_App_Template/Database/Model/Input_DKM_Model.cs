@@ -10,10 +10,12 @@ namespace Winforms_App_Template.Database.Model
     {
         public int idInput { get; init; }                        // ID Form nhập dữ liệu để lấy điều kiện máy
         public string? NguoiThaotac { get; init; }               // ID Form nhập dữ liệu để lấy chi tiết lỗi
+        public string? TenNguoiThaoTac { get; init; }               // ID Form nhập dữ liệu để lấy chi tiết lỗi
         public DateTime Thoigian { get; init; }                  // Mã lý do kiểm tra: I, II, III, IV
-
-        public string? TenMay_Ban { get; set; }                     // Tên điều kiện máy
-        public string? Remark { get; init; }                     // Tên điều kiện máy
+        public string MaKT { get; init; } = "";                 // Mã lý do kiểm tra: I, II, III, IV
+        public string Ly_do_kiem_tra { get; init; } = "";       // Lý do kiểm tra nếu có mã kiểm tra là V: Khác
+        public string? TenMay_Ban { get; set; }                 // Tên máy bàn
+        public string? Remark { get; init; }                    // Chú thích
         public string? val1 { get; set; }                       // Tên điều kiện máy
         public string val2 { get; set; } = "";                  // Tên điều kiện máy
         public string val3 { get; set; } = "";                  // Tên điều kiện máy

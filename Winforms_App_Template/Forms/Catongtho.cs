@@ -611,8 +611,8 @@ namespace Winforms_App_Template.Forms
                 // Khai báo danh sách parameter cần cho band "Catongtho_Report"
                 var headerParams = new[]
                 {
-                    new ParameterSpec("Name_Congdoan",  typeof(string),  "Tên công đoạn"),
-                    new ParameterSpec("ID_Congdoan",    typeof(string),  "ID công đoạn"),
+                    //new ParameterSpec("Name_Congdoan",  typeof(string),  "Tên công đoạn"),
+                    //new ParameterSpec("ID_Congdoan",    typeof(string),  "ID công đoạn"),
                     new ParameterSpec("Code_Congdoan",  typeof(string),  "Mã công đoạn"),
                     new ParameterSpec("Category_Code",  typeof(string),  "Mã sản phẩm"),
                     new ParameterSpec("Lotno_Congdoan", typeof(string),  "Số lô"),

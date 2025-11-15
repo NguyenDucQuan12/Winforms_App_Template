@@ -164,6 +164,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrLabel9,
             this.xrTable11});
             this.Detail.HeightF = 115F;
+            this.Detail.KeepTogether = true;
             this.Detail.Name = "Detail";
             // 
             // xrRichText3
@@ -171,19 +172,21 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrRichText3.Borders = ((DevExpress.XtraPrinting.BorderSide)((((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Top) 
             | DevExpress.XtraPrinting.BorderSide.Right) 
             | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.xrRichText3.BorderWidth = 0.5F;
             this.xrRichText3.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
-            this.xrRichText3.LocationFloat = new DevExpress.Utils.PointFloat(813.8119F, 17.168F);
+            this.xrRichText3.LocationFloat = new DevExpress.Utils.PointFloat(813.8119F, 13.99995F);
             this.xrRichText3.Name = "xrRichText3";
             this.xrRichText3.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
             this.xrRichText3.SerializableRtfString = resources.GetString("xrRichText3.SerializableRtfString");
             this.xrRichText3.SizeF = new System.Drawing.SizeF(298.4117F, 16.83201F);
             this.xrRichText3.StylePriority.UseBorders = false;
+            this.xrRichText3.StylePriority.UseBorderWidth = false;
             this.xrRichText3.StylePriority.UseFont = false;
             // 
             // xrLabel9
             // 
             this.xrLabel9.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
-            this.xrLabel9.LocationFloat = new DevExpress.Utils.PointFloat(813.8119F, 4.184077F);
+            this.xrLabel9.LocationFloat = new DevExpress.Utils.PointFloat(813.8119F, 1.016029F);
             this.xrLabel9.Multiline = true;
             this.xrLabel9.Name = "xrLabel9";
             this.xrLabel9.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
@@ -376,7 +379,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell404.Multiline = true;
             this.xrTableCell404.Name = "xrTableCell404";
             this.xrTableCell404.RowSpan = 2;
-            this.xrTableCell404.Text = "Aチューブかしめピン挿入ロボシリンダーの押し込み位置\r\nVị trí ấn của Robocylinder cắm ống";
+            this.xrTableCell404.Text = "Aチューブかしめピン挿入ロボシリンダーの押し込み位置\r\nVị trí ấn của Robocylinder cắm ống vào chốt A (mm)";
             this.xrTableCell404.Weight = 0.82165354309800476D;
             // 
             // xrTableCell405

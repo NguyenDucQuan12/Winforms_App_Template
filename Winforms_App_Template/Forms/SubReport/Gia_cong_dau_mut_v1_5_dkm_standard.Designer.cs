@@ -106,6 +106,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.Detail.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
             this.xrTable17});
             this.Detail.HeightF = 42F;
+            this.Detail.KeepTogether = true;
             this.Detail.Name = "Detail";
             // 
             // xrTable17
@@ -416,6 +417,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrLabel1,
             this.xrTable1});
             this.ReportHeader.HeightF = 37.98398F;
+            this.ReportHeader.KeepTogether = true;
             this.ReportHeader.Name = "ReportHeader";
             // 
             // xrLabel1

@@ -80,6 +80,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrRichText3,
             this.xrLabel7});
             this.Detail.HeightF = 54F;
+            this.Detail.KeepTogether = true;
             this.Detail.Name = "Detail";
             // 
             // xrTable10

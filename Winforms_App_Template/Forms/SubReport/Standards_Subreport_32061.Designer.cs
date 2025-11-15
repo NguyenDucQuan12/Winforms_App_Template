@@ -60,6 +60,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTable1});
             this.Detail.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
             this.Detail.HeightF = 18F;
+            this.Detail.KeepTogether = true;
             this.Detail.Name = "Detail";
             this.Detail.StylePriority.UseFont = false;
             // 
@@ -67,13 +68,15 @@ namespace Winforms_App_Template.Forms.SubReport
             // 
             this.xrTable1.Borders = ((DevExpress.XtraPrinting.BorderSide)(((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Right) 
             | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.xrTable1.BorderWidth = 0.5F;
             this.xrTable1.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
             this.xrTable1.Name = "xrTable1";
             this.xrTable1.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
             this.xrTable1.Rows.AddRange(new DevExpress.XtraReports.UI.XRTableRow[] {
             this.xrTableRow2});
-            this.xrTable1.SizeF = new System.Drawing.SizeF(150.7812F, 18F);
+            this.xrTable1.SizeF = new System.Drawing.SizeF(199.5501F, 18F);
             this.xrTable1.StylePriority.UseBorders = false;
+            this.xrTable1.StylePriority.UseBorderWidth = false;
             this.xrTable1.StylePriority.UseTextAlignment = false;
             this.xrTable1.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             // 
@@ -91,13 +94,13 @@ namespace Winforms_App_Template.Forms.SubReport
             // 
             this.xrTableCell3.Multiline = true;
             this.xrTableCell3.Name = "xrTableCell3";
-            this.xrTableCell3.Weight = 0.72656274402968335D;
+            this.xrTableCell3.Weight = 1.195312836409492D;
             // 
             // xrTableCell4
             // 
             this.xrTableCell4.Multiline = true;
             this.xrTableCell4.Name = "xrTableCell4";
-            this.xrTableCell4.Weight = 0.78124959536160588D;
+            this.xrTableCell4.Weight = 0.80018896066638256D;
             // 
             // ReportHeader
             // 
@@ -105,6 +108,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTable2});
             this.ReportHeader.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
             this.ReportHeader.HeightF = 20F;
+            this.ReportHeader.KeepTogether = true;
             this.ReportHeader.Name = "ReportHeader";
             this.ReportHeader.StylePriority.UseFont = false;
             // 
@@ -119,7 +123,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTable2.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
             this.xrTable2.Rows.AddRange(new DevExpress.XtraReports.UI.XRTableRow[] {
             this.xrTableRow3});
-            this.xrTable2.SizeF = new System.Drawing.SizeF(150.7812F, 20F);
+            this.xrTable2.SizeF = new System.Drawing.SizeF(199.5501F, 20F);
             this.xrTable2.StylePriority.UseBorders = false;
             this.xrTable2.StylePriority.UseBorderWidth = false;
             this.xrTable2.StylePriority.UseTextAlignment = false;
@@ -138,14 +142,14 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell5.Multiline = true;
             this.xrTableCell5.Name = "xrTableCell5";
             this.xrTableCell5.Text = "検査項目\r\nHạng mục kiểm tra";
-            this.xrTableCell5.Weight = 0.72656274402968335D;
+            this.xrTableCell5.Weight = 1.195312836409492D;
             // 
             // xrTableCell6
             // 
             this.xrTableCell6.Multiline = true;
             this.xrTableCell6.Name = "xrTableCell6";
             this.xrTableCell6.Text = "基準\r\nTiêu chuẩn";
-            this.xrTableCell6.Weight = 0.78124959536160588D;
+            this.xrTableCell6.Weight = 0.80018896066638256D;
             // 
             // Standards_Subreport_32061
             // 

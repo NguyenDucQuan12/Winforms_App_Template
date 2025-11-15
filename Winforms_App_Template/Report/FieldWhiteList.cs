@@ -205,8 +205,8 @@ namespace Winforms_App_Template.Report
             .Add("val6", typeof(string), "Số lượng kiểm tra 2")
             .Add("val7", typeof(string), "Số lượng OK 1")
             .Add("val8", typeof(string), "Số lượng OK 2")
-            .Add("val9", typeof(string), "Số lượng NG 1")
-            .Add("val10", typeof(string), "Số lượng NG 2")
+            //.Add("val9", typeof(string), "Số lượng NG 1")
+            //.Add("val10", typeof(string), "Số lượng NG 2")
             .Add("val11", typeof(string), "Mã quản lý mẫu giới hạn")
             .Add("val13", typeof(string), "Kết quả xác nhận tồn lưu")
             // Chi tiết lỗi
@@ -220,8 +220,8 @@ namespace Winforms_App_Template.Report
             .Add("KTNQ_loi_lom", typeof(string), "Kiểm tra ngoại quan lỗi lõm")
             .Add("KTNG_Khac", typeof(string), "Kiểm tra ngoại quan khác")
             .Add("Khac", typeof(string), "Lỗi khác")
-            .Add("NG_xuyen_qua_1", typeof(string), "NG xuyên qua 1")
-            .Add("NG_xuyen_qua_2", typeof(string), "NG xuyên qua 2");
+            .Add("NG_xuyen_qua_1", typeof(string), "Số lượng NG 1")
+            .Add("NG_xuyen_qua_2", typeof(string), "Số lượng NG 2");
 
 
         public static readonly FieldWhitelist Kiemtrasaucattho_Standard = new FieldWhitelist()
@@ -255,6 +255,10 @@ namespace Winforms_App_Template.Report
         public static readonly FieldWhitelist Camchot_DKM = new FieldWhitelist()
             .Add("Thoigian", typeof(DateTime), "Thời gian thao tác")
             .Add("NguoiThaotac", typeof(string), "Người thao tác")
+            .Add("TenNguoiThaoTac", typeof(string), "Tên người thao tác")
+            .Add("Ly_do_kiem_tra", typeof(string), "Lý do kiểm tra")
+            .Add("MaKT", typeof(string), "Mã kiểm tra")
+            .Add("TenMay_Ban", typeof(string), "Tên máy bàn")
             .Add("val1", typeof(string), "Mã quản lý thước kẹp")
             .Add("val2", typeof(string), "Đường kính cắm chốt jig 1")
             .Add("val3", typeof(string), "Đường kính cắm chốt jig 2")
