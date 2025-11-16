@@ -215,7 +215,7 @@ namespace Winforms_App_Template.Forms
             // Nếu không tìm thấy control -> bỏ qua
             if (subFinal != null)
             {
-                if (isLastBatch)
+                if (!isLastBatch)
                 {
                     // Không phải mẻ cuối lô:
                     //  -> ẨN hẳn subreport, không hiển thị gì
@@ -342,10 +342,13 @@ namespace Winforms_App_Template.Forms
                         var current = band.GetCurrentRow() as Que_Nong_Rows;
 
                         if (current != null &&
-                            block.dkm != null)
+                            block.dkm != null  &&
+                            block.DkmByInput.TryGetValue(current.idInput, out var list) &&
+                            list != null
+                        )
                         {
                             // Gán danh sách điều kiện máy tương ứng idInput
-                            childReport.DataSource = block.dkm;
+                            childReport.DataSource = list;
                             childReport.DataMember = null;
                         }
                         else

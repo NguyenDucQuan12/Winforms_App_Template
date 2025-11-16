@@ -31,6 +31,7 @@ namespace Winforms_App_Template.Database.Model
         public string MaKT { get; init; } = "";                    // Mã lý do kiểm tra: I, II, III, IV
         public DateTime StartTime { get; init; }                   // Thời gian bắt đầu thao tác
         public string NguoiTT { get; init; } = "";                 // Người thao tác
+        public string TenNguoiThaoTac { get; init; } = "";         // Tên người thao tác
         public string? TenMay_Ban { get; set; }                    // Tên máy bàn thao tác
         public int SLSudung { get; init; }                         // Số lượng sản phẩm đã sử dụng
         public int OKQty { get; init; }                            // Số lượng hàng phù hợp
@@ -117,6 +118,8 @@ namespace Winforms_App_Template.Database.Model
         public int idInput { get; init; }                         // ID Form nhập dữ liệu để lấy chi tiết lỗi
         public int idStandard { get; init; }                      // ID Form nhập dữ liệu để lấy chi tiết lỗi
         public string TenTieuChuan { get; init; } = "";           // Mã lý do kiểm tra: I, II, III, IV
+        public string Pingauge_xuyen { get; init; } = "";           // Mã lý do kiểm tra: I, II, III, IV
+        public string Pingauge_khong_xuyen { get; init; } = "";           // Mã lý do kiểm tra: I, II, III, IV
         public string MaTieuChuan { get; init; } = "";            // Mã lý do kiểm tra: I, II, III, IV
         public string Loai_size { get; init; } = "";              // Mã lý do kiểm tra: I, II, III, IV
         public string Loai_kytu { get; init; } = "";              // Mã lý do kiểm tra: I, II, III, IV
@@ -153,7 +156,8 @@ namespace Winforms_App_Template.Database.Model
         public required List<Que_Nong_Rows> Rows { get; init; }            // Dữ liệu chi tiết cho bảng trong
         public required List<Dieu_kien_may_Model> dkm { get; init; }       // Dữ liệu chi tiết cho bảng trong
         public required Dictionary<int, List<Standard_Model>> StandardsByInput { get; init; }   // Dữ liệu cho bảng tiêu chuẩn, theo idInput
-                                                                                                // Tổng số lỗi (tổng Qty trong Input_Error_Model) của riêng công đoạn này
+        public required Dictionary<int, List<Dieu_kien_may_Model>> DkmByInput { get; init; }   // Dữ liệu cho bảng tiêu chuẩn, theo idInput
+
         /// <summary>
         /// Tổng số lượng sử dụng trong công đoạn (tạm lấy từ SLSudung).
         /// </summary>

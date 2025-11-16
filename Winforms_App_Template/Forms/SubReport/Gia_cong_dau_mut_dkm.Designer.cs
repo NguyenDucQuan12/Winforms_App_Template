@@ -138,7 +138,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrLabel13,
             this.xrRichText6,
             this.xrTable14});
-            this.Detail.HeightF = 92.00002F;
+            this.Detail.HeightF = 94F;
             this.Detail.KeepTogether = true;
             this.Detail.Name = "Detail";
             // 
@@ -160,6 +160,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrRichText6.Borders = ((DevExpress.XtraPrinting.BorderSide)((((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Top) 
             | DevExpress.XtraPrinting.BorderSide.Right) 
             | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.xrRichText6.BorderWidth = 0.5F;
             this.xrRichText6.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
             this.xrRichText6.LocationFloat = new DevExpress.Utils.PointFloat(949.2911F, 12.98396F);
             this.xrRichText6.Name = "xrRichText6";
@@ -167,6 +168,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrRichText6.SerializableRtfString = resources.GetString("xrRichText6.SerializableRtfString");
             this.xrRichText6.SizeF = new System.Drawing.SizeF(195.2242F, 79.01605F);
             this.xrRichText6.StylePriority.UseBorders = false;
+            this.xrRichText6.StylePriority.UseBorderWidth = false;
             this.xrRichText6.StylePriority.UseFont = false;
             // 
             // xrTable14
@@ -468,8 +470,10 @@ namespace Winforms_App_Template.Forms.SubReport
             // 
             // xrTableCell604
             // 
+            this.xrTableCell604.Borders = ((DevExpress.XtraPrinting.BorderSide)(((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Top) 
+            | DevExpress.XtraPrinting.BorderSide.Right)));
             this.xrTableCell604.Name = "xrTableCell604";
-            this.xrTableCell604.RowSpan = 3;
+            this.xrTableCell604.StylePriority.UseBorders = false;
             this.xrTableCell604.Weight = 0.45040743516061355D;
             // 
             // xrTableCell605
@@ -593,16 +597,17 @@ namespace Winforms_App_Template.Forms.SubReport
             // 
             // xrTableCell589
             // 
+            this.xrTableCell589.Borders = ((DevExpress.XtraPrinting.BorderSide)(((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Right) 
+            | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.xrTableCell589.Name = "xrTableCell589";
-            this.xrTableCell589.Text = "xrTableCell589";
+            this.xrTableCell589.RowSpan = 2;
+            this.xrTableCell589.StylePriority.UseBorders = false;
             this.xrTableCell589.Weight = 0.45040743516061355D;
             // 
             // xrTableCell590
             // 
-            this.xrTableCell590.Borders = ((DevExpress.XtraPrinting.BorderSide)(((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Right) 
-            | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.xrTableCell590.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Right)));
             this.xrTableCell590.Name = "xrTableCell590";
-            this.xrTableCell590.RowSpan = 2;
             this.xrTableCell590.StylePriority.UseBorders = false;
             this.xrTableCell590.Weight = 0.7656102877643588D;
             // 
@@ -713,8 +718,10 @@ namespace Winforms_App_Template.Forms.SubReport
             // 
             // xrTableCell575
             // 
+            this.xrTableCell575.Borders = ((DevExpress.XtraPrinting.BorderSide)(((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Right) 
+            | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.xrTableCell575.Name = "xrTableCell575";
-            this.xrTableCell575.Text = "xrTableCell575";
+            this.xrTableCell575.StylePriority.UseBorders = false;
             this.xrTableCell575.Weight = 0.7656102877643588D;
             // 
             // xrTableCell576

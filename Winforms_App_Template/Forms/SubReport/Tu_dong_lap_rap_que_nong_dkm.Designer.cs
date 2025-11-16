@@ -163,7 +163,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrRichText3,
             this.xrLabel9,
             this.xrTable11});
-            this.Detail.HeightF = 115F;
+            this.Detail.HeightF = 117F;
             this.Detail.KeepTogether = true;
             this.Detail.Name = "Detail";
             // 
@@ -572,9 +572,12 @@ namespace Winforms_App_Template.Forms.SubReport
             // 
             // xrTableCell422
             // 
+            this.xrTableCell422.Borders = ((DevExpress.XtraPrinting.BorderSide)(((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Top) 
+            | DevExpress.XtraPrinting.BorderSide.Right)));
             this.xrTableCell422.Multiline = true;
             this.xrTableCell422.Name = "xrTableCell422";
-            this.xrTableCell422.RowSpan = 4;
+            this.xrTableCell422.RowSpan = 2;
+            this.xrTableCell422.StylePriority.UseBorders = false;
             this.xrTableCell422.Weight = 0.50137806764634507D;
             // 
             // xrTableCell423
@@ -583,7 +586,6 @@ namespace Winforms_App_Template.Forms.SubReport
             | DevExpress.XtraPrinting.BorderSide.Right)));
             this.xrTableCell423.Multiline = true;
             this.xrTableCell423.Name = "xrTableCell423";
-            this.xrTableCell423.RowSpan = 2;
             this.xrTableCell423.StylePriority.UseBorders = false;
             this.xrTableCell423.Weight = 0.79570748577136785D;
             // 
@@ -714,9 +716,11 @@ namespace Winforms_App_Template.Forms.SubReport
             // 
             // xrTableCell367
             // 
+            this.xrTableCell367.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Right)));
             this.xrTableCell367.Multiline = true;
             this.xrTableCell367.Name = "xrTableCell367";
-            this.xrTableCell367.Text = "xrTableCell367";
+            this.xrTableCell367.RowSpan = 2;
+            this.xrTableCell367.StylePriority.UseBorders = false;
             this.xrTableCell367.Weight = 0.79570748577136785D;
             // 
             // xrTableCell368
@@ -839,9 +843,12 @@ namespace Winforms_App_Template.Forms.SubReport
             // 
             // xrTableCell408
             // 
+            this.xrTableCell408.Borders = ((DevExpress.XtraPrinting.BorderSide)(((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Right) 
+            | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.xrTableCell408.Multiline = true;
             this.xrTableCell408.Name = "xrTableCell408";
-            this.xrTableCell408.Text = "xrTableCell408";
+            this.xrTableCell408.RowSpan = 2;
+            this.xrTableCell408.StylePriority.UseBorders = false;
             this.xrTableCell408.Weight = 0.50137806764634507D;
             // 
             // xrTableCell409
@@ -850,7 +857,6 @@ namespace Winforms_App_Template.Forms.SubReport
             | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.xrTableCell409.Multiline = true;
             this.xrTableCell409.Name = "xrTableCell409";
-            this.xrTableCell409.RowSpan = 2;
             this.xrTableCell409.StylePriority.UseBorders = false;
             this.xrTableCell409.Weight = 0.79570748577136785D;
             // 
@@ -981,9 +987,11 @@ namespace Winforms_App_Template.Forms.SubReport
             // 
             // xrTableCell353
             // 
+            this.xrTableCell353.Borders = ((DevExpress.XtraPrinting.BorderSide)(((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Right) 
+            | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.xrTableCell353.Multiline = true;
             this.xrTableCell353.Name = "xrTableCell353";
-            this.xrTableCell353.Text = "xrTableCell353";
+            this.xrTableCell353.StylePriority.UseBorders = false;
             this.xrTableCell353.Weight = 0.79570748577136785D;
             // 
             // xrTableCell354

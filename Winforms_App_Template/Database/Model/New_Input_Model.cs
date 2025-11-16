@@ -16,6 +16,7 @@ namespace Winforms_App_Template.Database.Model
         public string MaKT { get; init; } = "";                    // Mã lý do kiểm tra: I, II, III, IV
         public DateTime StartTime { get; init; }                   // Thời gian bắt đầu thao tác
         public string NguoiTT { get; init; } = "";                 // Người thao tác
+        public string TenNguoiThaoTac { get; init; } = "";         // Tên người thao tác
         public string? TenMay_Ban { get; set; }                    // Tên máy bàn thao tác
         public int SLSudung { get; init; }                         // Số lượng sản phẩm đã sử dụng
         public int OKQty { get; init; }                            // Số lượng hàng phù hợp

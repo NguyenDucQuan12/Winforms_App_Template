@@ -470,9 +470,9 @@ namespace Winforms_App_Template.Report
             var rows = rowsTask.Result ?? new List<New_Input_Row>();      // Detail rows (nếu null → coi rỗng)
 
             // Không có Header → xem như "không tìm thấy dữ liệu" cho step.Id (throw để UI xử lý)
-            if (header is null)
-                throw new InvalidOperationException(
-                    $"Không tìm thấy HEADER cho công đoạn Id={step.Id} (Item={itemNumber}, Lot={lotNo}, SoMe={soMe}).");
+            //if (header is null)
+            //    throw new InvalidOperationException(
+            //        $"Không tìm thấy Dữ liệu cho công đoạn Id={step.Id} (Item={itemNumber}, Lot={lotNo}, SoMe={soMe}).");
 
             // Kiểm tra người dùng có bấm Cancel chưa
             ct.ThrowIfCancellationRequested();
@@ -507,7 +507,8 @@ namespace Winforms_App_Template.Report
             //   - "false" → "NG"
             //   - null/rỗng → "N/A"
             // ------------------------------------------------------
-            NormalizeTrueFalseStringValues(dieuKienMayDetails, false, "Remark");
+            NormalizeTrueFalseStringValues(dieuKienMayDetails, false);
+            NormalizeTrueFalseStringValues(standards, false);
 
             // Tổng số lỗi cho công đoạn này (tính theo Qty)
             var totalErrorQtyForThisStep = errorDetails.Sum(e => e.Qty);
@@ -531,6 +532,7 @@ namespace Winforms_App_Template.Report
                     SLSudung = m.SLSudung,
                     StartTime = m.StartTime,
                     NguoiTT = m.NguoiTT,
+                    TenNguoiThaoTac = m.TenNguoiThaoTac,
                     OKQty = m.OKQty,
                     NGQty = m.NGQty,
 
@@ -580,7 +582,7 @@ namespace Winforms_App_Template.Report
                 //   - "false" → "NG"
                 //   - null/rỗng → "N/A"
                 // ------------------------------------------------------
-                NormalizeTrueFalseStringValues(r);
+                NormalizeTrueFalseStringValues(r, false);
 
                 // Đưa vào list kết quả
                 resultRows.Add(r);
@@ -601,7 +603,10 @@ namespace Winforms_App_Template.Report
                 Header = header,    // Header cho step.Id
                 Rows = resultRows,// Dòng chi tiết đã hợp nhất lỗi ngang
                 dkm = dieuKienMayDetails, // Dữ liệu cho điều kiện máy
-                StandardsByInput = stdByInput // Map idInput → List<Standard_Model>
+                StandardsByInput = stdByInput, // Map idInput → List<Standard_Model>
+                DkmByInput = dieuKienMayDetails
+                    .GroupBy(d => d.idInput)
+                    .ToDictionary(g => g.Key, g => g.ToList()),
             };
         }
 

@@ -65,6 +65,7 @@ namespace Winforms_App_Template.Database.Table
                         ni.SLSudung,            -- Số lượng sử dụng
                         ni.StartTime,           -- Thời gian bắt đầu
                         ni.NguoiTT,             -- Người thao tác
+                        dbo.func_01_getDisplayName_by_userName(ISNULL(ni.NguoiTT, '')) AS TenNguoiThaoTac,            -- Tên hiển thị của người thao tác
                         ni.Remark,              -- Ghi chú cho mỗi dòng thao tác
                         ni.OKQty,               -- Số lượng hàng phù hợp
                         ni.NGQty,               -- Số lượng hàng không phù hợp
