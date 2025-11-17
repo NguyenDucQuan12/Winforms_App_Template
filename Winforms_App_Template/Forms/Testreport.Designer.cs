@@ -165,7 +165,7 @@ namespace Winforms_App_Template.Forms
             this.Detail = new DevExpress.XtraReports.UI.DetailBand();
             this.Kiem_tra_ong_sau_cat_tho = new DevExpress.XtraReports.UI.DetailReportBand();
             this.Kiem_tra_ong_sau_cat_tho_data = new DevExpress.XtraReports.UI.DetailBand();
-            this.xrRichText1 = new DevExpress.XtraReports.UI.XRRichText();
+            this.xrLabel37 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel4 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrTable3 = new DevExpress.XtraReports.UI.XRTable();
             this.xrTableRow17 = new DevExpress.XtraReports.UI.XRTableRow();
@@ -313,8 +313,8 @@ namespace Winforms_App_Template.Forms
             this.Header_Name = new DevExpress.XtraReports.UI.XRLabel();
             this.Cam_chot = new DevExpress.XtraReports.UI.DetailReportBand();
             this.Cam_chot_data = new DevExpress.XtraReports.UI.DetailBand();
+            this.xrLabel28 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel10 = new DevExpress.XtraReports.UI.XRLabel();
-            this.xrRichText5 = new DevExpress.XtraReports.UI.XRRichText();
             this.Cam_chot_standard = new DevExpress.XtraReports.UI.XRSubreport();
             this.xrTable9 = new DevExpress.XtraReports.UI.XRTable();
             this.xrTableRow26 = new DevExpress.XtraReports.UI.XRTableRow();
@@ -429,6 +429,7 @@ namespace Winforms_App_Template.Forms
             this.xrTableCell194 = new DevExpress.XtraReports.UI.XRTableCell();
             this.Dap_chuoi_cat_dinh_muc = new DevExpress.XtraReports.UI.DetailReportBand();
             this.Dap_chuoi_cat_dinh_muc_data = new DevExpress.XtraReports.UI.DetailBand();
+            this.xrLabel31 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrTable7 = new DevExpress.XtraReports.UI.XRTable();
             this.xrTableRow29 = new DevExpress.XtraReports.UI.XRTableRow();
             this.xrTableCell249 = new DevExpress.XtraReports.UI.XRTableCell();
@@ -529,7 +530,6 @@ namespace Winforms_App_Template.Forms
             this.xrTableCell834 = new DevExpress.XtraReports.UI.XRTableCell();
             this.Dap_chuoi_cat_dinh_muc_standard = new DevExpress.XtraReports.UI.XRSubreport();
             this.Dap_chuoi_cat_dinh_muc_dkm = new DevExpress.XtraReports.UI.XRSubreport();
-            this.xrRichText2 = new DevExpress.XtraReports.UI.XRRichText();
             this.xrLabel6 = new DevExpress.XtraReports.UI.XRLabel();
             this.Dap_chuoi_cat_dinh_muc_header = new DevExpress.XtraReports.UI.ReportHeaderBand();
             this.xrLabel5 = new DevExpress.XtraReports.UI.XRLabel();
@@ -550,10 +550,10 @@ namespace Winforms_App_Template.Forms
             this.xrTableCell182 = new DevExpress.XtraReports.UI.XRTableCell();
             this.Tu_dong_lap_rap_que_nong = new DevExpress.XtraReports.UI.DetailReportBand();
             this.Tu_dong_lap_rap_que_nong_data = new DevExpress.XtraReports.UI.DetailBand();
+            this.xrLabel32 = new DevExpress.XtraReports.UI.XRLabel();
             this.Tu_dong_lap_rap_que_nong_dkm = new DevExpress.XtraReports.UI.XRSubreport();
             this.xrSubreport2 = new DevExpress.XtraReports.UI.XRSubreport();
             this.xrLabel11 = new DevExpress.XtraReports.UI.XRLabel();
-            this.xrRichText4 = new DevExpress.XtraReports.UI.XRRichText();
             this.xrTable12 = new DevExpress.XtraReports.UI.XRTable();
             this.xrTableRow43 = new DevExpress.XtraReports.UI.XRTableRow();
             this.xrTableCell342 = new DevExpress.XtraReports.UI.XRTableCell();
@@ -1330,7 +1330,7 @@ namespace Winforms_App_Template.Forms
             this.xrTableCell440 = new DevExpress.XtraReports.UI.XRTableCell();
             this.Rua_dau_mut_que_nong = new DevExpress.XtraReports.UI.DetailReportBand();
             this.Rua_dau_mut_que_nong_data = new DevExpress.XtraReports.UI.DetailBand();
-            this.xrRichText10 = new DevExpress.XtraReports.UI.XRRichText();
+            this.xrLabel33 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel23 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrTable26 = new DevExpress.XtraReports.UI.XRTable();
             this.xrTableRow106 = new DevExpress.XtraReports.UI.XRTableRow();
@@ -1406,8 +1406,8 @@ namespace Winforms_App_Template.Forms
             this.xrLabel12 = new DevExpress.XtraReports.UI.XRLabel();
             this.Kiem_tra_ngoai_quan = new DevExpress.XtraReports.UI.DetailReportBand();
             this.Kiem_tra_ngoai_quan_data = new DevExpress.XtraReports.UI.DetailBand();
+            this.xrLabel34 = new DevExpress.XtraReports.UI.XRLabel();
             this.Kiem_tra_ngoai_quan_standard = new DevExpress.XtraReports.UI.XRSubreport();
-            this.xrRichText11 = new DevExpress.XtraReports.UI.XRRichText();
             this.xrLabel25 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrTable28 = new DevExpress.XtraReports.UI.XRTable();
             this.xrTableRow112 = new DevExpress.XtraReports.UI.XRTableRow();
@@ -1547,7 +1547,7 @@ namespace Winforms_App_Template.Forms
             this.xrTableCell396 = new DevExpress.XtraReports.UI.XRTableCell();
             this.Xu_ly_silicon = new DevExpress.XtraReports.UI.DetailReportBand();
             this.Xu_ly_silicon_data = new DevExpress.XtraReports.UI.DetailBand();
-            this.xrRichText12 = new DevExpress.XtraReports.UI.XRRichText();
+            this.xrLabel35 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel27 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrTable30 = new DevExpress.XtraReports.UI.XRTable();
             this.xrTableRow123 = new DevExpress.XtraReports.UI.XRTableRow();
@@ -1605,7 +1605,7 @@ namespace Winforms_App_Template.Forms
             this.xrTableCell413 = new DevExpress.XtraReports.UI.XRTableCell();
             this.Kiem_tra_lan_cuoi = new DevExpress.XtraReports.UI.DetailReportBand();
             this.Kiem_tra_lan_cuoi_data = new DevExpress.XtraReports.UI.DetailBand();
-            this.xrRichText13 = new DevExpress.XtraReports.UI.XRRichText();
+            this.xrLabel36 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel29 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrTable32 = new DevExpress.XtraReports.UI.XRTable();
             this.xrTableRow127 = new DevExpress.XtraReports.UI.XRTableRow();
@@ -1741,16 +1741,12 @@ namespace Winforms_App_Template.Forms
             ((System.ComponentModel.ISupportInitialize)(this.xrTable2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Catthoong_Table)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable8)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.xrRichText1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.xrRichText5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable7)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.xrRichText2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable5)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.xrRichText4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable12)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable10)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable16)).BeginInit();
@@ -1764,16 +1760,12 @@ namespace Winforms_App_Template.Forms
             ((System.ComponentModel.ISupportInitialize)(this.xrRichText8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable20)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable19)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.xrRichText10)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable26)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable13)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.xrRichText11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable28)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable25)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.xrRichText12)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable30)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable27)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.xrRichText13)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable32)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable29)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable33)).BeginInit();
@@ -2081,11 +2073,16 @@ namespace Winforms_App_Template.Forms
             // 
             // xrLabel13
             // 
+            this.xrLabel13.Font = new DevExpress.Drawing.DXFont("Times New Roman", 5F);
             this.xrLabel13.LocationFloat = new DevExpress.Utils.PointFloat(665.9887F, 115.9462F);
             this.xrLabel13.Multiline = true;
             this.xrLabel13.Name = "xrLabel13";
             this.xrLabel13.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
             this.xrLabel13.SizeF = new System.Drawing.SizeF(322.3416F, 23F);
+            this.xrLabel13.StylePriority.UseFont = false;
+            this.xrLabel13.StylePriority.UseTextAlignment = false;
+            this.xrLabel13.Text = "N/A";
+            this.xrLabel13.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             // 
             // Catthoong_Table
             // 
@@ -3162,29 +3159,32 @@ namespace Winforms_App_Template.Forms
             // Kiem_tra_ong_sau_cat_tho_data
             // 
             this.Kiem_tra_ong_sau_cat_tho_data.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
-            this.xrRichText1,
+            this.xrLabel37,
             this.xrLabel4,
             this.xrTable3,
             this.Kiem_tra_ong_sau_cat_tho_standard});
-            this.Kiem_tra_ong_sau_cat_tho_data.HeightF = 96F;
+            this.Kiem_tra_ong_sau_cat_tho_data.HeightF = 96.00002F;
             this.Kiem_tra_ong_sau_cat_tho_data.KeepTogether = true;
             this.Kiem_tra_ong_sau_cat_tho_data.Name = "Kiem_tra_ong_sau_cat_tho_data";
             // 
-            // xrRichText1
+            // xrLabel37
             // 
-            this.xrRichText1.BorderColor = System.Drawing.Color.DimGray;
-            this.xrRichText1.Borders = ((DevExpress.XtraPrinting.BorderSide)((((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Top) 
+            this.xrLabel37.BorderColor = System.Drawing.Color.DimGray;
+            this.xrLabel37.Borders = ((DevExpress.XtraPrinting.BorderSide)((((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Top) 
             | DevExpress.XtraPrinting.BorderSide.Right) 
             | DevExpress.XtraPrinting.BorderSide.Bottom)));
-            this.xrRichText1.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
-            this.xrRichText1.LocationFloat = new DevExpress.Utils.PointFloat(1115.339F, 1.01603F);
-            this.xrRichText1.Name = "xrRichText1";
-            this.xrRichText1.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
-            this.xrRichText1.SerializableRtfString = resources.GetString("xrRichText1.SerializableRtfString");
-            this.xrRichText1.SizeF = new System.Drawing.SizeF(30F, 92.98399F);
-            this.xrRichText1.StylePriority.UseBorderColor = false;
-            this.xrRichText1.StylePriority.UseBorders = false;
-            this.xrRichText1.StylePriority.UseFont = false;
+            this.xrLabel37.Font = new DevExpress.Drawing.DXFont("Times New Roman", 5F);
+            this.xrLabel37.LocationFloat = new DevExpress.Utils.PointFloat(1114.307F, 0F);
+            this.xrLabel37.Multiline = true;
+            this.xrLabel37.Name = "xrLabel37";
+            this.xrLabel37.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
+            this.xrLabel37.SizeF = new System.Drawing.SizeF(31.03271F, 82F);
+            this.xrLabel37.StylePriority.UseBorderColor = false;
+            this.xrLabel37.StylePriority.UseBorders = false;
+            this.xrLabel37.StylePriority.UseFont = false;
+            this.xrLabel37.StylePriority.UseTextAlignment = false;
+            this.xrLabel37.Text = "N/A";
+            this.xrLabel37.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             // 
             // xrLabel4
             // 
@@ -4542,13 +4542,32 @@ namespace Winforms_App_Template.Forms
             // Cam_chot_data
             // 
             this.Cam_chot_data.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+            this.xrLabel28,
             this.xrLabel10,
-            this.xrRichText5,
             this.Cam_chot_standard,
             this.xrTable9,
             this.Cam_chot_dkm});
             this.Cam_chot_data.HeightF = 179F;
             this.Cam_chot_data.Name = "Cam_chot_data";
+            // 
+            // xrLabel28
+            // 
+            this.xrLabel28.BorderColor = System.Drawing.Color.DimGray;
+            this.xrLabel28.Borders = ((DevExpress.XtraPrinting.BorderSide)((((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Top) 
+            | DevExpress.XtraPrinting.BorderSide.Right) 
+            | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.xrLabel28.Font = new DevExpress.Drawing.DXFont("Times New Roman", 5F);
+            this.xrLabel28.LocationFloat = new DevExpress.Utils.PointFloat(729.4523F, 149F);
+            this.xrLabel28.Multiline = true;
+            this.xrLabel28.Name = "xrLabel28";
+            this.xrLabel28.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
+            this.xrLabel28.SizeF = new System.Drawing.SizeF(261.5969F, 23F);
+            this.xrLabel28.StylePriority.UseBorderColor = false;
+            this.xrLabel28.StylePriority.UseBorders = false;
+            this.xrLabel28.StylePriority.UseFont = false;
+            this.xrLabel28.StylePriority.UseTextAlignment = false;
+            this.xrLabel28.Text = "N/A";
+            this.xrLabel28.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             // 
             // xrLabel10
             // 
@@ -4562,25 +4581,6 @@ namespace Winforms_App_Template.Forms
             this.xrLabel10.StylePriority.UseTextAlignment = false;
             this.xrLabel10.Text = "備考Ghi chú:";
             this.xrLabel10.TextAlignment = DevExpress.XtraPrinting.TextAlignment.BottomLeft;
-            // 
-            // xrRichText5
-            // 
-            this.xrRichText5.BorderColor = System.Drawing.Color.DimGray;
-            this.xrRichText5.Borders = ((DevExpress.XtraPrinting.BorderSide)((((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Top) 
-            | DevExpress.XtraPrinting.BorderSide.Right) 
-            | DevExpress.XtraPrinting.BorderSide.Bottom)));
-            this.xrRichText5.BorderWidth = 0.5F;
-            this.xrRichText5.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
-            this.xrRichText5.KeepTogether = true;
-            this.xrRichText5.LocationFloat = new DevExpress.Utils.PointFloat(729.452F, 148.5358F);
-            this.xrRichText5.Name = "xrRichText5";
-            this.xrRichText5.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
-            this.xrRichText5.SerializableRtfString = resources.GetString("xrRichText5.SerializableRtfString");
-            this.xrRichText5.SizeF = new System.Drawing.SizeF(298.4118F, 17.51624F);
-            this.xrRichText5.StylePriority.UseBorderColor = false;
-            this.xrRichText5.StylePriority.UseBorders = false;
-            this.xrRichText5.StylePriority.UseBorderWidth = false;
-            this.xrRichText5.StylePriority.UseFont = false;
             // 
             // Cam_chot_standard
             // 
@@ -5659,13 +5659,32 @@ namespace Winforms_App_Template.Forms
             // Dap_chuoi_cat_dinh_muc_data
             // 
             this.Dap_chuoi_cat_dinh_muc_data.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+            this.xrLabel31,
             this.xrTable7,
             this.Dap_chuoi_cat_dinh_muc_standard,
             this.Dap_chuoi_cat_dinh_muc_dkm,
-            this.xrRichText2,
             this.xrLabel6});
             this.Dap_chuoi_cat_dinh_muc_data.HeightF = 145F;
             this.Dap_chuoi_cat_dinh_muc_data.Name = "Dap_chuoi_cat_dinh_muc_data";
+            // 
+            // xrLabel31
+            // 
+            this.xrLabel31.BorderColor = System.Drawing.Color.DimGray;
+            this.xrLabel31.Borders = ((DevExpress.XtraPrinting.BorderSide)((((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Top) 
+            | DevExpress.XtraPrinting.BorderSide.Right) 
+            | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.xrLabel31.Font = new DevExpress.Drawing.DXFont("Times New Roman", 5F);
+            this.xrLabel31.LocationFloat = new DevExpress.Utils.PointFloat(815.8958F, 112.6547F);
+            this.xrLabel31.Multiline = true;
+            this.xrLabel31.Name = "xrLabel31";
+            this.xrLabel31.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
+            this.xrLabel31.SizeF = new System.Drawing.SizeF(322.3416F, 23F);
+            this.xrLabel31.StylePriority.UseBorderColor = false;
+            this.xrLabel31.StylePriority.UseBorders = false;
+            this.xrLabel31.StylePriority.UseFont = false;
+            this.xrLabel31.StylePriority.UseTextAlignment = false;
+            this.xrLabel31.Text = "N/A";
+            this.xrLabel31.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             // 
             // xrTable7
             // 
@@ -6566,22 +6585,6 @@ namespace Winforms_App_Template.Forms
             this.Dap_chuoi_cat_dinh_muc_dkm.ReportSource = new Winforms_App_Template.Forms.SubReport.Dap_chuoi_cat_dinh_muc_dkm();
             this.Dap_chuoi_cat_dinh_muc_dkm.SizeF = new System.Drawing.SizeF(799.7892F, 54F);
             // 
-            // xrRichText2
-            // 
-            this.xrRichText2.Borders = ((DevExpress.XtraPrinting.BorderSide)((((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Top) 
-            | DevExpress.XtraPrinting.BorderSide.Right) 
-            | DevExpress.XtraPrinting.BorderSide.Bottom)));
-            this.xrRichText2.BorderWidth = 0.5F;
-            this.xrRichText2.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
-            this.xrRichText2.LocationFloat = new DevExpress.Utils.PointFloat(815.8951F, 112.7223F);
-            this.xrRichText2.Name = "xrRichText2";
-            this.xrRichText2.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
-            this.xrRichText2.SerializableRtfString = resources.GetString("xrRichText2.SerializableRtfString");
-            this.xrRichText2.SizeF = new System.Drawing.SizeF(298.4118F, 24.94846F);
-            this.xrRichText2.StylePriority.UseBorders = false;
-            this.xrRichText2.StylePriority.UseBorderWidth = false;
-            this.xrRichText2.StylePriority.UseFont = false;
-            // 
             // xrLabel6
             // 
             this.xrLabel6.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
@@ -6818,14 +6821,31 @@ namespace Winforms_App_Template.Forms
             // Tu_dong_lap_rap_que_nong_data
             // 
             this.Tu_dong_lap_rap_que_nong_data.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+            this.xrLabel32,
             this.Tu_dong_lap_rap_que_nong_dkm,
             this.xrSubreport2,
             this.xrLabel11,
-            this.xrRichText4,
             this.xrTable12});
             this.Tu_dong_lap_rap_que_nong_data.HeightF = 212F;
             this.Tu_dong_lap_rap_que_nong_data.KeepTogether = true;
             this.Tu_dong_lap_rap_que_nong_data.Name = "Tu_dong_lap_rap_que_nong_data";
+            // 
+            // xrLabel32
+            // 
+            this.xrLabel32.Borders = ((DevExpress.XtraPrinting.BorderSide)((((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Top) 
+            | DevExpress.XtraPrinting.BorderSide.Right) 
+            | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.xrLabel32.Font = new DevExpress.Drawing.DXFont("Times New Roman", 5F);
+            this.xrLabel32.LocationFloat = new DevExpress.Utils.PointFloat(815.895F, 180.9839F);
+            this.xrLabel32.Multiline = true;
+            this.xrLabel32.Name = "xrLabel32";
+            this.xrLabel32.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
+            this.xrLabel32.SizeF = new System.Drawing.SizeF(246.7366F, 23F);
+            this.xrLabel32.StylePriority.UseBorders = false;
+            this.xrLabel32.StylePriority.UseFont = false;
+            this.xrLabel32.StylePriority.UseTextAlignment = false;
+            this.xrLabel32.Text = "N/A";
+            this.xrLabel32.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             // 
             // Tu_dong_lap_rap_que_nong_dkm
             // 
@@ -6853,24 +6873,6 @@ namespace Winforms_App_Template.Forms
             this.xrLabel11.StylePriority.UseTextAlignment = false;
             this.xrLabel11.Text = "備考Ghi chú:";
             this.xrLabel11.TextAlignment = DevExpress.XtraPrinting.TextAlignment.BottomLeft;
-            // 
-            // xrRichText4
-            // 
-            this.xrRichText4.BorderColor = System.Drawing.Color.DimGray;
-            this.xrRichText4.Borders = ((DevExpress.XtraPrinting.BorderSide)((((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Top) 
-            | DevExpress.XtraPrinting.BorderSide.Right) 
-            | DevExpress.XtraPrinting.BorderSide.Bottom)));
-            this.xrRichText4.BorderWidth = 0.5F;
-            this.xrRichText4.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
-            this.xrRichText4.LocationFloat = new DevExpress.Utils.PointFloat(815.8958F, 182F);
-            this.xrRichText4.Name = "xrRichText4";
-            this.xrRichText4.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
-            this.xrRichText4.SerializableRtfString = resources.GetString("xrRichText4.SerializableRtfString");
-            this.xrRichText4.SizeF = new System.Drawing.SizeF(276.7669F, 27.99988F);
-            this.xrRichText4.StylePriority.UseBorderColor = false;
-            this.xrRichText4.StylePriority.UseBorders = false;
-            this.xrRichText4.StylePriority.UseBorderWidth = false;
-            this.xrRichText4.StylePriority.UseFont = false;
             // 
             // xrTable12
             // 
@@ -8102,6 +8104,7 @@ namespace Winforms_App_Template.Forms
             // 
             // xrLabel15
             // 
+            this.xrLabel15.BorderColor = System.Drawing.Color.DimGray;
             this.xrLabel15.Borders = ((DevExpress.XtraPrinting.BorderSide)((((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Top) 
             | DevExpress.XtraPrinting.BorderSide.Right) 
             | DevExpress.XtraPrinting.BorderSide.Bottom)));
@@ -8110,6 +8113,7 @@ namespace Winforms_App_Template.Forms
             this.xrLabel15.Name = "xrLabel15";
             this.xrLabel15.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
             this.xrLabel15.SizeF = new System.Drawing.SizeF(60.8147F, 159.9998F);
+            this.xrLabel15.StylePriority.UseBorderColor = false;
             this.xrLabel15.StylePriority.UseBorders = false;
             this.xrLabel15.StylePriority.UseTextAlignment = false;
             this.xrLabel15.Text = "N/A";
@@ -13576,28 +13580,31 @@ namespace Winforms_App_Template.Forms
             // Rua_dau_mut_que_nong_data
             // 
             this.Rua_dau_mut_que_nong_data.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
-            this.xrRichText10,
+            this.xrLabel33,
             this.xrLabel23,
             this.xrTable26});
             this.Rua_dau_mut_que_nong_data.HeightF = 78F;
             this.Rua_dau_mut_que_nong_data.KeepTogether = true;
             this.Rua_dau_mut_que_nong_data.Name = "Rua_dau_mut_que_nong_data";
             // 
-            // xrRichText10
+            // xrLabel33
             // 
-            this.xrRichText10.BorderColor = System.Drawing.Color.DimGray;
-            this.xrRichText10.Borders = ((DevExpress.XtraPrinting.BorderSide)((((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Top) 
+            this.xrLabel33.BorderColor = System.Drawing.Color.DimGray;
+            this.xrLabel33.Borders = ((DevExpress.XtraPrinting.BorderSide)((((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Top) 
             | DevExpress.XtraPrinting.BorderSide.Right) 
             | DevExpress.XtraPrinting.BorderSide.Bottom)));
-            this.xrRichText10.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
-            this.xrRichText10.LocationFloat = new DevExpress.Utils.PointFloat(786.7372F, 12.98392F);
-            this.xrRichText10.Name = "xrRichText10";
-            this.xrRichText10.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
-            this.xrRichText10.SerializableRtfString = resources.GetString("xrRichText10.SerializableRtfString");
-            this.xrRichText10.SizeF = new System.Drawing.SizeF(198.9691F, 21.01606F);
-            this.xrRichText10.StylePriority.UseBorderColor = false;
-            this.xrRichText10.StylePriority.UseBorders = false;
-            this.xrRichText10.StylePriority.UseFont = false;
+            this.xrLabel33.Font = new DevExpress.Drawing.DXFont("Times New Roman", 5F);
+            this.xrLabel33.LocationFloat = new DevExpress.Utils.PointFloat(788.0496F, 12.98396F);
+            this.xrLabel33.Multiline = true;
+            this.xrLabel33.Name = "xrLabel33";
+            this.xrLabel33.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
+            this.xrLabel33.SizeF = new System.Drawing.SizeF(233.0403F, 23F);
+            this.xrLabel33.StylePriority.UseBorderColor = false;
+            this.xrLabel33.StylePriority.UseBorders = false;
+            this.xrLabel33.StylePriority.UseFont = false;
+            this.xrLabel33.StylePriority.UseTextAlignment = false;
+            this.xrLabel33.Text = "N/A";
+            this.xrLabel33.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             // 
             // xrLabel23
             // 
@@ -14313,12 +14320,31 @@ namespace Winforms_App_Template.Forms
             // Kiem_tra_ngoai_quan_data
             // 
             this.Kiem_tra_ngoai_quan_data.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+            this.xrLabel34,
             this.Kiem_tra_ngoai_quan_standard,
-            this.xrRichText11,
             this.xrLabel25,
             this.xrTable28});
             this.Kiem_tra_ngoai_quan_data.HeightF = 179F;
             this.Kiem_tra_ngoai_quan_data.Name = "Kiem_tra_ngoai_quan_data";
+            // 
+            // xrLabel34
+            // 
+            this.xrLabel34.BorderColor = System.Drawing.Color.DimGray;
+            this.xrLabel34.Borders = ((DevExpress.XtraPrinting.BorderSide)((((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Top) 
+            | DevExpress.XtraPrinting.BorderSide.Right) 
+            | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.xrLabel34.Font = new DevExpress.Drawing.DXFont("Times New Roman", 5F);
+            this.xrLabel34.LocationFloat = new DevExpress.Utils.PointFloat(853.5388F, 154F);
+            this.xrLabel34.Multiline = true;
+            this.xrLabel34.Name = "xrLabel34";
+            this.xrLabel34.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
+            this.xrLabel34.SizeF = new System.Drawing.SizeF(279.5166F, 23F);
+            this.xrLabel34.StylePriority.UseBorderColor = false;
+            this.xrLabel34.StylePriority.UseBorders = false;
+            this.xrLabel34.StylePriority.UseFont = false;
+            this.xrLabel34.StylePriority.UseTextAlignment = false;
+            this.xrLabel34.Text = "N/A";
+            this.xrLabel34.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             // 
             // Kiem_tra_ngoai_quan_standard
             // 
@@ -14326,22 +14352,6 @@ namespace Winforms_App_Template.Forms
             this.Kiem_tra_ngoai_quan_standard.Name = "Kiem_tra_ngoai_quan_standard";
             this.Kiem_tra_ngoai_quan_standard.ReportSource = new Winforms_App_Template.Forms.SubReport.Kiem_tra_ngoai_quan_standard();
             this.Kiem_tra_ngoai_quan_standard.SizeF = new System.Drawing.SizeF(333.4261F, 129.25F);
-            // 
-            // xrRichText11
-            // 
-            this.xrRichText11.BorderColor = System.Drawing.Color.DimGray;
-            this.xrRichText11.Borders = ((DevExpress.XtraPrinting.BorderSide)((((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Top) 
-            | DevExpress.XtraPrinting.BorderSide.Right) 
-            | DevExpress.XtraPrinting.BorderSide.Bottom)));
-            this.xrRichText11.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
-            this.xrRichText11.LocationFloat = new DevExpress.Utils.PointFloat(855.0435F, 157F);
-            this.xrRichText11.Name = "xrRichText11";
-            this.xrRichText11.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
-            this.xrRichText11.SerializableRtfString = resources.GetString("xrRichText11.SerializableRtfString");
-            this.xrRichText11.SizeF = new System.Drawing.SizeF(246.7363F, 19.99998F);
-            this.xrRichText11.StylePriority.UseBorderColor = false;
-            this.xrRichText11.StylePriority.UseBorders = false;
-            this.xrRichText11.StylePriority.UseFont = false;
             // 
             // xrLabel25
             // 
@@ -15614,28 +15624,31 @@ namespace Winforms_App_Template.Forms
             // Xu_ly_silicon_data
             // 
             this.Xu_ly_silicon_data.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
-            this.xrRichText12,
+            this.xrLabel35,
             this.xrLabel27,
             this.xrTable30});
             this.Xu_ly_silicon_data.HeightF = 69F;
             this.Xu_ly_silicon_data.KeepTogether = true;
             this.Xu_ly_silicon_data.Name = "Xu_ly_silicon_data";
             // 
-            // xrRichText12
+            // xrLabel35
             // 
-            this.xrRichText12.BorderColor = System.Drawing.Color.DimGray;
-            this.xrRichText12.Borders = ((DevExpress.XtraPrinting.BorderSide)((((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Top) 
+            this.xrLabel35.BorderColor = System.Drawing.Color.DimGray;
+            this.xrLabel35.Borders = ((DevExpress.XtraPrinting.BorderSide)((((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Top) 
             | DevExpress.XtraPrinting.BorderSide.Right) 
             | DevExpress.XtraPrinting.BorderSide.Bottom)));
-            this.xrRichText12.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
-            this.xrRichText12.LocationFloat = new DevExpress.Utils.PointFloat(815.8951F, 22.98414F);
-            this.xrRichText12.Name = "xrRichText12";
-            this.xrRichText12.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
-            this.xrRichText12.SerializableRtfString = resources.GetString("xrRichText12.SerializableRtfString");
-            this.xrRichText12.SizeF = new System.Drawing.SizeF(246.7365F, 32.01585F);
-            this.xrRichText12.StylePriority.UseBorderColor = false;
-            this.xrRichText12.StylePriority.UseBorders = false;
-            this.xrRichText12.StylePriority.UseFont = false;
+            this.xrLabel35.Font = new DevExpress.Drawing.DXFont("Times New Roman", 5F);
+            this.xrLabel35.LocationFloat = new DevExpress.Utils.PointFloat(815.895F, 22.98391F);
+            this.xrLabel35.Multiline = true;
+            this.xrLabel35.Name = "xrLabel35";
+            this.xrLabel35.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
+            this.xrLabel35.SizeF = new System.Drawing.SizeF(246.7366F, 30.01609F);
+            this.xrLabel35.StylePriority.UseBorderColor = false;
+            this.xrLabel35.StylePriority.UseBorders = false;
+            this.xrLabel35.StylePriority.UseFont = false;
+            this.xrLabel35.StylePriority.UseTextAlignment = false;
+            this.xrLabel35.Text = "N/A";
+            this.xrLabel35.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             // 
             // xrLabel27
             // 
@@ -16195,28 +16208,31 @@ namespace Winforms_App_Template.Forms
             // Kiem_tra_lan_cuoi_data
             // 
             this.Kiem_tra_lan_cuoi_data.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
-            this.xrRichText13,
+            this.xrLabel36,
             this.xrLabel29,
             this.xrTable32});
             this.Kiem_tra_lan_cuoi_data.HeightF = 84F;
             this.Kiem_tra_lan_cuoi_data.KeepTogether = true;
             this.Kiem_tra_lan_cuoi_data.Name = "Kiem_tra_lan_cuoi_data";
             // 
-            // xrRichText13
+            // xrLabel36
             // 
-            this.xrRichText13.BorderColor = System.Drawing.Color.DimGray;
-            this.xrRichText13.Borders = ((DevExpress.XtraPrinting.BorderSide)((((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Top) 
+            this.xrLabel36.BorderColor = System.Drawing.Color.DimGray;
+            this.xrLabel36.Borders = ((DevExpress.XtraPrinting.BorderSide)((((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Top) 
             | DevExpress.XtraPrinting.BorderSide.Right) 
             | DevExpress.XtraPrinting.BorderSide.Bottom)));
-            this.xrRichText13.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
-            this.xrRichText13.LocationFloat = new DevExpress.Utils.PointFloat(1021.76F, 0F);
-            this.xrRichText13.Name = "xrRichText13";
-            this.xrRichText13.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
-            this.xrRichText13.SerializableRtfString = resources.GetString("xrRichText13.SerializableRtfString");
-            this.xrRichText13.SizeF = new System.Drawing.SizeF(119.2047F, 44.00003F);
-            this.xrRichText13.StylePriority.UseBorderColor = false;
-            this.xrRichText13.StylePriority.UseBorders = false;
-            this.xrRichText13.StylePriority.UseFont = false;
+            this.xrLabel36.Font = new DevExpress.Drawing.DXFont("Times New Roman", 5F);
+            this.xrLabel36.LocationFloat = new DevExpress.Utils.PointFloat(1021.09F, 0F);
+            this.xrLabel36.Multiline = true;
+            this.xrLabel36.Name = "xrLabel36";
+            this.xrLabel36.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
+            this.xrLabel36.SizeF = new System.Drawing.SizeF(123.4252F, 68.00002F);
+            this.xrLabel36.StylePriority.UseBorderColor = false;
+            this.xrLabel36.StylePriority.UseBorders = false;
+            this.xrLabel36.StylePriority.UseFont = false;
+            this.xrLabel36.StylePriority.UseTextAlignment = false;
+            this.xrLabel36.Text = "N/A";
+            this.xrLabel36.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             // 
             // xrLabel29
             // 
@@ -17420,16 +17436,12 @@ namespace Winforms_App_Template.Forms
             ((System.ComponentModel.ISupportInitialize)(this.xrTable2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Catthoong_Table)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable8)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.xrRichText1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.xrRichText5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable7)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.xrRichText2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable5)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.xrRichText4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable12)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable10)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable16)).EndInit();
@@ -17443,16 +17455,12 @@ namespace Winforms_App_Template.Forms
             ((System.ComponentModel.ISupportInitialize)(this.xrRichText8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable20)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable19)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.xrRichText10)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable26)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable13)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.xrRichText11)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable28)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable25)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.xrRichText12)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable30)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable27)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.xrRichText13)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable32)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable29)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable33)).EndInit();
@@ -17499,7 +17507,6 @@ namespace Winforms_App_Template.Forms
         private DevExpress.XtraReports.UI.XRLabel Header_Name;
         private DevExpress.XtraReports.UI.XRPanel Header_Panel;
         private DevExpress.XtraReports.UI.XRLabel xrLabel4;
-        private DevExpress.XtraReports.UI.XRRichText xrRichText1;
         private DevExpress.XtraReports.UI.XRSubreport Kiem_tra_ong_sau_cat_tho_standard;
         private DevExpress.XtraReports.UI.XRPanel xrPanel2;
         private DevExpress.XtraReports.UI.XRLabel xrLabel2;
@@ -17580,14 +17587,12 @@ namespace Winforms_App_Template.Forms
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell246;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell247;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell248;
-        private DevExpress.XtraReports.UI.XRRichText xrRichText5;
         private DevExpress.XtraReports.UI.XRLabel xrLabel10;
         private DevExpress.XtraReports.UI.XRSubreport Cam_chot_dkm;
         private DevExpress.XtraReports.UI.ReportHeaderBand Cam_chot_header;
         private DevExpress.XtraReports.UI.DetailReportBand Dap_chuoi_cat_dinh_muc;
         private DevExpress.XtraReports.UI.DetailBand Dap_chuoi_cat_dinh_muc_data;
         private DevExpress.XtraReports.UI.ReportHeaderBand Dap_chuoi_cat_dinh_muc_header;
-        private DevExpress.XtraReports.UI.XRRichText xrRichText2;
         private DevExpress.XtraReports.UI.XRLabel xrLabel6;
         private DevExpress.XtraReports.UI.XRSubreport Dap_chuoi_cat_dinh_muc_dkm;
         private DevExpress.XtraReports.UI.XRTable xrTable7;
@@ -17782,7 +17787,6 @@ namespace Winforms_App_Template.Forms
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell546;
         private DevExpress.XtraReports.UI.XRSubreport xrSubreport2;
         private DevExpress.XtraReports.UI.XRLabel xrLabel11;
-        private DevExpress.XtraReports.UI.XRRichText xrRichText4;
         private DevExpress.XtraReports.UI.DetailReportBand Gia_cong_dau_mut_v1_5;
         private DevExpress.XtraReports.UI.DetailBand Gia_cong_dau_mut_v1_5_data;
         private DevExpress.XtraReports.UI.ReportHeaderBand Gia_cong_dau_mut_v1_5_header;
@@ -18376,7 +18380,6 @@ namespace Winforms_App_Template.Forms
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell1257;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell1258;
         private DevExpress.XtraReports.UI.ReportHeaderBand Rua_dau_mut_que_nong_header;
-        private DevExpress.XtraReports.UI.XRRichText xrRichText10;
         private DevExpress.XtraReports.UI.XRLabel xrLabel23;
         private DevExpress.XtraReports.UI.XRTableRow xrTableRow108;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell1269;
@@ -18517,7 +18520,6 @@ namespace Winforms_App_Template.Forms
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell1404;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell1407;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell1361;
-        private DevExpress.XtraReports.UI.XRRichText xrRichText11;
         private DevExpress.XtraReports.UI.XRLabel xrLabel25;
         private DevExpress.XtraReports.UI.DetailReportBand Xu_ly_silicon;
         private DevExpress.XtraReports.UI.DetailBand Xu_ly_silicon_data;
@@ -18539,7 +18541,6 @@ namespace Winforms_App_Template.Forms
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell1425;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell1426;
         private DevExpress.XtraReports.UI.ReportHeaderBand Xu_ly_silicon_header;
-        private DevExpress.XtraReports.UI.XRRichText xrRichText12;
         private DevExpress.XtraReports.UI.XRLabel xrLabel27;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell1428;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell1429;
@@ -18627,7 +18628,6 @@ namespace Winforms_App_Template.Forms
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell1471;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell1472;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell1473;
-        private DevExpress.XtraReports.UI.XRRichText xrRichText13;
         private DevExpress.XtraReports.UI.XRLabel xrLabel29;
         private DevExpress.XtraReports.UI.DetailReportBand Tong_ket;
         private DevExpress.XtraReports.UI.DetailBand Tong_ket_data;
@@ -19169,5 +19169,13 @@ namespace Winforms_App_Template.Forms
         private DevExpress.XtraReports.UI.XRLabel xrLabel16;
         private DevExpress.XtraReports.UI.XRLabel xrLabel13;
         private DevExpress.XtraReports.UI.XRLabel xrLabel15;
+        private DevExpress.XtraReports.UI.XRLabel xrLabel28;
+        private DevExpress.XtraReports.UI.XRLabel xrLabel31;
+        private DevExpress.XtraReports.UI.XRLabel xrLabel32;
+        private DevExpress.XtraReports.UI.XRLabel xrLabel33;
+        private DevExpress.XtraReports.UI.XRLabel xrLabel34;
+        private DevExpress.XtraReports.UI.XRLabel xrLabel35;
+        private DevExpress.XtraReports.UI.XRLabel xrLabel36;
+        private DevExpress.XtraReports.UI.XRLabel xrLabel37;
     }
 }
