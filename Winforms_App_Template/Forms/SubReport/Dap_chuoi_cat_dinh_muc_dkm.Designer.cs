@@ -211,6 +211,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell335.Multiline = true;
             this.xrTableCell335.Name = "xrTableCell335";
             this.xrTableCell335.RowSpan = 3;
+            this.xrTableCell335.Text = "N/A\r";
             this.xrTableCell335.Weight = 0.36625363108015D;
             // 
             // xrTableCell336
@@ -225,6 +226,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell337.Multiline = true;
             this.xrTableCell337.Name = "xrTableCell337";
             this.xrTableCell337.RowSpan = 3;
+            this.xrTableCell337.Text = "N/A\r";
             this.xrTableCell337.Weight = 0.76145996093749968D;
             // 
             // xrTableCell338
@@ -232,6 +234,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell338.Multiline = true;
             this.xrTableCell338.Name = "xrTableCell338";
             this.xrTableCell338.RowSpan = 3;
+            this.xrTableCell338.Text = "N/A\r";
             this.xrTableCell338.Weight = 1.1455947875976562D;
             // 
             // xrTableCell339
@@ -239,6 +242,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell339.Multiline = true;
             this.xrTableCell339.Name = "xrTableCell339";
             this.xrTableCell339.RowSpan = 3;
+            this.xrTableCell339.Text = "N/A\r";
             this.xrTableCell339.Weight = 1.5594137573242188D;
             // 
             // xrTableRow36
@@ -262,6 +266,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell340.Name = "xrTableCell340";
             this.xrTableCell340.RowSpan = 2;
             this.xrTableCell340.StylePriority.UseBorders = false;
+            this.xrTableCell340.Text = "N/A\r";
             this.xrTableCell340.Weight = 0.34509933471679688D;
             // 
             // xrTableCell341
@@ -270,6 +275,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell341.Multiline = true;
             this.xrTableCell341.Name = "xrTableCell341";
             this.xrTableCell341.StylePriority.UseBorders = false;
+            this.xrTableCell341.Text = "N/A\r";
             this.xrTableCell341.Weight = 0.81495257619524075D;
             // 
             // xrTableCell342
@@ -284,6 +290,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell343.Multiline = true;
             this.xrTableCell343.Name = "xrTableCell343";
             this.xrTableCell343.RowSpan = 2;
+            this.xrTableCell343.Text = "N/A\r";
             this.xrTableCell343.Weight = 0.62727905273437479D;
             // 
             // xrTableCell344

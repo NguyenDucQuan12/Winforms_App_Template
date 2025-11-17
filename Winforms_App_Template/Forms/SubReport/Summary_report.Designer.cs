@@ -84,6 +84,7 @@ namespace Winforms_App_Template.Forms.SubReport
             // 
             // xrTable1
             // 
+            this.xrTable1.BorderColor = System.Drawing.Color.DimGray;
             this.xrTable1.Borders = ((DevExpress.XtraPrinting.BorderSide)(((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Right) 
             | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.xrTable1.BorderWidth = 0.5F;
@@ -94,6 +95,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTable1.Rows.AddRange(new DevExpress.XtraReports.UI.XRTableRow[] {
             this.xrTableRow5});
             this.xrTable1.SizeF = new System.Drawing.SizeF(600F, 14F);
+            this.xrTable1.StylePriority.UseBorderColor = false;
             this.xrTable1.StylePriority.UseBorders = false;
             this.xrTable1.StylePriority.UseBorderWidth = false;
             this.xrTable1.StylePriority.UseFont = false;
@@ -121,18 +123,22 @@ namespace Winforms_App_Template.Forms.SubReport
             // 
             this.xrTableCell24.Multiline = true;
             this.xrTableCell24.Name = "xrTableCell24";
+            this.xrTableCell24.Text = "N/A\r";
             this.xrTableCell24.Weight = 1D;
             // 
             // xrTableCell25
             // 
             this.xrTableCell25.Multiline = true;
             this.xrTableCell25.Name = "xrTableCell25";
+            this.xrTableCell25.Text = "N/A\r";
             this.xrTableCell25.Weight = 0.762301025390625D;
             // 
             // xrTableCell26
             // 
+            this.xrTableCell26.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Right | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.xrTableCell26.Multiline = true;
             this.xrTableCell26.Name = "xrTableCell26";
+            this.xrTableCell26.StylePriority.UseBorders = false;
             this.xrTableCell26.Text = "本sp";
             this.xrTableCell26.Weight = 0.237698974609375D;
             // 
@@ -140,12 +146,15 @@ namespace Winforms_App_Template.Forms.SubReport
             // 
             this.xrTableCell27.Multiline = true;
             this.xrTableCell27.Name = "xrTableCell27";
+            this.xrTableCell27.Text = "N/A\r";
             this.xrTableCell27.Weight = 0.783238525390625D;
             // 
             // xrTableCell28
             // 
+            this.xrTableCell28.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Right | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.xrTableCell28.Multiline = true;
             this.xrTableCell28.Name = "xrTableCell28";
+            this.xrTableCell28.StylePriority.UseBorders = false;
             this.xrTableCell28.Text = "本sp";
             this.xrTableCell28.Weight = 0.216761474609375D;
             // 
@@ -153,12 +162,15 @@ namespace Winforms_App_Template.Forms.SubReport
             // 
             this.xrTableCell29.Multiline = true;
             this.xrTableCell29.Name = "xrTableCell29";
+            this.xrTableCell29.Text = "N/A\r";
             this.xrTableCell29.Weight = 0.76864013671875D;
             // 
             // xrTableCell30
             // 
+            this.xrTableCell30.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Right | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.xrTableCell30.Multiline = true;
             this.xrTableCell30.Name = "xrTableCell30";
+            this.xrTableCell30.StylePriority.UseBorders = false;
             this.xrTableCell30.Text = "本sp";
             this.xrTableCell30.Weight = 0.23135986328125002D;
             // 
@@ -166,12 +178,15 @@ namespace Winforms_App_Template.Forms.SubReport
             // 
             this.xrTableCell31.Multiline = true;
             this.xrTableCell31.Name = "xrTableCell31";
+            this.xrTableCell31.Text = "N/A";
             this.xrTableCell31.Weight = 0.72468505859375D;
             // 
             // xrTableCell32
             // 
+            this.xrTableCell32.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Right | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.xrTableCell32.Multiline = true;
             this.xrTableCell32.Name = "xrTableCell32";
+            this.xrTableCell32.StylePriority.UseBorders = false;
             this.xrTableCell32.Text = "本sp";
             this.xrTableCell32.Weight = 0.27531494140625D;
             // 
@@ -179,12 +194,15 @@ namespace Winforms_App_Template.Forms.SubReport
             // 
             this.xrTableCell33.Multiline = true;
             this.xrTableCell33.Name = "xrTableCell33";
+            this.xrTableCell33.Text = "N/A";
             this.xrTableCell33.Weight = 0.741226806640625D;
             // 
             // xrTableCell34
             // 
+            this.xrTableCell34.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Right | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.xrTableCell34.Multiline = true;
             this.xrTableCell34.Name = "xrTableCell34";
+            this.xrTableCell34.StylePriority.UseBorders = false;
             this.xrTableCell34.Text = "本sp";
             this.xrTableCell34.Weight = 0.258773193359375D;
             // 
@@ -197,6 +215,7 @@ namespace Winforms_App_Template.Forms.SubReport
             // 
             // xrTable2
             // 
+            this.xrTable2.BorderColor = System.Drawing.Color.DimGray;
             this.xrTable2.Borders = ((DevExpress.XtraPrinting.BorderSide)((((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Top) 
             | DevExpress.XtraPrinting.BorderSide.Right) 
             | DevExpress.XtraPrinting.BorderSide.Bottom)));
@@ -210,6 +229,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableRow2,
             this.xrTableRow3});
             this.xrTable2.SizeF = new System.Drawing.SizeF(600F, 54F);
+            this.xrTable2.StylePriority.UseBorderColor = false;
             this.xrTable2.StylePriority.UseBorders = false;
             this.xrTable2.StylePriority.UseBorderWidth = false;
             this.xrTable2.StylePriority.UseFont = false;

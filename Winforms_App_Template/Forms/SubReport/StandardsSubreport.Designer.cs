@@ -100,6 +100,7 @@ namespace Winforms_App_Template.Forms.SubReport
             // 
             // Check_Table
             // 
+            this.Check_Table.BorderColor = System.Drawing.Color.DimGray;
             this.Check_Table.Borders = ((DevExpress.XtraPrinting.BorderSide)(((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Right) 
             | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.Check_Table.BorderWidth = 0.5F;
@@ -111,6 +112,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.Check_Table.Rows.AddRange(new DevExpress.XtraReports.UI.XRTableRow[] {
             this.xrTableRow17});
             this.Check_Table.SizeF = new System.Drawing.SizeF(386.2761F, 18F);
+            this.Check_Table.StylePriority.UseBorderColor = false;
             this.Check_Table.StylePriority.UseBorders = false;
             this.Check_Table.StylePriority.UseBorderWidth = false;
             this.Check_Table.StylePriority.UseFont = false;
@@ -134,6 +136,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell126.Multiline = true;
             this.xrTableCell126.Name = "xrTableCell126";
             this.xrTableCell126.Tag = "a|b|TenTieuChuan|d|e";
+            this.xrTableCell126.Text = "N/A\r";
             this.xrTableCell126.Weight = 0.90431522041003709D;
             // 
             // Outer_Diameter_Item
@@ -141,6 +144,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.Outer_Diameter_Item.Multiline = true;
             this.Outer_Diameter_Item.Name = "Outer_Diameter_Item";
             this.Outer_Diameter_Item.Tag = "a|b|Loai_chieudai|d|e";
+            this.Outer_Diameter_Item.Text = "N/A\r";
             this.Outer_Diameter_Item.Weight = 0.71979121689318681D;
             // 
             // Outer_Diameter_Size
@@ -148,6 +152,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.Outer_Diameter_Size.Multiline = true;
             this.Outer_Diameter_Size.Name = "Outer_Diameter_Size";
             this.Outer_Diameter_Size.Tag = "a|b|Loai_size|d|e";
+            this.Outer_Diameter_Size.Text = "N/A\r";
             this.Outer_Diameter_Size.Weight = 0.62539667967024348D;
             // 
             // Outer_Diameter_Pingauge_Through
@@ -155,6 +160,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.Outer_Diameter_Pingauge_Through.Multiline = true;
             this.Outer_Diameter_Pingauge_Through.Name = "Outer_Diameter_Pingauge_Through";
             this.Outer_Diameter_Pingauge_Through.Tag = "a|b|c|d|e";
+            this.Outer_Diameter_Pingauge_Through.Text = "N/A\r";
             this.Outer_Diameter_Pingauge_Through.Weight = 0.84805106149398335D;
             // 
             // Outer_Diameter_Pingauge_Not_Through
@@ -162,6 +168,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.Outer_Diameter_Pingauge_Not_Through.Multiline = true;
             this.Outer_Diameter_Pingauge_Not_Through.Name = "Outer_Diameter_Pingauge_Not_Through";
             this.Outer_Diameter_Pingauge_Not_Through.Tag = "a|b|c|d|e";
+            this.Outer_Diameter_Pingauge_Not_Through.Text = "N/A\r";
             this.Outer_Diameter_Pingauge_Not_Through.Weight = 1.0805191468485749D;
             // 
             // Outer_Diameter_Criterion
@@ -169,6 +176,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.Outer_Diameter_Criterion.Multiline = true;
             this.Outer_Diameter_Criterion.Name = "Outer_Diameter_Criterion";
             this.Outer_Diameter_Criterion.Tag = "a|b|TCMin|d|e";
+            this.Outer_Diameter_Criterion.Text = "N/A\r";
             this.Outer_Diameter_Criterion.Weight = 0.84439382534559659D;
             // 
             // ReportHeader
@@ -180,6 +188,7 @@ namespace Winforms_App_Template.Forms.SubReport
             // 
             // xrTable1
             // 
+            this.xrTable1.BorderColor = System.Drawing.Color.DimGray;
             this.xrTable1.Borders = ((DevExpress.XtraPrinting.BorderSide)((((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Top) 
             | DevExpress.XtraPrinting.BorderSide.Right) 
             | DevExpress.XtraPrinting.BorderSide.Bottom)));
@@ -192,6 +201,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTable1.Rows.AddRange(new DevExpress.XtraReports.UI.XRTableRow[] {
             this.xrTableRow1});
             this.xrTable1.SizeF = new System.Drawing.SizeF(386.2761F, 20F);
+            this.xrTable1.StylePriority.UseBorderColor = false;
             this.xrTable1.StylePriority.UseBorders = false;
             this.xrTable1.StylePriority.UseBorderWidth = false;
             this.xrTable1.StylePriority.UseFont = false;

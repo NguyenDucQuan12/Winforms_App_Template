@@ -110,6 +110,7 @@ namespace Winforms_App_Template.Forms.SubReport
             // 
             // xrTable17
             // 
+            this.xrTable17.BorderColor = System.Drawing.Color.DimGray;
             this.xrTable17.Borders = ((DevExpress.XtraPrinting.BorderSide)(((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Right) 
             | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.xrTable17.BorderWidth = 0.5F;
@@ -123,6 +124,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableRow71,
             this.xrTableRow70});
             this.xrTable17.SizeF = new System.Drawing.SizeF(1141.506F, 42F);
+            this.xrTable17.StylePriority.UseBorderColor = false;
             this.xrTable17.StylePriority.UseBorders = false;
             this.xrTable17.StylePriority.UseBorderWidth = false;
             this.xrTable17.StylePriority.UseFont = false;
@@ -465,6 +467,7 @@ namespace Winforms_App_Template.Forms.SubReport
             // 
             // xrTable2
             // 
+            this.xrTable2.BorderColor = System.Drawing.Color.DimGray;
             this.xrTable2.Borders = ((DevExpress.XtraPrinting.BorderSide)((((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Top) 
             | DevExpress.XtraPrinting.BorderSide.Right) 
             | DevExpress.XtraPrinting.BorderSide.Bottom)));
@@ -477,6 +480,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTable2.Rows.AddRange(new DevExpress.XtraReports.UI.XRTableRow[] {
             this.xrTableRow2});
             this.xrTable2.SizeF = new System.Drawing.SizeF(1141.506F, 25F);
+            this.xrTable2.StylePriority.UseBorderColor = false;
             this.xrTable2.StylePriority.UseBorders = false;
             this.xrTable2.StylePriority.UseBorderWidth = false;
             this.xrTable2.StylePriority.UseFont = false;

@@ -70,6 +70,7 @@ namespace Winforms_App_Template.Forms.SubReport
             // 
             // xrTable18
             // 
+            this.xrTable18.BorderColor = System.Drawing.Color.DimGray;
             this.xrTable18.Borders = ((DevExpress.XtraPrinting.BorderSide)(((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Right) 
             | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.xrTable18.BorderWidth = 0.5F;
@@ -80,6 +81,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTable18.Rows.AddRange(new DevExpress.XtraReports.UI.XRTableRow[] {
             this.xrTableRow73});
             this.xrTable18.SizeF = new System.Drawing.SizeF(500F, 14F);
+            this.xrTable18.StylePriority.UseBorderColor = false;
             this.xrTable18.StylePriority.UseBorders = false;
             this.xrTable18.StylePriority.UseBorderWidth = false;
             this.xrTable18.StylePriority.UseFont = false;
@@ -101,30 +103,35 @@ namespace Winforms_App_Template.Forms.SubReport
             // 
             this.xrTableCell848.Multiline = true;
             this.xrTableCell848.Name = "xrTableCell848";
+            this.xrTableCell848.Text = "N/A\r";
             this.xrTableCell848.Weight = 1D;
             // 
             // xrTableCell849
             // 
             this.xrTableCell849.Multiline = true;
             this.xrTableCell849.Name = "xrTableCell849";
+            this.xrTableCell849.Text = "N/A\r";
             this.xrTableCell849.Weight = 1D;
             // 
             // xrTableCell850
             // 
             this.xrTableCell850.Multiline = true;
             this.xrTableCell850.Name = "xrTableCell850";
+            this.xrTableCell850.Text = "N/A\r";
             this.xrTableCell850.Weight = 1D;
             // 
             // xrTableCell854
             // 
             this.xrTableCell854.Multiline = true;
             this.xrTableCell854.Name = "xrTableCell854";
+            this.xrTableCell854.Text = "N/A\r";
             this.xrTableCell854.Weight = 1D;
             // 
             // xrTableCell860
             // 
             this.xrTableCell860.Multiline = true;
             this.xrTableCell860.Name = "xrTableCell860";
+            this.xrTableCell860.Text = "N/A\r";
             this.xrTableCell860.Weight = 1D;
             // 
             // GroupHeader1
@@ -138,6 +145,7 @@ namespace Winforms_App_Template.Forms.SubReport
             // 
             // xrTable2
             // 
+            this.xrTable2.BorderColor = System.Drawing.Color.DimGray;
             this.xrTable2.Borders = ((DevExpress.XtraPrinting.BorderSide)((((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Top) 
             | DevExpress.XtraPrinting.BorderSide.Right) 
             | DevExpress.XtraPrinting.BorderSide.Bottom)));
@@ -149,6 +157,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTable2.Rows.AddRange(new DevExpress.XtraReports.UI.XRTableRow[] {
             this.xrTableRow2});
             this.xrTable2.SizeF = new System.Drawing.SizeF(500F, 20F);
+            this.xrTable2.StylePriority.UseBorderColor = false;
             this.xrTable2.StylePriority.UseBorders = false;
             this.xrTable2.StylePriority.UseBorderWidth = false;
             this.xrTable2.StylePriority.UseFont = false;
