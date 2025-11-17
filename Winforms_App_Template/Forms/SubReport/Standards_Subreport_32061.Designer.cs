@@ -94,12 +94,14 @@ namespace Winforms_App_Template.Forms.SubReport
             // 
             this.xrTableCell3.Multiline = true;
             this.xrTableCell3.Name = "xrTableCell3";
+            this.xrTableCell3.Text = "N/A";
             this.xrTableCell3.Weight = 1.195312836409492D;
             // 
             // xrTableCell4
             // 
             this.xrTableCell4.Multiline = true;
             this.xrTableCell4.Name = "xrTableCell4";
+            this.xrTableCell4.Text = "N/A";
             this.xrTableCell4.Weight = 0.80018896066638256D;
             // 
             // ReportHeader

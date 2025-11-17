@@ -104,36 +104,42 @@ namespace Winforms_App_Template.Forms.SubReport
             // 
             this.xrTableCell349.Multiline = true;
             this.xrTableCell349.Name = "xrTableCell349";
+            this.xrTableCell349.Text = "N/A";
             this.xrTableCell349.Weight = 1D;
             // 
             // xrTableCell352
             // 
             this.xrTableCell352.Multiline = true;
             this.xrTableCell352.Name = "xrTableCell352";
+            this.xrTableCell352.Text = "N/A";
             this.xrTableCell352.Weight = 1D;
             // 
             // xrTableCell353
             // 
             this.xrTableCell353.Multiline = true;
             this.xrTableCell353.Name = "xrTableCell353";
+            this.xrTableCell353.Text = "N/A";
             this.xrTableCell353.Weight = 1D;
             // 
             // xrTableCell354
             // 
             this.xrTableCell354.Multiline = true;
             this.xrTableCell354.Name = "xrTableCell354";
+            this.xrTableCell354.Text = "N/A";
             this.xrTableCell354.Weight = 1D;
             // 
             // xrTableCell355
             // 
             this.xrTableCell355.Multiline = true;
             this.xrTableCell355.Name = "xrTableCell355";
+            this.xrTableCell355.Text = "N/A";
             this.xrTableCell355.Weight = 1D;
             // 
             // xrTableCell356
             // 
             this.xrTableCell356.Multiline = true;
             this.xrTableCell356.Name = "xrTableCell356";
+            this.xrTableCell356.Text = "N/A";
             this.xrTableCell356.Weight = 1D;
             // 
             // GroupHeader1

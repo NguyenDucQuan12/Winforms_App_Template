@@ -29,6 +29,7 @@ namespace Winforms_App_Template.Database.Model
 
         [System.ComponentModel.DisplayName("Mã kiểm tra")]
         public string MaKT { get; init; } = "";                    // Mã lý do kiểm tra: I, II, III, IV
+        public string Ly_do_kiem_tra { get; init; } = "";          // Lý do kiểm tra nếu mã kiểm tra là V: khác
         public DateTime StartTime { get; init; }                   // Thời gian bắt đầu thao tác
         public string NguoiTT { get; init; } = "";                 // Người thao tác
         public string TenNguoiThaoTac { get; init; } = "";         // Tên người thao tác
@@ -68,6 +69,17 @@ namespace Winforms_App_Template.Database.Model
         public string? val30 { get; set; }                         // Để trường cho tương lai
         public string? val31 { get; set; }                         // Để trường cho tương lai
         public string? val32 { get; set; }                         // Để trường cho tương lai
+        public string? val33 { get; set; }                         // Để trường cho tương lai
+        public string? val34 { get; set; }                         // Để trường cho tương lai
+        public string? val35 { get; set; }                         // Để trường cho tương lai
+        public string? val36 { get; set; }                         // Để trường cho tương lai
+        public string? val37 { get; set; }                         // Để trường cho tương lai
+        public string? val38 { get; set; }                         // Để trường cho tương lai
+        public string? val39 { get; set; }                         // Để trường cho tương lai
+        public string? val40 { get; set; }                         // Để trường cho tương lai
+        public string? val41 { get; set; }                         // Để trường cho tương lai
+        public string? val42 { get; set; }                         // Để trường cho tương lai
+        public string? val43 { get; set; }                         // Để trường cho tương lai
 
         // --- phần chi tiết lỗi ---
         public int Cat_vat { get; set; }                          // 1: Lỗi cắt vát

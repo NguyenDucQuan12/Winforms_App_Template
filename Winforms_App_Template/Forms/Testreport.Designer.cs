@@ -2117,6 +2117,7 @@ namespace Winforms_App_Template.Forms
             this.Catongtho_Report.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
             this.Catongtho_Data,
             this.Catongtho_Header});
+            this.Catongtho_Report.Expanded = false;
             this.Catongtho_Report.Font = new DevExpress.Drawing.DXFont("Times New Roman", 6F);
             this.Catongtho_Report.Level = 0;
             this.Catongtho_Report.Name = "Catongtho_Report";
@@ -3247,6 +3248,7 @@ namespace Winforms_App_Template.Forms
             this.Kiem_tra_ong_sau_cat_tho.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
             this.Kiem_tra_ong_sau_cat_tho_data,
             this.Kiem_tra_ong_sau_cat_tho_header});
+            this.Kiem_tra_ong_sau_cat_tho.Expanded = false;
             this.Kiem_tra_ong_sau_cat_tho.Level = 1;
             this.Kiem_tra_ong_sau_cat_tho.Name = "Kiem_tra_ong_sau_cat_tho";
             // 
@@ -3370,7 +3372,7 @@ namespace Winforms_App_Template.Forms
             // 
             this.xrTableCell87.Multiline = true;
             this.xrTableCell87.Name = "xrTableCell87";
-            this.xrTableCell87.Text = "Kiểm tra ngoại quan bằng mắt";
+            this.xrTableCell87.Text = "目視による外観検査 Kiểm tra ngoại quan bằng mắt";
             this.xrTableCell87.Weight = 3.1917340613866281D;
             // 
             // xrTableCell168
@@ -3768,21 +3770,21 @@ namespace Winforms_App_Template.Forms
             // 
             this.xrTableCell125.Multiline = true;
             this.xrTableCell125.Name = "xrTableCell125";
-            this.xrTableCell125.RowSpan = 4;
+            this.xrTableCell125.RowSpan = 2;
             this.xrTableCell125.Weight = 0.46700257108643828D;
             // 
             // xrTableCell120
             // 
             this.xrTableCell120.Multiline = true;
             this.xrTableCell120.Name = "xrTableCell120";
-            this.xrTableCell120.RowSpan = 4;
+            this.xrTableCell120.RowSpan = 2;
             this.xrTableCell120.Weight = 0.47784287795507108D;
             // 
             // xrTableCell153
             // 
             this.xrTableCell153.Multiline = true;
             this.xrTableCell153.Name = "xrTableCell153";
-            this.xrTableCell153.RowSpan = 4;
+            this.xrTableCell153.RowSpan = 2;
             this.xrTableCell153.Weight = 0.45143541403888821D;
             // 
             // xrTableCell113
@@ -4130,21 +4132,21 @@ namespace Winforms_App_Template.Forms
             // 
             this.xrTableCell558.Multiline = true;
             this.xrTableCell558.Name = "xrTableCell558";
-            this.xrTableCell558.Text = "xrTableCell558";
+            this.xrTableCell558.RowSpan = 2;
             this.xrTableCell558.Weight = 0.46700257108643828D;
             // 
             // xrTableCell559
             // 
             this.xrTableCell559.Multiline = true;
             this.xrTableCell559.Name = "xrTableCell559";
-            this.xrTableCell559.Text = "xrTableCell559";
+            this.xrTableCell559.RowSpan = 2;
             this.xrTableCell559.Weight = 0.47784287795507108D;
             // 
             // xrTableCell560
             // 
             this.xrTableCell560.Multiline = true;
             this.xrTableCell560.Name = "xrTableCell560";
-            this.xrTableCell560.Text = "xrTableCell560";
+            this.xrTableCell560.RowSpan = 2;
             this.xrTableCell560.Weight = 0.45143541403888821D;
             // 
             // xrTableCell561
@@ -4652,7 +4654,7 @@ namespace Winforms_App_Template.Forms
             this.Cam_chot_standard,
             this.xrTable9,
             this.Cam_chot_dkm});
-            this.Cam_chot_data.HeightF = 184F;
+            this.Cam_chot_data.HeightF = 179F;
             this.Cam_chot_data.Name = "Cam_chot_data";
             // 
             // xrLabel10
@@ -4701,7 +4703,7 @@ namespace Winforms_App_Template.Forms
             this.xrTable9.BorderWidth = 0.5F;
             this.xrTable9.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
             this.xrTable9.KeepTogether = true;
-            this.xrTable9.LocationFloat = new DevExpress.Utils.PointFloat(3.764404F, 98.05208F);
+            this.xrTable9.LocationFloat = new DevExpress.Utils.PointFloat(3.764404F, 95F);
             this.xrTable9.Name = "xrTable9";
             this.xrTable9.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
             this.xrTable9.Rows.AddRange(new DevExpress.XtraReports.UI.XRTableRow[] {
@@ -5707,6 +5709,7 @@ namespace Winforms_App_Template.Forms
             this.xrTableCell192.Name = "xrTableCell192";
             this.xrTableCell192.StylePriority.UseBorders = false;
             this.xrTableCell192.Tag = "a|b|Batch_Number|d|e";
+            this.xrTableCell192.Text = "N/A";
             this.xrTableCell192.Weight = 0.81724897796872831D;
             // 
             // xrTableCell193
@@ -5717,6 +5720,7 @@ namespace Winforms_App_Template.Forms
             this.xrTableCell193.Name = "xrTableCell193";
             this.xrTableCell193.StylePriority.UseBorders = false;
             this.xrTableCell193.Tag = "a|b|NG_Qty_Total|d|e";
+            this.xrTableCell193.Text = "N/A";
             this.xrTableCell193.Weight = 1.2112417905159898D;
             // 
             // xrTableCell194
@@ -5727,6 +5731,7 @@ namespace Winforms_App_Template.Forms
             this.xrTableCell194.Name = "xrTableCell194";
             this.xrTableCell194.StylePriority.UseBorders = false;
             this.xrTableCell194.Tag = "a|b|OK_Qty_Total|d|e";
+            this.xrTableCell194.Text = "N/A";
             this.xrTableCell194.Weight = 1.5671808449689086D;
             // 
             // Dap_chuoi_cat_dinh_muc
@@ -5750,7 +5755,7 @@ namespace Winforms_App_Template.Forms
             // 
             // xrTable7
             // 
-            this.xrTable7.BorderColor = System.Drawing.Color.DarkGray;
+            this.xrTable7.BorderColor = System.Drawing.Color.DimGray;
             this.xrTable7.Borders = ((DevExpress.XtraPrinting.BorderSide)((((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Top) 
             | DevExpress.XtraPrinting.BorderSide.Right) 
             | DevExpress.XtraPrinting.BorderSide.Bottom)));
@@ -6877,6 +6882,7 @@ namespace Winforms_App_Template.Forms
             this.xrTableCell180.Name = "xrTableCell180";
             this.xrTableCell180.StylePriority.UseBorders = false;
             this.xrTableCell180.Tag = "a|b|Batch_Number|d|e";
+            this.xrTableCell180.Text = "N/A";
             this.xrTableCell180.Weight = 0.81724897796872831D;
             // 
             // xrTableCell181
@@ -6887,6 +6893,7 @@ namespace Winforms_App_Template.Forms
             this.xrTableCell181.Name = "xrTableCell181";
             this.xrTableCell181.StylePriority.UseBorders = false;
             this.xrTableCell181.Tag = "a|b|NG_Qty_Total|d|e";
+            this.xrTableCell181.Text = "N/A";
             this.xrTableCell181.Weight = 1.2112417905159898D;
             // 
             // xrTableCell182
@@ -6897,6 +6904,7 @@ namespace Winforms_App_Template.Forms
             this.xrTableCell182.Name = "xrTableCell182";
             this.xrTableCell182.StylePriority.UseBorders = false;
             this.xrTableCell182.Tag = "a|b|OK_Qty_Total|d|e";
+            this.xrTableCell182.Text = "N/A";
             this.xrTableCell182.Weight = 1.5671808449689086D;
             // 
             // Tu_dong_lap_rap_que_nong
@@ -6915,7 +6923,7 @@ namespace Winforms_App_Template.Forms
             this.xrLabel11,
             this.xrRichText4,
             this.xrTable12});
-            this.Tu_dong_lap_rap_que_nong_data.HeightF = 218F;
+            this.Tu_dong_lap_rap_que_nong_data.HeightF = 210F;
             this.Tu_dong_lap_rap_que_nong_data.Name = "Tu_dong_lap_rap_que_nong_data";
             // 
             // Tu_dong_lap_rap_que_nong_dkm
@@ -6935,7 +6943,7 @@ namespace Winforms_App_Template.Forms
             // xrLabel11
             // 
             this.xrLabel11.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
-            this.xrLabel11.LocationFloat = new DevExpress.Utils.PointFloat(818.6573F, 174.1111F);
+            this.xrLabel11.LocationFloat = new DevExpress.Utils.PointFloat(815.8958F, 168F);
             this.xrLabel11.Multiline = true;
             this.xrLabel11.Name = "xrLabel11";
             this.xrLabel11.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
@@ -6952,7 +6960,7 @@ namespace Winforms_App_Template.Forms
             | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.xrRichText4.BorderWidth = 0.5F;
             this.xrRichText4.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
-            this.xrRichText4.LocationFloat = new DevExpress.Utils.PointFloat(815.8958F, 188.1112F);
+            this.xrRichText4.LocationFloat = new DevExpress.Utils.PointFloat(815.8958F, 182F);
             this.xrRichText4.Name = "xrRichText4";
             this.xrRichText4.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
             this.xrRichText4.SerializableRtfString = resources.GetString("xrRichText4.SerializableRtfString");
@@ -6969,7 +6977,7 @@ namespace Winforms_App_Template.Forms
             this.xrTable12.BorderWidth = 0.5F;
             this.xrTable12.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4F);
             this.xrTable12.KeepTogether = true;
-            this.xrTable12.LocationFloat = new DevExpress.Utils.PointFloat(3.764404F, 126.1111F);
+            this.xrTable12.LocationFloat = new DevExpress.Utils.PointFloat(3.764404F, 120F);
             this.xrTable12.Name = "xrTable12";
             this.xrTable12.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
             this.xrTable12.Rows.AddRange(new DevExpress.XtraReports.UI.XRTableRow[] {
@@ -8141,6 +8149,7 @@ namespace Winforms_App_Template.Forms
             this.xrTableCell335.Name = "xrTableCell335";
             this.xrTableCell335.StylePriority.UseBorders = false;
             this.xrTableCell335.Tag = "a|b|Batch_Number|d|e";
+            this.xrTableCell335.Text = "N/A";
             this.xrTableCell335.Weight = 0.81724897796872831D;
             // 
             // xrTableCell336
@@ -8151,6 +8160,7 @@ namespace Winforms_App_Template.Forms
             this.xrTableCell336.Name = "xrTableCell336";
             this.xrTableCell336.StylePriority.UseBorders = false;
             this.xrTableCell336.Tag = "a|b|NG_Qty_Total|d|e";
+            this.xrTableCell336.Text = "N/A";
             this.xrTableCell336.Weight = 1.2112417905159898D;
             // 
             // xrTableCell337
@@ -8161,6 +8171,7 @@ namespace Winforms_App_Template.Forms
             this.xrTableCell337.Name = "xrTableCell337";
             this.xrTableCell337.StylePriority.UseBorders = false;
             this.xrTableCell337.Tag = "a|b|OK_Qty_Total|d|e";
+            this.xrTableCell337.Text = "N/A";
             this.xrTableCell337.Weight = 1.5671808449689086D;
             // 
             // Gia_cong_dau_mut_v1_5
@@ -10151,6 +10162,7 @@ namespace Winforms_App_Template.Forms
             this.xrTableCell369.Name = "xrTableCell369";
             this.xrTableCell369.StylePriority.UseBorders = false;
             this.xrTableCell369.Tag = "a|b|Batch_Number|d|e";
+            this.xrTableCell369.Text = "N/A";
             this.xrTableCell369.Weight = 0.81724897796872831D;
             // 
             // xrTableCell370
@@ -10161,6 +10173,7 @@ namespace Winforms_App_Template.Forms
             this.xrTableCell370.Name = "xrTableCell370";
             this.xrTableCell370.StylePriority.UseBorders = false;
             this.xrTableCell370.Tag = "a|b|NG_Qty_Total|d|e";
+            this.xrTableCell370.Text = "N/A";
             this.xrTableCell370.Weight = 1.2112417905159898D;
             // 
             // xrTableCell371
@@ -10171,6 +10184,7 @@ namespace Winforms_App_Template.Forms
             this.xrTableCell371.Name = "xrTableCell371";
             this.xrTableCell371.StylePriority.UseBorders = false;
             this.xrTableCell371.Tag = "a|b|OK_Qty_Total|d|e";
+            this.xrTableCell371.Text = "N/A";
             this.xrTableCell371.Weight = 1.5671808449689086D;
             // 
             // xrLabel9
@@ -13599,6 +13613,7 @@ namespace Winforms_App_Template.Forms
             this.xrTableCell438.Name = "xrTableCell438";
             this.xrTableCell438.StylePriority.UseBorders = false;
             this.xrTableCell438.Tag = "a|b|Batch_Number|d|e";
+            this.xrTableCell438.Text = "N/A";
             this.xrTableCell438.Weight = 0.81724897796872831D;
             // 
             // xrTableCell439
@@ -13609,6 +13624,7 @@ namespace Winforms_App_Template.Forms
             this.xrTableCell439.Name = "xrTableCell439";
             this.xrTableCell439.StylePriority.UseBorders = false;
             this.xrTableCell439.Tag = "a|b|NG_Qty_Total|d|e";
+            this.xrTableCell439.Text = "N/A";
             this.xrTableCell439.Weight = 1.2112417905159898D;
             // 
             // xrTableCell440
@@ -13619,6 +13635,7 @@ namespace Winforms_App_Template.Forms
             this.xrTableCell440.Name = "xrTableCell440";
             this.xrTableCell440.StylePriority.UseBorders = false;
             this.xrTableCell440.Tag = "a|b|OK_Qty_Total|d|e";
+            this.xrTableCell440.Text = "N/A";
             this.xrTableCell440.Weight = 1.5671808449689086D;
             // 
             // Rua_dau_mut_que_nong
@@ -14303,6 +14320,7 @@ namespace Winforms_App_Template.Forms
             this.xrTableCell381.Name = "xrTableCell381";
             this.xrTableCell381.StylePriority.UseBorders = false;
             this.xrTableCell381.Tag = "a|b|Batch_Number|d|e";
+            this.xrTableCell381.Text = "N/A";
             this.xrTableCell381.Weight = 0.81724897796872831D;
             // 
             // xrTableCell382
@@ -14313,6 +14331,7 @@ namespace Winforms_App_Template.Forms
             this.xrTableCell382.Name = "xrTableCell382";
             this.xrTableCell382.StylePriority.UseBorders = false;
             this.xrTableCell382.Tag = "a|b|NG_Qty_Total|d|e";
+            this.xrTableCell382.Text = "N/A";
             this.xrTableCell382.Weight = 1.2112417905159898D;
             // 
             // xrTableCell383
@@ -14323,6 +14342,7 @@ namespace Winforms_App_Template.Forms
             this.xrTableCell383.Name = "xrTableCell383";
             this.xrTableCell383.StylePriority.UseBorders = false;
             this.xrTableCell383.Tag = "a|b|OK_Qty_Total|d|e";
+            this.xrTableCell383.Text = "N/A";
             this.xrTableCell383.Weight = 1.5671808449689086D;
             // 
             // xrLabel12
@@ -15721,6 +15741,7 @@ namespace Winforms_App_Template.Forms
             this.xrTableCell394.Name = "xrTableCell394";
             this.xrTableCell394.StylePriority.UseBorders = false;
             this.xrTableCell394.Tag = "a|b|Batch_Number|d|e";
+            this.xrTableCell394.Text = "N/A";
             this.xrTableCell394.Weight = 0.81724897796872831D;
             // 
             // xrTableCell395
@@ -15731,6 +15752,7 @@ namespace Winforms_App_Template.Forms
             this.xrTableCell395.Name = "xrTableCell395";
             this.xrTableCell395.StylePriority.UseBorders = false;
             this.xrTableCell395.Tag = "a|b|NG_Qty_Total|d|e";
+            this.xrTableCell395.Text = "N/A";
             this.xrTableCell395.Weight = 1.2112417905159898D;
             // 
             // xrTableCell396
@@ -15741,6 +15763,7 @@ namespace Winforms_App_Template.Forms
             this.xrTableCell396.Name = "xrTableCell396";
             this.xrTableCell396.StylePriority.UseBorders = false;
             this.xrTableCell396.Tag = "a|b|OK_Qty_Total|d|e";
+            this.xrTableCell396.Text = "N/A";
             this.xrTableCell396.Weight = 1.5671808449689086D;
             // 
             // Xu_ly_silicon
@@ -16284,6 +16307,7 @@ namespace Winforms_App_Template.Forms
             this.xrTableCell411.Name = "xrTableCell411";
             this.xrTableCell411.StylePriority.UseBorders = false;
             this.xrTableCell411.Tag = "a|b|Batch_Number|d|e";
+            this.xrTableCell411.Text = "N/A";
             this.xrTableCell411.Weight = 0.81724897796872831D;
             // 
             // xrTableCell412
@@ -16294,6 +16318,7 @@ namespace Winforms_App_Template.Forms
             this.xrTableCell412.Name = "xrTableCell412";
             this.xrTableCell412.StylePriority.UseBorders = false;
             this.xrTableCell412.Tag = "a|b|NG_Qty_Total|d|e";
+            this.xrTableCell412.Text = "N/A";
             this.xrTableCell412.Weight = 1.2112417905159898D;
             // 
             // xrTableCell413
@@ -16304,6 +16329,7 @@ namespace Winforms_App_Template.Forms
             this.xrTableCell413.Name = "xrTableCell413";
             this.xrTableCell413.StylePriority.UseBorders = false;
             this.xrTableCell413.Tag = "a|b|OK_Qty_Total|d|e";
+            this.xrTableCell413.Text = "N/A";
             this.xrTableCell413.Weight = 1.5671808449689086D;
             // 
             // Kiem_tra_lan_cuoi
@@ -17223,6 +17249,7 @@ namespace Winforms_App_Template.Forms
             this.xrTableCell423.Name = "xrTableCell423";
             this.xrTableCell423.StylePriority.UseBorders = false;
             this.xrTableCell423.Tag = "a|b|Batch_Number|d|e";
+            this.xrTableCell423.Text = "N/A";
             this.xrTableCell423.Weight = 0.81724897796872831D;
             // 
             // xrTableCell424
@@ -17233,6 +17260,7 @@ namespace Winforms_App_Template.Forms
             this.xrTableCell424.Name = "xrTableCell424";
             this.xrTableCell424.StylePriority.UseBorders = false;
             this.xrTableCell424.Tag = "a|b|NG_Qty_Total|d|e";
+            this.xrTableCell424.Text = "N/A";
             this.xrTableCell424.Weight = 1.2112417905159898D;
             // 
             // xrTableCell425
@@ -17243,6 +17271,7 @@ namespace Winforms_App_Template.Forms
             this.xrTableCell425.Name = "xrTableCell425";
             this.xrTableCell425.StylePriority.UseBorders = false;
             this.xrTableCell425.Tag = "a|b|OK_Qty_Total|d|e";
+            this.xrTableCell425.Text = "N/A";
             this.xrTableCell425.Weight = 1.5671808449689086D;
             // 
             // Tong_ket

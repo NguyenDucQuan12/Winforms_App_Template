@@ -466,8 +466,13 @@ namespace Winforms_App_Template.Report
             await Task.WhenAll(headerTask, rowsTask).ConfigureAwait(false);
 
             // Lấy kết quả từng phần
-            var header = headerTask.Result;                               // Header có thể null (nếu không có dữ liệu)
+            var header = headerTask.Result ?? new Report_Header_Model();                               // Header có thể null (nếu không có dữ liệu)
             var rows = rowsTask.Result ?? new List<New_Input_Row>();      // Detail rows (nếu null → coi rỗng)
+
+            if (header != null)
+            {
+                NormalizeTrueFalseStringValues(header, false);
+            }
 
             // Không có Header → xem như "không tìm thấy dữ liệu" cho step.Id (throw để UI xử lý)
             //if (header is null)
@@ -507,7 +512,7 @@ namespace Winforms_App_Template.Report
             //   - "false" → "NG"
             //   - null/rỗng → "N/A"
             // ------------------------------------------------------
-            NormalizeTrueFalseStringValues(dieuKienMayDetails, false);
+            NormalizeTrueFalseStringValues(dieuKienMayDetails, false, "Ly_do_kiem_tra");
             NormalizeTrueFalseStringValues(standards, false);
 
             // Tổng số lỗi cho công đoạn này (tính theo Qty)
@@ -528,6 +533,7 @@ namespace Winforms_App_Template.Report
                 {
                     idInput = m.idInput,
                     MaKT = m.MaKT,
+                    Ly_do_kiem_tra = m.Ly_do_kiem_tra,
                     TenMay_Ban = m.TenMay_Ban,
                     SLSudung = m.SLSudung,
                     StartTime = m.StartTime,
@@ -569,6 +575,17 @@ namespace Winforms_App_Template.Report
                     val30 = m.val30,
                     val31 = m.val31,
                     val32 = m.val32,
+                    val33 = m.val33,
+                    val34 = m.val34,
+                    val35 = m.val35,
+                    val36 = m.val36,
+                    val37 = m.val37,
+                    val38 = m.val38,
+                    val39 = m.val39,
+                    val40 = m.val40,
+                    val41 = m.val41,
+                    val42 = m.val42,
+                    val43 = m.val43,
 
                     Remark = m.Remark
                 };
@@ -582,7 +599,7 @@ namespace Winforms_App_Template.Report
                 //   - "false" → "NG"
                 //   - null/rỗng → "N/A"
                 // ------------------------------------------------------
-                NormalizeTrueFalseStringValues(r, false);
+                NormalizeTrueFalseStringValues(r, false, "Ly_do_kiem_tra");
 
                 // Đưa vào list kết quả
                 resultRows.Add(r);

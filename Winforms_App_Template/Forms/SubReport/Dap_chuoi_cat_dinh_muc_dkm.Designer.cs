@@ -57,8 +57,6 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell344 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell345 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell346 = new DevExpress.XtraReports.UI.XRTableCell();
-            this.xrRichText3 = new DevExpress.XtraReports.UI.XRRichText();
-            this.xrLabel7 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrTableRow1 = new DevExpress.XtraReports.UI.XRTableRow();
             this.xrTableCell1 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell2 = new DevExpress.XtraReports.UI.XRTableCell();
@@ -67,6 +65,8 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell5 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell6 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell7 = new DevExpress.XtraReports.UI.XRTableCell();
+            this.xrRichText3 = new DevExpress.XtraReports.UI.XRRichText();
+            this.xrLabel7 = new DevExpress.XtraReports.UI.XRLabel();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable10)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrRichText3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
@@ -165,7 +165,7 @@ namespace Winforms_App_Template.Forms.SubReport
             // 
             this.xrTableCell331.Multiline = true;
             this.xrTableCell331.Name = "xrTableCell331";
-            this.xrTableCell331.Text = "2度打ち込み防止\r\nXác nhận cơ cấu phòng";
+            this.xrTableCell331.Text = "2度打ち込み防止\r\nXác nhận cơ cấu phòng tránh dập chuôi 2 lần";
             this.xrTableCell331.Weight = 1.1455947875976562D;
             // 
             // xrTableCell332
@@ -217,6 +217,7 @@ namespace Winforms_App_Template.Forms.SubReport
             // 
             this.xrTableCell336.Multiline = true;
             this.xrTableCell336.Name = "xrTableCell336";
+            this.xrTableCell336.Text = "N/A";
             this.xrTableCell336.Weight = 0.62727905273437479D;
             // 
             // xrTableCell337
@@ -306,35 +307,6 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell346.Text = "xrTableCell14";
             this.xrTableCell346.Weight = 1.5594137573242188D;
             // 
-            // xrRichText3
-            // 
-            this.xrRichText3.Borders = ((DevExpress.XtraPrinting.BorderSide)((((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Top) 
-            | DevExpress.XtraPrinting.BorderSide.Right) 
-            | DevExpress.XtraPrinting.BorderSide.Bottom)));
-            this.xrRichText3.BorderWidth = 0.5F;
-            this.xrRichText3.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
-            this.xrRichText3.LocationFloat = new DevExpress.Utils.PointFloat(815.8953F, 12.98395F);
-            this.xrRichText3.Name = "xrRichText3";
-            this.xrRichText3.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
-            this.xrRichText3.SerializableRtfString = resources.GetString("xrRichText3.SerializableRtfString");
-            this.xrRichText3.SizeF = new System.Drawing.SizeF(298.4118F, 23.08389F);
-            this.xrRichText3.StylePriority.UseBorders = false;
-            this.xrRichText3.StylePriority.UseBorderWidth = false;
-            this.xrRichText3.StylePriority.UseFont = false;
-            // 
-            // xrLabel7
-            // 
-            this.xrLabel7.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
-            this.xrLabel7.LocationFloat = new DevExpress.Utils.PointFloat(815.8953F, 0F);
-            this.xrLabel7.Multiline = true;
-            this.xrLabel7.Name = "xrLabel7";
-            this.xrLabel7.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
-            this.xrLabel7.SizeF = new System.Drawing.SizeF(42.90704F, 12.98397F);
-            this.xrLabel7.StylePriority.UseFont = false;
-            this.xrLabel7.StylePriority.UseTextAlignment = false;
-            this.xrLabel7.Text = "備考Ghi chú:";
-            this.xrLabel7.TextAlignment = DevExpress.XtraPrinting.TextAlignment.BottomLeft;
-            // 
             // xrTableRow1
             // 
             this.xrTableRow1.Cells.AddRange(new DevExpress.XtraReports.UI.XRTableCell[] {
@@ -398,6 +370,35 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell7.Name = "xrTableCell7";
             this.xrTableCell7.Text = "xrTableCell7";
             this.xrTableCell7.Weight = 1.5594137573242188D;
+            // 
+            // xrRichText3
+            // 
+            this.xrRichText3.Borders = ((DevExpress.XtraPrinting.BorderSide)((((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Top) 
+            | DevExpress.XtraPrinting.BorderSide.Right) 
+            | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.xrRichText3.BorderWidth = 0.5F;
+            this.xrRichText3.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
+            this.xrRichText3.LocationFloat = new DevExpress.Utils.PointFloat(815.8953F, 12.98395F);
+            this.xrRichText3.Name = "xrRichText3";
+            this.xrRichText3.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
+            this.xrRichText3.SerializableRtfString = resources.GetString("xrRichText3.SerializableRtfString");
+            this.xrRichText3.SizeF = new System.Drawing.SizeF(298.4118F, 23.08389F);
+            this.xrRichText3.StylePriority.UseBorders = false;
+            this.xrRichText3.StylePriority.UseBorderWidth = false;
+            this.xrRichText3.StylePriority.UseFont = false;
+            // 
+            // xrLabel7
+            // 
+            this.xrLabel7.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
+            this.xrLabel7.LocationFloat = new DevExpress.Utils.PointFloat(815.8953F, 0F);
+            this.xrLabel7.Multiline = true;
+            this.xrLabel7.Name = "xrLabel7";
+            this.xrLabel7.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
+            this.xrLabel7.SizeF = new System.Drawing.SizeF(42.90704F, 12.98397F);
+            this.xrLabel7.StylePriority.UseFont = false;
+            this.xrLabel7.StylePriority.UseTextAlignment = false;
+            this.xrLabel7.Text = "備考Ghi chú:";
+            this.xrLabel7.TextAlignment = DevExpress.XtraPrinting.TextAlignment.BottomLeft;
             // 
             // Dap_chuoi_cat_dinh_muc_dkm
             // 

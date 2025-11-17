@@ -74,7 +74,7 @@ namespace Winforms_App_Template.Forms.SubReport
             | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.xrTable18.BorderWidth = 0.5F;
             this.xrTable18.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
-            this.xrTable18.LocationFloat = new DevExpress.Utils.PointFloat(1.504366F, 0F);
+            this.xrTable18.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
             this.xrTable18.Name = "xrTable18";
             this.xrTable18.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
             this.xrTable18.Rows.AddRange(new DevExpress.XtraReports.UI.XRTableRow[] {
@@ -143,7 +143,7 @@ namespace Winforms_App_Template.Forms.SubReport
             | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.xrTable2.BorderWidth = 0.5F;
             this.xrTable2.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
-            this.xrTable2.LocationFloat = new DevExpress.Utils.PointFloat(1.504366F, 0F);
+            this.xrTable2.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
             this.xrTable2.Name = "xrTable2";
             this.xrTable2.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
             this.xrTable2.Rows.AddRange(new DevExpress.XtraReports.UI.XRTableRow[] {

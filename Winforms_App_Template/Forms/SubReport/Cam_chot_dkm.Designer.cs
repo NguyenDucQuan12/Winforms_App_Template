@@ -148,7 +148,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrRichText4.Name = "xrRichText4";
             this.xrRichText4.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
             this.xrRichText4.SerializableRtfString = resources.GetString("xrRichText4.SerializableRtfString");
-            this.xrRichText4.SizeF = new System.Drawing.SizeF(187.505F, 31.01604F);
+            this.xrRichText4.SizeF = new System.Drawing.SizeF(187.505F, 17.01604F);
             this.xrRichText4.StylePriority.UseBorderDashStyle = false;
             this.xrRichText4.StylePriority.UseBorders = false;
             this.xrRichText4.StylePriority.UseBorderWidth = false;
@@ -363,6 +363,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell243.StylePriority.UseBorders = false;
             this.xrTableCell243.StylePriority.UseTextAlignment = false;
             this.xrTableCell243.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
+            this.xrTableCell243.TextFormatString = "PR-IK-{0}";
             this.xrTableCell243.Weight = 0.36288785867650497D;
             // 
             // xrTableCell209

@@ -145,7 +145,8 @@ namespace Winforms_App_Template.Report
     {
         // WHITELIST cho report chính (Catthoong_ReportRow)
         public static readonly FieldWhitelist Catthoong = new FieldWhitelist()
-            .Add("MaKT", typeof(string), "Lý do kiểm tra")
+            .Add("MaKT", typeof(string), "Mã kiểm tra")
+            .Add("Ly_do_kiem_tra", typeof(string), "Lý do kiểm tra")
             .Add("StartTime", typeof(DateTime), "Thời gian bắt đầu")
             .Add("NguoiTT", typeof(string), "Người thao tác")
             .Add("TenNguoiThaoTac", typeof(string), "Tên người thao tác")
@@ -236,7 +237,8 @@ namespace Winforms_App_Template.Report
             .Add("TCMax", typeof(string), "TC Max");
 
         public static readonly FieldWhitelist Camchot = new FieldWhitelist()
-            .Add("MaKT", typeof(string), "Lý do kiểm tra")
+            .Add("MaKT", typeof(string), "Mã kiểm tra")
+            .Add("Ly_do_kiem_tra", typeof(string), "Lý do kiểm tra")
             .Add("StartTime", typeof(DateTime), "Thời gian bắt đầu")
             .Add("NguoiTT", typeof(string), "Người thao tác")
             .Add("TenNguoiThaoTac", typeof(string), "Tên người thao tác")
@@ -295,7 +297,8 @@ namespace Winforms_App_Template.Report
             .Add("TCMax", typeof(string), "TC Max");
 
         public static readonly FieldWhitelist Dap_chuoi_cat_dinh_muc = new FieldWhitelist()
-            .Add("MaKT", typeof(string), "Lý do kiểm tra")
+            .Add("MaKT", typeof(string), "Mã kiểm tra")
+            .Add("Ly_do_kiem_tra", typeof(string), "Lý do kiểm tra")
             .Add("StartTime", typeof(DateTime), "Thời gian bắt đầu")
             .Add("NguoiTT", typeof(string), "Người thao tác")
             .Add("TenNguoiThaoTac", typeof(string), "Tên người thao tác")
@@ -345,7 +348,8 @@ namespace Winforms_App_Template.Report
             .Add("TCMax", typeof(string), "TC Max");
 
         public static readonly FieldWhitelist Tu_dong_lap_rap_que_nong = new FieldWhitelist()
-            .Add("MaKT", typeof(string), "Lý do kiểm tra")
+            .Add("MaKT", typeof(string), "Mã kiểm tra")
+            .Add("Ly_do_kiem_tra", typeof(string), "Lý do kiểm tra")
             .Add("StartTime", typeof(DateTime), "Thời gian thao tác")
             .Add("NguoiTT", typeof(string), "Người thao tác")
             .Add("TenNguoiThaoTac", typeof(string), "Tên người thao tác")
@@ -417,7 +421,8 @@ namespace Winforms_App_Template.Report
             .Add("TCMax", typeof(string), "TC Max");
 
         public static readonly FieldWhitelist Gia_cong_dau_mut_v1_5 = new FieldWhitelist()
-            .Add("MaKT", typeof(string), "Lý do kiểm tra")
+            .Add("MaKT", typeof(string), "Mã kiểm tra")
+            .Add("Ly_do_kiem_tra", typeof(string), "Lý do kiểm tra")
             .Add("StartTime", typeof(DateTime), "Thời gian thao tác")
             .Add("NguoiTT", typeof(string), "Người thao tác")
             .Add("TenNguoiThaoTac", typeof(string), "Tên người thao tác")
@@ -574,13 +579,14 @@ namespace Winforms_App_Template.Report
         public static readonly FieldWhitelist Gia_cong_dau_mut_v1_5_Standard = new FieldWhitelist()
             .Add("TenTieuChuan", typeof(string), "Hạng mục kiểm tra")
             .Add("MaTieuChuan", typeof(string), "Mã tiêu chuẩn")
+            .Add("Loai_size", typeof(string), "Kích cỡ Fr")
+            .Add("Loai_chieudai", typeof(string), "Chủng loại")
             .Add("Pingauge_xuyen", typeof(string), "Pingauge xuyên")
-            .Add("Pingauge_khong_xuyen", typeof(string), "Pingauge không xuyên")
-            .Add("TCMin", typeof(string), "TC Min")
-            .Add("TCMax", typeof(string), "TC Max");
+            .Add("Pingauge_khong_xuyen", typeof(string), "Pingauge không xuyên");
 
         public static readonly FieldWhitelist Rua_dau_mut_que_nong = new FieldWhitelist()
-            .Add("MaKT", typeof(string), "Lý do kiểm tra")
+            .Add("MaKT", typeof(string), "Mã kiểm tra")
+            .Add("Ly_do_kiem_tra", typeof(string), "Lý do kiểm tra")
             .Add("StartTime", typeof(DateTime), "Thời gian bắt đầu")
             .Add("NguoiTT", typeof(string), "Người thao tác")
             .Add("TenNguoiThaoTac", typeof(string), "Tên người thao tác")
@@ -649,7 +655,8 @@ namespace Winforms_App_Template.Report
             .Add("TCMax", typeof(string), "TC Max");
 
         public static readonly FieldWhitelist Xu_ly_silicon = new FieldWhitelist()
-           .Add("MaKT", typeof(string), "Lý do kiểm tra")
+           .Add("MaKT", typeof(string), "Mã kiểm tra")
+           .Add("Ly_do_kiem_tra", typeof(string), "Lý do kiểm tra")
            .Add("StartTime", typeof(DateTime), "Thời gian bắt đầu")
            .Add("NguoiTT", typeof(string), "Người thao tác")
            .Add("TenNguoiThaoTac", typeof(string), "Tên người thao tác")

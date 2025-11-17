@@ -61,6 +61,7 @@ namespace Winforms_App_Template.Database.Table
                 SELECT 
                         ni.idInput,             -- ID Form nhập dữ liệu
                         ld.MaKT,                -- Mã kiểm tra
+                        ni.val200 as Ly_do_kiem_tra,  -- Lý do kiểm tra nếu mã kiểm tra là V: khác
                         mb.TenMay_Ban,          -- Tên máy bàn
                         ni.SLSudung,            -- Số lượng sử dụng
                         ni.StartTime,           -- Thời gian bắt đầu
@@ -100,7 +101,18 @@ namespace Winforms_App_Template.Database.Table
                         ni.val29,               -- Để cho các mục đích trong tương lai
                         ni.val30,               -- Để cho các mục đích trong tương lai
                         ni.val31,               -- Để cho các mục đích trong tương lai
-                        ni.val32                -- Để cho các mục đích trong tương lai
+                        ni.val32,               -- Để cho các mục đích trong tương lai
+                        ni.val33,               -- Để cho các mục đích trong tương lai
+                        ni.val34,               -- Để cho các mục đích trong tương lai
+                        ni.val35,               -- Để cho các mục đích trong tương lai
+                        ni.val36,               -- Để cho các mục đích trong tương lai
+                        ni.val37,               -- Để cho các mục đích trong tương lai
+                        ni.val38,               -- Để cho các mục đích trong tương lai
+                        ni.val39,               -- Để cho các mục đích trong tương lai
+                        ni.val40,               -- Để cho các mục đích trong tương lai
+                        ni.val41,               -- Để cho các mục đích trong tương lai
+                        ni.val42,               -- Để cho các mục đích trong tương lai
+                        ni.val43                -- Để cho các mục đích trong tương lai
 
                 FROM
                         tblNewInput AS ni
