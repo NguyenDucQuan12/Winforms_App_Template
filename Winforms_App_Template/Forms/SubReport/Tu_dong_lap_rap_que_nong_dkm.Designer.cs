@@ -423,7 +423,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell407.Multiline = true;
             this.xrTableCell407.Name = "xrTableCell407";
             this.xrTableCell407.RowSpan = 2;
-            this.xrTableCell407.Text = "打ち込み量測定設備の精度確認\r\nĐộ chính xác của thiết";
+            this.xrTableCell407.Text = "打ち込み量測定設備の精度確認\r\nĐộ chính xác của thiết bị đo độ dập sâu";
             this.xrTableCell407.Weight = 0.8733628642394391D;
             // 
             // xrTableRow39

@@ -279,8 +279,23 @@ namespace Winforms_App_Template.Forms
                             bandName,                                             // tên cấu hình trong Step_Definition
                             StringComparison.Ordinal));                           // so sánh  phân biệt hoa thường
 
+            // Nếu không tìm thấy band -> báo lỗi
             if (band == null)
                 throw new InvalidOperationException($"Không thấy band '{bandName}' trong layout.");
+
+            // Nếu dữ liệu chi tiết của công đoạn này không có hoặc rỗng
+            if (block.Rows == null || block.Rows.Count == 0)
+            {
+                // ẨN toàn bộ band này (không in gì hết)
+                band.Visible = false;
+
+                // Không cần bind gì thêm, return luôn
+                return;
+            }
+
+            // Nếu có dữ liệu:
+            // Đảm bảo band được hiển thị
+            band.Visible = true;
 
             // Bind dữ liệu cho band gốc
             band.DataSource = block.Rows;
@@ -303,6 +318,9 @@ namespace Winforms_App_Template.Forms
                     childReport.DataSource = Array.Empty<Standard_Model>();
                     childReport.DataMember = null;
 
+                    // Mặc định: ẩn subreport, chỉ bật lên nếu có data
+                    //sub.Visible = false;
+
                     // Đăng ký BeforePrint riêng cho sub này
                     sub.BeforePrint += (_, __) =>
                     {
@@ -314,14 +332,11 @@ namespace Winforms_App_Template.Forms
                             block.StandardsByInput.TryGetValue(current.idInput, out var list) &&
                             list != null)
                         {
+                            // Hiện subreport
+                            //sub.Visible = true;
+
                             // Nếu tìm được tiêu chuẩn theo idInput -> gán list đó cho report con
                             childReport.DataSource = list;
-                            childReport.DataMember = null;
-                        }
-                        else
-                        {
-                            // Nếu không có dữ liệu -> để mảng rỗng để subreport in trống, tránh null
-                            childReport.DataSource = Array.Empty<Standard_Model>();
                             childReport.DataMember = null;
                         }
                     };
@@ -336,6 +351,8 @@ namespace Winforms_App_Template.Forms
                     // Khởi tạo datasource rỗng mặc định cho report con điều kiện máy
                     childReport.DataSource = Array.Empty<Dieu_kien_may_Model>();
                     childReport.DataMember = null;
+                    // Mặc định: ẩn subreport
+                    //sub.Visible = false;
 
                     sub.BeforePrint += (_, __) =>
                     {
@@ -347,14 +364,10 @@ namespace Winforms_App_Template.Forms
                             list != null
                         )
                         {
+                            // Có data điều kiện máy cho dòng này -> hiện subreport
+                            //sub.Visible = true;
                             // Gán danh sách điều kiện máy tương ứng idInput
                             childReport.DataSource = list;
-                            childReport.DataMember = null;
-                        }
-                        else
-                        {
-                            // Không có dữ liệu -> cho list rỗng
-                            childReport.DataSource = Array.Empty<Dieu_kien_may_Model>();
                             childReport.DataMember = null;
                         }
                     };

@@ -1,10 +1,7 @@
-using Winforms_App_Template.Utils;
-using Winforms_App_Template.Forms;
-using System;
-using System.Windows.Forms;
 using DevExpress.Utils;                           // DeserializationSettings
-using DevExpress.XtraReports.Configuration;      // Settings.Default.UserDesignerOptions
-using Winforms_App_Template.Database.Model;      // Catthoong_ReportRow, Standard_Model
+using Winforms_App_Template.Forms;
+using DevExpress.XtraRichEdit;
+using Winforms_App_Template.Utils;
 
 namespace Winforms_App_Template
 {
@@ -41,6 +38,10 @@ namespace Winforms_App_Template
             {
                 LogEx.Error(e.ExceptionObject as Exception, "Unhandled non-UI exception");
             };
+
+            RichEditControlCompatibility.DefaultFontSize = 4f;               // hoặc 4.5f
+            RichEditControlCompatibility.DefaultFontName = "Times New Roman";
+
 
             // Log.Information("Ứng dụng khởi động. LogDir={LogDir}", Logging.TodayLogDirectory);
             LogEx.Info("User bấm nút Xin chào.");

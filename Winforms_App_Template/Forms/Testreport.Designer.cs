@@ -33,7 +33,6 @@ namespace Winforms_App_Template.Forms
             this.BottomMargin = new DevExpress.XtraReports.UI.BottomMarginBand();
             this.xrLabel30 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrRichText15 = new DevExpress.XtraReports.UI.XRRichText();
-            this.Note_Richtext = new DevExpress.XtraReports.UI.XRRichText();
             this.ReportHeader = new DevExpress.XtraReports.UI.ReportHeaderBand();
             this.xrTable4 = new DevExpress.XtraReports.UI.XRTable();
             this.xrTableRow9 = new DevExpress.XtraReports.UI.XRTableRow();
@@ -59,6 +58,7 @@ namespace Winforms_App_Template.Forms
             this.xrLabel1 = new DevExpress.XtraReports.UI.XRLabel();
             this.Catongtho_Report = new DevExpress.XtraReports.UI.DetailReportBand();
             this.Catongtho_Data = new DevExpress.XtraReports.UI.DetailBand();
+            this.xrLabel13 = new DevExpress.XtraReports.UI.XRLabel();
             this.Catthoong_Table = new DevExpress.XtraReports.UI.XRTable();
             this.xrTableRow2 = new DevExpress.XtraReports.UI.XRTableRow();
             this.xrTableCell4 = new DevExpress.XtraReports.UI.XRTableCell();
@@ -684,11 +684,12 @@ namespace Winforms_App_Template.Forms
             this.xrTableCell337 = new DevExpress.XtraReports.UI.XRTableCell();
             this.Gia_cong_dau_mut_v1_5 = new DevExpress.XtraReports.UI.DetailReportBand();
             this.Gia_cong_dau_mut_v1_5_data = new DevExpress.XtraReports.UI.DetailBand();
+            this.xrPanel1 = new DevExpress.XtraReports.UI.XRPanel();
+            this.xrLabel15 = new DevExpress.XtraReports.UI.XRLabel();
+            this.xrLabel16 = new DevExpress.XtraReports.UI.XRLabel();
             this.Gia_cong_dau_mut_v1_5_standard = new DevExpress.XtraReports.UI.XRSubreport();
             this.Gia_cong_dau_mut_v1_5_tieu_chuan_dieu_kien_may = new DevExpress.XtraReports.UI.XRSubreport();
             this.Gia_cong_dau_mut_v1_5_dkm = new DevExpress.XtraReports.UI.XRSubreport();
-            this.xrRichText7 = new DevExpress.XtraReports.UI.XRRichText();
-            this.xrLabel16 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel14 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrTable16 = new DevExpress.XtraReports.UI.XRTable();
             this.xrTableRow66 = new DevExpress.XtraReports.UI.XRTableRow();
@@ -1736,7 +1737,6 @@ namespace Winforms_App_Template.Forms
             this.xrTableCell551 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell552 = new DevExpress.XtraReports.UI.XRTableCell();
             ((System.ComponentModel.ISupportInitialize)(this.xrRichText15)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Note_Richtext)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Catthoong_Table)).BeginInit();
@@ -1753,7 +1753,6 @@ namespace Winforms_App_Template.Forms
             ((System.ComponentModel.ISupportInitialize)(this.xrRichText4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable12)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable10)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.xrRichText7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable16)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable15)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable11)).BeginInit();
@@ -1815,21 +1814,6 @@ namespace Winforms_App_Template.Forms
             this.xrRichText15.SerializableRtfString = resources.GetString("xrRichText15.SerializableRtfString");
             this.xrRichText15.SizeF = new System.Drawing.SizeF(99.99999F, 13.00002F);
             this.xrRichText15.StylePriority.UseFont = false;
-            // 
-            // Note_Richtext
-            // 
-            this.Note_Richtext.Borders = ((DevExpress.XtraPrinting.BorderSide)((((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Top) 
-            | DevExpress.XtraPrinting.BorderSide.Right) 
-            | DevExpress.XtraPrinting.BorderSide.Bottom)));
-            this.Note_Richtext.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
-            this.Note_Richtext.KeepTogether = true;
-            this.Note_Richtext.LocationFloat = new DevExpress.Utils.PointFloat(665.9887F, 115.9462F);
-            this.Note_Richtext.Name = "Note_Richtext";
-            this.Note_Richtext.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
-            this.Note_Richtext.SerializableRtfString = resources.GetString("Note_Richtext.SerializableRtfString");
-            this.Note_Richtext.SizeF = new System.Drawing.SizeF(347.898F, 23.53719F);
-            this.Note_Richtext.StylePriority.UseBorders = false;
-            this.Note_Richtext.StylePriority.UseFont = false;
             // 
             // ReportHeader
             // 
@@ -2082,14 +2066,26 @@ namespace Winforms_App_Template.Forms
             // Catongtho_Data
             // 
             this.Catongtho_Data.BorderColor = System.Drawing.Color.DimGray;
+            this.Catongtho_Data.Borders = ((DevExpress.XtraPrinting.BorderSide)((((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Top) 
+            | DevExpress.XtraPrinting.BorderSide.Right) 
+            | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.Catongtho_Data.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+            this.xrLabel13,
             this.Catthoong_Table,
             this.xrLabel3,
-            this.Note_Richtext,
             this.Cat_tho_ong_standard});
             this.Catongtho_Data.HeightF = 141F;
             this.Catongtho_Data.Name = "Catongtho_Data";
             this.Catongtho_Data.StylePriority.UseBorderColor = false;
+            this.Catongtho_Data.StylePriority.UseBorders = false;
+            // 
+            // xrLabel13
+            // 
+            this.xrLabel13.LocationFloat = new DevExpress.Utils.PointFloat(665.9887F, 115.9462F);
+            this.xrLabel13.Multiline = true;
+            this.xrLabel13.Name = "xrLabel13";
+            this.xrLabel13.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
+            this.xrLabel13.SizeF = new System.Drawing.SizeF(322.3416F, 23F);
             // 
             // Catthoong_Table
             // 
@@ -2908,12 +2904,14 @@ namespace Winforms_App_Template.Forms
             // 
             // xrLabel3
             // 
+            this.xrLabel3.Borders = DevExpress.XtraPrinting.BorderSide.None;
             this.xrLabel3.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
             this.xrLabel3.LocationFloat = new DevExpress.Utils.PointFloat(665.9887F, 102.9622F);
             this.xrLabel3.Multiline = true;
             this.xrLabel3.Name = "xrLabel3";
             this.xrLabel3.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
             this.xrLabel3.SizeF = new System.Drawing.SizeF(47.99738F, 12.98398F);
+            this.xrLabel3.StylePriority.UseBorders = false;
             this.xrLabel3.StylePriority.UseFont = false;
             this.xrLabel3.StylePriority.UseTextAlignment = false;
             this.xrLabel3.Text = "備考Ghi chú:";
@@ -6826,6 +6824,7 @@ namespace Winforms_App_Template.Forms
             this.xrRichText4,
             this.xrTable12});
             this.Tu_dong_lap_rap_que_nong_data.HeightF = 212F;
+            this.Tu_dong_lap_rap_que_nong_data.KeepTogether = true;
             this.Tu_dong_lap_rap_que_nong_data.Name = "Tu_dong_lap_rap_que_nong_data";
             // 
             // Tu_dong_lap_rap_que_nong_dkm
@@ -8082,16 +8081,52 @@ namespace Winforms_App_Template.Forms
             // Gia_cong_dau_mut_v1_5_data
             // 
             this.Gia_cong_dau_mut_v1_5_data.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+            this.xrPanel1,
             this.Gia_cong_dau_mut_v1_5_standard,
             this.Gia_cong_dau_mut_v1_5_tieu_chuan_dieu_kien_may,
             this.Gia_cong_dau_mut_v1_5_dkm,
-            this.xrRichText7,
-            this.xrLabel16,
             this.xrLabel14,
             this.xrTable16,
             this.xrTable15});
-            this.Gia_cong_dau_mut_v1_5_data.HeightF = 456F;
+            this.Gia_cong_dau_mut_v1_5_data.HeightF = 460.9444F;
             this.Gia_cong_dau_mut_v1_5_data.Name = "Gia_cong_dau_mut_v1_5_data";
+            // 
+            // xrPanel1
+            // 
+            this.xrPanel1.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+            this.xrLabel15,
+            this.xrLabel16});
+            this.xrPanel1.LocationFloat = new DevExpress.Utils.PointFloat(1057.165F, 97.98386F);
+            this.xrPanel1.Name = "xrPanel1";
+            this.xrPanel1.SizeF = new System.Drawing.SizeF(88.17407F, 189.9999F);
+            // 
+            // xrLabel15
+            // 
+            this.xrLabel15.Borders = ((DevExpress.XtraPrinting.BorderSide)((((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Top) 
+            | DevExpress.XtraPrinting.BorderSide.Right) 
+            | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.xrLabel15.LocationFloat = new DevExpress.Utils.PointFloat(22.98486F, 10.00005F);
+            this.xrLabel15.Multiline = true;
+            this.xrLabel15.Name = "xrLabel15";
+            this.xrLabel15.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
+            this.xrLabel15.SizeF = new System.Drawing.SizeF(60.8147F, 159.9998F);
+            this.xrLabel15.StylePriority.UseBorders = false;
+            this.xrLabel15.StylePriority.UseTextAlignment = false;
+            this.xrLabel15.Text = "N/A";
+            this.xrLabel15.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            // 
+            // xrLabel16
+            // 
+            this.xrLabel16.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
+            this.xrLabel16.LocationFloat = new DevExpress.Utils.PointFloat(1.126587F, 9.999985F);
+            this.xrLabel16.Multiline = true;
+            this.xrLabel16.Name = "xrLabel16";
+            this.xrLabel16.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
+            this.xrLabel16.SizeF = new System.Drawing.SizeF(18.09424F, 38.99999F);
+            this.xrLabel16.StylePriority.UseFont = false;
+            this.xrLabel16.StylePriority.UseTextAlignment = false;
+            this.xrLabel16.Text = "備考Ghi chú:";
+            this.xrLabel16.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopRight;
             // 
             // Gia_cong_dau_mut_v1_5_standard
             // 
@@ -8113,36 +8148,6 @@ namespace Winforms_App_Template.Forms
             this.Gia_cong_dau_mut_v1_5_dkm.Name = "Gia_cong_dau_mut_v1_5_dkm";
             this.Gia_cong_dau_mut_v1_5_dkm.ReportSource = new Winforms_App_Template.Forms.SubReport.Gia_cong_dau_mut_dkm();
             this.Gia_cong_dau_mut_v1_5_dkm.SizeF = new System.Drawing.SizeF(1129.291F, 93F);
-            // 
-            // xrRichText7
-            // 
-            this.xrRichText7.BorderColor = System.Drawing.Color.DimGray;
-            this.xrRichText7.Borders = ((DevExpress.XtraPrinting.BorderSide)((((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Top) 
-            | DevExpress.XtraPrinting.BorderSide.Right) 
-            | DevExpress.XtraPrinting.BorderSide.Bottom)));
-            this.xrRichText7.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
-            this.xrRichText7.KeepTogether = true;
-            this.xrRichText7.LocationFloat = new DevExpress.Utils.PointFloat(1082.42F, 97.98374F);
-            this.xrRichText7.Name = "xrRichText7";
-            this.xrRichText7.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
-            this.xrRichText7.SerializableRtfString = resources.GetString("xrRichText7.SerializableRtfString");
-            this.xrRichText7.SizeF = new System.Drawing.SizeF(60.63574F, 126.0159F);
-            this.xrRichText7.StylePriority.UseBorderColor = false;
-            this.xrRichText7.StylePriority.UseBorders = false;
-            this.xrRichText7.StylePriority.UseFont = false;
-            // 
-            // xrLabel16
-            // 
-            this.xrLabel16.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
-            this.xrLabel16.LocationFloat = new DevExpress.Utils.PointFloat(1062.056F, 97.98374F);
-            this.xrLabel16.Multiline = true;
-            this.xrLabel16.Name = "xrLabel16";
-            this.xrLabel16.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
-            this.xrLabel16.SizeF = new System.Drawing.SizeF(18.09424F, 38.99999F);
-            this.xrLabel16.StylePriority.UseFont = false;
-            this.xrLabel16.StylePriority.UseTextAlignment = false;
-            this.xrLabel16.Text = "備考Ghi chú:";
-            this.xrLabel16.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopRight;
             // 
             // xrLabel14
             // 
@@ -17411,7 +17416,6 @@ namespace Winforms_App_Template.Forms
             this.PaperKind = DevExpress.Drawing.Printing.DXPaperKind.A3;
             this.Version = "25.1";
             ((System.ComponentModel.ISupportInitialize)(this.xrRichText15)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Note_Richtext)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Catthoong_Table)).EndInit();
@@ -17428,7 +17432,6 @@ namespace Winforms_App_Template.Forms
             ((System.ComponentModel.ISupportInitialize)(this.xrRichText4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable12)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable10)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.xrRichText7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable16)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable15)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable11)).EndInit();
@@ -17482,7 +17485,6 @@ namespace Winforms_App_Template.Forms
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell38;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell39;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell41;
-        private DevExpress.XtraReports.UI.XRRichText Note_Richtext;
         private DevExpress.XtraReports.UI.DetailReportBand Catongtho_Report;
         private DevExpress.XtraReports.UI.DetailBand Catongtho_Data;
         private DevExpress.XtraReports.UI.ReportHeaderBand Catongtho_Header;
@@ -17958,8 +17960,6 @@ namespace Winforms_App_Template.Forms
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell795;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell796;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell797;
-        private DevExpress.XtraReports.UI.XRRichText xrRichText7;
-        private DevExpress.XtraReports.UI.XRLabel xrLabel16;
         private DevExpress.XtraReports.UI.DetailReportBand Gia_cong_dau_mut_v6_18;
         private DevExpress.XtraReports.UI.DetailBand Gia_cong_dau_mut_v6_18_data;
         private DevExpress.XtraReports.UI.XRTable xrTable20;
@@ -19165,5 +19165,9 @@ namespace Winforms_App_Template.Forms
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell861;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell862;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell863;
+        private DevExpress.XtraReports.UI.XRPanel xrPanel1;
+        private DevExpress.XtraReports.UI.XRLabel xrLabel16;
+        private DevExpress.XtraReports.UI.XRLabel xrLabel13;
+        private DevExpress.XtraReports.UI.XRLabel xrLabel15;
     }
 }

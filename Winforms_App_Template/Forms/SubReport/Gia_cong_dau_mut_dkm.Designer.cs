@@ -72,7 +72,6 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell605 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell606 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell607 = new DevExpress.XtraReports.UI.XRTableCell();
-            this.xrTableCell634 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell608 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell609 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell610 = new DevExpress.XtraReports.UI.XRTableCell();
@@ -89,7 +88,6 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell590 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell591 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell592 = new DevExpress.XtraReports.UI.XRTableCell();
-            this.xrTableCell635 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell593 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell594 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell595 = new DevExpress.XtraReports.UI.XRTableCell();
@@ -106,7 +104,6 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell575 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell576 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell577 = new DevExpress.XtraReports.UI.XRTableCell();
-            this.xrTableCell636 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell578 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell579 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell580 = new DevExpress.XtraReports.UI.XRTableCell();
@@ -457,7 +454,6 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell605,
             this.xrTableCell606,
             this.xrTableCell607,
-            this.xrTableCell634,
             this.xrTableCell608,
             this.xrTableCell609,
             this.xrTableCell610,
@@ -507,22 +503,10 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell607.RowSpan = 3;
             this.xrTableCell607.StylePriority.UseBorders = false;
             this.xrTableCell607.StylePriority.UseTextAlignment = false;
-            this.xrTableCell607.Text = "PR-IK-";
-            this.xrTableCell607.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleRight;
-            this.xrTableCell607.Weight = 0.37965575459678969D;
-            // 
-            // xrTableCell634
-            // 
-            this.xrTableCell634.Borders = ((DevExpress.XtraPrinting.BorderSide)(((DevExpress.XtraPrinting.BorderSide.Top | DevExpress.XtraPrinting.BorderSide.Right) 
-            | DevExpress.XtraPrinting.BorderSide.Bottom)));
-            this.xrTableCell634.Multiline = true;
-            this.xrTableCell634.Name = "xrTableCell634";
-            this.xrTableCell634.RowSpan = 3;
-            this.xrTableCell634.StylePriority.UseBorders = false;
-            this.xrTableCell634.StylePriority.UseTextAlignment = false;
-            this.xrTableCell634.Text = "N/A\r";
-            this.xrTableCell634.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            this.xrTableCell634.Weight = 0.37965575459678969D;
+            this.xrTableCell607.Text = "N/A";
+            this.xrTableCell607.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            this.xrTableCell607.TextFormatString = "PR-IK-{0}";
+            this.xrTableCell607.Weight = 0.75931150919357937D;
             // 
             // xrTableCell608
             // 
@@ -611,7 +595,6 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell590,
             this.xrTableCell591,
             this.xrTableCell592,
-            this.xrTableCell635,
             this.xrTableCell593,
             this.xrTableCell594,
             this.xrTableCell595,
@@ -654,14 +637,7 @@ namespace Winforms_App_Template.Forms.SubReport
             // 
             this.xrTableCell592.Name = "xrTableCell592";
             this.xrTableCell592.Text = "xrTableCell592";
-            this.xrTableCell592.Weight = 0.37965575459678969D;
-            // 
-            // xrTableCell635
-            // 
-            this.xrTableCell635.Multiline = true;
-            this.xrTableCell635.Name = "xrTableCell635";
-            this.xrTableCell635.Text = "xrTableCell635";
-            this.xrTableCell635.Weight = 0.37965575459678969D;
+            this.xrTableCell592.Weight = 0.75931150919357937D;
             // 
             // xrTableCell593
             // 
@@ -744,7 +720,6 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell575,
             this.xrTableCell576,
             this.xrTableCell577,
-            this.xrTableCell636,
             this.xrTableCell578,
             this.xrTableCell579,
             this.xrTableCell580,
@@ -783,14 +758,7 @@ namespace Winforms_App_Template.Forms.SubReport
             // 
             this.xrTableCell577.Name = "xrTableCell577";
             this.xrTableCell577.Text = "xrTableCell577";
-            this.xrTableCell577.Weight = 0.37965575459678969D;
-            // 
-            // xrTableCell636
-            // 
-            this.xrTableCell636.Multiline = true;
-            this.xrTableCell636.Name = "xrTableCell636";
-            this.xrTableCell636.Text = "xrTableCell636";
-            this.xrTableCell636.Weight = 0.37965575459678969D;
+            this.xrTableCell577.Weight = 0.75931150919357937D;
             // 
             // xrTableCell578
             // 
@@ -927,7 +895,6 @@ namespace Winforms_App_Template.Forms.SubReport
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell605;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell606;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell607;
-        private DevExpress.XtraReports.UI.XRTableCell xrTableCell634;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell608;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell609;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell610;
@@ -944,7 +911,6 @@ namespace Winforms_App_Template.Forms.SubReport
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell590;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell591;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell592;
-        private DevExpress.XtraReports.UI.XRTableCell xrTableCell635;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell593;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell594;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell595;
@@ -961,7 +927,6 @@ namespace Winforms_App_Template.Forms.SubReport
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell575;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell576;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell577;
-        private DevExpress.XtraReports.UI.XRTableCell xrTableCell636;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell578;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell579;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell580;
