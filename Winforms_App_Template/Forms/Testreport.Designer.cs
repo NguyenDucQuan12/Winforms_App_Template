@@ -568,7 +568,7 @@ namespace Winforms_App_Template.Forms
             this.Tu_dong_lap_rap_que_nong = new DevExpress.XtraReports.UI.DetailReportBand();
             this.Tu_dong_lap_rap_que_nong_data = new DevExpress.XtraReports.UI.DetailBand();
             this.Tu_dong_lap_rap_que_nong_dkm = new DevExpress.XtraReports.UI.XRSubreport();
-            this.xrSubreport2 = new DevExpress.XtraReports.UI.XRSubreport();
+            this.Tu_dong_lap_rap_que_nong_standard = new DevExpress.XtraReports.UI.XRSubreport();
             this.xrTable12 = new DevExpress.XtraReports.UI.XRTable();
             this.xrTableRow43 = new DevExpress.XtraReports.UI.XRTableRow();
             this.xrTableCell342 = new DevExpress.XtraReports.UI.XRTableCell();
@@ -6986,7 +6986,7 @@ namespace Winforms_App_Template.Forms
             // 
             this.Tu_dong_lap_rap_que_nong_data.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
             this.Tu_dong_lap_rap_que_nong_dkm,
-            this.xrSubreport2,
+            this.Tu_dong_lap_rap_que_nong_standard,
             this.xrTable12});
             this.Tu_dong_lap_rap_que_nong_data.HeightF = 213F;
             this.Tu_dong_lap_rap_que_nong_data.KeepTogether = true;
@@ -6999,12 +6999,12 @@ namespace Winforms_App_Template.Forms
             this.Tu_dong_lap_rap_que_nong_dkm.ReportSource = new Winforms_App_Template.Forms.SubReport.Tu_dong_lap_rap_que_nong_dkm();
             this.Tu_dong_lap_rap_que_nong_dkm.SizeF = new System.Drawing.SizeF(845.3375F, 115F);
             // 
-            // xrSubreport2
+            // Tu_dong_lap_rap_que_nong_standard
             // 
-            this.xrSubreport2.LocationFloat = new DevExpress.Utils.PointFloat(852.3141F, 59.00005F);
-            this.xrSubreport2.Name = "xrSubreport2";
-            this.xrSubreport2.ReportSource = new Winforms_App_Template.Forms.SubReport.Standards_Subreport_32061();
-            this.xrSubreport2.SizeF = new System.Drawing.SizeF(286.9772F, 151F);
+            this.Tu_dong_lap_rap_que_nong_standard.LocationFloat = new DevExpress.Utils.PointFloat(852.3141F, 0F);
+            this.Tu_dong_lap_rap_que_nong_standard.Name = "Tu_dong_lap_rap_que_nong_standard";
+            this.Tu_dong_lap_rap_que_nong_standard.ReportSource = new Winforms_App_Template.Forms.SubReport.Standards_Subreport_32061();
+            this.Tu_dong_lap_rap_que_nong_standard.SizeF = new System.Drawing.SizeF(286.9772F, 151F);
             // 
             // xrTable12
             // 
@@ -9490,7 +9490,7 @@ namespace Winforms_App_Template.Forms
             this.xrTableCell725.Multiline = true;
             this.xrTableCell725.Name = "xrTableCell725";
             this.xrTableCell725.RowSpan = 2;
-            this.xrTableCell725.Text = "不適合品\r\nSố lượng hàng không phù \r\nhợp\r\n（本/pcs）";
+            this.xrTableCell725.Text = "不適合品\r\nSố lượng hàng không phù hợp\r\n（本/pcs）";
             this.xrTableCell725.Weight = 0.87677182940261345D;
             // 
             // xrTableCell726
@@ -18076,7 +18076,7 @@ namespace Winforms_App_Template.Forms
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell538;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell542;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell546;
-        private DevExpress.XtraReports.UI.XRSubreport xrSubreport2;
+        private DevExpress.XtraReports.UI.XRSubreport Tu_dong_lap_rap_que_nong_standard;
         private DevExpress.XtraReports.UI.DetailReportBand Gia_cong_dau_mut_v1_5;
         private DevExpress.XtraReports.UI.DetailBand Gia_cong_dau_mut_v1_5_data;
         private DevExpress.XtraReports.UI.ReportHeaderBand Gia_cong_dau_mut_v1_5_header;

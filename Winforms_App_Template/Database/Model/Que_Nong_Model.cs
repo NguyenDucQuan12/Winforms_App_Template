@@ -8,12 +8,12 @@ namespace Winforms_App_Template.Database.Model
 {
     public sealed class Report_Header_Model
     {
-        public string Name_Congdoan { get; set; } = "";
-        public string ID_Congdoan { get; set; } = "";
-        public string Code_Congdoan { get; set; } = "";
-        public string Category_Code { get; set; } = "";
-        public string Lotno_Congdoan { get; set; } = "";
-        public string Batch_Number { get; set; } = "";
+        public string Name_Congdoan { get; set; } = "N/A";
+        public string ID_Congdoan { get; set; } = "N/A";
+        public string Code_Congdoan { get; set; } = "N/A";
+        public string Category_Code { get; set; } = "N/A";
+        public string Lotno_Congdoan { get; set; } = "N/A";
+        public string Batch_Number { get; set; } = "N/A";
         public int? NG_Qty_Total { get; set; }
         public int? OK_Qty_Total { get; set; }
     }
@@ -127,16 +127,16 @@ namespace Winforms_App_Template.Database.Model
 
     public sealed class Standard_Model
     {
-        public int idInput { get; init; }                         // ID Form nhập dữ liệu để lấy chi tiết lỗi
-        public int idStandard { get; init; }                      // ID Form nhập dữ liệu để lấy chi tiết lỗi
-        public string TenTieuChuan { get; init; } = "";           // Mã lý do kiểm tra: I, II, III, IV
-        public string Pingauge_xuyen { get; init; } = "";           // Mã lý do kiểm tra: I, II, III, IV
-        public string Pingauge_khong_xuyen { get; init; } = "";           // Mã lý do kiểm tra: I, II, III, IV
-        public string MaTieuChuan { get; init; } = "";            // Mã lý do kiểm tra: I, II, III, IV
-        public string Loai_size { get; init; } = "";              // Mã lý do kiểm tra: I, II, III, IV
-        public string Loai_kytu { get; init; } = "";              // Mã lý do kiểm tra: I, II, III, IV
-        public string Loai_chieudai { get; init; } = "";          // Mã lý do kiểm tra: I, II, III, IV
-        public string Loai_somay { get; init; } = "";             // Mã lý do kiểm tra: I, II, III, IV
+        public int idInput { get; init; }                            // ID Form nhập dữ liệu để lấy chi tiết lỗi
+        public int idStandard { get; init; }                         // ID lỗi
+        public string TenTieuChuan { get; init; } = "N/A";           // Tên lỗi
+        public string Pingauge_xuyen { get; init; } = "N/A";         // 
+        public string Pingauge_khong_xuyen { get; init; } = "N/A";   // Mã lý do kiểm tra: I, II, III, IV
+        public string MaTieuChuan { get; init; } = "N/A";            // Mã tiêu chuẩn
+        public string Loai_size { get; init; } = "N/A";              // Mã lý do kiểm tra: I, II, III, IV
+        public string Loai_kytu { get; init; } = "";                 // Mã lý do kiểm tra: I, II, III, IV
+        public string Loai_chieudai { get; init; } = "";             // Mã lý do kiểm tra: I, II, III, IV
+        public string Loai_somay { get; init; } = "";                // Mã lý do kiểm tra: I, II, III, IV
         public string Loai_masp { get; init; } = "";
         public string Loai_ten { get; init; } = "";
         public string TCMin { get; init; } = "";
@@ -151,11 +151,11 @@ namespace Winforms_App_Template.Database.Model
     /// Record mô tả "một công đoạn nhỏ trong 1 công đoạn lớn"
     /// </summary>
     public sealed record Step_Definition(
-        int Id,                           // ID công đoạn, ví dụ: 68, 144
-        string BandName,                  // Tên DetailReportBand trong layout (ví dụ: "Catthoong, ...")
+        int Id,                             // ID công đoạn, ví dụ: 68, 144
+        string BandName,                    // Tên DetailReportBand trong layout (ví dụ: "Catthoong, ...")
         //string StandardsSubreportName,    // Tên XRSubreport chứa bảng tiêu chuẩn trong band (ví dụ: "SR_Standards_68")
-        string HeaderParamPrefix,         // Prefix đẩy tham số header (ví dụ: "p_band_text")
-        bool Isdkm = false                // Công đoạn này có điều kiện máy không
+        string HeaderParamPrefix,           // Prefix đẩy tham số header (ví dụ: "p_band_text")
+        bool Isdkm = false                  // Công đoạn này có điều kiện máy không
     );
 
     /// <summary>
@@ -195,11 +195,10 @@ namespace Winforms_App_Template.Database.Model
     public sealed class Lot_Summary_Row
     {
         public string ItemNumber { get; set; } = "";              // Mã sản phẩm
-        public string LotNo { get; set; } = "";              // Số lô
-        public string Loai { get; set; } = "";              // "CRS25" / "RS25"
-
-        public int So_luong_su_dung { get; set; }              // Tổng SLSudung
-        public int So_hang_phu_hop { get; set; }              // Tổng OK
+        public string LotNo { get; set; } = "";                   // Số lô
+        public string Loai { get; set; } = "";                    // "CRS25" / "RS25"
+        public int So_luong_su_dung { get; set; }                 // Tổng SLSudung
+        public int So_hang_phu_hop { get; set; }                  // Tổng OK
         public int So_hang_khong_phu_hop { get; set; }            // Tổng NG
     }
 }

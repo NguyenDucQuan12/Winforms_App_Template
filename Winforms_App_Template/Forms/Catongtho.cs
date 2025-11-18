@@ -319,7 +319,7 @@ namespace Winforms_App_Template.Forms
                     childReport.DataMember = null;
 
                     // Mặc định: ẩn subreport, chỉ bật lên nếu có data
-                    //sub.Visible = false;
+                    sub.Visible = false;
 
                     // Đăng ký BeforePrint riêng cho sub này
                     sub.BeforePrint += (_, __) =>
@@ -333,7 +333,7 @@ namespace Winforms_App_Template.Forms
                             list != null)
                         {
                             // Hiện subreport
-                            //sub.Visible = true;
+                            sub.Visible = true;
 
                             // Nếu tìm được tiêu chuẩn theo idInput -> gán list đó cho report con
                             childReport.DataSource = list;
@@ -352,7 +352,7 @@ namespace Winforms_App_Template.Forms
                     childReport.DataSource = Array.Empty<Dieu_kien_may_Model>();
                     childReport.DataMember = null;
                     // Mặc định: ẩn subreport
-                    //sub.Visible = false;
+                    sub.Visible = false;
 
                     sub.BeforePrint += (_, __) =>
                     {
@@ -365,7 +365,7 @@ namespace Winforms_App_Template.Forms
                         )
                         {
                             // Có data điều kiện máy cho dòng này -> hiện subreport
-                            //sub.Visible = true;
+                            sub.Visible = true;
                             // Gán danh sách điều kiện máy tương ứng idInput
                             childReport.DataSource = list;
                             childReport.DataMember = null;
