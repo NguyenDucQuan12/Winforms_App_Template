@@ -1,6 +1,5 @@
 using DevExpress.Utils;                           // DeserializationSettings
 using Winforms_App_Template.Forms;
-using DevExpress.XtraRichEdit;
 using Winforms_App_Template.Utils;
 
 namespace Winforms_App_Template
@@ -39,9 +38,8 @@ namespace Winforms_App_Template
                 LogEx.Error(e.ExceptionObject as Exception, "Unhandled non-UI exception");
             };
 
-            RichEditControlCompatibility.DefaultFontSize = 4f;               // hoặc 4.5f
-            RichEditControlCompatibility.DefaultFontName = "Times New Roman";
-
+            // Nạp .env trước
+            EnvLoader.LoadFromDotEnv();
 
             // Log.Information("Ứng dụng khởi động. LogDir={LogDir}", Logging.TodayLogDirectory);
             LogEx.Info("User bấm nút Xin chào.");
