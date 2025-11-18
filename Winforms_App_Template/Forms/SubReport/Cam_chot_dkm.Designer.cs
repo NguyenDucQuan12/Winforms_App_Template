@@ -45,6 +45,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell223 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell233 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell238 = new DevExpress.XtraReports.UI.XRTableCell();
+            this.xrTableCell1 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableRow28 = new DevExpress.XtraReports.UI.XRTableRow();
             this.xrTableCell195 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell196 = new DevExpress.XtraReports.UI.XRTableCell();
@@ -60,6 +61,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell224 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell234 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell239 = new DevExpress.XtraReports.UI.XRTableCell();
+            this.xrTableCell2 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableRow25 = new DevExpress.XtraReports.UI.XRTableRow();
             this.xrTableCell186 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell187 = new DevExpress.XtraReports.UI.XRTableCell();
@@ -75,6 +77,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell225 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell235 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell240 = new DevExpress.XtraReports.UI.XRTableCell();
+            this.xrTableCell3 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableRow27 = new DevExpress.XtraReports.UI.XRTableRow();
             this.xrTableCell192 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell193 = new DevExpress.XtraReports.UI.XRTableCell();
@@ -90,6 +93,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell226 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell236 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell241 = new DevExpress.XtraReports.UI.XRTableCell();
+            this.xrTableCell4 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableRow26 = new DevExpress.XtraReports.UI.XRTableRow();
             this.xrTableCell189 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell190 = new DevExpress.XtraReports.UI.XRTableCell();
@@ -105,10 +109,6 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell227 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell237 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell242 = new DevExpress.XtraReports.UI.XRTableCell();
-            this.xrTableCell1 = new DevExpress.XtraReports.UI.XRTableCell();
-            this.xrTableCell2 = new DevExpress.XtraReports.UI.XRTableCell();
-            this.xrTableCell3 = new DevExpress.XtraReports.UI.XRTableCell();
-            this.xrTableCell4 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell5 = new DevExpress.XtraReports.UI.XRTableCell();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
@@ -184,28 +184,28 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell183.Multiline = true;
             this.xrTableCell183.Name = "xrTableCell183";
             this.xrTableCell183.Text = "確認理由\r\nLý do kiểm tra";
-            this.xrTableCell183.Weight = 0.36000062267691058D;
+            this.xrTableCell183.Weight = 0.25040687834455544D;
             // 
             // xrTableCell184
             // 
             this.xrTableCell184.Multiline = true;
             this.xrTableCell184.Name = "xrTableCell184";
             this.xrTableCell184.Text = "作業時間・日、担当者 \r\nGiờ, Ngày/ tháng thao tác , Người thao tác";
-            this.xrTableCell184.Weight = 0.7658309364476561D;
+            this.xrTableCell184.Weight = 0.672150219744017D;
             // 
             // xrTableCell198
             // 
             this.xrTableCell198.Multiline = true;
             this.xrTableCell198.Name = "xrTableCell198";
             this.xrTableCell198.Text = "生産号機\r\nSố máy sản xuất";
-            this.xrTableCell198.Weight = 0.33858249526420331D;
+            this.xrTableCell198.Weight = 0.3822592121456671D;
             // 
             // xrTableCell185
             // 
             this.xrTableCell185.Multiline = true;
             this.xrTableCell185.Name = "xrTableCell185";
             this.xrTableCell185.Text = "「デジタルノギス」識別ナンバー\r\nMã quản lý thước kẹp";
-            this.xrTableCell185.Weight = 0.61578654582397541D;
+            this.xrTableCell185.Weight = 0.775384289978506D;
             // 
             // xrTableCell208
             // 
@@ -263,6 +263,13 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell238.Text = "設備確認結果\r\nKết quả xác nhận thiết bị";
             this.xrTableCell238.Weight = 0.48678155033487758D;
             // 
+            // xrTableCell1
+            // 
+            this.xrTableCell1.Multiline = true;
+            this.xrTableCell1.Name = "xrTableCell1";
+            this.xrTableCell1.Text = "備考\r\nGhi chú";
+            this.xrTableCell1.Weight = 0.833076439668464D;
+            // 
             // xrTableRow28
             // 
             this.xrTableRow28.Cells.AddRange(new DevExpress.XtraReports.UI.XRTableCell[] {
@@ -293,7 +300,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell195.RowSpan = 2;
             this.xrTableCell195.StylePriority.UseBorders = false;
             this.xrTableCell195.Text = "N/A\r";
-            this.xrTableCell195.Weight = 0.36000062267691058D;
+            this.xrTableCell195.Weight = 0.25040687947913676D;
             // 
             // xrTableCell196
             // 
@@ -303,7 +310,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell196.Name = "xrTableCell196";
             this.xrTableCell196.RowSpan = 2;
             this.xrTableCell196.StylePriority.UseBorders = false;
-            this.xrTableCell196.Weight = 0.7658309364476561D;
+            this.xrTableCell196.Weight = 0.672150220713857D;
             // 
             // xrTableCell199
             // 
@@ -311,7 +318,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell199.Name = "xrTableCell199";
             this.xrTableCell199.RowSpan = 4;
             this.xrTableCell199.Text = "N/A\r";
-            this.xrTableCell199.Weight = 0.33858249526420331D;
+            this.xrTableCell199.Weight = 0.38225921169349908D;
             // 
             // xrTableCell197
             // 
@@ -326,7 +333,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell197.Text = "N/A";
             this.xrTableCell197.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             this.xrTableCell197.TextFormatString = "PR-IK-{0}";
-            this.xrTableCell197.Weight = 0.61578686446461217D;
+            this.xrTableCell197.Weight = 0.77538460696688938D;
             // 
             // xrTableCell209
             // 
@@ -415,6 +422,14 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell239.Text = "N/A\r";
             this.xrTableCell239.Weight = 0.48678154965372544D;
             // 
+            // xrTableCell2
+            // 
+            this.xrTableCell2.Multiline = true;
+            this.xrTableCell2.Name = "xrTableCell2";
+            this.xrTableCell2.RowSpan = 4;
+            this.xrTableCell2.Text = "N/A";
+            this.xrTableCell2.Weight = 0.83307561596777224D;
+            // 
             // xrTableRow25
             // 
             this.xrTableRow25.Cells.AddRange(new DevExpress.XtraReports.UI.XRTableCell[] {
@@ -441,28 +456,28 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell186.Multiline = true;
             this.xrTableCell186.Name = "xrTableCell186";
             this.xrTableCell186.Text = "xrTableCell186";
-            this.xrTableCell186.Weight = 0.36000062267691058D;
+            this.xrTableCell186.Weight = 0.25040687947913676D;
             // 
             // xrTableCell187
             // 
             this.xrTableCell187.Multiline = true;
             this.xrTableCell187.Name = "xrTableCell187";
             this.xrTableCell187.Text = "xrTableCell187";
-            this.xrTableCell187.Weight = 0.7658309364476561D;
+            this.xrTableCell187.Weight = 0.672150220713857D;
             // 
             // xrTableCell200
             // 
             this.xrTableCell200.Multiline = true;
             this.xrTableCell200.Name = "xrTableCell200";
             this.xrTableCell200.Text = "xrTableCell200";
-            this.xrTableCell200.Weight = 0.33858249526420331D;
+            this.xrTableCell200.Weight = 0.38225921169349908D;
             // 
             // xrTableCell188
             // 
             this.xrTableCell188.Multiline = true;
             this.xrTableCell188.Name = "xrTableCell188";
             this.xrTableCell188.Text = "xrTableCell188";
-            this.xrTableCell188.Weight = 0.61578686446461217D;
+            this.xrTableCell188.Weight = 0.77538460696688938D;
             // 
             // xrTableCell210
             // 
@@ -546,6 +561,13 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell240.Text = "xrTableCell240";
             this.xrTableCell240.Weight = 0.48678154965372544D;
             // 
+            // xrTableCell3
+            // 
+            this.xrTableCell3.Multiline = true;
+            this.xrTableCell3.Name = "xrTableCell3";
+            this.xrTableCell3.Text = "xrTableCell3";
+            this.xrTableCell3.Weight = 0.83307561596777224D;
+            // 
             // xrTableRow27
             // 
             this.xrTableRow27.Cells.AddRange(new DevExpress.XtraReports.UI.XRTableCell[] {
@@ -575,7 +597,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell192.Name = "xrTableCell192";
             this.xrTableCell192.RowSpan = 2;
             this.xrTableCell192.StylePriority.UseBorders = false;
-            this.xrTableCell192.Weight = 0.36000062267691058D;
+            this.xrTableCell192.Weight = 0.25040687947913676D;
             // 
             // xrTableCell193
             // 
@@ -584,21 +606,21 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell193.Name = "xrTableCell193";
             this.xrTableCell193.StylePriority.UseBorders = false;
             this.xrTableCell193.Text = "N/A\r";
-            this.xrTableCell193.Weight = 0.7658309364476561D;
+            this.xrTableCell193.Weight = 0.672150220713857D;
             // 
             // xrTableCell201
             // 
             this.xrTableCell201.Multiline = true;
             this.xrTableCell201.Name = "xrTableCell201";
             this.xrTableCell201.Text = "xrTableCell201";
-            this.xrTableCell201.Weight = 0.33858249526420331D;
+            this.xrTableCell201.Weight = 0.38225921169349908D;
             // 
             // xrTableCell194
             // 
             this.xrTableCell194.Multiline = true;
             this.xrTableCell194.Name = "xrTableCell194";
             this.xrTableCell194.Text = "xrTableCell194";
-            this.xrTableCell194.Weight = 0.61578686446461217D;
+            this.xrTableCell194.Weight = 0.77538460696688938D;
             // 
             // xrTableCell211
             // 
@@ -682,6 +704,13 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell241.Text = "xrTableCell241";
             this.xrTableCell241.Weight = 0.48678154965372544D;
             // 
+            // xrTableCell4
+            // 
+            this.xrTableCell4.Multiline = true;
+            this.xrTableCell4.Name = "xrTableCell4";
+            this.xrTableCell4.Text = "xrTableCell4";
+            this.xrTableCell4.Weight = 0.83307561596777224D;
+            // 
             // xrTableRow26
             // 
             this.xrTableRow26.Cells.AddRange(new DevExpress.XtraReports.UI.XRTableCell[] {
@@ -708,7 +737,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell189.Multiline = true;
             this.xrTableCell189.Name = "xrTableCell189";
             this.xrTableCell189.Text = "xrTableCell189";
-            this.xrTableCell189.Weight = 0.36000062267691058D;
+            this.xrTableCell189.Weight = 0.25040687947913676D;
             // 
             // xrTableCell190
             // 
@@ -717,21 +746,21 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell190.Multiline = true;
             this.xrTableCell190.Name = "xrTableCell190";
             this.xrTableCell190.StylePriority.UseBorders = false;
-            this.xrTableCell190.Weight = 0.7658309364476561D;
+            this.xrTableCell190.Weight = 0.672150220713857D;
             // 
             // xrTableCell202
             // 
             this.xrTableCell202.Multiline = true;
             this.xrTableCell202.Name = "xrTableCell202";
             this.xrTableCell202.Text = "xrTableCell202";
-            this.xrTableCell202.Weight = 0.33858249526420331D;
+            this.xrTableCell202.Weight = 0.38225921169349908D;
             // 
             // xrTableCell191
             // 
             this.xrTableCell191.Multiline = true;
             this.xrTableCell191.Name = "xrTableCell191";
             this.xrTableCell191.Text = "xrTableCell191";
-            this.xrTableCell191.Weight = 0.61578686446461217D;
+            this.xrTableCell191.Weight = 0.77538460696688938D;
             // 
             // xrTableCell212
             // 
@@ -814,35 +843,6 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell242.Name = "xrTableCell242";
             this.xrTableCell242.Text = "xrTableCell242";
             this.xrTableCell242.Weight = 0.48678154965372544D;
-            // 
-            // xrTableCell1
-            // 
-            this.xrTableCell1.Multiline = true;
-            this.xrTableCell1.Name = "xrTableCell1";
-            this.xrTableCell1.Text = "備考\r\nGhi chú";
-            this.xrTableCell1.Weight = 0.833076439668464D;
-            // 
-            // xrTableCell2
-            // 
-            this.xrTableCell2.Multiline = true;
-            this.xrTableCell2.Name = "xrTableCell2";
-            this.xrTableCell2.RowSpan = 4;
-            this.xrTableCell2.Text = "N/A";
-            this.xrTableCell2.Weight = 0.83307561596777224D;
-            // 
-            // xrTableCell3
-            // 
-            this.xrTableCell3.Multiline = true;
-            this.xrTableCell3.Name = "xrTableCell3";
-            this.xrTableCell3.Text = "xrTableCell3";
-            this.xrTableCell3.Weight = 0.83307561596777224D;
-            // 
-            // xrTableCell4
-            // 
-            this.xrTableCell4.Multiline = true;
-            this.xrTableCell4.Name = "xrTableCell4";
-            this.xrTableCell4.Text = "xrTableCell4";
-            this.xrTableCell4.Weight = 0.83307561596777224D;
             // 
             // xrTableCell5
             // 
