@@ -82,7 +82,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTable11.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
             this.xrTable11.Rows.AddRange(new DevExpress.XtraReports.UI.XRTableRow[] {
             this.xrTableRow37});
-            this.xrTable11.SizeF = new System.Drawing.SizeF(333.3962F, 25F);
+            this.xrTable11.SizeF = new System.Drawing.SizeF(313.5347F, 25F);
             this.xrTable11.StylePriority.UseBorderColor = false;
             this.xrTable11.StylePriority.UseBorders = false;
             this.xrTable11.StylePriority.UseBorderWidth = false;
@@ -107,42 +107,42 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell349.Multiline = true;
             this.xrTableCell349.Name = "xrTableCell349";
             this.xrTableCell349.Text = "N/A";
-            this.xrTableCell349.Weight = 1D;
+            this.xrTableCell349.Weight = 1.187464602484501D;
             // 
             // xrTableCell352
             // 
             this.xrTableCell352.Multiline = true;
             this.xrTableCell352.Name = "xrTableCell352";
             this.xrTableCell352.Text = "N/A";
-            this.xrTableCell352.Weight = 1D;
+            this.xrTableCell352.Weight = 0.82778354804189447D;
             // 
             // xrTableCell353
             // 
             this.xrTableCell353.Multiline = true;
             this.xrTableCell353.Name = "xrTableCell353";
             this.xrTableCell353.Text = "N/A";
-            this.xrTableCell353.Weight = 1D;
+            this.xrTableCell353.Weight = 0.710281799261437D;
             // 
             // xrTableCell354
             // 
             this.xrTableCell354.Multiline = true;
             this.xrTableCell354.Name = "xrTableCell354";
             this.xrTableCell354.Text = "N/A";
-            this.xrTableCell354.Weight = 1D;
+            this.xrTableCell354.Weight = 0.86500767987061411D;
             // 
             // xrTableCell355
             // 
             this.xrTableCell355.Multiline = true;
             this.xrTableCell355.Name = "xrTableCell355";
             this.xrTableCell355.Text = "N/A";
-            this.xrTableCell355.Weight = 1D;
+            this.xrTableCell355.Weight = 0.933625226749454D;
             // 
             // xrTableCell356
             // 
             this.xrTableCell356.Multiline = true;
             this.xrTableCell356.Name = "xrTableCell356";
             this.xrTableCell356.Text = "N/A";
-            this.xrTableCell356.Weight = 1D;
+            this.xrTableCell356.Weight = 1.1183971031739013D;
             // 
             // GroupHeader1
             // 
@@ -166,7 +166,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTable2.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
             this.xrTable2.Rows.AddRange(new DevExpress.XtraReports.UI.XRTableRow[] {
             this.xrTableRow2});
-            this.xrTable2.SizeF = new System.Drawing.SizeF(333.3962F, 41.45833F);
+            this.xrTable2.SizeF = new System.Drawing.SizeF(313.5347F, 41.45833F);
             this.xrTable2.StylePriority.UseBorderColor = false;
             this.xrTable2.StylePriority.UseBorders = false;
             this.xrTable2.StylePriority.UseBorderWidth = false;
@@ -191,42 +191,42 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell7.Multiline = true;
             this.xrTableCell7.Name = "xrTableCell7";
             this.xrTableCell7.Text = "製品検査基準\r\nTiêu chuẩn kiểm tra sản phẩm";
-            this.xrTableCell7.Weight = 1D;
+            this.xrTableCell7.Weight = 1.187464602484501D;
             // 
             // xrTableCell8
             // 
             this.xrTableCell8.Multiline = true;
             this.xrTableCell8.Name = "xrTableCell8";
             this.xrTableCell8.Text = "品種\r\nChủng loại \r\n(cm)";
-            this.xrTableCell8.Weight = 1D;
+            this.xrTableCell8.Weight = 0.82778354804189447D;
             // 
             // xrTableCell9
             // 
             this.xrTableCell9.Multiline = true;
             this.xrTableCell9.Name = "xrTableCell9";
             this.xrTableCell9.Text = "Frサイズ\r\nKích cỡ Fr";
-            this.xrTableCell9.Weight = 1D;
+            this.xrTableCell9.Weight = 0.710281799261437D;
             // 
             // xrTableCell10
             // 
             this.xrTableCell10.Multiline = true;
             this.xrTableCell10.Name = "xrTableCell10";
             this.xrTableCell10.Text = "通過検査ピンゲージ\r\nPingauge xuyên\r\n(mm)";
-            this.xrTableCell10.Weight = 1D;
+            this.xrTableCell10.Weight = 0.86500767987061411D;
             // 
             // xrTableCell11
             // 
             this.xrTableCell11.Multiline = true;
             this.xrTableCell11.Name = "xrTableCell11";
             this.xrTableCell11.Text = "不通過検査ピンゲージ\r\nPingauge không xuyên\r\n(mm)";
-            this.xrTableCell11.Weight = 1D;
+            this.xrTableCell11.Weight = 0.933625226749454D;
             // 
             // xrTableCell12
             // 
             this.xrTableCell12.Multiline = true;
             this.xrTableCell12.Name = "xrTableCell12";
             this.xrTableCell12.Text = "基準\r\nTiêu chuẩn";
-            this.xrTableCell12.Weight = 1D;
+            this.xrTableCell12.Weight = 1.1183971031739013D;
             // 
             // Kiem_tra_ngoai_quan_standard
             // 
