@@ -9,6 +9,19 @@
   </PropertyGroup>
 
 	<ItemGroup>
+		<Content Include=".env">  <!--Nếu để ở thư mục con (ví dụ config\.env) thì sửa Include="config\.env"-->
+			<!-- Copy vào bin/ khi build -->
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+
+			<!-- Copy vào thư mục publish khi dotnet publish -->
+			<CopyToPublishDirectory>Always</CopyToPublishDirectory>
+
+			<!-- BẮT BUỘC với PublishSingleFile nếu muốn .env nằm ngoài exe -->
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
 		<!-- Version được lấy từ Directory.Packages.props -->
 		<PackageReference Include="Serilog" />
 		<PackageReference Include="Serilog.Sinks.File" />
