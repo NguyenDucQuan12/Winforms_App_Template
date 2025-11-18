@@ -352,12 +352,14 @@ namespace Winforms_App_Template.Forms
                     childReport.DataSource = Array.Empty<Dieu_kien_may_Model>();
                     childReport.DataMember = null;
                     // Mặc định: ẩn subreport
-                    sub.Visible = false;
+                    //sub.Visible = false;
 
                     sub.BeforePrint += (_, __) =>
                     {
+                        // Lấy dòng Que_Nong_Rows hiện tại mà subreport đang in theo
                         var current = band.GetCurrentRow() as Que_Nong_Rows;
 
+                        // Nếu TỒN TẠI list điều kiện máy cho idInput này và list có ít nhất 1 phần tử
                         if (current != null &&
                             block.dkm != null  &&
                             block.DkmByInput.TryGetValue(current.idInput, out var list) &&
@@ -365,9 +367,26 @@ namespace Winforms_App_Template.Forms
                         )
                         {
                             // Có data điều kiện máy cho dòng này -> hiện subreport
-                            sub.Visible = true;
+                            //sub.Visible = true;
                             // Gán danh sách điều kiện máy tương ứng idInput
                             childReport.DataSource = list;
+                            childReport.DataMember = null;
+                        }
+                        else
+                        {
+                            // Ngược lại: không có data điều kiện máy cho idInput này
+
+                            var dummyList = new List<Dieu_kien_may_Model>
+                            {
+                                new Dieu_kien_may_Model
+                                {
+                                    idInput = current?.idInput ?? 0
+                                    // Các property string trong model đã gán sẵn default = "N/A"
+                                }
+                            };
+
+                            // Gán list dummy (1 dòng N/A) làm datasource
+                            childReport.DataSource = dummyList;
                             childReport.DataMember = null;
                         }
                     };
