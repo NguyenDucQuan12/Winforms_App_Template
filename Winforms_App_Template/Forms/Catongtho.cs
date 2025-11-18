@@ -384,11 +384,10 @@ namespace Winforms_App_Template.Forms
 
                             // ÉP tất cả string null/rỗng => "N/A"
                             // onlyValPrefix = false → xử lý TẤT CẢ property string, không chỉ val1..val54
-                            ReportDataPreparer.NormalizeTrueFalseStringValues(dummy, onlyValPrefix: false);
+                            ReportDataPreparer.NormalizeTrueFalseStringValues(dummy, onlyValPrefix: false, "Ly_do_kiem_tra");
 
                             // Tạo list chứa đúng 1 dòng dummy
                             var dummyList = new List<Dieu_kien_may_Model> { dummy };
-
 
                             // Gán list dummy (1 dòng N/A) làm datasource
                             childReport.DataSource = dummyList;

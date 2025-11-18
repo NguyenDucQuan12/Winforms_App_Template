@@ -14,7 +14,7 @@ namespace Winforms_App_Template.Database.Model
 
         [System.ComponentModel.DisplayName("Mã kiểm tra")]
         public string MaKT { get; init; } = "N/A";                    // Mã lý do kiểm tra: I, II, III, IV
-        public string Ly_do_kiem_tra { get; init; } = "N/A";          // Lý do kiểm tra nếu mã kiểm tra là V: khác
+        public string Ly_do_kiem_tra { get; init; } = "";          // Lý do kiểm tra nếu mã kiểm tra là V: khác
         public DateTime StartTime { get; init; }                      // Thời gian bắt đầu thao tác
         public string NguoiTT { get; init; } = "N/A";                 // Người thao tác
         public string TenNguoiThaoTac { get; init; } = "N/A";         // Tên người thao tác
