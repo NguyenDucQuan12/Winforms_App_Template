@@ -336,7 +336,7 @@ namespace Winforms_App_Template.Report
         ///   - true  → chỉ xử lý các property tên bắt đầu bằng "val" (val1..val32, v.v.)
         ///   - false → xử lý TẤT CẢ property kiểu string trong object
         /// </summary>
-        private static void NormalizeTrueFalseStringValues(object target, bool onlyValPrefix = true, params string[] excludedPropertyNames)
+        public static void NormalizeTrueFalseStringValues(object target, bool onlyValPrefix = true, params string[] excludedPropertyNames)
         {
             // Nếu object truyền vào null thì không làm gì, tránh lỗi NullReferenceException
             if (target == null) return;

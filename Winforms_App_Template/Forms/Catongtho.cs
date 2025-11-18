@@ -375,15 +375,20 @@ namespace Winforms_App_Template.Forms
                         else
                         {
                             // Ngược lại: không có data điều kiện máy cho idInput này
-
-                            var dummyList = new List<Dieu_kien_may_Model>
+                            var dummy = new Dieu_kien_may_Model
                             {
-                                new Dieu_kien_may_Model
-                                {
-                                    idInput = current?.idInput ?? 0
-                                    // Các property string trong model đã gán sẵn default = "N/A"
-                                }
+                                idInput = current?.idInput ?? 0
+                                // Các field string còn lại có thể là null/""
+                                // hoặc đã "N/A" tuỳ runtime, nhưng ta sẽ chuẩn hoá lại bên dưới
                             };
+
+                            // ÉP tất cả string null/rỗng => "N/A"
+                            // onlyValPrefix = false → xử lý TẤT CẢ property string, không chỉ val1..val54
+                            ReportDataPreparer.NormalizeTrueFalseStringValues(dummy, onlyValPrefix: false);
+
+                            // Tạo list chứa đúng 1 dòng dummy
+                            var dummyList = new List<Dieu_kien_may_Model> { dummy };
+
 
                             // Gán list dummy (1 dòng N/A) làm datasource
                             childReport.DataSource = dummyList;
