@@ -126,7 +126,7 @@ namespace Winforms_App_Template.Database.Table
                         ni.LotNo      = @LotNo      AND
                         ni.So_Me      = @So_Me
                 ORDER BY
-                        ni.StartTime DESC;
+                        ni.StartTime;
             ";
 
             var param = new
