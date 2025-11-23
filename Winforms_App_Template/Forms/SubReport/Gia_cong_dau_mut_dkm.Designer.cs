@@ -187,129 +187,161 @@ namespace Winforms_App_Template.Forms.SubReport
             // 
             // xrTableCell559
             // 
+            this.xrTableCell559.BackColor = System.Drawing.SystemColors.ControlLight;
             this.xrTableCell559.Multiline = true;
             this.xrTableCell559.Name = "xrTableCell559";
             this.xrTableCell559.RowSpan = 2;
+            this.xrTableCell559.StylePriority.UseBackColor = false;
             this.xrTableCell559.Text = "確認理由\r\nLý do kiểm tra";
             this.xrTableCell559.Weight = 0.31199718270243482D;
             // 
             // xrTableCell560
             // 
+            this.xrTableCell560.BackColor = System.Drawing.SystemColors.ControlLight;
             this.xrTableCell560.Multiline = true;
             this.xrTableCell560.Name = "xrTableCell560";
             this.xrTableCell560.RowSpan = 2;
+            this.xrTableCell560.StylePriority.UseBackColor = false;
             this.xrTableCell560.Text = "作業時間・日、担当者\r\nGiờ, Ngày/ tháng thao tác , Người thao tác";
             this.xrTableCell560.Weight = 0.80818684925893025D;
             // 
             // xrTableCell561
             // 
+            this.xrTableCell561.BackColor = System.Drawing.SystemColors.ControlLight;
             this.xrTableCell561.Multiline = true;
             this.xrTableCell561.Name = "xrTableCell561";
             this.xrTableCell561.RowSpan = 2;
+            this.xrTableCell561.StylePriority.UseBackColor = false;
             this.xrTableCell561.Text = "生産号機\r\nSố máy sản xuất";
             this.xrTableCell561.Weight = 0.45879811156133021D;
             // 
             // xrTableCell562
             // 
+            this.xrTableCell562.BackColor = System.Drawing.SystemColors.ControlLight;
             this.xrTableCell562.Multiline = true;
             this.xrTableCell562.Name = "xrTableCell562";
             this.xrTableCell562.RowSpan = 2;
+            this.xrTableCell562.StylePriority.UseBackColor = false;
             this.xrTableCell562.Text = "「シックネスゲージ/スケール」ナンバー\r\nMã quản lý thickness gauge/thước vạch";
             this.xrTableCell562.Weight = 0.89434405049015386D;
             // 
             // xrTableCell563
             // 
+            this.xrTableCell563.BackColor = System.Drawing.SystemColors.ControlLight;
             this.xrTableCell563.Multiline = true;
             this.xrTableCell563.Name = "xrTableCell563";
             this.xrTableCell563.RowSpan = 2;
+            this.xrTableCell563.StylePriority.UseBackColor = false;
             this.xrTableCell563.Text = "芯金先端外径\r\nĐường kính ngoài đầu mút lõi kim loại (mm)";
             this.xrTableCell563.Weight = 0.86581106787629758D;
             // 
             // xrTableCell564
             // 
+            this.xrTableCell564.BackColor = System.Drawing.SystemColors.ControlLight;
             this.xrTableCell564.Multiline = true;
             this.xrTableCell564.Name = "xrTableCell564";
             this.xrTableCell564.RowSpan = 2;
+            this.xrTableCell564.StylePriority.UseBackColor = false;
             this.xrTableCell564.Text = "芯金有効長\r\nChiều dài hữu hiệu của lõi kim loại (mm)";
             this.xrTableCell564.Weight = 1.1372199016037714D;
             // 
             // xrTableCell565
             // 
+            this.xrTableCell565.BackColor = System.Drawing.SystemColors.ControlLight;
             this.xrTableCell565.Multiline = true;
             this.xrTableCell565.Name = "xrTableCell565";
             this.xrTableCell565.RowSpan = 2;
+            this.xrTableCell565.StylePriority.UseBackColor = false;
             this.xrTableCell565.Text = "芯金の外観\r\nNgoại quan lõi kim loại";
             this.xrTableCell565.Weight = 0.82339487102754716D;
             // 
             // xrTableCell566
             // 
+            this.xrTableCell566.BackColor = System.Drawing.SystemColors.ControlLight;
             this.xrTableCell566.Multiline = true;
             this.xrTableCell566.Name = "xrTableCell566";
             this.xrTableCell566.RowSpan = 2;
+            this.xrTableCell566.StylePriority.UseBackColor = false;
             this.xrTableCell566.Text = "発振時間\r\nThời gian phát chấn (s)";
             this.xrTableCell566.Weight = 0.86536445443877019D;
             // 
             // xrTableCell567
             // 
+            this.xrTableCell567.BackColor = System.Drawing.SystemColors.ControlLight;
             this.xrTableCell567.Multiline = true;
             this.xrTableCell567.Name = "xrTableCell567";
             this.xrTableCell567.RowSpan = 2;
+            this.xrTableCell567.StylePriority.UseBackColor = false;
             this.xrTableCell567.Text = "エアーブロー時間1　　\r\nThời gian thổi khí 1\r\n(s)";
             this.xrTableCell567.Weight = 0.86536445443877019D;
             // 
             // xrTableCell568
             // 
+            this.xrTableCell568.BackColor = System.Drawing.SystemColors.ControlLight;
             this.xrTableCell568.Multiline = true;
             this.xrTableCell568.Name = "xrTableCell568";
             this.xrTableCell568.RowSpan = 2;
+            this.xrTableCell568.StylePriority.UseBackColor = false;
             this.xrTableCell568.Text = "エアーブロー時間2\r\nThời gian thổi khí 2\r\n(s)";
             this.xrTableCell568.Weight = 0.86536445443877019D;
             // 
             // xrTableCell569
             // 
+            this.xrTableCell569.BackColor = System.Drawing.SystemColors.ControlLight;
             this.xrTableCell569.Multiline = true;
             this.xrTableCell569.Name = "xrTableCell569";
             this.xrTableCell569.RowSpan = 2;
+            this.xrTableCell569.StylePriority.UseBackColor = false;
             this.xrTableCell569.Text = "シリンダーＡ前進時間 \r\nThời gian tiến xylanh A (s)";
             this.xrTableCell569.Weight = 0.86536445443877019D;
             // 
             // xrTableCell571
             // 
+            this.xrTableCell571.BackColor = System.Drawing.SystemColors.ControlLight;
             this.xrTableCell571.Multiline = true;
             this.xrTableCell571.Name = "xrTableCell571";
             this.xrTableCell571.RowSpan = 2;
+            this.xrTableCell571.StylePriority.UseBackColor = false;
             this.xrTableCell571.Text = "シリンダーＢ押出圧力\r\nÁp suất đẩy xylanh B (Mpa)";
             this.xrTableCell571.Weight = 0.86536445443877019D;
             // 
             // xrTableCell572
             // 
+            this.xrTableCell572.BackColor = System.Drawing.SystemColors.ControlLight;
             this.xrTableCell572.Multiline = true;
             this.xrTableCell572.Name = "xrTableCell572";
             this.xrTableCell572.RowSpan = 2;
+            this.xrTableCell572.StylePriority.UseBackColor = false;
             this.xrTableCell572.Text = "コイル位置\r\nVị trí cuộn dây (mm)";
             this.xrTableCell572.Weight = 0.86536445443877019D;
             // 
             // xrTableCell573
             // 
+            this.xrTableCell573.BackColor = System.Drawing.SystemColors.ControlLight;
             this.xrTableCell573.Multiline = true;
             this.xrTableCell573.Name = "xrTableCell573";
             this.xrTableCell573.RowSpan = 2;
+            this.xrTableCell573.StylePriority.UseBackColor = false;
             this.xrTableCell573.Text = "マイクロメーター\r\nGiá trị Panme (mm)";
             this.xrTableCell573.Weight = 0.86536445443877019D;
             // 
             // xrTableCell570
             // 
+            this.xrTableCell570.BackColor = System.Drawing.SystemColors.ControlLight;
             this.xrTableCell570.Multiline = true;
             this.xrTableCell570.Name = "xrTableCell570";
             this.xrTableCell570.RowSpan = 2;
+            this.xrTableCell570.StylePriority.UseBackColor = false;
             this.xrTableCell570.Text = "エアーブロー圧力(\r\nÁp suất khí thổi\r\nMpa)";
             this.xrTableCell570.Weight = 1.1792169579401388D;
             // 
             // xrTableCell1
             // 
+            this.xrTableCell1.BackColor = System.Drawing.SystemColors.ControlLight;
             this.xrTableCell1.Multiline = true;
             this.xrTableCell1.Name = "xrTableCell1";
             this.xrTableCell1.RowSpan = 2;
+            this.xrTableCell1.StylePriority.UseBackColor = false;
             this.xrTableCell1.Text = "備考\r\nGhi chú";
             this.xrTableCell1.Weight = 1.040947103509984D;
             // 

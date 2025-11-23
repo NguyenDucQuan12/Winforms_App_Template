@@ -507,86 +507,110 @@ namespace Winforms_App_Template.Forms.SubReport
             // 
             // xrTableCell13
             // 
+            this.xrTableCell13.BackColor = System.Drawing.SystemColors.ControlLight;
             this.xrTableCell13.KeepTogether = true;
             this.xrTableCell13.Multiline = true;
             this.xrTableCell13.Name = "xrTableCell13";
+            this.xrTableCell13.StylePriority.UseBackColor = false;
             this.xrTableCell13.Text = "号機\r\nMáy ";
             this.xrTableCell13.Weight = 1D;
             // 
             // xrTableCell14
             // 
+            this.xrTableCell14.BackColor = System.Drawing.SystemColors.ControlLight;
             this.xrTableCell14.Multiline = true;
             this.xrTableCell14.Name = "xrTableCell14";
+            this.xrTableCell14.StylePriority.UseBackColor = false;
             this.xrTableCell14.Text = "芯金先端外径 Đường \r\nkính ngoài đầu mút lõi \r\nkim loại (mm)";
             this.xrTableCell14.Weight = 1D;
             // 
             // xrTableCell15
             // 
+            this.xrTableCell15.BackColor = System.Drawing.SystemColors.ControlLight;
             this.xrTableCell15.Multiline = true;
             this.xrTableCell15.Name = "xrTableCell15";
+            this.xrTableCell15.StylePriority.UseBackColor = false;
             this.xrTableCell15.Text = "芯金有効長　Chiều dài \r\nhữu hiệu của lõi kim loại \r\n(mm)";
             this.xrTableCell15.Weight = 1D;
             // 
             // xrTableCell16
             // 
+            this.xrTableCell16.BackColor = System.Drawing.SystemColors.ControlLight;
             this.xrTableCell16.Multiline = true;
             this.xrTableCell16.Name = "xrTableCell16";
+            this.xrTableCell16.StylePriority.UseBackColor = false;
             this.xrTableCell16.Text = "芯金の外観Ngoại quan lõi kim \r\nloại";
             this.xrTableCell16.Weight = 1D;
             // 
             // xrTableCell17
             // 
+            this.xrTableCell17.BackColor = System.Drawing.SystemColors.ControlLight;
             this.xrTableCell17.Multiline = true;
             this.xrTableCell17.Name = "xrTableCell17";
+            this.xrTableCell17.StylePriority.UseBackColor = false;
             this.xrTableCell17.Text = "発振時間\r\n　　Thời gian phát chấn \r\n(s)";
             this.xrTableCell17.Weight = 1D;
             // 
             // xrTableCell18
             // 
+            this.xrTableCell18.BackColor = System.Drawing.SystemColors.ControlLight;
             this.xrTableCell18.Multiline = true;
             this.xrTableCell18.Name = "xrTableCell18";
+            this.xrTableCell18.StylePriority.UseBackColor = false;
             this.xrTableCell18.Text = "エアーブロー時間1\r\n　　Thời gian thổi khí 1 (s)";
             this.xrTableCell18.Weight = 1D;
             // 
             // xrTableCell19
             // 
+            this.xrTableCell19.BackColor = System.Drawing.SystemColors.ControlLight;
             this.xrTableCell19.Multiline = true;
             this.xrTableCell19.Name = "xrTableCell19";
+            this.xrTableCell19.StylePriority.UseBackColor = false;
             this.xrTableCell19.Text = "エアーブロー時間2\r\n Thời gian thổi khí 2 (s)";
             this.xrTableCell19.Weight = 1D;
             // 
             // xrTableCell20
             // 
+            this.xrTableCell20.BackColor = System.Drawing.SystemColors.ControlLight;
             this.xrTableCell20.Multiline = true;
             this.xrTableCell20.Name = "xrTableCell20";
+            this.xrTableCell20.StylePriority.UseBackColor = false;
             this.xrTableCell20.Text = "シリンダーＡ前進時間 Thời gian \r\ntiến xylanh A (s)";
             this.xrTableCell20.Weight = 1D;
             // 
             // xrTableCell21
             // 
+            this.xrTableCell21.BackColor = System.Drawing.SystemColors.ControlLight;
             this.xrTableCell21.Multiline = true;
             this.xrTableCell21.Name = "xrTableCell21";
+            this.xrTableCell21.StylePriority.UseBackColor = false;
             this.xrTableCell21.Text = "シリンダーＢ押出圧力Áp suất đẩy \r\nxylanh B (Mpa)";
             this.xrTableCell21.Weight = 1D;
             // 
             // xrTableCell22
             // 
+            this.xrTableCell22.BackColor = System.Drawing.SystemColors.ControlLight;
             this.xrTableCell22.Multiline = true;
             this.xrTableCell22.Name = "xrTableCell22";
+            this.xrTableCell22.StylePriority.UseBackColor = false;
             this.xrTableCell22.Text = "コイル位置 Vị trí \r\ncuộn dây (mm)";
             this.xrTableCell22.Weight = 1D;
             // 
             // xrTableCell23
             // 
+            this.xrTableCell23.BackColor = System.Drawing.SystemColors.ControlLight;
             this.xrTableCell23.Multiline = true;
             this.xrTableCell23.Name = "xrTableCell23";
+            this.xrTableCell23.StylePriority.UseBackColor = false;
             this.xrTableCell23.Text = "マイクロメータ\r\nーGiá trị Panme \r\n(mm)";
             this.xrTableCell23.Weight = 1D;
             // 
             // xrTableCell24
             // 
+            this.xrTableCell24.BackColor = System.Drawing.SystemColors.ControlLight;
             this.xrTableCell24.Multiline = true;
             this.xrTableCell24.Name = "xrTableCell24";
+            this.xrTableCell24.StylePriority.UseBackColor = false;
             this.xrTableCell24.Text = "Áp suất khí \r\nthổiエアーブロー\r\n圧力(Mpa)";
             this.xrTableCell24.Weight = 0.93433653054541632D;
             // 

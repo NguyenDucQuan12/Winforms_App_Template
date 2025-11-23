@@ -245,8 +245,10 @@ namespace Winforms_App_Template.Forms.SubReport
             // 
             // xrTableCell1
             // 
+            this.xrTableCell1.BackColor = System.Drawing.SystemColors.ControlLight;
             this.xrTableCell1.Multiline = true;
             this.xrTableCell1.Name = "xrTableCell1";
+            this.xrTableCell1.StylePriority.UseBackColor = false;
             this.xrTableCell1.Text = "ロットによって生産結果（生産ロット完了した時のみ記録）Kết quả sản xuất theo lô(chỉ ghi khi kết thúc lô sản x" +
     "uất)";
             this.xrTableCell1.Weight = 6D;
@@ -264,40 +266,50 @@ namespace Winforms_App_Template.Forms.SubReport
             // 
             // xrTableCell2
             // 
+            this.xrTableCell2.BackColor = System.Drawing.SystemColors.ControlLight;
             this.xrTableCell2.Multiline = true;
             this.xrTableCell2.Name = "xrTableCell2";
             this.xrTableCell2.RowSpan = 2;
+            this.xrTableCell2.StylePriority.UseBackColor = false;
             this.xrTableCell2.Text = "品名コード\r\nCode chủng loại";
             this.xrTableCell2.Weight = 1D;
             // 
             // xrTableCell3
             // 
+            this.xrTableCell3.BackColor = System.Drawing.SystemColors.ControlLight;
             this.xrTableCell3.Multiline = true;
             this.xrTableCell3.Name = "xrTableCell3";
             this.xrTableCell3.RowSpan = 2;
+            this.xrTableCell3.StylePriority.UseBackColor = false;
             this.xrTableCell3.Text = "総投入数\r\nSố lượng sử dụng";
             this.xrTableCell3.Weight = 1D;
             // 
             // xrTableCell4
             // 
+            this.xrTableCell4.BackColor = System.Drawing.SystemColors.ControlLight;
             this.xrTableCell4.Multiline = true;
             this.xrTableCell4.Name = "xrTableCell4";
             this.xrTableCell4.RowSpan = 2;
+            this.xrTableCell4.StylePriority.UseBackColor = false;
             this.xrTableCell4.Text = "最終適合品数\r\nSố hàng phù hợp";
             this.xrTableCell4.Weight = 1D;
             // 
             // xrTableCell5
             // 
+            this.xrTableCell5.BackColor = System.Drawing.SystemColors.ControlLight;
             this.xrTableCell5.Multiline = true;
             this.xrTableCell5.Name = "xrTableCell5";
             this.xrTableCell5.RowSpan = 2;
+            this.xrTableCell5.StylePriority.UseBackColor = false;
             this.xrTableCell5.Text = "最終不適合品数\r\nSố hàng không phù hợp";
             this.xrTableCell5.Weight = 1D;
             // 
             // xrTableCell6
             // 
+            this.xrTableCell6.BackColor = System.Drawing.SystemColors.ControlLight;
             this.xrTableCell6.Multiline = true;
             this.xrTableCell6.Name = "xrTableCell6";
+            this.xrTableCell6.StylePriority.UseBackColor = false;
             this.xrTableCell6.Text = "工検サンプル数\r\nHàng mẫu kiểm tra công đoạn";
             this.xrTableCell6.Weight = 2D;
             // 
@@ -343,15 +355,19 @@ namespace Winforms_App_Template.Forms.SubReport
             // 
             // xrTableCell11
             // 
+            this.xrTableCell11.BackColor = System.Drawing.SystemColors.ControlLight;
             this.xrTableCell11.Multiline = true;
             this.xrTableCell11.Name = "xrTableCell11";
+            this.xrTableCell11.StylePriority.UseBackColor = false;
             this.xrTableCell11.Text = "破壊有りサンプル\r\nMẫu phá hủy";
             this.xrTableCell11.Weight = 1D;
             // 
             // xrTableCell12
             // 
+            this.xrTableCell12.BackColor = System.Drawing.SystemColors.ControlLight;
             this.xrTableCell12.Multiline = true;
             this.xrTableCell12.Name = "xrTableCell12";
+            this.xrTableCell12.StylePriority.UseBackColor = false;
             this.xrTableCell12.Text = "破壊無しサンプル\r\nMẫu không phá hủy";
             this.xrTableCell12.Weight = 1D;
             // 

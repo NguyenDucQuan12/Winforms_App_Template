@@ -47,45 +47,85 @@ namespace Winforms_App_Template.Report
         /// <exception cref="ArgumentException"></exception>
         /// <exception cref="InvalidOperationException"></exception>
         public static void EnsureParametersForBand(
-            XtraReport rpt,                 // report chính
-            string bandName,                // tên band (ví dụ "Catongtho_Report")
-            IEnumerable<ParameterSpec> specs,
-            bool visible = false            // để false: không bật dialog parameter mặc định
-        )
+    XtraReport rpt,                 // report chính
+    string bandName,                // tên band (ví dụ "Catongtho_Report")
+    IEnumerable<ParameterSpec> specs,
+    bool visible = false            // để false: không bật dialog parameter mặc định
+)
         {
-            if (rpt == null) throw new ArgumentNullException(nameof(rpt));       // report không null
-            if (string.IsNullOrWhiteSpace(bandName)) throw new ArgumentException("bandName required.", nameof(bandName));
-            if (specs == null) return;                                           // không có gì để tạo
+            if (rpt == null)
+                throw new ArgumentNullException(nameof(rpt));  // report không được null
 
-            // Tìm band theo tên
+            if (string.IsNullOrWhiteSpace(bandName))
+                throw new ArgumentException("bandName required.", nameof(bandName));
+
+            if (specs == null)
+                return; // không có gì để tạo
+
+            // 1. Tìm DetailReportBand theo tên bandName
             var band = DesignSchema.FindDetailReportBandByName(rpt, bandName);
-            if (band == null) throw new InvalidOperationException($"Không tìm thấy DetailReportBand '{bandName}'.");
+            if (band == null)
+                throw new InvalidOperationException($"Không tìm thấy DetailReportBand '{bandName}'.");
 
+            // 2. Tìm ReportHeaderBand bên trong band này
+            //    - DetailReportBand có collection Bands chứa các band con:
+            //      DetailBand, GroupHeaderBand, GroupFooterBand, ReportHeaderBand, ...
+            var headerBand = band.Bands
+                                 .OfType<ReportHeaderBand>()
+                                 .FirstOrDefault();
+
+            // 3. Nếu KHÔNG có ReportHeaderBand → bỏ qua, không tạo parameter cho band này
+            if (headerBand == null)
+            {
+                // Không ném exception, chỉ đơn giản là không tạo param cho band này
+                return;
+            }
+
+            // 4. Kiểm tra tên của headerBand có chứa từ "header" hay không
+            //    - Không phân biệt hoa/thường: dùng StringComparison.OrdinalIgnoreCase
+            var headerName = headerBand.Name ?? string.Empty;
+
+            // Nếu tên header KHÔNG chứa từ "header" → cũng bỏ qua, không tạo parameter
+            if (!headerName.Contains("header", StringComparison.OrdinalIgnoreCase))
+            {
+                return;
+            }
+
+            // 5. Chỉ đến đây nếu:
+            //    - Tồn tại ReportHeaderBand
+            //    - Và tên của ReportHeaderBand có chứa "header"
+            //    → Bắt đầu tạo parameters cho band này
             foreach (var spec in specs)
             {
-                // Tạo tên đầy đủ: p_{ParamName}
+                if (spec == null)
+                    continue;
+
+                // Tạo tên đầy đủ: p_{bandName}_{ParamName}
+                // Ví dụ: bandName = "Catongtho_Report", spec.Name = "FromDate"
+                // fullName = "p_Catongtho_Report_FromDate"
                 var fullName = $"p_{bandName}_{spec.Name}";
 
-                // Nếu đã có parameter trùng tên → bỏ qua
+                // Nếu đã có parameter trùng tên trên report → bỏ qua, không tạo lại
                 var existing = rpt.Parameters[fullName];
-                if (existing != null) continue;
+                if (existing != null)
+                    continue;
 
-                // Tạo mới
+                // Tạo mới parameter
                 var p = new Parameter
                 {
-                    Name = fullName,                                             // tên param
-                    Type = spec.Type,                                            // kiểu .NET
+                    Name = fullName,                  // tên param đầy đủ
+                    Type = spec.Type,                 // kiểu .NET (typeof(int), typeof(DateTime), ...)
                     Description = string.IsNullOrWhiteSpace(spec.Label)
-                                ? $"{bandName}.{spec.Name}"                      // gợi ý band + tên
-                                : spec.Label,                                    // nhãn gợi ý (hiện ở Field List)
-                    Visible = visible                                            // thường để false
+                                ? $"{bandName}.{spec.Name}"  // gợi ý: Band.ParamName
+                                : spec.Label,               // nhãn hiển thị trong Field List
+                    Visible = visible                  // thường để false để không hiện dialog mặc định
                 };
 
-                // Giá trị mặc định (nếu có)
+                // Nếu có giá trị mặc định thì gán
                 if (spec.DefaultValue != null)
                     p.Value = spec.DefaultValue;
 
-                // Thêm vào report
+                // Thêm parameter vào collection của report
                 rpt.Parameters.Add(p);
             }
         }

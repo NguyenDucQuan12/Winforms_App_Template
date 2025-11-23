@@ -472,4 +472,33 @@ public static class ReportLayoutHelpers
         }
     }
 
+    public static DetailReportBand FindDetailReportBandOrThrow(XtraReport rpt, string bandName)
+    {
+        var band = rpt.Bands
+                      .OfType<DetailReportBand>()
+                      .FirstOrDefault(b => string.Equals(
+                            b.Name,
+                            bandName,
+                            StringComparison.Ordinal)); // phân biệt hoa thường
+
+        if (band == null)
+            throw new InvalidOperationException($"Không thấy band '{bandName}' trong layout.");
+
+        return band;
+    }
+
+    /// <summary>
+    /// Tìm DetailReportBand theo tên, nếu không có thì trả về null.
+    /// Dùng cho band optional (vd: bandName + "_dkm").
+    /// </summary>
+    public static DetailReportBand TryFindDetailReportBand(XtraReport rpt, string bandName)
+    {
+        return rpt.Bands
+                  .OfType<DetailReportBand>()
+                  .FirstOrDefault(b => string.Equals(
+                        b.Name,
+                        bandName,
+                        StringComparison.Ordinal));
+    }
+
 }

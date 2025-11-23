@@ -46,12 +46,12 @@ namespace Winforms_App_Template.Forms.SubReport
             // 
             // TopMargin
             // 
-            this.TopMargin.HeightF = 0F;
+            this.TopMargin.HeightF = 10F;
             this.TopMargin.Name = "TopMargin";
             // 
             // BottomMargin
             // 
-            this.BottomMargin.HeightF = 2.499994F;
+            this.BottomMargin.HeightF = 10F;
             this.BottomMargin.Name = "BottomMargin";
             // 
             // Detail
@@ -59,7 +59,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.Detail.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
             this.xrTable1});
             this.Detail.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
-            this.Detail.HeightF = 18F;
+            this.Detail.HeightF = 14F;
             this.Detail.KeepTogether = true;
             this.Detail.Name = "Detail";
             this.Detail.StylePriority.UseFont = false;
@@ -75,7 +75,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTable1.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
             this.xrTable1.Rows.AddRange(new DevExpress.XtraReports.UI.XRTableRow[] {
             this.xrTableRow2});
-            this.xrTable1.SizeF = new System.Drawing.SizeF(199.5501F, 18F);
+            this.xrTable1.SizeF = new System.Drawing.SizeF(199.5501F, 14F);
             this.xrTable1.StylePriority.UseBorderColor = false;
             this.xrTable1.StylePriority.UseBorders = false;
             this.xrTable1.StylePriority.UseBorderWidth = false;
@@ -90,7 +90,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell4});
             this.xrTableRow2.Name = "xrTableRow2";
             this.xrTableRow2.StylePriority.UseBorderWidth = false;
-            this.xrTableRow2.Weight = 0.72D;
+            this.xrTableRow2.Weight = 0.55999999999999994D;
             // 
             // xrTableCell3
             // 
@@ -111,10 +111,11 @@ namespace Winforms_App_Template.Forms.SubReport
             this.ReportHeader.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
             this.xrTable2});
             this.ReportHeader.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
-            this.ReportHeader.HeightF = 20F;
+            this.ReportHeader.HeightF = 14F;
             this.ReportHeader.KeepTogether = true;
             this.ReportHeader.Name = "ReportHeader";
             this.ReportHeader.StylePriority.UseFont = false;
+            this.ReportHeader.Visible = false;
             // 
             // xrTable2
             // 
@@ -128,7 +129,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTable2.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
             this.xrTable2.Rows.AddRange(new DevExpress.XtraReports.UI.XRTableRow[] {
             this.xrTableRow3});
-            this.xrTable2.SizeF = new System.Drawing.SizeF(199.5501F, 20F);
+            this.xrTable2.SizeF = new System.Drawing.SizeF(199.5501F, 14F);
             this.xrTable2.StylePriority.UseBorderColor = false;
             this.xrTable2.StylePriority.UseBorders = false;
             this.xrTable2.StylePriority.UseBorderWidth = false;
@@ -141,7 +142,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell5,
             this.xrTableCell6});
             this.xrTableRow3.Name = "xrTableRow3";
-            this.xrTableRow3.Weight = 0.8D;
+            this.xrTableRow3.Weight = 0.56D;
             // 
             // xrTableCell5
             // 
@@ -164,8 +165,11 @@ namespace Winforms_App_Template.Forms.SubReport
             this.BottomMargin,
             this.Detail,
             this.ReportHeader});
-            this.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F);
-            this.Margins = new DevExpress.Drawing.DXMargins(100F, 100F, 0F, 2.499994F);
+            this.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
+            this.Margins = new DevExpress.Drawing.DXMargins(10F, 10F, 10F, 10F);
+            this.PageHeightF = 1653.543F;
+            this.PageWidthF = 1169.291F;
+            this.PaperKind = DevExpress.Drawing.Printing.DXPaperKind.A3;
             this.Version = "25.1";
             ((System.ComponentModel.ISupportInitialize)(this.xrTable1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable2)).EndInit();

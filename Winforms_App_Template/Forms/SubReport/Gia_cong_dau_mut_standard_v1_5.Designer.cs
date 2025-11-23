@@ -177,36 +177,46 @@ namespace Winforms_App_Template.Forms.SubReport
             // 
             // xrTableCell6
             // 
+            this.xrTableCell6.BackColor = System.Drawing.SystemColors.ControlLight;
             this.xrTableCell6.Multiline = true;
             this.xrTableCell6.Name = "xrTableCell6";
+            this.xrTableCell6.StylePriority.UseBackColor = false;
             this.xrTableCell6.Text = "製品検査基準\r\n Tiêu chuẩn kiểm tra sản phẩm";
             this.xrTableCell6.Weight = 1D;
             // 
             // xrTableCell7
             // 
+            this.xrTableCell7.BackColor = System.Drawing.SystemColors.ControlLight;
             this.xrTableCell7.Multiline = true;
             this.xrTableCell7.Name = "xrTableCell7";
+            this.xrTableCell7.StylePriority.UseBackColor = false;
             this.xrTableCell7.Text = "品種\r\nChủng loại (cm)";
             this.xrTableCell7.Weight = 1D;
             // 
             // xrTableCell8
             // 
+            this.xrTableCell8.BackColor = System.Drawing.SystemColors.ControlLight;
             this.xrTableCell8.Multiline = true;
             this.xrTableCell8.Name = "xrTableCell8";
+            this.xrTableCell8.StylePriority.UseBackColor = false;
             this.xrTableCell8.Text = " Frサイズ\r\nKích cỡ Fr";
             this.xrTableCell8.Weight = 1D;
             // 
             // xrTableCell9
             // 
+            this.xrTableCell9.BackColor = System.Drawing.SystemColors.ControlLight;
             this.xrTableCell9.Multiline = true;
             this.xrTableCell9.Name = "xrTableCell9";
+            this.xrTableCell9.StylePriority.UseBackColor = false;
             this.xrTableCell9.Text = "通過検査ピンゲージ\r\nPingauge xuyên (mm)";
             this.xrTableCell9.Weight = 1D;
             // 
             // xrTableCell10
             // 
+            this.xrTableCell10.BackColor = System.Drawing.SystemColors.ControlLight;
             this.xrTableCell10.Multiline = true;
             this.xrTableCell10.Name = "xrTableCell10";
+            this.xrTableCell10.StylePriority.UseBackColor = false;
             this.xrTableCell10.Text = "不通過検査ピンゲージ\r\nPingauge không xuyên (mm)";
             this.xrTableCell10.Weight = 1D;
             // 
