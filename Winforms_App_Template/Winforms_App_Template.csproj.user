@@ -25,6 +25,15 @@
     <Compile Update="Forms\SubReport\Gia_cong_dau_mut_standard_v1_5.cs">
       <SubType>XtraReport</SubType>
     </Compile>
+    <Compile Update="Forms\SubReport\Gia_cong_dau_mut_v6_18_dkm.cs">
+      <SubType>XtraReport</SubType>
+    </Compile>
+    <Compile Update="Forms\SubReport\Gia_cong_dau_mut_v6_18_dkm_standard.cs">
+      <SubType>XtraReport</SubType>
+    </Compile>
+    <Compile Update="Forms\SubReport\Gia_cong_dau_mut_v6_18_standard.cs">
+      <SubType>XtraReport</SubType>
+    </Compile>
     <Compile Update="Forms\SubReport\Kiem_tra_ngoai_quan_standard.cs">
       <SubType>XtraReport</SubType>
     </Compile>

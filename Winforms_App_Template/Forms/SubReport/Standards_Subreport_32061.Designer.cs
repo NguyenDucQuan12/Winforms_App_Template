@@ -59,7 +59,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.Detail.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
             this.xrTable1});
             this.Detail.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
-            this.Detail.HeightF = 14F;
+            this.Detail.HeightF = 10F;
             this.Detail.KeepTogether = true;
             this.Detail.Name = "Detail";
             this.Detail.StylePriority.UseFont = false;
@@ -75,7 +75,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTable1.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
             this.xrTable1.Rows.AddRange(new DevExpress.XtraReports.UI.XRTableRow[] {
             this.xrTableRow2});
-            this.xrTable1.SizeF = new System.Drawing.SizeF(199.5501F, 14F);
+            this.xrTable1.SizeF = new System.Drawing.SizeF(199.5501F, 10F);
             this.xrTable1.StylePriority.UseBorderColor = false;
             this.xrTable1.StylePriority.UseBorders = false;
             this.xrTable1.StylePriority.UseBorderWidth = false;
@@ -90,7 +90,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell4});
             this.xrTableRow2.Name = "xrTableRow2";
             this.xrTableRow2.StylePriority.UseBorderWidth = false;
-            this.xrTableRow2.Weight = 0.55999999999999994D;
+            this.xrTableRow2.Weight = 0.39999999999999997D;
             // 
             // xrTableCell3
             // 
@@ -111,11 +111,10 @@ namespace Winforms_App_Template.Forms.SubReport
             this.ReportHeader.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
             this.xrTable2});
             this.ReportHeader.Font = new DevExpress.Drawing.DXFont("Times New Roman", 4.5F);
-            this.ReportHeader.HeightF = 14F;
+            this.ReportHeader.HeightF = 10F;
             this.ReportHeader.KeepTogether = true;
             this.ReportHeader.Name = "ReportHeader";
             this.ReportHeader.StylePriority.UseFont = false;
-            this.ReportHeader.Visible = false;
             // 
             // xrTable2
             // 
@@ -129,7 +128,7 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTable2.Padding = new DevExpress.XtraPrinting.PaddingInfo(2F, 2F, 0F, 0F, 100F);
             this.xrTable2.Rows.AddRange(new DevExpress.XtraReports.UI.XRTableRow[] {
             this.xrTableRow3});
-            this.xrTable2.SizeF = new System.Drawing.SizeF(199.5501F, 14F);
+            this.xrTable2.SizeF = new System.Drawing.SizeF(199.5501F, 10F);
             this.xrTable2.StylePriority.UseBorderColor = false;
             this.xrTable2.StylePriority.UseBorders = false;
             this.xrTable2.StylePriority.UseBorderWidth = false;
@@ -142,20 +141,24 @@ namespace Winforms_App_Template.Forms.SubReport
             this.xrTableCell5,
             this.xrTableCell6});
             this.xrTableRow3.Name = "xrTableRow3";
-            this.xrTableRow3.Weight = 0.56D;
+            this.xrTableRow3.Weight = 0.35000000000000003D;
             // 
             // xrTableCell5
             // 
+            this.xrTableCell5.BackColor = System.Drawing.SystemColors.ControlLight;
             this.xrTableCell5.Multiline = true;
             this.xrTableCell5.Name = "xrTableCell5";
-            this.xrTableCell5.Text = "検査項目\r\nHạng mục kiểm tra";
+            this.xrTableCell5.StylePriority.UseBackColor = false;
+            this.xrTableCell5.Text = "検査項目    Hạng mục kiểm tra";
             this.xrTableCell5.Weight = 1.195312836409492D;
             // 
             // xrTableCell6
             // 
+            this.xrTableCell6.BackColor = System.Drawing.SystemColors.ControlLight;
             this.xrTableCell6.Multiline = true;
             this.xrTableCell6.Name = "xrTableCell6";
-            this.xrTableCell6.Text = "基準\r\nTiêu chuẩn";
+            this.xrTableCell6.StylePriority.UseBackColor = false;
+            this.xrTableCell6.Text = "基準     Tiêu chuẩn";
             this.xrTableCell6.Weight = 0.80018896066638256D;
             // 
             // Standards_Subreport_32061
