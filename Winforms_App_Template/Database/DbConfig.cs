@@ -28,10 +28,10 @@ namespace Winforms_App_Template.Database
             // - TrustServerCertificate=False: nên cấu hình CA đúng; dev có thể tạm True
             // - Connect Timeout=15: kết nối không quá 15s
             // - Application Name: giúp DBA truy vết kết nối
-            return "Server=localhost,1433;" +
-                    "Database=MESPlus;" +
+            return "Server=10.239.1.54;" +
+                    "Database=MESPlus_Dev;" +
                     "User Id=sa;" +
-                    "Password=123456789;" +
+                    "Password=123456;" +
                     "TrustServerCertificate=True;" +
                     "Connect Timeout=15;" +
                     "Application Name=Test";
