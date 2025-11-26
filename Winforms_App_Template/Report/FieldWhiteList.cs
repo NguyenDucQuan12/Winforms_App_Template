@@ -727,28 +727,22 @@ namespace Winforms_App_Template.Report
     /// Tự động tạo các filed tự động với dữ liệu đã có ở DB
     public sealed class Auto_Build_FieldWhiteList
     {
-        /// <summary>
-        /// Repo truy vấn bảng tblMasterForm_Controls.
-        /// </summary>
+
+        // Bảng để truy vấn
         private MasterForm_Table _masterFormRepo;
         private MasterFormControl_Table _masterFormcontrolRepo;
 
-        /// <summary>
-        /// Cache nội bộ: lưu map idMasterForm => FieldWhitelist đã build.
-        /// Dùng để tránh truy vấn DB nhiều lần cho cùng 1 form.
-        /// </summary>
-        private readonly Dictionary<int, FieldWhitelist> _cache = new Dictionary<int, FieldWhitelist>(capacity: 16);
+        // Cache cho form CHÍNH: key = idCongDoan, value = FieldWhitelist
+        private readonly Dictionary<int, FieldWhitelist> _cacheMain =
+            new Dictionary<int, FieldWhitelist>(capacity: 16);
 
-        /// <summary>
+        // Cache cho form ĐIỀU KIỆN MÁY: key = idCongDoan, value = FieldWhitelist
+        private readonly Dictionary<int, FieldWhitelist> _cacheDkm =
+            new Dictionary<int, FieldWhitelist>(capacity: 16);
+
         /// Lock để bảo vệ cache trong môi trường đa luồng.
-        /// </summary>
         private readonly SemaphoreSlim _cacheLock = new SemaphoreSlim(1, 1);
 
-        /// <summary>
-        /// Khởi tạo instance registry với repo cho bảng controls.
-        /// Truyền repo thực tế từ Form (vd: new MasterFormControls_Table(executor)).
-        /// </summary>
-        /// <param name="masterFormControlsRepo">Repo truy vấn tblMasterForm_Controls</param>
         public Auto_Build_FieldWhiteList(DbExecutor? db = null)
         {
             var executor = db ?? new DbExecutor();
@@ -763,15 +757,20 @@ namespace Winforms_App_Template.Report
         /// </summary>
         /// <param name="idMasterForm">Id của form (idMasterForm)</param>
         /// <param name="ct">CancellationToken để hủy</param>
-        public async Task<FieldWhitelist> GetWhitelistForFormAsync(int idMasterForm, CancellationToken ct = default)
+        public async Task<FieldWhitelist> GetWhitelistForFormAsync(int idMasterForm, bool isDkm, CancellationToken ct = default)
         {
-            // 1) Kiểm tra cache nhanh (không lock) — tránh overhead lock nếu đã tồn tại.
+            // 2) Chọn cache tương ứng:
+            //    - cacheMain: form chính
+            //    - cacheDkm : form điều kiện máy
+            var _cache = isDkm ? _cacheDkm : _cacheMain;
+
+            // Kiểm tra nếu idmasterform này đã có Dataset trong cache thì trả về luôn
             if (_cache.TryGetValue(idMasterForm, out var cached))
             {
                 return cached; // trả ngay
             }
 
-            // 2) Nếu không có trong cache -> lock để thực hiện truy vấn & build
+            // Nếu không có trong cache -> lock để thực hiện truy vấn & tạo Dataset
             await _cacheLock.WaitAsync(ct).ConfigureAwait(false);
             try
             {
@@ -779,21 +778,21 @@ namespace Winforms_App_Template.Report
                 if (_cache.TryGetValue(idMasterForm, out cached))
                     return cached;
 
-                // 3) Truy vấn repo: lấy tất cả control cho idMasterForm này
+                // Truy vấn dữ liệu để lấy tất cả control cho idMasterForm này
                 var controlRows = await _masterFormcontrolRepo.Get_Detail_Control(idMasterForm, ct).ConfigureAwait(false);
 
-                // 4) Build FieldWhitelist từ rows trả về
+                // Tạo FieldWhitelist từ rows trả về
                 var whitelist = BuildWhitelistFromRows(controlRows);
 
-                // 5) Lưu vào cache
+                // Lưu vào cache
                 _cache[idMasterForm] = whitelist;
 
-                // 6) Trả kết quả
+                // Trả kết quả
                 return whitelist;
             }
             finally
             {
-                // Giải phóng lock (quan trọng!)
+                // Giải phóng lock (quan trọnggggggggggggggggg)
                 _cacheLock.Release();
             }
         }
@@ -803,60 +802,89 @@ namespace Winforms_App_Template.Report
         /// - Thực hiện truy vấn batch (nếu repo hỗ trợ), build tất cả và trả về dictionary.
         /// - Dùng để khởi tạo nhiều form cùng lúc.
         /// </summary>
-        public async Task<Dictionary<int, FieldWhitelist>> GetWhitelistsForFormsAsync(IEnumerable<int> idCongDoan, CancellationToken ct = default)
+        public async Task<Dictionary<int, FieldWhitelist>> GetWhitelistsForFormsAsync(IEnumerable<int> idCongDoan, bool isDkm, CancellationToken ct = default)
         {
-            // Chuẩn hóa input thành mảng unique
+            // Chuẩn hóa input: bỏ null, bỏ trùng, convert sang mảng
             var ids = idCongDoan?.Distinct().ToArray() ?? Array.Empty<int>();
+            // Tạo dictionary chứa kết quả
             var result = new Dictionary<int, FieldWhitelist>(ids.Length);
 
             if (ids.Length == 0) return result; // không có gì -> trả rỗng
 
-            // Lấy danh sách id chưa có trong cache
-            var idsToFetch = ids.Where(id => !_cache.ContainsKey(id)).ToArray();
+            // Chọn cache tương ứng:
+            //    - cacheMain: form chính
+            //    - cacheDkm : form điều kiện máy
+            var _cache = isDkm ? _cacheDkm : _cacheMain;
 
-            // Nếu có id cần fetch -> gọi repo 1 lần
-            if (idsToFetch.Length > 0)
+            // Khóa cacheLock để tránh bị xung đột dữ liệu cùng thao tác trên 1 trường
+            await _cacheLock.WaitAsync(ct).ConfigureAwait(false);
+            try
             {
-                // Lấy masterForm có phiên bản mới nhất
-                var rows = await _masterFormRepo.Get_Latest_MasterForm(idsToFetch, ct).ConfigureAwait(false);
+                // Xác định id nào chưa có trong cache
+                var idsToFetch = ids.Where(id => !_cache.ContainsKey(id)).ToArray();
 
-                // Group row theo id
-                var grouped = rows.GroupBy(r => r.Id).ToDictionary(g => g.Key, g => g.ToList());
-
-                // Build whitelist cho từng group và ghi vào cache
-                await _cacheLock.WaitAsync(ct).ConfigureAwait(false);
-                try
+                // Nếu tồn tại id chưa có dữ liệu thì bắt đầu truy vấn
+                if (idsToFetch.Length > 0)
                 {
-                    foreach (var id in grouped.Keys)
+                    List<MasterForm_Model> masterForms;
+
+                    if (isDkm)
                     {
-                        // Truy vấn các control trong form này
-                        var rowsForId = await _masterFormcontrolRepo.Get_Detail_Control(idMasterForm: id, ct: ct);
+                        // 5.a) Form ĐIỀU KIỆN MÁY:
+                        //      - dùng hàm repo có điều kiện mf.isDieuKienMay = 1
+                        //      => chính là SQL bạn gửi phía dưới.
+                        masterForms = await _masterFormRepo
+                            .Get_Latest_MasterForm_DKM(idsToFetch, ct)  
+                            .ConfigureAwait(false);
+                    }
+                    else
+                    {
+                        // 5.b) Form CHÍNH:
+                        //      - dùng hàm repo "bình thường", không filter isDieuKienMay
+                        //      hoặc isDieuKienMay = 0 tuỳ thiết kế DB của bạn.
+                        masterForms = await _masterFormRepo
+                            .Get_Latest_MasterForm_Main(idsToFetch, ct)  
+                            .ConfigureAwait(false);
+                    }
+
+                    // Nhóm các version này lại với nhau thông qua id công đoạn
+                    var grouped = masterForms
+                                            .GroupBy(mf => mf.idCongDoan)   // group theo id công đoạn
+                                            .ToDictionary(g => g.Key, g => g.ToList());
+
+                    // Duyệt từng công đoạn và tạo dataset
+                    foreach (var congDoanId in grouped.Keys)
+                    {
+                        // Lấy masterForm Id hiện tại
+                        var mf = grouped[congDoanId].OrderByDescending(v => v.Ver).First();
+                        var masterFormId = mf.Id;   // Id MasterForm thực tế
+
+                        // Lấy danh sách các control để build DAtaset
+                        var rowsForId = await _masterFormcontrolRepo.Get_Detail_Control(idMasterForm: masterFormId, ct: ct);
                         var wl = BuildWhitelistFromRows(rowsForId);
-                        _cache[id] = wl;
+                        // Lưu Dataset này vào cache
+                        _cache[congDoanId] = wl;
                     }
                 }
-                finally
+
+                // Duyệt lại 1 lần nữa toàn bộ danh sách id
+                foreach (var id in ids)
                 {
-                    _cacheLock.Release();
+                    // Gán Dataset cho từng id nếu tồn tại dữ liệu
+                    if (_cache.TryGetValue(id, out var wl))
+                        result[id] = wl;
+                    // Nếu không thì gán dataset rỗng
+                    else
+                        result[id] = new FieldWhitelist();
                 }
-            }
 
-            // 3) Bây giờ đọc cache cho tất cả ids -> trả về result
-            foreach (var id in ids)
+                return result;
+            }
+            finally
             {
-                if (_cache.TryGetValue(id, out var wl))
-                    result[id] = wl;
-                else
-                    result[id] = new FieldWhitelist(); // nếu không có rows -> trả empty whitelist
-            }
-
-            return result;
+                _cacheLock.Release();
+            }     
         }
-
-
-        // =================================================================
-        // PRIVATE: BUILDING LOGIC
-        // =================================================================
 
         /// <summary>
         /// Tạo FieldWhitelist từ danh sách rows lấy từ DB.
@@ -870,41 +898,28 @@ namespace Winforms_App_Template.Report
             // Tạo whitelist mới
             var whitelist = new FieldWhitelist();
 
-            // 0) Thêm các field header mặc định (theo mẫu bạn dùng trong các báo cáo).
-            //    Nếu bạn đã có logic khác để thêm header, bạn có thể bỏ block này.
+            // Thêm các field header mặc định (Là tất cả các trường này ở đâu cũng có).
             whitelist
                 .Add("MaKT", typeof(string), "Lý do kiểm tra")
                 .Add("StartTime", typeof(DateTime), "Thời gian bắt đầu")
                 .Add("NguoiTT", typeof(string), "Người thao tác")
                 .Add("TenMay_Ban", typeof(string), "Số máy sản xuất")
-                .Add("SLSudung", typeof(int), "Số lượng sử dụng")
-                .Add("OKQty", typeof(int), "Số lượng hàng phù hợp")
-                .Add("NGQty", typeof(int), "Số lượng hàng không phù hợp")
                 .Add("Remark", typeof(string), "Ghi chú");
 
             // Nếu không có rows -> trả whitelist chỉ chứa các header mặc định
             if (rows == null || rows.Count == 0) return whitelist;
 
-            // 1) Tập các DBColumn đã thêm để tránh duplicate
+            // Tạo danh sách chứa các cột sẽ được thêm vào Dataset
             var added = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-            // mark header names as added để tránh DB trùng với header
-            foreach (var h in new[] { "MaKT", "StartTime", "NguoiTT", "TenMay_Ban", "SLSudung", "OKQty", "NGQty", "Remark" })
+            // Thêm các cột mặc định 
+            foreach (var h in new[] { "MaKT", "StartTime", "NguoiTT", "TenMay_Ban", "Remark" })
                 added.Add(h);
 
-            // 2) Cố gắng lấy property "ControlType" hay "ControlKind" nếu model của bạn có (tự động, bằng phản chiếu).
-            //    Nhiều model lưu kiểu control (TextBox/Numeric/YESNO/DateTime) ở property khác nhau — ta tìm mọi khả năng.
-            var modelType = typeof(MasterForm_Control_Model);
-            // Tên property khả dĩ có control type (tuỳ model)
-            var possibleTypeProps = new[] { "ControlType", "ControlKind", "Type", "ControlFormat" };
-            var controlTypeProperty = possibleTypeProps
-                .Select(name => modelType.GetProperty(name))
-                .FirstOrDefault(p => p != null);
-
-            // 3) Duyệt từng row DB để thêm vào whitelist
+            // Duyệt từng row DB để thêm vào whitelist
             foreach (var r in rows)
             {
-                // an toàn: lấy dbColumn, friendly
+                // lấy dbColumn, friendly
                 var dbColumn = (r.DBColumn ?? string.Empty).Trim();
                 if (string.IsNullOrEmpty(dbColumn))
                 {
@@ -912,34 +927,19 @@ namespace Winforms_App_Template.Report
                     continue;
                 }
 
-                // nếu đã thêm rồi thì skip
+                // Kiểm tra xem cột này đã có trong danh sách chưa, để không trùng lặp
                 if (added.Contains(dbColumn)) continue;
 
                 // lấy friendlyName (nếu rỗng sẽ fallback về dbColumn)
                 var friendly = string.IsNullOrWhiteSpace(r.FriendlyName) ? dbColumn : r.FriendlyName.Trim();
 
-                // 4) cố gắng đọc control-type từ model nếu có (ví dụ "Numeric", "YESNO", "DateTime", "TextBox")
-                string? controlTypeValue = null;
-                if (controlTypeProperty != null)
-                {
-                    try
-                    {
-                        var val = controlTypeProperty.GetValue(r);
-                        if (val != null) controlTypeValue = val.ToString();
-                    }
-                    catch
-                    {
-                        // silent: nếu phản chiếu thất bại thì bỏ qua, dùng heuristics phía dưới
-                    }
-                }
+                // Nếu model ko có kiểu dữ liệu thì đoán kiểu: ưu tiên controlTypeValue, nếu không có thì dựa trên dbColumn/friendly
+                var fieldType = DetectFieldType(dbColumn, friendly);
 
-                // 5) Heuristic đoán kiểu: ưu tiên controlTypeValue, nếu không có thì dựa trên dbColumn/friendly
-                var fieldType = DetectFieldType(controlTypeValue, dbColumn, friendly);
-
-                // 6) Đưa vào whitelist (fluent Add)
+                //  Đưa vào whitelist
                 whitelist.Add(dbColumn, fieldType, friendly);
 
-                // 7) đánh dấu đã thêm để tránh duplicate
+                // đánh dấu đã thêm để tránh duplicate
                 added.Add(dbColumn);
             }
 
@@ -947,115 +947,36 @@ namespace Winforms_App_Template.Report
         }
 
         /// <summary>
-        /// Helpers: dựa trên controlType (nếu có) + dbColumn/friendly để đoán System.Type cho field.
-        /// Quy tắc:
-        ///  - Nếu controlType chứa "date" / "datetime" => DateTime
-        ///  - Nếu controlType chứa "yesno" / "checkbox" => string (OK/NG) -> keep as string
-        ///  - Nếu controlType chứa "numeric" => int cho các tên lượng (SL,Qty,Count...), ngược lại string (nhiều numeric là đo lường)
+        /// Xác định kiểu dữ liệu cho cột đó nếu nó chứa các từ khóa có thể dự đoán
         ///  - Nếu dbColumn match ^val\d+$ => string
         ///  - Nếu dbColumn chứa "SLSudung|OKQty|NGQty|Qty|SL|Count" => int
         ///  - Nếu friendly chứa từ chỉ thời gian => DateTime
         ///  - Mặc định => string
         /// </summary>
-        private static Type DetectFieldType(string? controlTypeValue, string dbColumn, string friendly)
+        private static Type DetectFieldType( string dbColumn, string friendly)
         {
-            // chuẩn hoá text cho so sánh
-            var ctrl = (controlTypeValue ?? string.Empty).ToLowerInvariant();
+            // chuẩn hoá text và đưa về chữ thường để so sánh
             var text = (dbColumn + " " + friendly).ToLowerInvariant();
 
-            // 1) controlType có precedence
-            if (!string.IsNullOrEmpty(ctrl))
-            {
-                if (ctrl.Contains("date") || ctrl.Contains("datetime") || ctrl.Contains("time"))
-                    return typeof(DateTime);
-
-                // YESNO / checkbox / boolean-like: ta map về string (OK/NG, Yes/No) vì bạn hiển thị text.
-                if (ctrl.Contains("yesno") || ctrl.Contains("checkbox") || ctrl.Contains("boolean"))
-                    return typeof(string);
-
-                if (ctrl.Contains("numeric") || ctrl.Contains("number") || ctrl.Contains("spin"))
-                {
-                    // nếu dbColumn rõ ràng là 1 counter/qty => int, else string to be safe (measurement might need string)
-                    if (RegexIsIntegerLike(dbColumn, friendly))
-                        return typeof(int);
-                    // else fallback to string (keeps original formatting)
-                    return typeof(string);
-                }
-
-                // TextBox / Label -> string
-                if (ctrl.Contains("text") || ctrl.Contains("label"))
-                    return typeof(string);
-            }
-
-            // 2) Nếu dbColumn là valN thì coi là string (theo convention của bạn)
+            // Nếu dbColumn là valxxx thì là string
             if (System.Text.RegularExpressions.Regex.IsMatch(dbColumn, @"^val\d+$", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
                 return typeof(string);
 
-            // 3) Nếu tên cột chứa ngày/thời gian
+            // Nếu tên cột chứa ngày/thời gian
             if (text.Contains("thoigian") || text.Contains("thời gian") || text.Contains("ngày") || text.Contains("time") || text.Contains("date"))
                 return typeof(DateTime);
 
-            // 4) Nếu tên cột chứa 'số lượng' / qty / sl / okqty / ngqty -> int
+            // Nếu tên cột chứa 'số lượng' / qty / sl / okqty / ngqty -> int
             if (text.Contains("số lượng") || text.Contains("qty") || text.Contains("okqty") || text.Contains("ngqty") || text.Contains("sl "))
                 return typeof(int);
 
-            // 5) Nếu tên cột có dạng rõ ràng 'SLSudung' 'OKQty' 'NGQty' -> int (exact match)
+            // Nếu tên cột có dạng rõ ràng 'SLSudung' 'OKQty' 'NGQty' -> int (exact match)
             var intExact = new[] { "slsudung", "okqty", "ngqty", "slloi", "sldung", "sl" };
             if (intExact.Any(k => dbColumn.Equals(k, StringComparison.OrdinalIgnoreCase) || friendly.ToLowerInvariant().Contains(k)))
                 return typeof(int);
 
-            // 6) Mặc định: string (an toàn cho hiển thị & biểu diễn)
+            //  Mặc định: string (an toàn tuyệt đối)
             return typeof(string);
-        }
-
-        /// <summary>
-        /// Trả về true nếu dbColumn/friendly cho thấy field nên là integer (ví dụ SL / Qty).
-        /// Dùng khi controlType = Numeric để quyết int vs string.
-        /// </summary>
-        private static bool RegexIsIntegerLike(string dbColumn, string friendly)
-        {
-            var t = (dbColumn + " " + friendly).ToLowerInvariant();
-            // các keyword thường gặp
-            if (t.Contains("số lượng") || t.Contains("qty") || t.Contains("sl ") || t.Contains("okqty") || t.Contains("ngqty") || t.Contains("số lượng"))
-                return true;
-
-            // nếu dbColumn chính là SLSudung/OKQty/NGQty
-            if (RegexExact(dbColumn, @"^(SLSudung|OKQty|NGQty|SL|SLLoi|SLSuDung|SLL|Count|Qty)$", RegexOptions.IgnoreCase))
-                return true;
-
-            return false;
-        }
-
-        // helper nhỏ regex exact match
-        private static bool RegexExact(string input, string pattern, System.Text.RegularExpressions.RegexOptions opts = System.Text.RegularExpressions.RegexOptions.None)
-        {
-            return System.Text.RegularExpressions.Regex.IsMatch(input ?? string.Empty, pattern, opts);
-        }
-
-        // =================================================================
-        // OPTIONAL: flush cache (nếu bạn thay đổi cấu hình form runtime)
-        // =================================================================
-
-        /// <summary>
-        /// Xoá cache cho form cụ thể (vd khi admin chỉnh tblMasterForm_Controls và bạn muốn reload)
-        /// </summary>
-        public void InvalidateCacheFor(int idMasterForm)
-        {
-            lock (_cache)
-            {
-                _cache.Remove(idMasterForm);
-            }
-        }
-
-        /// <summary>
-        /// Clear toàn bộ cache
-        /// </summary>
-        public void ClearCache()
-        {
-            lock (_cache)
-            {
-                _cache.Clear();
-            }
         }
     }
 }

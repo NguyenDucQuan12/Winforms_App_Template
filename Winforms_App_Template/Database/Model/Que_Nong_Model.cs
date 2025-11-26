@@ -155,7 +155,8 @@ namespace Winforms_App_Template.Database.Model
         string BandName,                    // Tên DetailReportBand trong layout (ví dụ: "Catthoong, ...")
         //string StandardsSubreportName,    // Tên XRSubreport chứa bảng tiêu chuẩn trong band (ví dụ: "SR_Standards_68")
         string HeaderParamPrefix,           // Prefix đẩy tham số header (ví dụ: "p_band_text")
-        bool Isdkm = false                  // Công đoạn này có điều kiện máy không
+        bool Isdkm = false,                 // Công đoạn này có điều kiện máy không
+        string DisplayName = ""             // Công đoạn này có điều kiện máy không
     );
 
     /// <summary>

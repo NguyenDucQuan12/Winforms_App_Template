@@ -9,7 +9,7 @@ namespace Winforms_App_Template.Database.Model
     public sealed class MasterForm_Model
     {
         public int Id { get; set; }                // id (PK)
-        public string idCongDoan { get; set; } = default!;  // ControlCode
+        public int idCongDoan { get; set; }  // ControlCode
         public int Ver { get; set; }      // idMasterForm nhóm
         public int idLoaiCS { get; set; }  // DBColumn (val1, val2, ...)
         public DateTime Fromdate { get; set; } = default!; // FriendlyName (label hiển thị)

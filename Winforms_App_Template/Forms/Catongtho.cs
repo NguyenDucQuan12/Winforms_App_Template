@@ -42,7 +42,7 @@ namespace Winforms_App_Template.Forms
         /// <param name="e"></param>
         private async void Export_Document_Button_Click(object sender, EventArgs e)
         {
-            //// Tạo ƯhiteList bằng hàm và các trường trong DB
+            // Tạo ƯhiteList bằng hàm và các trường trong DB
             //using var cts = new CancellationTokenSource();
             //var whitelistBuilder = new Auto_Build_FieldWhiteList(); // Create an instance
             //var whitelist = await whitelistBuilder.GetWhitelistsForFormsAsync([71], ct: cts.Token);
@@ -650,31 +650,95 @@ namespace Winforms_App_Template.Forms
                     await new ReportLayoutStore(ReportLayoutStore.GetKey(child), updatedBy)
                         .TryLoadAsync(child,  ct: ct);
                 }
-
-                // Chuẩn bị whitelist → DataTable schema cho từng band để gắn vào datasource, dùng cho design
-                // Lưu ý Key phải là tên trùng với tên DetailReportBand trong Designer để dễ quản lý
-                var bandSchemas = new Dictionary<string, DataTable>
+                var steps = new[]
                 {
-                    // Band "Catongtho_Report": Sử dụng bảng Catthoong và đặt tên hiển thị là Cắt thô ống
-                    ["Catongtho_Report"] = FieldWhitelistRegistry.Catthoong.ToDesignSchema("Cắt thô ống"),
-                    // Band "Kiem_tra_ong_sau_cat_tho":
-                     ["Kiem_tra_ong_sau_cat_tho"] = FieldWhitelistRegistry.Kiemtrasaucattho.ToDesignSchema("Kiểm tra sau cắt thô"),
-                    // Band "Cam_chot": Sử dụng bảng Camchot và đặt tên hiển thị là Cắm chốt
-                    ["Cam_chot"] = FieldWhitelistRegistry.Camchot.ToDesignSchema("Cắm chốt"),
-                    ["Cam_chot_dkm"] = FieldWhitelistRegistry.Camchot_DKM.ToDesignSchema("Điều kiện máy cắm chốt"),
-                    // Band "Dap_chuoi_cat_dinh_muc": Sử dụng bảng Dap_chuoi_cat_dinh_muc và đặt tên hiển thị là Dập chuôi cắt định mức
-                    ["Dap_chuoi_cat_dinh_muc"] = FieldWhitelistRegistry.Dap_chuoi_cat_dinh_muc.ToDesignSchema("Dập chuôi cắt định mức"),
-                    ["Dap_chuoi_cat_dinh_muc_dkm"] = FieldWhitelistRegistry.Dap_chuoi_cat_dinh_muc_DKM.ToDesignSchema("Điều kiện máy dập chuôi cắt định mức"),
-                    ["Tu_dong_lap_rap_que_nong"] = FieldWhitelistRegistry.Tu_dong_lap_rap_que_nong.ToDesignSchema("Tự động lắp ráp que nong"),
-                    ["Gia_cong_dau_mut_v1_5"] = FieldWhitelistRegistry.Gia_cong_dau_mut_v1_5.ToDesignSchema("Gia công đầu mút V1~V5"),
-                    ["Rua_dau_mut_que_nong"] = FieldWhitelistRegistry.Rua_dau_mut_que_nong.ToDesignSchema("Rửa đầu mút que nong"),
-                    ["Kiem_tra_ngoai_quan"] = FieldWhitelistRegistry.Kiem_tra_ngoai_quan.ToDesignSchema("Kiểm tra ngoại quan"),
-                    ["Xu_ly_silicon"] = FieldWhitelistRegistry.Xu_ly_silicon.ToDesignSchema("Xử lý silicon"),
-                    ["Kiem_tra_lan_cuoi"] = FieldWhitelistRegistry.Kiem_tra_lan_cuoi.ToDesignSchema("Kiểm tra lần cuối"),
-                    ["Tong_ket"] = FieldWhitelistRegistry.Tong_ket.ToDesignSchema("Tổng kết"),               
+                    new Step_Definition(68 , "Catongtho_Report" , "Catongtho_Report_", false, "Cắt thô ốngggg"),
+                    new Step_Definition(144, "Kiem_tra_ong_sau_cat_tho", "Kiem_tra_ong_sau_cat_tho_", false, "Kiểm tra sau cắt thôggg"),
+                    new Step_Definition(70, "Cam_chot", "Cam_chot_dkm_", true, "Cắm chốtgg"),
+                    new Step_Definition(71, "Dap_chuoi_cat_dinh_muc", "Dap_chuoi_cat_dinh_muc_dkm_", true, "Dập chuôi cắt định mứcggg"),
+                    // thêm công đoạn khác (221, 305, …) tại đây:
+                    new Step_Definition(175, "Tu_dong_lap_rap_que_nong", "Tu_dong_lap_rap_que_nong_", true, "Tự động lắp ráp que nong"),
+                    new Step_Definition(72, "Gia_cong_dau_mut_v1_5", "Gia_cong_dau_mut_v1_5_", true, "Gia công đầu mút V1~V5"),
+                    new Step_Definition(73, "Rua_dau_mut_que_nong", "Rua_dau_mut_que_nong_", false, "Rửa đầu mút que nong"),
+                    new Step_Definition(74, "Kiem_tra_ngoai_quan", "Kiem_tra_ngoai_quan_", false, "Kiểm tra ngoại quan"),
+                    new Step_Definition(75, "Xu_ly_silicon", "Xu_ly_silicon_", false, "Xử lý silicon"),
+                    new Step_Definition(76, "Kiem_tra_lan_cuoi", "Kiem_tra_lan_cuoi_", false, "Kiểm tra lần cuối"),
+                    new Step_Definition(77, "Tong_ket", "Tong_ket_", false, "Tổng kết"),
                 };
+                // 1) Lấy danh sách id công đoạn cần build schema cho
+                var idCongDoanList = steps
+                    .Select(s => s.Id)   // lấy id công đoạn
+                    .Distinct()                  // loại trùng
+                    .ToArray();
 
-                // Gắn schema cho từng band theo tên
+                // 2) Gọi Auto_Build_FieldWhiteList để lấy map idCongDoan -> FieldWhitelist
+                using var cts = new CancellationTokenSource();
+                var whitelistBuilder = new Auto_Build_FieldWhiteList();
+
+                var whitelistsByCongDoan = await whitelistBuilder
+                    .GetWhitelistsForFormsAsync(idCongDoanList, ct: cts.Token);
+
+                // 3) Tạo bandSchemas: map BandName → DataTable thiết kế
+                var bandSchemas = new Dictionary<string, DataTable>();
+
+                // In ra để xem thử
+                foreach (var kv in bandSchemas)
+                {
+                    var bandName = kv.Key;
+                    var table = kv.Value;
+
+                    System.Diagnostics.Debug.WriteLine($"Band: {bandName}, TableName: {table.TableName}");
+
+                    foreach (DataColumn col in table.Columns)
+                    {
+                        System.Diagnostics.Debug.WriteLine(
+                            $"   ColumnName = {col.ColumnName}, " +
+                            $"Type = {col.DataType.Name}, " +
+                            $"Caption = {col.Caption}");
+                    }
+                }
+
+                foreach (var step in steps)
+                {
+                    // Lấy whitelist tương ứng với id công đoạn của step này
+                    if (!whitelistsByCongDoan.TryGetValue(step.Id, out var wl))
+                    {
+                        // Không lấy được -> để whitelist rỗng
+                        wl = new FieldWhitelist();
+                    }
+
+                    // Sinh DataTable schema cho band này.
+                    // - tableName: dùng DisplayName để hiện đẹp trong Designer (ví dụ: "Cắt thô ống")
+                    var dt = wl.ToDesignSchema(step.DisplayName);
+
+                    // Gắn vào dictionary với key = BandName (vd: "Catongtho_Report")
+                    bandSchemas[step.BandName] = dt;
+                }
+
+                //// Chuẩn bị whitelist → DataTable schema cho từng band để gắn vào datasource, dùng cho design
+                //// Lưu ý Key phải là tên trùng với tên DetailReportBand trong Designer để dễ quản lý
+                //var bandSchemas = new Dictionary<string, DataTable>
+                //{
+                //    // Band "Catongtho_Report": Sử dụng bảng Catthoong và đặt tên hiển thị là Cắt thô ống
+                //    ["Catongtho_Report"] = FieldWhitelistRegistry.Catthoong.ToDesignSchema("Cắt thô ống"),
+                //    // Band "Kiem_tra_ong_sau_cat_tho":
+                //     ["Kiem_tra_ong_sau_cat_tho"] = FieldWhitelistRegistry.Kiemtrasaucattho.ToDesignSchema("Kiểm tra sau cắt thô"),
+                //    // Band "Cam_chot": Sử dụng bảng Camchot và đặt tên hiển thị là Cắm chốt
+                //    ["Cam_chot"] = FieldWhitelistRegistry.Camchot.ToDesignSchema("Cắm chốt"),
+                //    ["Cam_chot_dkm"] = FieldWhitelistRegistry.Camchot_DKM.ToDesignSchema("Điều kiện máy cắm chốt"),
+                //    // Band "Dap_chuoi_cat_dinh_muc": Sử dụng bảng Dap_chuoi_cat_dinh_muc và đặt tên hiển thị là Dập chuôi cắt định mức
+                //    ["Dap_chuoi_cat_dinh_muc"] = FieldWhitelistRegistry.Dap_chuoi_cat_dinh_muc.ToDesignSchema("Dập chuôi cắt định mức"),
+                //    ["Dap_chuoi_cat_dinh_muc_dkm"] = FieldWhitelistRegistry.Dap_chuoi_cat_dinh_muc_DKM.ToDesignSchema("Điều kiện máy dập chuôi cắt định mức"),
+                //    ["Tu_dong_lap_rap_que_nong"] = FieldWhitelistRegistry.Tu_dong_lap_rap_que_nong.ToDesignSchema("Tự động lắp ráp que nong"),
+                //    ["Gia_cong_dau_mut_v1_5"] = FieldWhitelistRegistry.Gia_cong_dau_mut_v1_5.ToDesignSchema("Gia công đầu mút V1~V5"),
+                //    ["Rua_dau_mut_que_nong"] = FieldWhitelistRegistry.Rua_dau_mut_que_nong.ToDesignSchema("Rửa đầu mút que nong"),
+                //    ["Kiem_tra_ngoai_quan"] = FieldWhitelistRegistry.Kiem_tra_ngoai_quan.ToDesignSchema("Kiểm tra ngoại quan"),
+                //    ["Xu_ly_silicon"] = FieldWhitelistRegistry.Xu_ly_silicon.ToDesignSchema("Xử lý silicon"),
+                //    ["Kiem_tra_lan_cuoi"] = FieldWhitelistRegistry.Kiem_tra_lan_cuoi.ToDesignSchema("Kiểm tra lần cuối"),
+                //    ["Tong_ket"] = FieldWhitelistRegistry.Tong_ket.ToDesignSchema("Tổng kết"),               
+                //};
+
+                //// Gắn schema cho từng band theo tên
                 DesignSchema.AttachBandSchemas(rpt, bandSchemas);
 
                 // Tạo ReportDesignTool để mở End-User Designer
