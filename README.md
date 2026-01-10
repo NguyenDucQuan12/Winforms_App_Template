@@ -1339,6 +1339,7 @@ Cơ chế `await` như sau:
 - Dùng `CancellationToken` + `IProgress<T>` để hủy & báo tiến độ.  
 
 > Có thể `await` bất kỳ Task nào, bất kể Task đó đến từ đâu (`I/O`, `CPU`, `thư viện bên ngoài`, hay chính `Task.Run`  
+> `Await` luôn yêu cầu hàm bao nó phải là `async` và trả về `Task` hoặc `void` (trong event handler).  
 
 Ta có ví dụ sử dụng `await` đi kèm cùng `Task.Run` (`System.Threading.Task`):  
 
@@ -1397,6 +1398,67 @@ private void DoWork(IProgress<int> progress, CancellationToken ct)
         // ... xử lý ...
         Thread.Sleep(20);                  // Mô phỏng tốn thời gian
         progress.Report(i);                // Báo tiến độ (UI nhận)
+    }
+}
+```
+
+Dưới đây là ví dụ sử dụng await với I/O async (HttpClient) và trả về 1 Task:  
+```C#
+using System;
+using System.Net.Http;
+using System.Threading.Tasks;
+class AsyncAwaitDemo
+{
+    // HttpClient dùng chung cho toàn ứng dụng
+    private static readonly HttpClient _httpClient = new HttpClient();
+
+    // Entry point async có tác dụng tương tự Main(), staic có nghĩa là không cần tạo instance class
+    static async Task Main()
+    {
+        try
+        {
+            string url = "https://jsonplaceholder.typicode.com/posts/1";
+            string result = await FetchDataAsync(url); // Await I/O async
+            Console.WriteLine("Dữ liệu nhận được:");
+            Console.WriteLine(result);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Lỗi: " + ex.Message);
+        }
+    }
+
+    // Hàm async trả về Task<string>
+    static async Task<string> FetchDataAsync(string url)
+    {
+        HttpResponseMessage response = await _httpClient.GetAsync(url); // Await I/O
+        response.EnsureSuccessStatusCode(); // Ném lỗi nếu không thành công
+        string content = await response.Content.ReadAsStringAsync(); // Await I/O
+        return content; // Trả về kết quả
+    }
+}
+```
+
+Gọi hàm async từ event handler WinForms:  
+```C#
+private async void btnFetch_Click(object sender, EventArgs e)
+{
+    btnFetch.Enabled = false;
+    lblResult.Text = "Đang tải...";
+
+    try
+    {
+        string data = await FetchDataAsync("https://example.com/api/data");
+        lblResult.Text = data;
+    }
+    catch (Exception ex)
+    {
+        MessageBox.Show(this, "Lỗi: " + ex.Message);
+        lblResult.Text = "Lỗi tải dữ liệu.";
+    }
+    finally
+    {
+        btnFetch.Enabled = true;
     }
 }
 ```
@@ -1651,7 +1713,7 @@ private void btnStopPeriodic_Click(object sender, EventArgs e)
 >Công việc nền nhẹ, không UI → Timers.Timer hoặc `Threading.Timer`.  
 > Mô hình async hiện đại, dễ hủy → `PeriodicTimer`.  
 
-## 4. BackgroundWorker
+## 5. BackgroundWorker
 
 Là một tác vụ được thực thi độc lập, không chặn luồng chính của ứng dụng. Điều này cho phép ứng dụng vẫn phản hồi và hoạt động mượt mà trong khi các tác vụ tốn thời gian hoặc lặp đi lặp lại được xử lý ở chế độ nền.  
 Tuy nhiên đây là một cách cũ, nó vẫn hiệu quả để chạy các tác vụ nền và cập nhật UI một cách an toàn.  
@@ -1659,44 +1721,175 @@ Tuy nhiên đây là một cách cũ, nó vẫn hiệu quả để chạy các t
 Các hàm chính:  
 - `DoWork`: Đây là nơi đặt mã để thực hiện công việc ở chế độ nền. Sự kiện này được kích hoạt khi `RunWorkerAsync()` được gọi.  
 - `ProgressChanged`: Kích hoạt khi gọi `ReportProgress()` trong sự kiện `DoWork` để báo cáo tiến độ của công việc đang chạy. Điều này `cho phép cập nhật giao diện người dùng`, như hiển thị thanh tiến trình.  
-- `RunWorkerCompleted`: Sự kiện này được kích hoạt khi công việc ở chế độ nền đã hoàn thành. Nó được sử dụng để thực hiện các hành động cuối cùng, chẳng hạn như hiển thị kết quả.   
+- `RunWorkerCompleted`: Sự kiện này được kích hoạt khi công việc ở chế độ nền đã hoàn thành. Nó được sử dụng để thực hiện các hành động cuối cùng, chẳng hạn như hiển thị kết quả.  
 
+Để sử dụng `BackgroundWorker`, ta cần thiết lập các sự kiện `DoWork`, `ProgressChanged`, và `RunWorkerCompleted`.  
+Khi muốn bắt đầu công việc nền, ta gọi `RunWorkerAsync()`. Nếu muốn hủy công việc, ta gọi `CancelAsync()`.  
 
-Ví dụ mẫu như sau:  
+Chạy background worker trong WinForms:  
+Ta khai báo một `BackgroundWorker` từ `Toolbox` hoặc tạo thủ công trong code. Với ví dụ tạo thủ công:  
 ```C#
-using System.ComponentModel;
-
-private BackgroundWorker _bw;
-
-private void SetupBackgroundWorker()
+private BackgroundWorker backgroundWorker1;
+public MainForm()
 {
-    _bw = new BackgroundWorker
+    InitializeComponent();
+
+    // Khởi tạo BackgroundWorker
+    backgroundWorker1 = new BackgroundWorker
     {
-        WorkerReportsProgress = true,
-        WorkerSupportsCancellation = true
+        WorkerReportsProgress = true,     // Cho phép báo cáo tiến độ
+        WorkerSupportsCancellation = true // Cho phép hủy công việc
     };
-    _bw.DoWork += (s, e) =>
+
+    // Gán sự kiện
+    backgroundWorker1.DoWork += backgroundWorker1_DoWork;
+    backgroundWorker1.ProgressChanged += backgroundWorker1_ProgressChanged;
+    backgroundWorker1.RunWorkerCompleted += backgroundWorker1_RunWorkerCompleted;
+
+    // Tạo 1 circular progress bar bằng code hoặc kéo thả từ Toolbox
+    // Nếu muốn vị trí chính giữa giao diện, ta có thể tính toán vị trí dựa trên kích thước Form
+    int posX = (this.ClientSize.Width - 100) / 2; // Giả sử kích thước progress bar là 100x100
+    int posY = (this.ClientSize.Height - 100) / 2;
+
+    circularProgressBar1 = new CircularProgressBar.CircularProgressBar
     {
-        // Chạy trên thread nền
+        Location = new Point(posX, posY),  // Vị trí trên Form
+        Size = new Size(100, 100),         // Kích thước
+        Visible = false                    // Ẩn ban đầu
+    };
+    // Thêm vào Form
+    this.Controls.Add(circularProgressBar1);
+}
+```
+
+Bắt đầu một việc nền với `backgroundWorker1.RunWorkerAsync();`:  
+```C#
+// Gán sự kiện cho nút in
+private void btnIn_Click(object sender, EventArgs e)
+{
+    // Vô hiệu hóa nút in để tránh bấm lặp
+    btnIn.Enabled = false;
+    // Hiển thị circular progress bar
+    circularProgressBar1.Visible = true;
+    // Bắt đầu công việc nền
+    backgroundWorker1.RunWorkerAsync();
+}
+```
+Hủy một việc nền:  
+```C#
+private void btnCancel_Click(object sender, EventArgs e)
+{
+    if (backgroundWorker1.IsBusy)
+    {
+        backgroundWorker1.CancelAsync(); // Yêu cầu hủy công việc nền
+    }
+}
+```
+
+Và khi gọi hàm trên, công việc sẽ được thực thi trong một luồng nền, không làm gián đoạn giao diện người dùng.  
+
+> Lưu ý: Trong `DoWork`, không được truy cập trực tiếp vào các điều khiển giao diện người dùng (UI controls) vì nó chạy trên một luồng khác. Nếu cần cập nhật giao diện, hãy sử dụng `ReportProgress` hoặc `Invoke/BeginInvoke`.  
+> BeginInvoke khác với Invoke ở chỗ BeginInvoke là bất đồng bộ, nó sẽ không chặn luồng hiện tại trong khi chờ hành động được thực thi trên luồng giao diện người dùng. Điều này giúp tránh tình trạng treo ứng dụng nếu hành động mất nhiều thời gian để hoàn thành.  
+> Invoke là đồng bộ, nó sẽ chặn luồng hiện tại cho đến khi hành động được thực thi xong trên luồng giao diện người dùng.  
+
+Xử lý công việc nền trong sự kiện `DoWork`:  
+```C#
+private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+{
+    // Lấy tham chiếu đến BackgroundWorker
+    BackgroundWorker worker = sender as BackgroundWorker;
+
+    // Thực hiện công việc nặng ở đây
+    // Ví dụ: tạo báo cáo
+    XtraReport report = CreateReport();
+
+    // Kiểm tra nếu có yêu cầu hủy
+    if (worker.CancellationPending)
+    {
+        e.Cancel = true; // Đánh dấu công việc đã bị hủy
+        return;
+    }
+
+    // Xử lý 1 công việc với try catch và có báo cáo tiến độ
+    try
+    {
         for (int i = 0; i <= 100; i++)
         {
-            if (_bw.CancellationPending) { e.Cancel = true; return; }
-            Thread.Sleep(20);          // Giả lập công việc
-            _bw.ReportProgress(i);     // Sẽ marshal về UI
-        }
-    };
-    _bw.ProgressChanged += (s, e) => progressBar.Value = e.ProgressPercentage; // UI thread
-    _bw.RunWorkerCompleted += (s, e) =>
-    {
-        if (e.Cancelled) lblStatus.Text = "BW: đã hủy";
-        else if (e.Error != null) lblStatus.Text = "BW lỗi: " + e.Error.Message;
-        else lblStatus.Text = "BW: xong";
-    };
-}
+            // Kiểm tra nếu có yêu cầu hủy
+            if (worker.CancellationPending)
+            {
+                e.Cancel = true; // Đánh dấu công việc đã bị hủy
+                // Các thông báo liên quan đến giao diện nếu hiển thị từ đây đều phải sử dụng Invoke hoặc BeginInvoke
+                this.BeginInvoke((Action)(() =>
+                {
+                    MessageBox.Show(this, "Công việc đã bị hủy!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }));
+                return;
+            }
 
-private void btnStartBw_Click(object sender, EventArgs e) => _bw?.RunWorkerAsync();
-private void btnCancelBw_Click(object sender, EventArgs e) => _bw?.CancelAsync();
+            // Giả lập công việc nặng
+            Thread.Sleep(50); // Mô phỏng thời gian xử lý
+
+            // Báo cáo tiến độ
+            worker.ReportProgress(i);
+        }
+    }
+    catch (Exception ex)
+    {
+        // Ghi log lỗi hoặc xử lý lỗi tại đây
+        // Các lỗi sẽ được truyền qua e.Error trong RunWorkerCompleted
+        this.Invoke((Action)(() =>
+        {
+            MessageBox.Show(this, "Đã xảy ra lỗi: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }));
+
+        throw; // Ném lại ngoại lệ để RunWorkerCompleted xử lý
+    }
+
+    // Trả về kết quả (báo cáo) qua e.Result
+    e.Result = report;
+}
 ```
+
+Khi background worker hoàn thành công việc, sự kiện `RunWorkerCompleted` sẽ được kích hoạt, cho phép bạn thực hiện các hành động sau khi công việc kết thúc.  
+```C#
+private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+{
+    // Ẩn circular progress bar
+    circularProgressBar1.Visible = false;
+    // Kích hoạt lại nút in
+    btnIn.Enabled = true;
+
+    // Kiểm tra nếu công việc bị hủy
+    if (e.Cancelled)
+    {
+        // Công việc đã bị hủy
+        MessageBox.Show(this, "Công việc đã bị hủy!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+    }
+    else if (e.Error != null)
+    {
+        // Xử lý lỗi nếu có
+        MessageBox.Show(this, "Đã xảy ra lỗi: " + e.Error.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+    }
+    else
+    {
+        // Lấy kết quả báo cáo từ e.Result
+        XtraReport report = e.Result as XtraReport;
+
+        // Kiểm tra kết quả
+        if (report == null)
+        {
+            MessageBox.Show(this, "Báo cáo trống!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return;
+        }
+
+        // Hiển thị báo cáo trong ReportPrintTool
+        ReportPrintTool printTool = new ReportPrintTool(report);
+        printTool.ShowPreviewDialog(this);
+    }
+}
+```
+## 6. Hàng đợi công việc nền (Background Job Queue)
 Hoặc ta có thể sử dụng nó một cách `hiện đại` hơn với `Queue`:  
 ```C#
 using System;
